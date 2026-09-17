@@ -1,0 +1,18 @@
+[project]
+name = "curtain_roll"
+authors = [{ name = "Curtain Roll", email = "info@curtain-roll.com" }]
+description = "Curtain Roll storefront for ERPNext — 10 pages with the 3D curtain configurator"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = []
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "curtain_roll"
+
+[tool.bench.frappe-dependencies]
+frappe = ">=15.0.0,<17.0.0"

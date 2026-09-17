@@ -1,0 +1,11 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+{% include "curtain_roll/templates/includes/product_body.html" %}
+{% endblock %}
+
+{% block script %}
+{% include "curtain_roll/templates/includes/product_scripts.html" %}
+{% endblock %}

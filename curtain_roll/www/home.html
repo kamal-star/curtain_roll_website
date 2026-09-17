@@ -1,0 +1,33 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="cr-page">
+	{% if hero %}
+	<div class="cr-hero">
+		<img src="{{ asset(hero) }}" alt="Curtain Roll">
+	</div>
+	{% endif %}
+
+	<h2 class="cr-section-title">{{ _("Shop by category") }}</h2>
+	<p class="cr-section-sub">
+		{{ _("Choose a curtain type, pick your fabric, and see it in 3D before you order.") }}
+	</p>
+
+	<div class="cr-cards">
+		{% for p in products %}
+		<a class="cr-card" href="/{{ p.route }}">
+			{% if p.main_image %}<img src="{{ asset(p.main_image) }}" alt="{{ p.heading }}" loading="lazy">{% endif %}
+			<div class="cr-card-body">
+				<div class="cr-card-title">{{ p.heading }}</div>
+				{% if p.price %}
+				<div class="cr-card-price">{{ _("Starts from") }} SR {{ "%.2f"|format(p.price) }}</div>
+				{% endif %}
+				{% if p.bundle %}<div class="cr-card-cta">{{ _("Customise in 3D") }} &rarr;</div>{% endif %}
+			</div>
+		</a>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

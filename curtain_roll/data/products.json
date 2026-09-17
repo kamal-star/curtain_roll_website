@@ -1,0 +1,2497 @@
+[
+ {
+  "key": "printed",
+  "route": "printed",
+  "bundle": "Printed.js",
+  "title": "Enjoy printing roller blinds try it now",
+  "meta_description": "https://curtain-roll.com/Choose a high resolution image you like and we will print it on roller blinds to suit kids rooms, bedrooms, kitchens, offices and restaurants with a unique design without any hassle.",
+  "meta_keywords": "",
+  "heading": "Printed",
+  "price": 237.0,
+  "price_text": "SR 237.00",
+  "description": "",
+  "capture_option_id": "357",
+  "option_groups": [
+   {
+    "id": "305",
+    "label": "Control type",
+    "options": [
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ]
+   },
+   {
+    "id": "304",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     }
+    ]
+   },
+   {
+    "id": "395",
+    "label": "Valance Option Box",
+    "options": [
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+      "code": "With Valance Box"
+     },
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Without Valance Box"
+     }
+    ]
+   },
+   {
+    "id": "388",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-200x200.png",
+   "image/cache/catalog/curtains/printed-g-600x315w.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/sunscreen-g-120x120.png",
+   "image/cache/catalog/curtains/sunscreen-g-60x60.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "blackout",
+  "route": "blackout",
+  "bundle": "blackout.js",
+  "title": "Buy Blackout Curtains Complete Darkness and Protection",
+  "meta_description": "https://curtain-roll.com/Blackout curtains give you complete insulation from light and heat. Professional quality for perfect comfort and a completely dark room",
+  "meta_keywords": "",
+  "heading": "blackout",
+  "price": 150.0,
+  "price_text": "SR 150.00",
+  "description": "",
+  "capture_option_id": "378",
+  "option_groups": [
+   {
+    "id": "371",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7200-150x150.jpg",
+      "code": "7200"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7234-150x150.jpg",
+      "code": "7234"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7260-150x150.jpg",
+      "code": "7260"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7262-150x150.jpg",
+      "code": "7262"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7263-150x150.jpg",
+      "code": "7263"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7265-150x150.jpg",
+      "code": "7265"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7266-150x150.jpg",
+      "code": "7266"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7267-150x150.jpg",
+      "code": "7267"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7268-150x150.jpg",
+      "code": "7268"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7281-150x150.jpg",
+      "code": "7281"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7282-150x150.jpg",
+      "code": "7282"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7285-150x150.jpg",
+      "code": "7285"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7286-150x150.jpg",
+      "code": "7286"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7290-150x150.jpg",
+      "code": "7290"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7292-150x150.jpg",
+      "code": "7292"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7293-150x150.jpg",
+      "code": "7293"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7295-150x150.jpg",
+      "code": "7295"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7304-150x150.jpg",
+      "code": "7304"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7305-150x150.jpg",
+      "code": "7305"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7306-150x150.jpg",
+      "code": "7306"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7315-150x150.jpg",
+      "code": "7315"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7316-150x150.jpg",
+      "code": "7316"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7317-150x150.jpg",
+      "code": "7317"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7318-150x150.jpg",
+      "code": "7318"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7319-150x150.jpg",
+      "code": "7319"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7320-150x150.jpg",
+      "code": "7320"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7321-150x150.jpg",
+      "code": "7321"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7322-150x150.jpg",
+      "code": "7322"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7323-150x150.jpg",
+      "code": "7323"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7324-150x150.jpg",
+      "code": "7324"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7325-150x150.jpg",
+      "code": "7325"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7377-150x150.jpg",
+      "code": "7377"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7378-150x150.jpg",
+      "code": "7378"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7379-150x150.jpg",
+      "code": "7379"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7381-150x150.jpg",
+      "code": "7381"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7382-150x150.jpg",
+      "code": "7382"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7383-150x150.jpg",
+      "code": "7383"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7384-150x150.jpg",
+      "code": "7384"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7390-150x150.jpg",
+      "code": "7390"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7391-150x150.jpg",
+      "code": "7391"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7392-150x150.jpg",
+      "code": "7392"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7393-150x150.jpg",
+      "code": "7393"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7394-150x150.jpg",
+      "code": "7394"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7395-150x150.jpg",
+      "code": "7395"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7396-150x150.jpg",
+      "code": "7396"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7401-150x150.jpg",
+      "code": "7401"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7402-150x150.jpg",
+      "code": "7402"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7403-150x150.jpg",
+      "code": "7403"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7198-150x150w.jpg",
+      "code": "7198"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7199-150x150w.jpg",
+      "code": "7199"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7205-150x150w.jpg",
+      "code": "7205"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7261-150x150w.jpg",
+      "code": "7261"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7269-150x150w.jpg",
+      "code": "7269"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7270-150x150w.jpg",
+      "code": "7270"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7278-150x150w.jpg",
+      "code": "7278"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7283-150x150w.jpg",
+      "code": "7283"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7284-150x150w.jpg",
+      "code": "7284"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7287-150x150w.jpg",
+      "code": "7287"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7291-150x150w.jpg",
+      "code": "7291"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7294-150x150w.jpg",
+      "code": "7294"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7360-150x150w.jpg",
+      "code": "7360"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7362-150x150w.jpg",
+      "code": "7362"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7363-150x150w.jpg",
+      "code": "7363"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7373-150x150w.jpg",
+      "code": "7373"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7380-150x150w.jpg",
+      "code": "7380"
+     }
+    ]
+   },
+   {
+    "id": "369",
+    "label": "Control type",
+    "options": [
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ]
+   },
+   {
+    "id": "372",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     }
+    ]
+   },
+   {
+    "id": "393",
+    "label": "Valance Option Box",
+    "options": [
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+      "code": "With Valance Box"
+     },
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Without Valance Box"
+     }
+    ]
+   },
+   {
+    "id": "386",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/blackout-materials/7198-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7199-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7200-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7205-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7234-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7260-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7261-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7262-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7263-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7265-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7266-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7267-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7268-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7269-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7270-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7278-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7281-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7282-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7283-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7284-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7285-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7286-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7287-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7290-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7291-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7292-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7293-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7294-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7295-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7304-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7305-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7306-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7315-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7316-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7317-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7318-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7319-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7320-150x150.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "sunscreen",
+  "route": "sunscreen",
+  "bundle": "Sunscreen.js",
+  "title": "Order now Sun Screen with up to 50% blackout, the perfect choice for your modern kitchen",
+  "meta_description": "https://curtain-roll.com/Sunscreen with 50% blackout provides optimal protection. Choose metal strips for rust-resistant kitchens or wooden strips for a classic, luxurious look.",
+  "meta_keywords": "",
+  "heading": "Sunscreen",
+  "price": 150.0,
+  "price_text": "SR 150.00",
+  "description": "Sunscreen offers 50% blackout technology, allowing natural light to enter while maintaining privacy. The piece is available in multiple options; metal slats are ideal for kitchens due to their resistance to rust, and wooden slats add a luxurious and classic touch to interior spaces. The innovative design ensures a balanced distribution of light and maintains the beauty and elegance of the place.",
+  "capture_option_id": "382",
+  "option_groups": [
+   {
+    "id": "250",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7003-150x150w.jpg",
+      "code": "ss7003"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7195-150x150w.jpg",
+      "code": "ss7195"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7196-150x150w.jpg",
+      "code": "ss7196"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7197-150x150w.jpg",
+      "code": "ss7197"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7216-150x150w.jpg",
+      "code": "ss7216"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7221-150x150w.jpg",
+      "code": "ss7221"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7235-150x150w.jpg",
+      "code": "ss7235"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7236-150x150w.jpg",
+      "code": "ss7236"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7237-150x150w.jpg",
+      "code": "ss7237"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7238-150x150w.jpg",
+      "code": "ss7238"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7239-150x150w.jpg",
+      "code": "ss7239"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7242-150x150w.jpg",
+      "code": "ss7242"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7243-150x150w.jpg",
+      "code": "ss7243"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7244-150x150w.jpg",
+      "code": "ss7244"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7245-150x150w.jpg",
+      "code": "ss7245"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7246-150x150w.jpg",
+      "code": "ss7246"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7218-150x150w.jpg",
+      "code": "ss7218"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7240-150x150w.jpg",
+      "code": "ss7240"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7241-150x150w.jpg",
+      "code": "ss7241"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7251-150x150w.jpg",
+      "code": "ss7251"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7253-150x150w.jpg",
+      "code": "ss7253"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7254-150x150w.jpg",
+      "code": "ss7254"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7300-150x150w.jpg",
+      "code": "ss7300"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7301-150x150w.jpg",
+      "code": "ss7301"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7302-150x150w.jpg",
+      "code": "ss7302"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7331-150x150w.jpg",
+      "code": "ss7331"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7332-150x150w.jpg",
+      "code": "ss7332"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7333-150x150w.jpg",
+      "code": "ss7333"
+     }
+    ]
+   },
+   {
+    "id": "252",
+    "label": "Control type",
+    "options": [
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ]
+   },
+   {
+    "id": "249",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     }
+    ]
+   },
+   {
+    "id": "394",
+    "label": "Valance Option Box",
+    "options": [
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+      "code": "With Valance Box"
+     },
+     {
+      "value": "0",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Without Valance Box"
+     }
+    ]
+   },
+   {
+    "id": "389",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/sunscreen-g-200x200.png",
+   "image/cache/catalog/curtains/sunscreen-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/sunscreen-materials/7003-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7195-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7196-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7197-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7216-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "zebra",
+  "route": "zebra",
+  "bundle": "Zebra.js",
+  "title": "Get Zebra Blinds for renewed elegance and precise control",
+  "meta_description": "https://curtain-roll.com/Zebra blinds with two layers of matching chiffon and insulating fabric, give you complete control over light and privacy with a distinctive modern touch",
+  "meta_keywords": "",
+  "heading": "Zebra",
+  "price": 300.0,
+  "price_text": "SR 300.00",
+  "description": "Zebra blinds feature a modern design that combines two layers of fabric; a blackout piece and a sheer chiffon piece, giving you complete control over the amount of light entering and the level of privacy you want. Thanks to their smart rotating mechanism, you can adjust the position of the slats to block out light completely or let in just the right amount. These blinds are available in a variety of shapes and colors, adding a unique touch of elegance and distinction to any room, whether at home or in the office",
+  "capture_option_id": "385",
+  "option_groups": [
+   {
+    "id": "260",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6001s-150x150.jpg",
+      "code": "Z6001"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6002s-150x150.jpg",
+      "code": "Z6002"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6003s-150x150.jpg",
+      "code": "Z6003"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6004s-150x150.jpg",
+      "code": "Z6004"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6005s-150x150.jpg",
+      "code": "Z6005"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6006s-150x150.jpg",
+      "code": "Z6006"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6007s-150x150.jpg",
+      "code": "Z6007"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6008s-150x150.jpg",
+      "code": "Z6008"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6009s-150x150.jpg",
+      "code": "Z6009"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6010s-150x150.jpg",
+      "code": "Z6010"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6015s-150x150.jpg",
+      "code": "Z6015"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6016s-150x150.jpg",
+      "code": "Z6016"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6017s-150x150.jpg",
+      "code": "Z6017"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6018s-150x150.jpg",
+      "code": "Z6018"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6019s-150x150.jpg",
+      "code": "Z6019"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6021s-150x150.jpg",
+      "code": "Z6021"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6070s-150x150.jpg",
+      "code": "Z6070"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6071s-150x150.jpg",
+      "code": "Z6071"
+     }
+    ]
+   },
+   {
+    "id": "262",
+    "label": "Control type",
+    "options": [
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/zebra/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/zebra/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ]
+   },
+   {
+    "id": "266",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/zebra/outside-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/zebra/inside-150x150.png",
+      "code": "Inside"
+     }
+    ]
+   },
+   {
+    "id": "392",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/zebra/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/zebra-g-200x200.png",
+   "image/cache/catalog/curtains/zebra-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png",
+   "image/cache/catalog/zebra-materials/6001s-150x150.jpg",
+   "image/cache/catalog/zebra-materials/6002s-150x150.jpg",
+   "image/cache/catalog/zebra-materials/6003s-150x150.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "wooden",
+  "route": "wooden",
+  "bundle": "Wooden.js",
+  "title": "Discover the ultimate in luxury and sophistication in wooden slat blinds.",
+  "meta_description": "https://curtain-roll.com/Wooden blinds made of natural wood or fiber add a touch of luxury and elegance to homes and offices. Get the luxury now",
+  "meta_keywords": "",
+  "heading": "Wooden",
+  "price": 300.0,
+  "price_text": "SR 300.00",
+  "description": "Wooden blinds are characterized by their high quality and classic luxurious design. Made of natural wood or fiber material that gives them flexibility and elegance, these blinds add a touch of class and elegance to any space, whether home or office. Thanks to their installation with a metal track, they combine durability with modern beauty, making them the perfect choice for those seeking a luxurious and distinctive decor.",
+  "capture_option_id": "384",
+  "option_groups": [
+   {
+    "id": "267",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5026-150x150h.jpg",
+      "code": "w5026"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5028-150x150h.jpg",
+      "code": "w5028"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5029-150x150h.jpg",
+      "code": "w5029"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5030-150x150h.jpg",
+      "code": "w5030"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5031-150x150h.jpg",
+      "code": "w5031"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5032-150x150h.jpg",
+      "code": "w5032"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5033-150x150h.jpg",
+      "code": "w5033"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5034-150x150h.jpg",
+      "code": "w5034"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5035-150x150h.jpg",
+      "code": "w5035"
+     }
+    ]
+   },
+   {
+    "id": "269",
+    "label": "Manual Operating Side",
+    "options": [
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+      "code": "Right"
+     },
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Left"
+     }
+    ]
+   },
+   {
+    "id": "273",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+      "code": "Inside"
+     }
+    ]
+   },
+   {
+    "id": "391",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/wooden-g-200x200.png",
+   "image/cache/catalog/curtains/wooden-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png",
+   "image/cache/catalog/wooden-materials/5026-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5028-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5029-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5030-150x150h.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "vertical",
+  "route": "vertical",
+  "bundle": "Vertical.js",
+  "title": "Buy Vertical Blinds Full Control and Modern Elegance",
+  "meta_description": "https://curtain-roll.com/Vertical blinds give you complete control over light and privacy, with a modern design that fits large windows and glass doors.",
+  "meta_keywords": "",
+  "heading": "Vertical",
+  "price": 128.0,
+  "price_text": "SR 128.00",
+  "description": "Vertical blinds are designed to provide complete control over the amount of light entering a room while maintaining privacy. They consist of long, wide slats made from durable materials such as fabric, plastic or wood, making them ideal for large windows and glass doors. Their modern design is simple and elegant, and they are easy to clean and dust-resistant, adding a touch of sophistication and functionality to any space.",
+  "capture_option_id": "383",
+  "option_groups": [
+   {
+    "id": "279",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
+      "code": "V2006"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/424-150x150w.jpg",
+      "code": "V424"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/826-150x150w.jpg",
+      "code": "V826"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/859-150x150w.jpg",
+      "code": "V859"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/890-150x150w.jpg",
+      "code": "V890"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/891-150x150w.jpg",
+      "code": "V891"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/893-150x150w.jpg",
+      "code": "V893"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+      "code": "V1001"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1003-150x150w.jpg",
+      "code": "V1003"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1043-150x150w.jpg",
+      "code": "V1043"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1057-150x150w.jpg",
+      "code": "V1057"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1058-150x150w.jpg",
+      "code": "V1058"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1059-150x150w.jpg",
+      "code": "V1059"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1061-150x150w.jpg",
+      "code": "V1061"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1063-150x150w.jpg",
+      "code": "V1063"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1068-150x150w.jpg",
+      "code": "V1068"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1069-150x150w.jpg",
+      "code": "V1069"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1090-150x150w.jpg",
+      "code": "V1090"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1091-150x150w.jpg",
+      "code": "V1091"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1092-150x150w.jpg",
+      "code": "V1092"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1093-150x150w.jpg",
+      "code": "V1093"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1094-150x150w.jpg",
+      "code": "V1094"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1095-150x150w.jpg",
+      "code": "V1095"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1096-150x150w.jpg",
+      "code": "V1096"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1097-150x150w.jpg",
+      "code": "V1097"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1098-150x150w.jpg",
+      "code": "V1098"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1099-150x150w.jpg",
+      "code": "V1099"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2000-150x150w.jpg",
+      "code": "V2000"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2004-150x150w.jpg",
+      "code": "V2004"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2005-150x150w.jpg",
+      "code": "V2005"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
+      "code": "V2006"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2007-150x150w.jpg",
+      "code": "V2007"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2009-150x150w.jpg",
+      "code": "V2009"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2010-150x150w.jpg",
+      "code": "V2010"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2011-150x150w.jpg",
+      "code": "V2011"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2012-150x150w.jpg",
+      "code": "V2012"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2013-150x150w.jpg",
+      "code": "V2013"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2014-150x150w.jpg",
+      "code": "V2014"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2015-150x150w.jpg",
+      "code": "V2015"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2029-150x150w.jpg",
+      "code": "V2029"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2033-150x150w.jpg",
+      "code": "V2033"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2040-150x150w.jpg",
+      "code": "V2040"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2060-150x150w.jpg",
+      "code": "V2060"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2061-150x150w.jpg",
+      "code": "V2061"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2062-150x150w.jpg",
+      "code": "V2062"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2063-150x150w.jpg",
+      "code": "V2063"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2064-150x150w.jpg",
+      "code": "V2064"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2071-150x150w.jpg",
+      "code": "V2071"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2072-150x150w.jpg",
+      "code": "V2072"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2073-150x150w.jpg",
+      "code": "V2073"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2074-150x150w.jpg",
+      "code": "V2074"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2075-150x150w.jpg",
+      "code": "V2075"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2076-150x150w.jpg",
+      "code": "V2076"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2077-150x150w.jpg",
+      "code": "V2077"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2078-150x150w.jpg",
+      "code": "V2078"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2079-150x150w.jpg",
+      "code": "V2079"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2080-150x150w.jpg",
+      "code": "V2080"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2081-150x150w.jpg",
+      "code": "V2081"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2082-150x150w.jpg",
+      "code": "V2082"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2083-150x150w.jpg",
+      "code": "V2083"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2084-150x150w.jpg",
+      "code": "V2084"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2086-150x150w.jpg",
+      "code": "V2086"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2087-150x150w.jpg",
+      "code": "V2087"
+     }
+    ]
+   },
+   {
+    "id": "281",
+    "label": "Manual Operating Side",
+    "options": [
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+      "code": "Left"
+     },
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+      "code": "Right"
+     }
+    ]
+   },
+   {
+    "id": "285",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+      "code": "Inside"
+     }
+    ]
+   },
+   {
+    "id": "287",
+    "label": "Movement direction",
+    "options": [
+     {
+      "value": "0",
+      "group": "Movement direction",
+      "image": "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+      "code": "Left to right"
+     },
+     {
+      "value": "0",
+      "group": "Movement direction",
+      "image": "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+      "code": "Right to left"
+     }
+    ]
+   },
+   {
+    "id": "390",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/vertical-g-200x200.png",
+   "image/cache/catalog/curtains/vertical-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+   "image/cache/catalog/vertical-materials/1003-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "metal",
+  "route": "metal",
+  "bundle": "Metal.js",
+  "title": "Get durable metal strips to protect against radiation and corrosion.",
+  "meta_description": "https://curtain-roll.com/High quality aluminum metal strips, UV, corrosion and scratch resistant. Color retention and environmental friendly - Made in China.",
+  "meta_keywords": "",
+  "heading": "Metal",
+  "price": 120.0,
+  "price_text": "SR 120.00",
+  "description": "",
+  "capture_option_id": "381",
+  "option_groups": [
+   {
+    "id": "309",
+    "label": "slice width and color",
+    "options": [
+     {
+      "value": "0",
+      "group": "slice width and color",
+      "image": "image/cache/catalog/icons/5mm-icon-150x150.png",
+      "code": "5 cm"
+     },
+     {
+      "value": "0",
+      "group": "slice width and color",
+      "image": "image/cache/catalog/icons/2-5mm-icon-150x150.png",
+      "code": "2.5 cm"
+     }
+    ]
+   },
+   {
+    "id": "277",
+    "label": "Manual Operating Side",
+    "options": [
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Left"
+     },
+     {
+      "value": "0",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+      "code": "Right"
+     }
+    ]
+   },
+   {
+    "id": "275",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+      "code": "Inside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Outside"
+     }
+    ]
+   },
+   {
+    "id": "387",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-200x200.png",
+   "image/cache/catalog/curtains/metal-g-600x315w.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/sunscreen-g-120x120.png",
+   "image/cache/catalog/curtains/sunscreen-g-60x60.png",
+   "image/cache/catalog/icons/2-5mm-icon-150x150.png",
+   "image/cache/catalog/icons/5mm-icon-150x150.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "roman",
+  "route": "roman",
+  "bundle": "Roman.js",
+  "title": "Get Roman blinds and enjoy a warm and unique touch",
+  "meta_description": "https://curtain-roll.com/Roman blinds combine simplicity and elegance, to give your windows a warm atmosphere and a distinctive modern design.",
+  "meta_keywords": "",
+  "heading": "Roman",
+  "price": 393.0,
+  "price_text": "SR 393.00",
+  "description": "Roman blinds add a touch of warmth and comfort to any interior space, combining practicality and modern design. They are an ideal choice for window decoration, as they look simple in appearance yet very elegant, creating a unique and distinctive atmosphere in the room. Whether used at home or in the office, Roman blinds enhance the decor of the place and add a special charm to it",
+  "capture_option_id": null,
+  "option_groups": [
+   {
+    "id": "425",
+    "label": "Material",
+    "options": [
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-01-150x150w.jpg",
+      "code": "1155-01"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-02-150x150w.jpg",
+      "code": "1155-02"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-04-150x150w.jpg",
+      "code": "1155-04"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-05-150x150w.jpg",
+      "code": "1155-05"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-06-150x150w.jpg",
+      "code": "1155-06"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-07-150x150w.jpg",
+      "code": "1155-07"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-08-150x150w.jpg",
+      "code": "1155-08"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-09-150x150w.jpg",
+      "code": "1155-09"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-10-150x150w.jpg",
+      "code": "1155-10"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-11-150x150w.jpg",
+      "code": "1155-11"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-12-150x150w.jpg",
+      "code": "1155-12"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
+      "code": "1155-13"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
+      "code": "1155-13"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-14-150x150w.jpg",
+      "code": "1155-14"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-15-150x150w.jpg",
+      "code": "1155-15"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-16-150x150w.jpg",
+      "code": "1155-16"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-17-150x150w.jpg",
+      "code": "1155-17"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-18-150x150w.jpg",
+      "code": "1155-18"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-19-150x150w.jpg",
+      "code": "1155-19"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-20-150x150w.jpg",
+      "code": "1155-20"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-21-150x150w.jpg",
+      "code": "1155-21"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-22-150x150w.jpg",
+      "code": "1155-22"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-01-150x150w.jpg",
+      "code": "1165-01"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-02-150x150w.jpg",
+      "code": "1165-02"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-03-150x150w.jpg",
+      "code": "1165-03"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-04-150x150w.jpg",
+      "code": "1165-04"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-05-150x150w.jpg",
+      "code": "1165-05"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-06-150x150w.jpg",
+      "code": "1165-06"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-07-150x150w.jpg",
+      "code": "1165-07"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-08-150x150w.jpg",
+      "code": "1165-08"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-09-150x150w.jpg",
+      "code": "1165-09"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-10-150x150w.jpg",
+      "code": "1165-10"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-11-150x150w.jpg",
+      "code": "1165-11"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-12-150x150w.jpg",
+      "code": "1165-12"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-13-150x150w.jpg",
+      "code": "1165-13"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-14-150x150w.jpg",
+      "code": "1165-14"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-15-150x150w.jpg",
+      "code": "1165-15"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-16-150x150w.jpg",
+      "code": "1165-16"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-17-150x150w.jpg",
+      "code": "1165-17"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-18-150x150w.jpg",
+      "code": "1165-18"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-19-150x150w.jpg",
+      "code": "1165-19"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-20-150x150w.jpg",
+      "code": "1165-20"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-21-150x150w.jpg",
+      "code": "1165-21"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-22-150x150w.jpg",
+      "code": "1165-22"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-23-150x150w.jpg",
+      "code": "1165-23"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-24-150x150w.jpg",
+      "code": "1165-24"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-25-150x150w.jpg",
+      "code": "1165-25"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-26-150x150w.jpg",
+      "code": "1165-26"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-27-150x150w.jpg",
+      "code": "1165-27"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-28-150x150w.jpg",
+      "code": "1165-28"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-29-150x150w.jpg",
+      "code": "1165-29"
+     },
+     {
+      "value": "0",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-30-150x150w.jpg",
+      "code": "1165-30"
+     }
+    ]
+   },
+   {
+    "id": "423",
+    "label": "خيارات البطانة",
+    "options": [
+     {
+      "value": "0",
+      "group": "خيارات البطانة",
+      "image": "",
+      "code": "بطانة (معتمة)"
+     },
+     {
+      "value": "0",
+      "group": "خيارات البطانة",
+      "image": "",
+      "code": "بدون بطانة"
+     }
+    ]
+   },
+   {
+    "id": "411",
+    "label": "Control type",
+    "options": [
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "0",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ]
+   },
+   {
+    "id": "415",
+    "label": "Mounting Option",
+    "options": [
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "0",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     }
+    ]
+   },
+   {
+    "id": "441",
+    "label": "Installation service",
+    "options": [
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "0",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ]
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-200x200.png",
+   "image/cache/catalog/curtains/roman-g-600x315w.png",
+   "image/cache/catalog/curtains/sunscreen-g-120x120.png",
+   "image/cache/catalog/curtains/sunscreen-g-60x60.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/roman-materials/1155-01-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-02-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-04-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-05-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-06-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-07-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "wavy",
+  "route": "wavy",
+  "bundle": null,
+  "title": "Buy the most sought-after Wavy curtains for a sleek and smooth look.",
+  "meta_description": "https://curtain-roll.com/Wavy curtains use wavy tape to coordinate the folds of fabric, providing smooth movement, elegant appearance, lower cost and superior sustainability.",
+  "meta_keywords": "",
+  "heading": "wavy",
+  "price": 0.0,
+  "price_text": "",
+  "description": "",
+  "capture_option_id": null,
+  "option_groups": [],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-200x200h.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/original-600x315h.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png",
+   "image/cache/catalog/wavy-images/easemovement-1400x600.png",
+   "image/cache/catalog/wavy-images/elegent-1400x600.png",
+   "image/cache/catalog/wavy-images/lesscost-1400x600.png",
+   "image/cache/catalog/wavy-images/manual-1400x600.png",
+   "image/cache/catalog/wavy-images/on-ceil-1400x600.png",
+   "image/cache/catalog/wavy-images/one-layer-1400x600.png",
+   "image/cache/catalog/wavy-images/remote-1400x600.png",
+   "image/cache/catalog/wavy-images/sustainability-1400x600.png",
+   "image/cache/catalog/wavy-images/two-layer-1400x600.png"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ }
+]

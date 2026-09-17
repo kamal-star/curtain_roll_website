@@ -1,0 +1,18 @@
+{#
+  Configurator libraries, in dependency order, then the product's own bundle.
+
+  These are served from /assets/ (nginx-served) rather than www/, because
+  Frappe's static page renderer refuses to serve .js at all — "js" is listed
+  in UNSUPPORTED_STATIC_PAGE_TYPES. The bundles' *textures* are a different
+  story: those paths are hardcoded inside the obfuscated code and are served
+  from curtain_roll/www/maps/ so they resolve at the site root.
+#}
+<script src="/assets/curtain_roll/three/build/three.min.js"></script>
+<script src="/assets/curtain_roll/three/examples/js/controls/OrbitControls.js"></script>
+<script src="/assets/curtain_roll/three/examples/js/loaders/OBJLoader.js"></script>
+<script src="/assets/curtain_roll/three/examples/js/libs/dat.gui.min.js"></script>
+<script src="/assets/curtain_roll/configurator/fabric.min.js"></script>
+{% if p.bundle %}
+<script src="/assets/curtain_roll/configurator/{{ p.bundle }}" defer></script>
+{% endif %}
+<script src="/assets/curtain_roll/js/curtain_configurator.js" defer></script>

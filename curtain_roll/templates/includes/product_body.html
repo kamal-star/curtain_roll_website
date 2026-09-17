@@ -1,0 +1,93 @@
+{#
+  Product page body.
+
+  The 3D configurator bundle is obfuscated and cannot be modified, so this
+  markup reproduces the exact contract it expects:
+    * it mounts its <canvas> into    #c
+    * it shows/hides                 .model-loader
+    * it defines a global            modelchanger(group, imageUrl, code, $el)
+    * it writes its render into      #input-option{{ p.capture_option_id }}
+  Swatches are bound from data-* attributes in curtain_configurator.js rather
+  than inline onclick, which keeps the same call but avoids injecting markup.
+#}
+<div class="cr-page container" id="product-product">
+	<div class="cr-grid">
+
+		<div id="c" class="product-left fixed-top">
+			<div class="model-loader"></div>
+		</div>
+
+		<div class="cr-details">
+			<h1 class="cr-title">{{ p.heading }}</h1>
+
+			{% if p.price %}
+			<div class="cr-price">
+				<span class="cr-price-label">{{ _("Starts from") }}</span>
+				<span class="cr-price-value">SR {{ "%.2f"|format(p.price) }}</span>
+			</div>
+			{% endif %}
+
+			{% if p.description %}
+			<p class="cr-desc">{{ p.description }}</p>
+			{% endif %}
+
+			{% for g in p.option_groups %}
+			<div class="cr-group">
+				<h5 class="cr-group-label">{{ g.label }}</h5>
+				<div class="cr-swatches" id="input-option{{ g.id }}">
+					{% for o in g.options %}
+					<label class="cr-swatch" title="{{ o.code }}">
+						<input type="radio"
+							name="option[{{ g.id }}]"
+							value="{{ o.value }}"
+							data-cr-group="{{ o.group }}"
+							data-cr-image="{{ asset(o.image) }}"
+							data-cr-code="{{ o.code }}"
+							{% if loop.first %}checked{% endif %}>
+						<img src="{{ asset(o.image) }}" alt="{{ o.code }}" loading="lazy">
+						<span class="cr-swatch-code">{{ o.code }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+			{% endfor %}
+
+			{% if p.capture_option_id %}
+			{# the bundle writes its render here; kept as type=text on purpose #}
+			<input type="text" class="cr-capture" id="input-option{{ p.capture_option_id }}"
+				name="option[{{ p.capture_option_id }}]" placeholder="Captured image" value="">
+			{% endif %}
+
+			<form class="cr-quote" id="cr-quote-form" data-product="{{ p.key }}">
+				<h4>{{ _("Request a quote") }}</h4>
+				<p class="cr-quote-hint">
+					{{ _("Our team measures on site and confirms the final price.") }}
+				</p>
+				<div class="cr-field">
+					<label for="cr-name">{{ _("Name") }}</label>
+					<input id="cr-name" name="name" type="text" required maxlength="140">
+				</div>
+				<div class="cr-row">
+					<div class="cr-field">
+						<label for="cr-phone">{{ _("Phone / WhatsApp") }}</label>
+						<input id="cr-phone" name="phone" type="tel" maxlength="40">
+					</div>
+					<div class="cr-field">
+						<label for="cr-city">{{ _("City") }}</label>
+						<input id="cr-city" name="city" type="text" maxlength="60">
+					</div>
+				</div>
+				<div class="cr-field">
+					<label for="cr-email">{{ _("Email") }}</label>
+					<input id="cr-email" name="email" type="email" maxlength="140">
+				</div>
+				<div class="cr-field">
+					<label for="cr-notes">{{ _("Notes") }}</label>
+					<textarea id="cr-notes" name="notes" rows="3" maxlength="900"></textarea>
+				</div>
+				<button type="submit" class="cr-submit">{{ _("Send request") }}</button>
+				<div class="cr-quote-result" role="status" aria-live="polite"></div>
+			</form>
+		</div>
+	</div>
+</div>
