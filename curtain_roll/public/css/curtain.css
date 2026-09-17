@@ -16,12 +16,17 @@
 
 /* --- configurator mount ------------------------------------------------ */
 /* #c and .model-loader are required by the bundle; do not rename. */
+/* The bundle reads this container's box when it builds its canvas, so #c needs a
+   DEFINITE height before the (deferred) bundle runs — with only a min-height it
+   sized itself to the document and produced a 1172x1800 canvas. */
 #c {
-	position: relative; min-height: 460px; background: #f4f5f6;
+	position: relative; height: 560px; background: #f4f5f6;
 	border: 1px solid var(--cr-line); border-radius: 10px; overflow: hidden;
+	display: flex; align-items: center; justify-content: center;
 }
-#c canvas { display: block; max-width: 100%; height: auto; }
-@media (max-width: 900px) { #c { min-height: 320px; } }
+/* keep whatever aspect ratio it renders at, just fit it inside the box */
+#c canvas { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+@media (max-width: 900px) { #c { height: 380px; } }
 
 .model-loader {
 	position: absolute; inset: 0; margin: auto; width: 34px; height: 34px;

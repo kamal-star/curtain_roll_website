@@ -13,7 +13,10 @@
 <div class="cr-page container" id="product-product">
 	<div class="cr-grid">
 
-		<div id="c" class="product-left fixed-top">
+		{# NB: the original markup also carried "fixed-top". That is a Bootstrap
+		   class in ERPNext (position:fixed; z-index:1030) and wrecks the layout,
+		   so it is dropped — the bundle mounts by #c, not by that class. #}
+		<div id="c" class="product-left">
 			<div class="model-loader"></div>
 		</div>
 
