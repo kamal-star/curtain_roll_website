@@ -1,0 +1,90 @@
+{
+ "hero": [
+  "image/cache/catalog/SND-curtain roll-04-1400x600w.jpg",
+  "image/cache/catalog/SND-curtain roll-05-1400x600w.jpg",
+  "image/cache/catalog/SND-curtain roll-06-1400x600w.jpg"
+ ],
+ "cards": [
+  {
+   "key": "blackout",
+   "route": "blackout",
+   "image": "image/cache/catalog/category-banners/blackout-940x550.jpg",
+   "title": "Blackout",
+   "tagline": "100% opacity",
+   "price": 150.0,
+   "has_3d": true
+  },
+  {
+   "key": "sunscreen",
+   "route": "sunscreen",
+   "image": "image/cache/catalog/category-banners/sunscreen-940x550.jpg",
+   "title": "Sunscreen",
+   "tagline": "50% opacity",
+   "price": 150.0,
+   "has_3d": true
+  },
+  {
+   "key": "metal",
+   "route": "metal",
+   "image": "image/cache/catalog/category-banners/wooden-940x550.jpg",
+   "title": "Metal",
+   "tagline": "The best choice for kitchens, anti-rust",
+   "price": 120.0,
+   "has_3d": true
+  },
+  {
+   "key": "wooden",
+   "route": "wooden",
+   "image": "image/cache/catalog/category-banners/metal-940x550.jpg",
+   "title": "Wooden",
+   "tagline": "Luxurious and classic wooden character",
+   "price": 300.0,
+   "has_3d": true
+  },
+  {
+   "key": "vertical",
+   "route": "vertical",
+   "image": "image/cache/catalog/category-banners/vertical-940x550.jpg",
+   "title": "Vertical",
+   "tagline": "Full control over the degree of incoming light",
+   "price": 128.0,
+   "has_3d": true
+  },
+  {
+   "key": "zebra",
+   "route": "zebra",
+   "image": "image/cache/catalog/category-banners/zebra-940x550.jpg",
+   "title": "Zebra",
+   "tagline": "Two layers of opaque and transparent fabric",
+   "price": 300.0,
+   "has_3d": true
+  },
+  {
+   "key": "printed",
+   "route": "printed",
+   "image": "image/cache/catalog/category-banners/printed-940x550.jpg",
+   "title": "Printed",
+   "tagline": "Print the image you want on your curtain",
+   "price": 237.0,
+   "has_3d": true
+  },
+  {
+   "key": "roman",
+   "route": "roman",
+   "image": "image/cache/catalog/roman-category-940x550.jpg",
+   "title": "Roman blinds",
+   "tagline": "Create a warm and comfortable atmosphere",
+   "price": 393.0,
+   "has_3d": true
+  },
+  {
+   "key": "wavy",
+   "route": "wavy",
+   "image": "image/cache/catalog/wavy-images/elegent-1400x600.png",
+   "title": "Wavy",
+   "tagline": "Soft flowing waves with a modern finish",
+   "price": 0,
+   "has_3d": false
+  }
+ ]
+}

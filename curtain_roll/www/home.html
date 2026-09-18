@@ -3,31 +3,63 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block page_content %}
-<div class="cr-page">
+<div class="cr-home">
+
 	{% if hero %}
-	<div class="cr-hero">
-		<img src="{{ asset(hero) }}" alt="Curtain Roll">
-	</div>
+	<section class="cr-hero" aria-label="{{ _('Featured') }}">
+		<div class="cr-hero-track">
+			{% for slide in hero %}
+			{# never lazy-load these: there are only 3 and the slider rotates to
+			   them within seconds — lazy ones showed as a blank white hero. #}
+			<div class="cr-slide{% if loop.first %} is-active{% endif %}">
+				<img src="{{ asset(slide) }}" alt="Curtain Roll" decoding="async"
+					{% if loop.first %}fetchpriority="high"{% endif %}>
+			</div>
+			{% endfor %}
+		</div>
+		{% if hero|length > 1 %}
+		<button class="cr-hero-nav cr-prev" type="button" aria-label="{{ _('Previous') }}">&#8249;</button>
+		<button class="cr-hero-nav cr-next" type="button" aria-label="{{ _('Next') }}">&#8250;</button>
+		<div class="cr-dots">
+			{% for slide in hero %}
+			<button type="button" class="cr-dot{% if loop.first %} is-active{% endif %}"
+				aria-label="{{ _('Slide') }} {{ loop.index }}"></button>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</section>
 	{% endif %}
 
-	<h2 class="cr-section-title">{{ _("Shop by category") }}</h2>
-	<p class="cr-section-sub">
-		{{ _("Choose a curtain type, pick your fabric, and see it in 3D before you order.") }}
-	</p>
+	<section class="cr-section">
+		<header class="cr-section-head">
+			<h2 class="cr-section-title">{{ _("Shop by category") }}</h2>
+			<span class="cr-rule" aria-hidden="true"></span>
+			<p class="cr-section-sub">
+				{{ _("Choose a curtain type, pick your fabric, and see it in 3D before you order.") }}
+			</p>
+		</header>
 
-	<div class="cr-cards">
-		{% for p in products %}
-		<a class="cr-card" href="/{{ p.route }}">
-			{% if p.main_image %}<img src="{{ asset(p.main_image) }}" alt="{{ p.heading }}" loading="lazy">{% endif %}
-			<div class="cr-card-body">
-				<div class="cr-card-title">{{ p.heading }}</div>
-				{% if p.price %}
-				<div class="cr-card-price">{{ _("Starts from") }} SR {{ "%.2f"|format(p.price) }}</div>
-				{% endif %}
-				{% if p.bundle %}<div class="cr-card-cta">{{ _("Customise in 3D") }} &rarr;</div>{% endif %}
-			</div>
-		</a>
-		{% endfor %}
-	</div>
+		<div class="cr-cards">
+			{% for c in cards %}
+			<a class="cr-card" href="/{{ c.route }}">
+				<div class="cr-card-media">
+					<img src="{{ asset(c.image) }}" alt="{{ c.title }}" loading="lazy">
+					{% if c.has_3d %}<span class="cr-badge">{{ _("3D") }}</span>{% endif %}
+				</div>
+				<div class="cr-card-body">
+					<div class="cr-card-title">{{ c.title }}</div>
+					{% if c.tagline %}<div class="cr-card-tag">{{ c.tagline }}</div>{% endif %}
+					{% if c.price %}
+					<div class="cr-card-price">{{ _("Starts from") }} SR {{ "%.2f"|format(c.price) }}</div>
+					{% endif %}
+				</div>
+			</a>
+			{% endfor %}
+		</div>
+	</section>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="/assets/curtain_roll/js/curtain_home.js" defer></script>
 {% endblock %}

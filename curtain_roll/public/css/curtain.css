@@ -91,17 +91,57 @@
 .cr-quote-result.is-error { color: var(--cr-err); }
 
 /* --- home --------------------------------------------------------------- */
-.cr-hero { position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 36px; }
-.cr-hero img { width: 100%; height: auto; display: block; }
-.cr-section-title { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-.cr-section-sub { color: var(--cr-muted); margin: 0 0 22px; }
-.cr-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-.cr-card { border: 1px solid var(--cr-line); border-radius: 12px; overflow: hidden;
-	background: #fff; text-decoration: none; color: inherit; display: block;
-	transition: transform .15s, box-shadow .15s; }
-.cr-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,.08); text-decoration: none; }
-.cr-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: #f4f5f6; }
-.cr-card-body { padding: 14px 16px 18px; }
-.cr-card-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; color: var(--cr-ink); }
-.cr-card-price { font-size: 13px; color: var(--cr-ok); font-weight: 600; }
-.cr-card-cta { font-size: 12px; color: var(--cr-muted); margin-top: 6px; }
+.cr-home { padding-bottom: 64px; }
+
+/* hero: full-bleed, matching the original's edge-to-edge slider */
+.cr-hero {
+	position: relative; margin: 0 0 48px; overflow: hidden; background: #eceef0;
+	width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+}
+.cr-hero-track { position: relative; }
+.cr-slide { opacity: 0; transition: opacity .6s ease; }
+.cr-slide:not(:first-child) { position: absolute; inset: 0; }
+.cr-slide.is-active { opacity: 1; }
+.cr-slide img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+.cr-hero-nav {
+	position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+	width: 42px; height: 42px; border: 0; border-radius: 50%; cursor: pointer;
+	background: rgba(255,255,255,.82); color: var(--cr-ink);
+	font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.cr-hero-nav:hover { background: #fff; }
+.cr-prev { left: 16px; } .cr-next { right: 16px; }
+@media (max-width: 640px) { .cr-hero-nav { display: none; } }
+
+.cr-dots { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 2;
+	display: flex; justify-content: center; gap: 8px; }
+.cr-dot { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+	background: rgba(255,255,255,.55); }
+.cr-dot.is-active { background: #fff; width: 22px; border-radius: 5px; }
+
+/* section heading, centred with the accent rule the original uses */
+.cr-section { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+.cr-section-head { text-align: center; margin-bottom: 34px; }
+.cr-section-title { font-size: 28px; font-weight: 700; margin: 0 0 10px; color: var(--cr-ink); }
+.cr-rule { display: block; width: 62px; height: 3px; margin: 0 auto 14px;
+	background: var(--cr-accent); border-radius: 2px; }
+.cr-section-sub { color: var(--cr-muted); margin: 0 auto; max-width: 620px; line-height: 1.6; }
+
+.cr-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 26px; }
+.cr-card {
+	border: 1px solid var(--cr-line); border-radius: 12px; overflow: hidden;
+	background: #fff; text-decoration: none; color: inherit; display: flex; flex-direction: column;
+	transition: transform .18s ease, box-shadow .18s ease;
+}
+.cr-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); text-decoration: none; }
+.cr-card-media { position: relative; background: #f4f5f6; }
+/* every banner is 940x550, so pin the ratio and the grid stays aligned */
+.cr-card-media img { width: 100%; aspect-ratio: 940 / 550; object-fit: cover; display: block; }
+.cr-badge { position: absolute; top: 10px; left: 10px; background: var(--cr-accent);
+	color: #14181d; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+	padding: 3px 8px; border-radius: 4px; }
+.cr-card-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.cr-card-title { font-weight: 700; font-size: 17px; color: var(--cr-ink); }
+.cr-card-tag { font-size: 13px; color: var(--cr-muted); line-height: 1.5; flex: 1; }
+.cr-card-price { font-size: 13px; color: var(--cr-ok); font-weight: 700; margin-top: 6px; }
