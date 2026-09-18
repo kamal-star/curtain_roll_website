@@ -7,6 +7,7 @@ HOME_ROUTE = "home"
 
 def after_install():
 	"""Make the storefront live the moment the app is installed."""
+	_ensure_billing_contact_field()
 	_point_website_at_storefront()
 	_ensure_item_group()
 	_ensure_items()
@@ -15,6 +16,39 @@ def after_install():
 	print("  home            /")
 	for p in get_products():
 		print("  %-14s /%s" % (p["heading"][:14], p["route"]))
+
+
+def _ensure_billing_contact_field():
+	"""Work around an ERPNext 16.35 / Frappe 16.34 mismatch.
+
+	ERPNext's accounts/party.py filters Contact on `is_billing_contact`, which
+	Frappe 16.34 does not define, so every Quotation save that resolves a party
+	fails with: Unknown column 'tabContact.is_billing_contact'.
+
+	`bench update` does not help - both apps are already at the tip of
+	version-16, so the mismatch is in the released versions themselves. Adding
+	the field as a Custom Field creates the column without patching core; it
+	defaults to 0, so ERPNext just falls back to its normal behaviour.
+
+	Delete the Custom Field "Contact-is_billing_contact" once Frappe ships it.
+	"""
+	if frappe.db.exists("Custom Field", "Contact-is_billing_contact"):
+		return
+	if frappe.get_meta("Contact").has_field("is_billing_contact"):
+		return  # a newer Frappe already provides it
+	try:
+		frappe.get_doc({
+			"doctype": "Custom Field",
+			"dt": "Contact",
+			"fieldname": "is_billing_contact",
+			"label": "Is Billing Contact",
+			"fieldtype": "Check",
+			"default": "0",
+			"insert_after": "email_id",
+			"description": "Added by curtain_roll for ERPNext 16.35 on Frappe 16.34.",
+		}).insert(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="curtain_roll is_billing_contact")
 
 
 def _point_website_at_storefront():
