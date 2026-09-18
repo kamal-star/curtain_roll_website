@@ -35,7 +35,12 @@
 				<tbody>
 					{% for i in items %}
 					<tr data-item="{{ i.item_code }}" style="border-bottom:1px solid #eef0f2;">
-						<td style="padding:12px 8px;">{{ i.name or i.item_code }}</td>
+						<td style="padding:12px 8px;">
+							<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
+							{% if i.spec %}
+							<div style="font-size:12px;color:#6d767d;margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
+							{% endif %}
+						</td>
 						<td style="padding:12px 8px;">
 							<input type="number" min="1" step="1" value="{{ i.qty | int }}"
 								class="cr-qty-input"

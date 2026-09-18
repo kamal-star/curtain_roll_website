@@ -47,6 +47,106 @@ def item_code_for(entry):
 	return "CR-" + (entry.get("key") or "").upper()
 
 
+_PRODUCTS = None
+
+
+def _products():
+	"""Full product definitions (option groups, swatch codes, labels)."""
+	global _PRODUCTS
+	if _PRODUCTS is None:
+		path = os.path.join(frappe.get_app_path("curtain_roll"), "data", "products.json")
+		try:
+			with open(path, encoding="utf-8") as f:
+				_PRODUCTS = {p["key"]: p for p in json.load(f)}
+		except Exception:
+			_PRODUCTS = {}
+	return _PRODUCTS
+
+
+def describe_options(product_key, form):
+	"""Turn the submitted option[...] fields into readable lines.
+
+	The storefront posts option[371]=664 (a swatch), option[375][width]=120 and
+	so on. Without translating them the quotation would carry meaningless ids,
+	so map each back to its group label and the swatch code the customer saw
+	(e.g. "Material: ss7003", "Control type: Motor").
+
+	Returns (lines, captured_image_url).
+	"""
+	spec = _products().get(product_key) or {}
+	lines = []
+	captured = ""
+
+	def submitted(key):
+		try:
+			return form.get(key)
+		except Exception:
+			return None
+
+	for group in spec.get("option_groups") or []:
+		gid = group.get("id")
+		label = (group.get("label") or "").strip() or ("Option %s" % gid)
+		kind = group.get("kind")
+
+		if kind == "size":
+			width = submitted("option[%s][width]" % gid)
+			height = submitted("option[%s][height]" % gid)
+			if width or height:
+				lines.append("%s: %s x %s cm" % (label, width or "?", height or "?"))
+
+		elif kind == "capture":
+			captured = submitted("option[%s]" % gid) or ""
+
+		else:  # swatch / choice
+			value = submitted("option[%s]" % gid)
+			if not value:
+				continue
+			shown = value
+			for opt in (group.get("options") or []) + (group.get("choices") or []):
+				if str(opt.get("value")) == str(value):
+					shown = opt.get("code") or opt.get("label") or value
+					break
+			lines.append("%s: %s" % (label, shown))
+
+	# a capture field can also live outside the groups
+	if not captured and spec.get("capture_option_id"):
+		captured = submitted("option[%s]" % spec["capture_option_id"]) or ""
+
+	return lines, captured
+
+
+def attach_render(quotation_name, file_url):
+	"""Link the configurator render (saved by script.php) to the quotation."""
+	if not file_url or not quotation_name:
+		return None
+	try:
+		existing = frappe.db.get_value(
+			"File",
+			{"file_url": file_url, "attached_to_doctype": "Quotation",
+			 "attached_to_name": quotation_name},
+			"name",
+		)
+		if existing:
+			return existing
+		src = frappe.db.get_value("File", {"file_url": file_url}, "name")
+		if not src:
+			return None
+		doc = frappe.get_doc({
+			"doctype": "File",
+			"file_url": file_url,
+			"file_name": file_url.split("/")[-1],
+			"attached_to_doctype": "Quotation",
+			"attached_to_name": quotation_name,
+			"is_private": 0,
+		})
+		doc.flags.ignore_duplicate_entry_error = True
+		doc.insert(ignore_permissions=True)
+		return doc.name
+	except Exception:
+		frappe.log_error(title="curtain_roll attach_render")
+		return None
+
+
 # ---------------------------------------------------------------------- auth
 def is_guest():
 	return frappe.session.user in (None, "", "Guest")
@@ -186,9 +286,14 @@ def add(args, form):
 	if not frappe.db.exists("Item", code):
 		return {"error": {"warning": "Product not set up in ERPNext yet."}}
 
+	lines, captured = describe_options(entry.get("key"), form)
+	spec = "\n".join(lines)
+
 	quotation = get_cart_quotation(create=True)
+	# Merge only when the SAME item was configured the SAME way - otherwise a
+	# white blind and a brown one would collapse into a single line.
 	for row in quotation.get("items", []):
-		if row.item_code == code:
+		if row.item_code == code and (row.get("description") or "") == spec:
 			row.qty = float(row.qty or 0) + qty
 			break
 	else:
@@ -196,6 +301,7 @@ def add(args, form):
 			"item_code": code,
 			"qty": qty,
 			"rate": entry.get("price") or 0,
+			"description": spec or entry["name"],
 		})
 
 	try:
@@ -203,6 +309,9 @@ def add(args, form):
 	except Exception:
 		frappe.log_error(title="curtain_roll cart add", message=frappe.get_traceback())
 		return {"error": {"warning": "Could not add to cart."}}
+
+	if captured:
+		attach_render(quotation.name, captured)
 
 	return {
 		"success": "Added <b>%s</b> to your cart." % frappe.utils.escape_html(entry["name"]),
@@ -325,6 +434,7 @@ def info():
 				"qty": row.qty,
 				"rate": row.rate,
 				"amount": row.amount,
+				"spec": (row.get("description") or "").strip(),
 			})
 	return {
 		"count": len(items),
