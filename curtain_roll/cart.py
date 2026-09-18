@@ -141,6 +141,10 @@ def attach_render(quotation_name, file_url):
 			doc.attached_to_name = quotation_name
 			doc.flags.ignore_permissions = True
 			doc.save(ignore_permissions=True)
+			# MUST commit: this runs after _save()'s commit, and the page
+			# renderer path does not auto-commit, so without this the link is
+			# rolled back and the render is orphaned again.
+			frappe.db.commit()
 			return doc.name
 
 		if not frappe.db.exists("File", {"file_url": file_url}):
@@ -156,6 +160,7 @@ def attach_render(quotation_name, file_url):
 		})
 		doc.flags.ignore_duplicate_entry_error = True
 		doc.insert(ignore_permissions=True)
+		frappe.db.commit()
 		return doc.name
 	except Exception:
 		frappe.log_error(title="curtain_roll attach_render")
