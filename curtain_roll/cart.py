@@ -1,26 +1,27 @@
-"""A small session cart for the ported Journal3 storefront.
+"""Cart for the ported Journal3 storefront, backed by a draft ERPNext Quotation.
 
-The theme's buttons post to OpenCart's endpoints:
+Flow:
+  * a guest who clicks Add to cart / Wishlist is sent to login (the theme
+    follows ``json['redirect']``)
+  * a logged-in user gets a Customer (created on first use) and a draft
+    Quotation with ``order_type = "Shopping Cart"``; items are appended there
+  * the header counter reads that Quotation's totals
 
-    checkout/cart/add | edit | remove      account/wishlist/add
+So the cart is real ERP data, not a session blob: it shows up in the Selling
+workspace and can be submitted into a Sales Order by the team.
 
-and read three keys back: ``success``, ``total`` and ``redirect``. Returning
-``{}`` (the first stub) silenced the error alert but left the buttons inert,
-which is what "add to cart not working" was.
-
-This keeps a cart in Frappe's cache, keyed by session, and answers in the shape
-the theme expects so the buttons behave. It is deliberately small: there is no
-checkout, no payment and no stock reservation. Prices come from the captured
-catalogue, NOT from OpenCart's pricing rules, so a cart total here is the
-starting price x quantity and ignores per-option surcharges.
+Known limit: rates come from the captured catalogue (the product's starting
+price). OpenCart's per-option surcharges are server-side rules we do not have,
+so a total here will not match the live site once options are priced.
 """
 
 import json
 import os
+from urllib.parse import quote
 
 import frappe
+from frappe.utils import nowdate
 
-TTL = 7 * 24 * 60 * 60
 CURRENCY = "SR"
 _CATALOG = None
 
@@ -42,129 +43,261 @@ def product(product_id):
 	return catalog().get(str(product_id))
 
 
-# ---------------------------------------------------------------- session bag
-def _key():
-	sid = getattr(frappe.session, "sid", None) or "guest"
-	return "curtain_roll_cart:%s" % sid
+def item_code_for(entry):
+	return "CR-" + (entry.get("key") or "").upper()
 
 
-def _load():
-	data = frappe.cache().get_value(_key())
-	if not isinstance(data, dict):
-		data = {}
-	data.setdefault("items", [])
-	data.setdefault("wishlist", [])
-	return data
+# ---------------------------------------------------------------------- auth
+def is_guest():
+	return frappe.session.user in (None, "", "Guest")
 
 
-def _save(bag):
-	frappe.cache().set_value(_key(), bag, expires_in_sec=TTL)
+def login_redirect(args=None):
+	"""Send the visitor to Frappe's login, returning to the page they were on."""
+	back = "/"
+	try:
+		ref = frappe.local.request.headers.get("Referer") or ""
+		if ref:
+			from urllib.parse import urlparse
+			p = urlparse(ref)
+			back = p.path or "/"
+	except Exception:
+		pass
+	return {
+		"redirect": "/login?redirect-to=%s" % quote(back, safe="/"),
+		"success": "Please sign in to continue.",
+	}
 
 
-# -------------------------------------------------------------------- totals
-def _totals(bag):
-	count = sum(int(i.get("qty") or 0) for i in bag["items"])
-	amount = sum(float(i.get("price") or 0) * int(i.get("qty") or 0) for i in bag["items"])
-	return count, amount
+# -------------------------------------------------------------------- party
+def get_party():
+	"""Customer for the current user, created on first use."""
+	user = frappe.session.user
+
+	contact = frappe.db.get_value("Contact", {"user": user}, "name")
+	if contact:
+		linked = frappe.db.get_value(
+			"Dynamic Link",
+			{"parenttype": "Contact", "parent": contact, "link_doctype": "Customer"},
+			"link_name",
+		)
+		if linked and frappe.db.exists("Customer", linked):
+			return linked
+
+	full_name = frappe.db.get_value("User", user, "full_name") or user
+	existing = frappe.db.get_value("Customer", {"customer_name": full_name}, "name")
+	if existing:
+		return existing
+
+	customer = frappe.get_doc({
+		"doctype": "Customer",
+		"customer_name": full_name,
+		"customer_type": "Individual",
+	})
+	customer.flags.ignore_mandatory = True
+	customer.insert(ignore_permissions=True)
+
+	# link a Contact so the same user maps back to this Customer next time
+	try:
+		c = frappe.get_doc({
+			"doctype": "Contact",
+			"first_name": full_name,
+			"user": user,
+			"email_id": user if "@" in user else None,
+		})
+		c.append("links", {"link_doctype": "Customer", "link_name": customer.name})
+		c.flags.ignore_mandatory = True
+		c.insert(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="curtain_roll contact link")
+
+	return customer.name
 
 
-def _total_text(bag):
-	count, amount = _totals(bag)
+def _defaults():
+	company = frappe.defaults.get_global_default("company") \
+		or frappe.db.get_value("Company", {}, "name")
+	currency = frappe.db.get_value("Company", company, "default_currency") or "SAR"
+	price_list = frappe.db.get_value("Price List", {"selling": 1, "enabled": 1}, "name") \
+		or "Standard Selling"
+	return company, currency, price_list
+
+
+# ---------------------------------------------------------------- quotation
+def get_cart_quotation(create=False):
+	party = get_party()
+	name = frappe.db.get_value("Quotation", {
+		"quotation_to": "Customer",
+		"party_name": party,
+		"docstatus": 0,
+		"order_type": "Shopping Cart",
+	}, "name")
+	if name:
+		return frappe.get_doc("Quotation", name)
+	if not create:
+		return None
+
+	company, currency, price_list = _defaults()
+	quotation = frappe.get_doc({
+		"doctype": "Quotation",
+		"quotation_to": "Customer",
+		"party_name": party,
+		"order_type": "Shopping Cart",
+		"transaction_date": nowdate(),
+		"company": company,
+		"currency": currency,
+		"selling_price_list": price_list,
+	})
+	quotation.flags.ignore_permissions = True
+	return quotation
+
+
+def _total_text(quotation):
+	if not quotation or not quotation.get("items"):
+		return "0 item(s) - %s 0.00" % CURRENCY
+	count = int(sum(float(i.qty or 0) for i in quotation.items))
+	amount = float(quotation.get("total") or 0)
 	return "%d item(s) - %s %s" % (count, CURRENCY, "{:,.2f}".format(amount))
+
+
+def _save(quotation):
+	quotation.flags.ignore_permissions = True
+	quotation.flags.ignore_mandatory = True
+	quotation.save(ignore_permissions=True)
+	frappe.db.commit()
 
 
 # ------------------------------------------------------------------ handlers
 def add(args, form):
+	if is_guest():
+		return login_redirect(args)
+
 	pid = str(form.get("product_id") or args.get("product_id") or "").strip()
 	try:
 		qty = max(1, int(float(form.get("quantity") or args.get("quantity") or 1)))
 	except (TypeError, ValueError):
 		qty = 1
 
-	item = product(pid)
-	if not item:
+	entry = product(pid)
+	if not entry:
 		return {"error": {"warning": "Product not available."}}
 
-	# keep whatever option[...] fields the theme submitted, for the record
-	options = {k: v for k, v in form.items() if k.startswith("option")}
+	code = item_code_for(entry)
+	if not frappe.db.exists("Item", code):
+		return {"error": {"warning": "Product not set up in ERPNext yet."}}
 
-	bag = _load()
-	for line in bag["items"]:
-		if line["product_id"] == pid and line.get("options") == options:
-			line["qty"] += qty
+	quotation = get_cart_quotation(create=True)
+	for row in quotation.get("items", []):
+		if row.item_code == code:
+			row.qty = float(row.qty or 0) + qty
 			break
 	else:
-		bag["items"].append({
-			"product_id": pid,
-			"name": item["name"],
-			"price": item["price"],
+		quotation.append("items", {
+			"item_code": code,
 			"qty": qty,
-			"options": options,
+			"rate": entry.get("price") or 0,
 		})
-	_save(bag)
+
+	try:
+		_save(quotation)
+	except Exception:
+		frappe.log_error(title="curtain_roll cart add", message=frappe.get_traceback())
+		return {"error": {"warning": "Could not add to cart."}}
 
 	return {
-		"success": "Added <b>%s</b> to your cart." % frappe.utils.escape_html(item["name"]),
-		"total": _total_text(bag),
+		"success": "Added <b>%s</b> to your cart." % frappe.utils.escape_html(entry["name"]),
+		"total": _total_text(quotation),
 	}
 
 
 def edit(args, form):
-	pid = str(form.get("key") or form.get("product_id") or args.get("key") or "")
+	if is_guest():
+		return login_redirect(args)
+	quotation = get_cart_quotation()
+	if not quotation:
+		return {"total": _total_text(None)}
+	pid = str(form.get("key") or form.get("product_id") or "")
+	entry = product(pid)
+	code = item_code_for(entry) if entry else pid
 	try:
 		qty = int(float(form.get("quantity") or 1))
 	except (TypeError, ValueError):
 		qty = 1
-	bag = _load()
-	for line in bag["items"]:
-		if line["product_id"] == pid:
-			line["qty"] = max(0, qty)
-			break
-	bag["items"] = [l for l in bag["items"] if l["qty"] > 0]
-	_save(bag)
-	return {"success": "Cart updated.", "total": _total_text(bag)}
+	quotation.set("items", [r for r in quotation.items
+	                        if not (r.item_code == code and qty <= 0)])
+	for row in quotation.items:
+		if row.item_code == code:
+			row.qty = qty
+	_save(quotation)
+	return {"success": "Cart updated.", "total": _total_text(quotation)}
 
 
 def remove(args, form):
-	pid = str(form.get("key") or form.get("product_id") or args.get("key") or "")
-	bag = _load()
-	bag["items"] = [l for l in bag["items"] if l["product_id"] != pid]
-	_save(bag)
-	return {"success": "Item removed.", "total": _total_text(bag)}
+	if is_guest():
+		return login_redirect(args)
+	quotation = get_cart_quotation()
+	if not quotation:
+		return {"total": _total_text(None)}
+	pid = str(form.get("key") or form.get("product_id") or "")
+	entry = product(pid)
+	code = item_code_for(entry) if entry else pid
+	quotation.set("items", [r for r in quotation.items if r.item_code != code])
+	_save(quotation)
+	return {"success": "Item removed.", "total": _total_text(quotation)}
 
 
 def wishlist_add(args, form):
+	if is_guest():
+		return login_redirect(args)
 	pid = str(form.get("product_id") or args.get("product_id") or "").strip()
-	item = product(pid)
-	if not item:
+	entry = product(pid)
+	if not entry:
 		return {"error": {"warning": "Product not available."}}
-	bag = _load()
-	if pid not in bag["wishlist"]:
-		bag["wishlist"].append(pid)
-	_save(bag)
+	key = "curtain_roll_wishlist:%s" % frappe.session.user
+	items = frappe.cache().get_value(key) or []
+	if pid not in items:
+		items.append(pid)
+	frappe.cache().set_value(key, items)
 	return {
-		"success": "Added <b>%s</b> to your wish list." % frappe.utils.escape_html(item["name"]),
-		"total": "%d" % len(bag["wishlist"]),
+		"success": "Added <b>%s</b> to your wish list." % frappe.utils.escape_html(entry["name"]),
+		"total": "%d" % len(items),
 	}
 
 
+def info():
+	"""Cart summary for the header / cart page."""
+	if is_guest():
+		return {"count": 0, "text": _total_text(None), "items": [], "guest": True}
+	quotation = get_cart_quotation()
+	items = []
+	if quotation:
+		for row in quotation.items:
+			items.append({
+				"item_code": row.item_code,
+				"name": row.item_name,
+				"qty": row.qty,
+				"rate": row.rate,
+				"amount": row.amount,
+			})
+	return {
+		"count": len(items),
+		"text": _total_text(quotation),
+		"quotation": quotation.name if quotation and quotation.get("name") else None,
+		"items": items,
+		"guest": False,
+	}
+
+
+# ------------------------------------------------- configurator image upload
 def save_render(form):
-	"""Handle script.php - the configurator's image upload.
+	"""script.php - the configurator POSTs canvas.toDataURL() here as imgBase64.
 
-	Clicking ADD TO CART does canvas.toDataURL() and POSTs it here as
-	``imgBase64``. The original saves it and returns a filename, which the page
-	drops into the "Captured image" option before the real cart call. Because
-	this 404'd, the .done() callback never ran and the whole add-to-cart chain
-	stopped - that was the actual "button not working".
-
-	Returns the saved file's URL as plain text.
+	The page chains the real cart call inside this request's .done(), so this
+	must always answer 200 or add-to-cart silently dies.
 	"""
 	import base64
 	import re as _re
 
-	# Frappe parses the request body into frappe.form_dict before page
-	# renderers run, which leaves werkzeug's request.form with the KEY but an
-	# empty value. So read form_dict first and only fall back to the request.
 	raw = ""
 	for source in (getattr(frappe.local, "form_dict", None), form):
 		if not source:
@@ -177,15 +310,11 @@ def save_render(form):
 			raw = value
 			break
 
-	# Last resort: parse the raw body ourselves. Frappe's request handling can
-	# leave both form_dict and request.form with the key but no value for a
-	# large urlencoded field, so go back to the bytes.
 	if not raw:
 		try:
 			from urllib.parse import parse_qs
 			body = frappe.local.request.get_data(as_text=True) or ""
-			parsed = parse_qs(body, keep_blank_values=True)
-			raw = (parsed.get("imgBase64") or [""])[0]
+			raw = (parse_qs(body, keep_blank_values=True).get("imgBase64") or [""])[0]
 		except Exception:
 			raw = ""
 
@@ -211,11 +340,3 @@ def save_render(form):
 	doc.insert(ignore_permissions=True)
 	frappe.db.commit()
 	return doc.file_url
-
-
-def info():
-	"""Current cart, for rendering the header counter on page load."""
-	bag = _load()
-	count, amount = _totals(bag)
-	return {"count": count, "amount": amount, "text": _total_text(bag),
-	        "wishlist": len(bag["wishlist"]), "items": bag["items"]}
