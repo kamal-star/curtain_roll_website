@@ -20,6 +20,11 @@ jinja = {
 	]
 }
 
+# ---------------------------------------------------------------- renderers
+# The ported Journal3 pages still call OpenCart's /index.php endpoints. Without
+# this the theme alert()s Frappe's HTML 404 page at the visitor.
+page_renderer = ["curtain_roll.renderers.OpenCartStub"]
+
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
 before_uninstall = "curtain_roll.install.before_uninstall"
