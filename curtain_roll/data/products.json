@@ -13,76 +13,171 @@
   "capture_option_id": "357",
   "option_groups": [
    {
+    "id": "303",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
     "id": "305",
     "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "198",
+      "id": "305",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
       "code": "Manual"
      },
      {
-      "value": "0",
+      "value": "197",
+      "id": "305",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
       "code": "Motorized"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "304",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "195",
+      "id": "304",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
       "code": "Inside"
      },
      {
-      "value": "0",
+      "value": "196",
+      "id": "304",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Outside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "395",
     "label": "Valance Option Box",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "23",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "783",
+      "id": "395",
+      "mp_optionvalue": "76",
+      "mp_parentoption_value": "0",
+      "price": "SR 1.60",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
       "code": "With Valance Box"
      },
      {
-      "value": "0",
+      "value": "784",
+      "id": "395",
+      "mp_optionvalue": "77",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Without Valance Box"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "388",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "769",
+      "id": "388",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "770",
+      "id": "388",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "357",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -143,470 +238,833 @@
    {
     "id": "371",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "664",
+      "id": "371",
+      "mp_optionvalue": "294",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7200-150x150.jpg",
       "code": "7200"
      },
      {
-      "value": "0",
+      "value": "665",
+      "id": "371",
+      "mp_optionvalue": "295",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7234-150x150.jpg",
       "code": "7234"
      },
      {
-      "value": "0",
+      "value": "666",
+      "id": "371",
+      "mp_optionvalue": "296",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7260-150x150.jpg",
       "code": "7260"
      },
      {
-      "value": "0",
+      "value": "667",
+      "id": "371",
+      "mp_optionvalue": "297",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7262-150x150.jpg",
       "code": "7262"
      },
      {
-      "value": "0",
+      "value": "668",
+      "id": "371",
+      "mp_optionvalue": "298",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7263-150x150.jpg",
       "code": "7263"
      },
      {
-      "value": "0",
+      "value": "669",
+      "id": "371",
+      "mp_optionvalue": "299",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7265-150x150.jpg",
       "code": "7265"
      },
      {
-      "value": "0",
+      "value": "670",
+      "id": "371",
+      "mp_optionvalue": "300",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7266-150x150.jpg",
       "code": "7266"
      },
      {
-      "value": "0",
+      "value": "671",
+      "id": "371",
+      "mp_optionvalue": "301",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7267-150x150.jpg",
       "code": "7267"
      },
      {
-      "value": "0",
+      "value": "672",
+      "id": "371",
+      "mp_optionvalue": "302",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7268-150x150.jpg",
       "code": "7268"
      },
      {
-      "value": "0",
+      "value": "673",
+      "id": "371",
+      "mp_optionvalue": "303",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7281-150x150.jpg",
       "code": "7281"
      },
      {
-      "value": "0",
+      "value": "674",
+      "id": "371",
+      "mp_optionvalue": "304",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7282-150x150.jpg",
       "code": "7282"
      },
      {
-      "value": "0",
+      "value": "675",
+      "id": "371",
+      "mp_optionvalue": "305",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7285-150x150.jpg",
       "code": "7285"
      },
      {
-      "value": "0",
+      "value": "676",
+      "id": "371",
+      "mp_optionvalue": "306",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7286-150x150.jpg",
       "code": "7286"
      },
      {
-      "value": "0",
+      "value": "677",
+      "id": "371",
+      "mp_optionvalue": "307",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7290-150x150.jpg",
       "code": "7290"
      },
      {
-      "value": "0",
+      "value": "678",
+      "id": "371",
+      "mp_optionvalue": "308",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7292-150x150.jpg",
       "code": "7292"
      },
      {
-      "value": "0",
+      "value": "679",
+      "id": "371",
+      "mp_optionvalue": "309",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7293-150x150.jpg",
       "code": "7293"
      },
      {
-      "value": "0",
+      "value": "680",
+      "id": "371",
+      "mp_optionvalue": "310",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7295-150x150.jpg",
       "code": "7295"
      },
      {
-      "value": "0",
+      "value": "681",
+      "id": "371",
+      "mp_optionvalue": "311",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7304-150x150.jpg",
       "code": "7304"
      },
      {
-      "value": "0",
+      "value": "692",
+      "id": "371",
+      "mp_optionvalue": "312",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7305-150x150.jpg",
       "code": "7305"
      },
      {
-      "value": "0",
+      "value": "693",
+      "id": "371",
+      "mp_optionvalue": "313",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7306-150x150.jpg",
       "code": "7306"
      },
      {
-      "value": "0",
+      "value": "694",
+      "id": "371",
+      "mp_optionvalue": "314",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7315-150x150.jpg",
       "code": "7315"
      },
      {
-      "value": "0",
+      "value": "695",
+      "id": "371",
+      "mp_optionvalue": "315",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7316-150x150.jpg",
       "code": "7316"
      },
      {
-      "value": "0",
+      "value": "696",
+      "id": "371",
+      "mp_optionvalue": "316",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7317-150x150.jpg",
       "code": "7317"
      },
      {
-      "value": "0",
+      "value": "697",
+      "id": "371",
+      "mp_optionvalue": "317",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7318-150x150.jpg",
       "code": "7318"
      },
      {
-      "value": "0",
+      "value": "698",
+      "id": "371",
+      "mp_optionvalue": "318",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7319-150x150.jpg",
       "code": "7319"
      },
      {
-      "value": "0",
+      "value": "699",
+      "id": "371",
+      "mp_optionvalue": "319",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7320-150x150.jpg",
       "code": "7320"
      },
      {
-      "value": "0",
+      "value": "700",
+      "id": "371",
+      "mp_optionvalue": "320",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7321-150x150.jpg",
       "code": "7321"
      },
      {
-      "value": "0",
+      "value": "701",
+      "id": "371",
+      "mp_optionvalue": "321",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7322-150x150.jpg",
       "code": "7322"
      },
      {
-      "value": "0",
+      "value": "702",
+      "id": "371",
+      "mp_optionvalue": "322",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7323-150x150.jpg",
       "code": "7323"
      },
      {
-      "value": "0",
+      "value": "703",
+      "id": "371",
+      "mp_optionvalue": "323",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7324-150x150.jpg",
       "code": "7324"
      },
      {
-      "value": "0",
+      "value": "704",
+      "id": "371",
+      "mp_optionvalue": "324",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7325-150x150.jpg",
       "code": "7325"
      },
      {
-      "value": "0",
+      "value": "705",
+      "id": "371",
+      "mp_optionvalue": "325",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7377-150x150.jpg",
       "code": "7377"
      },
      {
-      "value": "0",
+      "value": "706",
+      "id": "371",
+      "mp_optionvalue": "326",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7378-150x150.jpg",
       "code": "7378"
      },
      {
-      "value": "0",
+      "value": "707",
+      "id": "371",
+      "mp_optionvalue": "327",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7379-150x150.jpg",
       "code": "7379"
      },
      {
-      "value": "0",
+      "value": "708",
+      "id": "371",
+      "mp_optionvalue": "328",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7381-150x150.jpg",
       "code": "7381"
      },
      {
-      "value": "0",
+      "value": "709",
+      "id": "371",
+      "mp_optionvalue": "329",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7382-150x150.jpg",
       "code": "7382"
      },
      {
-      "value": "0",
+      "value": "710",
+      "id": "371",
+      "mp_optionvalue": "330",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7383-150x150.jpg",
       "code": "7383"
      },
      {
-      "value": "0",
+      "value": "711",
+      "id": "371",
+      "mp_optionvalue": "331",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7384-150x150.jpg",
       "code": "7384"
      },
      {
-      "value": "0",
+      "value": "712",
+      "id": "371",
+      "mp_optionvalue": "332",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7390-150x150.jpg",
       "code": "7390"
      },
      {
-      "value": "0",
+      "value": "713",
+      "id": "371",
+      "mp_optionvalue": "333",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7391-150x150.jpg",
       "code": "7391"
      },
      {
-      "value": "0",
+      "value": "714",
+      "id": "371",
+      "mp_optionvalue": "334",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7392-150x150.jpg",
       "code": "7392"
      },
      {
-      "value": "0",
+      "value": "715",
+      "id": "371",
+      "mp_optionvalue": "335",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7393-150x150.jpg",
       "code": "7393"
      },
      {
-      "value": "0",
+      "value": "716",
+      "id": "371",
+      "mp_optionvalue": "336",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7394-150x150.jpg",
       "code": "7394"
      },
      {
-      "value": "0",
+      "value": "717",
+      "id": "371",
+      "mp_optionvalue": "337",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7395-150x150.jpg",
       "code": "7395"
      },
      {
-      "value": "0",
+      "value": "718",
+      "id": "371",
+      "mp_optionvalue": "338",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7396-150x150.jpg",
       "code": "7396"
      },
      {
-      "value": "0",
+      "value": "719",
+      "id": "371",
+      "mp_optionvalue": "339",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7401-150x150.jpg",
       "code": "7401"
      },
      {
-      "value": "0",
+      "value": "720",
+      "id": "371",
+      "mp_optionvalue": "340",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7402-150x150.jpg",
       "code": "7402"
      },
      {
-      "value": "0",
+      "value": "721",
+      "id": "371",
+      "mp_optionvalue": "341",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7403-150x150.jpg",
       "code": "7403"
      },
      {
-      "value": "0",
+      "value": "722",
+      "id": "371",
+      "mp_optionvalue": "501",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7198-150x150w.jpg",
       "code": "7198"
      },
      {
-      "value": "0",
+      "value": "723",
+      "id": "371",
+      "mp_optionvalue": "502",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7199-150x150w.jpg",
       "code": "7199"
      },
      {
-      "value": "0",
+      "value": "724",
+      "id": "371",
+      "mp_optionvalue": "503",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7205-150x150w.jpg",
       "code": "7205"
      },
      {
-      "value": "0",
+      "value": "725",
+      "id": "371",
+      "mp_optionvalue": "504",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7261-150x150w.jpg",
       "code": "7261"
      },
      {
-      "value": "0",
+      "value": "726",
+      "id": "371",
+      "mp_optionvalue": "505",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7269-150x150w.jpg",
       "code": "7269"
      },
      {
-      "value": "0",
+      "value": "727",
+      "id": "371",
+      "mp_optionvalue": "506",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7270-150x150w.jpg",
       "code": "7270"
      },
      {
-      "value": "0",
+      "value": "728",
+      "id": "371",
+      "mp_optionvalue": "507",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7278-150x150w.jpg",
       "code": "7278"
      },
      {
-      "value": "0",
+      "value": "729",
+      "id": "371",
+      "mp_optionvalue": "508",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7283-150x150w.jpg",
       "code": "7283"
      },
      {
-      "value": "0",
+      "value": "730",
+      "id": "371",
+      "mp_optionvalue": "509",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7284-150x150w.jpg",
       "code": "7284"
      },
      {
-      "value": "0",
+      "value": "731",
+      "id": "371",
+      "mp_optionvalue": "510",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7287-150x150w.jpg",
       "code": "7287"
      },
      {
-      "value": "0",
+      "value": "732",
+      "id": "371",
+      "mp_optionvalue": "511",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7291-150x150w.jpg",
       "code": "7291"
      },
      {
-      "value": "0",
+      "value": "733",
+      "id": "371",
+      "mp_optionvalue": "512",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7294-150x150w.jpg",
       "code": "7294"
      },
      {
-      "value": "0",
+      "value": "738",
+      "id": "371",
+      "mp_optionvalue": "517",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7360-150x150w.jpg",
       "code": "7360"
      },
      {
-      "value": "0",
+      "value": "740",
+      "id": "371",
+      "mp_optionvalue": "519",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7362-150x150w.jpg",
       "code": "7362"
      },
      {
-      "value": "0",
+      "value": "741",
+      "id": "371",
+      "mp_optionvalue": "520",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7363-150x150w.jpg",
       "code": "7363"
      },
      {
-      "value": "0",
+      "value": "742",
+      "id": "371",
+      "mp_optionvalue": "521",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7373-150x150w.jpg",
       "code": "7373"
      },
      {
-      "value": "0",
+      "value": "743",
+      "id": "371",
+      "mp_optionvalue": "522",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/blackout-materials/7380-150x150w.jpg",
       "code": "7380"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "375",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
      }
     ]
    },
    {
     "id": "369",
     "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "660",
+      "id": "369",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
       "code": "Manual"
      },
      {
-      "value": "0",
+      "value": "661",
+      "id": "369",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
       "code": "Motorized"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "372",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "682",
+      "id": "372",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
       "code": "Inside"
      },
      {
-      "value": "0",
+      "value": "683",
+      "id": "372",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Outside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "393",
     "label": "Valance Option Box",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "23",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "779",
+      "id": "393",
+      "mp_optionvalue": "76",
+      "mp_parentoption_value": "0",
+      "price": "SR 1.60",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
       "code": "With Valance Box"
      },
      {
-      "value": "0",
+      "value": "780",
+      "id": "393",
+      "mp_optionvalue": "77",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Without Valance Box"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "386",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "765",
+      "id": "386",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "766",
+      "id": "386",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "378",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -669,248 +1127,463 @@
    {
     "id": "250",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "83",
+      "id": "250",
+      "mp_optionvalue": "523",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7003-150x150w.jpg",
       "code": "ss7003"
      },
      {
-      "value": "0",
+      "value": "84",
+      "id": "250",
+      "mp_optionvalue": "524",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7195-150x150w.jpg",
       "code": "ss7195"
      },
      {
-      "value": "0",
+      "value": "81",
+      "id": "250",
+      "mp_optionvalue": "525",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7196-150x150w.jpg",
       "code": "ss7196"
      },
      {
-      "value": "0",
+      "value": "82",
+      "id": "250",
+      "mp_optionvalue": "526",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7197-150x150w.jpg",
       "code": "ss7197"
      },
      {
-      "value": "0",
+      "value": "640",
+      "id": "250",
+      "mp_optionvalue": "527",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7216-150x150w.jpg",
       "code": "ss7216"
      },
      {
-      "value": "0",
+      "value": "641",
+      "id": "250",
+      "mp_optionvalue": "528",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7221-150x150w.jpg",
       "code": "ss7221"
      },
      {
-      "value": "0",
+      "value": "642",
+      "id": "250",
+      "mp_optionvalue": "529",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7235-150x150w.jpg",
       "code": "ss7235"
      },
      {
-      "value": "0",
+      "value": "643",
+      "id": "250",
+      "mp_optionvalue": "530",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7236-150x150w.jpg",
       "code": "ss7236"
      },
      {
-      "value": "0",
+      "value": "644",
+      "id": "250",
+      "mp_optionvalue": "531",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7237-150x150w.jpg",
       "code": "ss7237"
      },
      {
-      "value": "0",
+      "value": "645",
+      "id": "250",
+      "mp_optionvalue": "532",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7238-150x150w.jpg",
       "code": "ss7238"
      },
      {
-      "value": "0",
+      "value": "646",
+      "id": "250",
+      "mp_optionvalue": "533",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7239-150x150w.jpg",
       "code": "ss7239"
      },
      {
-      "value": "0",
+      "value": "647",
+      "id": "250",
+      "mp_optionvalue": "534",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7242-150x150w.jpg",
       "code": "ss7242"
      },
      {
-      "value": "0",
+      "value": "648",
+      "id": "250",
+      "mp_optionvalue": "535",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7243-150x150w.jpg",
       "code": "ss7243"
      },
      {
-      "value": "0",
+      "value": "649",
+      "id": "250",
+      "mp_optionvalue": "536",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7244-150x150w.jpg",
       "code": "ss7244"
      },
      {
-      "value": "0",
+      "value": "650",
+      "id": "250",
+      "mp_optionvalue": "537",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7245-150x150w.jpg",
       "code": "ss7245"
      },
      {
-      "value": "0",
+      "value": "651",
+      "id": "250",
+      "mp_optionvalue": "538",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7246-150x150w.jpg",
       "code": "ss7246"
      },
      {
-      "value": "0",
+      "value": "749",
+      "id": "250",
+      "mp_optionvalue": "541",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7218-150x150w.jpg",
       "code": "ss7218"
      },
      {
-      "value": "0",
+      "value": "750",
+      "id": "250",
+      "mp_optionvalue": "542",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7240-150x150w.jpg",
       "code": "ss7240"
      },
      {
-      "value": "0",
+      "value": "751",
+      "id": "250",
+      "mp_optionvalue": "543",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7241-150x150w.jpg",
       "code": "ss7241"
      },
      {
-      "value": "0",
+      "value": "754",
+      "id": "250",
+      "mp_optionvalue": "546",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7251-150x150w.jpg",
       "code": "ss7251"
      },
      {
-      "value": "0",
+      "value": "756",
+      "id": "250",
+      "mp_optionvalue": "548",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7253-150x150w.jpg",
       "code": "ss7253"
      },
      {
-      "value": "0",
+      "value": "757",
+      "id": "250",
+      "mp_optionvalue": "549",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7254-150x150w.jpg",
       "code": "ss7254"
      },
      {
-      "value": "0",
+      "value": "758",
+      "id": "250",
+      "mp_optionvalue": "550",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7300-150x150w.jpg",
       "code": "ss7300"
      },
      {
-      "value": "0",
+      "value": "759",
+      "id": "250",
+      "mp_optionvalue": "551",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7301-150x150w.jpg",
       "code": "ss7301"
      },
      {
-      "value": "0",
+      "value": "760",
+      "id": "250",
+      "mp_optionvalue": "552",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7302-150x150w.jpg",
       "code": "ss7302"
      },
      {
-      "value": "0",
+      "value": "762",
+      "id": "250",
+      "mp_optionvalue": "554",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7331-150x150w.jpg",
       "code": "ss7331"
      },
      {
-      "value": "0",
+      "value": "763",
+      "id": "250",
+      "mp_optionvalue": "555",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7332-150x150w.jpg",
       "code": "ss7332"
      },
      {
-      "value": "0",
+      "value": "764",
+      "id": "250",
+      "mp_optionvalue": "556",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/sunscreen-materials/7333-150x150w.jpg",
       "code": "ss7333"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "246",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
      }
     ]
    },
    {
     "id": "252",
     "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "88",
+      "id": "252",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
       "code": "Manual"
      },
      {
-      "value": "0",
+      "value": "87",
+      "id": "252",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
       "code": "Motorized"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "249",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "80",
+      "id": "249",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Outside"
      },
      {
-      "value": "0",
+      "value": "79",
+      "id": "249",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
       "code": "Inside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "394",
     "label": "Valance Option Box",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "23",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "781",
+      "id": "394",
+      "mp_optionvalue": "76",
+      "mp_parentoption_value": "0",
+      "price": "SR 1.60",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
       "code": "With Valance Box"
      },
      {
-      "value": "0",
+      "value": "782",
+      "id": "394",
+      "mp_optionvalue": "77",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Valance Option Box",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Without Valance Box"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "389",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "771",
+      "id": "389",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "772",
+      "id": "389",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "382",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -973,170 +1646,329 @@
    {
     "id": "260",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "103",
+      "id": "260",
+      "mp_optionvalue": "342",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6001s-150x150.jpg",
       "code": "Z6001"
      },
      {
-      "value": "0",
+      "value": "470",
+      "id": "260",
+      "mp_optionvalue": "343",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6002s-150x150.jpg",
       "code": "Z6002"
      },
      {
-      "value": "0",
+      "value": "471",
+      "id": "260",
+      "mp_optionvalue": "344",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6003s-150x150.jpg",
       "code": "Z6003"
      },
      {
-      "value": "0",
+      "value": "472",
+      "id": "260",
+      "mp_optionvalue": "345",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6004s-150x150.jpg",
       "code": "Z6004"
      },
      {
-      "value": "0",
+      "value": "473",
+      "id": "260",
+      "mp_optionvalue": "346",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6005s-150x150.jpg",
       "code": "Z6005"
      },
      {
-      "value": "0",
+      "value": "474",
+      "id": "260",
+      "mp_optionvalue": "347",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6006s-150x150.jpg",
       "code": "Z6006"
      },
      {
-      "value": "0",
+      "value": "475",
+      "id": "260",
+      "mp_optionvalue": "348",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6007s-150x150.jpg",
       "code": "Z6007"
      },
      {
-      "value": "0",
+      "value": "476",
+      "id": "260",
+      "mp_optionvalue": "349",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6008s-150x150.jpg",
       "code": "Z6008"
      },
      {
-      "value": "0",
+      "value": "477",
+      "id": "260",
+      "mp_optionvalue": "350",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6009s-150x150.jpg",
       "code": "Z6009"
      },
      {
-      "value": "0",
+      "value": "478",
+      "id": "260",
+      "mp_optionvalue": "351",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6010s-150x150.jpg",
       "code": "Z6010"
      },
      {
-      "value": "0",
+      "value": "483",
+      "id": "260",
+      "mp_optionvalue": "356",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6015s-150x150.jpg",
       "code": "Z6015"
      },
      {
-      "value": "0",
+      "value": "484",
+      "id": "260",
+      "mp_optionvalue": "357",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6016s-150x150.jpg",
       "code": "Z6016"
      },
      {
-      "value": "0",
+      "value": "485",
+      "id": "260",
+      "mp_optionvalue": "358",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6017s-150x150.jpg",
       "code": "Z6017"
      },
      {
-      "value": "0",
+      "value": "486",
+      "id": "260",
+      "mp_optionvalue": "359",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6018s-150x150.jpg",
       "code": "Z6018"
      },
      {
-      "value": "0",
+      "value": "487",
+      "id": "260",
+      "mp_optionvalue": "360",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6019s-150x150.jpg",
       "code": "Z6019"
      },
      {
-      "value": "0",
+      "value": "488",
+      "id": "260",
+      "mp_optionvalue": "361",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6021s-150x150.jpg",
       "code": "Z6021"
      },
      {
-      "value": "0",
+      "value": "489",
+      "id": "260",
+      "mp_optionvalue": "362",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6070s-150x150.jpg",
       "code": "Z6070"
      },
      {
-      "value": "0",
+      "value": "490",
+      "id": "260",
+      "mp_optionvalue": "363",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/zebra-materials/6071s-150x150.jpg",
       "code": "Z6071"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "256",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
      }
     ]
    },
    {
     "id": "262",
     "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "108",
+      "id": "262",
+      "mp_optionvalue": "103",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/zebra/manual-150x150.png",
       "code": "Manual"
      },
      {
-      "value": "0",
+      "value": "107",
+      "id": "262",
+      "mp_optionvalue": "102",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/zebra/auto-150x150.png",
       "code": "Motorized"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "266",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "115",
+      "id": "266",
+      "mp_optionvalue": "100",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/zebra/outside-150x150.png",
       "code": "Outside"
      },
      {
-      "value": "0",
+      "value": "116",
+      "id": "266",
+      "mp_optionvalue": "101",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/zebra/inside-150x150.png",
       "code": "Inside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "392",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "777",
+      "id": "392",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "778",
+      "id": "392",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "385",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -1197,118 +2029,241 @@
   "capture_option_id": "384",
   "option_groups": [
    {
+    "id": "271",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
     "id": "267",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "493",
+      "id": "267",
+      "mp_optionvalue": "366",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5026-150x150h.jpg",
       "code": "w5026"
      },
      {
-      "value": "0",
+      "value": "495",
+      "id": "267",
+      "mp_optionvalue": "368",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5028-150x150h.jpg",
       "code": "w5028"
      },
      {
-      "value": "0",
+      "value": "496",
+      "id": "267",
+      "mp_optionvalue": "369",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5029-150x150h.jpg",
       "code": "w5029"
      },
      {
-      "value": "0",
+      "value": "497",
+      "id": "267",
+      "mp_optionvalue": "370",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5030-150x150h.jpg",
       "code": "w5030"
      },
      {
-      "value": "0",
+      "value": "498",
+      "id": "267",
+      "mp_optionvalue": "371",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5031-150x150h.jpg",
       "code": "w5031"
      },
      {
-      "value": "0",
+      "value": "499",
+      "id": "267",
+      "mp_optionvalue": "372",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5032-150x150h.jpg",
       "code": "w5032"
      },
      {
-      "value": "0",
+      "value": "500",
+      "id": "267",
+      "mp_optionvalue": "373",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5033-150x150h.jpg",
       "code": "w5033"
      },
      {
-      "value": "0",
+      "value": "501",
+      "id": "267",
+      "mp_optionvalue": "374",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5034-150x150h.jpg",
       "code": "w5034"
      },
      {
-      "value": "0",
+      "value": "502",
+      "id": "267",
+      "mp_optionvalue": "375",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/wooden-materials/5035-150x150h.jpg",
       "code": "w5035"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "269",
     "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "124",
+      "id": "269",
+      "mp_optionvalue": "105",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
       "code": "Right"
      },
      {
-      "value": "0",
+      "value": "123",
+      "id": "269",
+      "mp_optionvalue": "104",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
       "code": "Left"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "273",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "130",
+      "id": "273",
+      "mp_optionvalue": "106",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
       "code": "Outside"
      },
      {
-      "value": "0",
+      "value": "129",
+      "id": "273",
+      "mp_optionvalue": "107",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
       "code": "Inside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "391",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "775",
+      "id": "391",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "776",
+      "id": "391",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "384",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -1369,460 +2324,815 @@
   "capture_option_id": "383",
   "option_groups": [
    {
+    "id": "283",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
     "id": "279",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "143",
+      "id": "279",
+      "mp_optionvalue": "243",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
       "code": "V2006"
      },
      {
-      "value": "0",
+      "value": "144",
+      "id": "279",
+      "mp_optionvalue": "213",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/424-150x150w.jpg",
       "code": "V424"
      },
      {
-      "value": "0",
+      "value": "141",
+      "id": "279",
+      "mp_optionvalue": "215",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/826-150x150w.jpg",
       "code": "V826"
      },
      {
-      "value": "0",
+      "value": "142",
+      "id": "279",
+      "mp_optionvalue": "216",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/859-150x150w.jpg",
       "code": "V859"
      },
      {
-      "value": "0",
+      "value": "330",
+      "id": "279",
+      "mp_optionvalue": "217",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/890-150x150w.jpg",
       "code": "V890"
      },
      {
-      "value": "0",
+      "value": "331",
+      "id": "279",
+      "mp_optionvalue": "218",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/891-150x150w.jpg",
       "code": "V891"
      },
      {
-      "value": "0",
+      "value": "332",
+      "id": "279",
+      "mp_optionvalue": "219",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/893-150x150w.jpg",
       "code": "V893"
      },
      {
-      "value": "0",
+      "value": "333",
+      "id": "279",
+      "mp_optionvalue": "220",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
       "code": "V1001"
      },
      {
-      "value": "0",
+      "value": "334",
+      "id": "279",
+      "mp_optionvalue": "221",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1003-150x150w.jpg",
       "code": "V1003"
      },
      {
-      "value": "0",
+      "value": "335",
+      "id": "279",
+      "mp_optionvalue": "222",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1043-150x150w.jpg",
       "code": "V1043"
      },
      {
-      "value": "0",
+      "value": "336",
+      "id": "279",
+      "mp_optionvalue": "223",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1057-150x150w.jpg",
       "code": "V1057"
      },
      {
-      "value": "0",
+      "value": "337",
+      "id": "279",
+      "mp_optionvalue": "224",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1058-150x150w.jpg",
       "code": "V1058"
      },
      {
-      "value": "0",
+      "value": "338",
+      "id": "279",
+      "mp_optionvalue": "225",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1059-150x150w.jpg",
       "code": "V1059"
      },
      {
-      "value": "0",
+      "value": "339",
+      "id": "279",
+      "mp_optionvalue": "226",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1061-150x150w.jpg",
       "code": "V1061"
      },
      {
-      "value": "0",
+      "value": "340",
+      "id": "279",
+      "mp_optionvalue": "227",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1063-150x150w.jpg",
       "code": "V1063"
      },
      {
-      "value": "0",
+      "value": "341",
+      "id": "279",
+      "mp_optionvalue": "228",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1068-150x150w.jpg",
       "code": "V1068"
      },
      {
-      "value": "0",
+      "value": "342",
+      "id": "279",
+      "mp_optionvalue": "229",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1069-150x150w.jpg",
       "code": "V1069"
      },
      {
-      "value": "0",
+      "value": "343",
+      "id": "279",
+      "mp_optionvalue": "230",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1090-150x150w.jpg",
       "code": "V1090"
      },
      {
-      "value": "0",
+      "value": "344",
+      "id": "279",
+      "mp_optionvalue": "231",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1091-150x150w.jpg",
       "code": "V1091"
      },
      {
-      "value": "0",
+      "value": "345",
+      "id": "279",
+      "mp_optionvalue": "232",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1092-150x150w.jpg",
       "code": "V1092"
      },
      {
-      "value": "0",
+      "value": "346",
+      "id": "279",
+      "mp_optionvalue": "233",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1093-150x150w.jpg",
       "code": "V1093"
      },
      {
-      "value": "0",
+      "value": "347",
+      "id": "279",
+      "mp_optionvalue": "234",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1094-150x150w.jpg",
       "code": "V1094"
      },
      {
-      "value": "0",
+      "value": "348",
+      "id": "279",
+      "mp_optionvalue": "235",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1095-150x150w.jpg",
       "code": "V1095"
      },
      {
-      "value": "0",
+      "value": "349",
+      "id": "279",
+      "mp_optionvalue": "236",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1096-150x150w.jpg",
       "code": "V1096"
      },
      {
-      "value": "0",
+      "value": "350",
+      "id": "279",
+      "mp_optionvalue": "237",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1097-150x150w.jpg",
       "code": "V1097"
      },
      {
-      "value": "0",
+      "value": "351",
+      "id": "279",
+      "mp_optionvalue": "238",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1098-150x150w.jpg",
       "code": "V1098"
      },
      {
-      "value": "0",
+      "value": "352",
+      "id": "279",
+      "mp_optionvalue": "239",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/1099-150x150w.jpg",
       "code": "V1099"
      },
      {
-      "value": "0",
+      "value": "353",
+      "id": "279",
+      "mp_optionvalue": "240",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2000-150x150w.jpg",
       "code": "V2000"
      },
      {
-      "value": "0",
+      "value": "354",
+      "id": "279",
+      "mp_optionvalue": "241",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2004-150x150w.jpg",
       "code": "V2004"
      },
      {
-      "value": "0",
+      "value": "355",
+      "id": "279",
+      "mp_optionvalue": "242",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2005-150x150w.jpg",
       "code": "V2005"
      },
      {
-      "value": "0",
+      "value": "356",
+      "id": "279",
+      "mp_optionvalue": "244",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
       "code": "V2006"
      },
      {
-      "value": "0",
+      "value": "357",
+      "id": "279",
+      "mp_optionvalue": "245",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2007-150x150w.jpg",
       "code": "V2007"
      },
      {
-      "value": "0",
+      "value": "358",
+      "id": "279",
+      "mp_optionvalue": "246",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2009-150x150w.jpg",
       "code": "V2009"
      },
      {
-      "value": "0",
+      "value": "359",
+      "id": "279",
+      "mp_optionvalue": "247",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2010-150x150w.jpg",
       "code": "V2010"
      },
      {
-      "value": "0",
+      "value": "360",
+      "id": "279",
+      "mp_optionvalue": "248",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2011-150x150w.jpg",
       "code": "V2011"
      },
      {
-      "value": "0",
+      "value": "361",
+      "id": "279",
+      "mp_optionvalue": "249",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2012-150x150w.jpg",
       "code": "V2012"
      },
      {
-      "value": "0",
+      "value": "362",
+      "id": "279",
+      "mp_optionvalue": "250",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2013-150x150w.jpg",
       "code": "V2013"
      },
      {
-      "value": "0",
+      "value": "363",
+      "id": "279",
+      "mp_optionvalue": "251",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2014-150x150w.jpg",
       "code": "V2014"
      },
      {
-      "value": "0",
+      "value": "364",
+      "id": "279",
+      "mp_optionvalue": "252",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2015-150x150w.jpg",
       "code": "V2015"
      },
      {
-      "value": "0",
+      "value": "365",
+      "id": "279",
+      "mp_optionvalue": "253",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2029-150x150w.jpg",
       "code": "V2029"
      },
      {
-      "value": "0",
+      "value": "366",
+      "id": "279",
+      "mp_optionvalue": "254",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2033-150x150w.jpg",
       "code": "V2033"
      },
      {
-      "value": "0",
+      "value": "367",
+      "id": "279",
+      "mp_optionvalue": "255",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2040-150x150w.jpg",
       "code": "V2040"
      },
      {
-      "value": "0",
+      "value": "368",
+      "id": "279",
+      "mp_optionvalue": "256",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2060-150x150w.jpg",
       "code": "V2060"
      },
      {
-      "value": "0",
+      "value": "369",
+      "id": "279",
+      "mp_optionvalue": "257",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2061-150x150w.jpg",
       "code": "V2061"
      },
      {
-      "value": "0",
+      "value": "370",
+      "id": "279",
+      "mp_optionvalue": "258",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2062-150x150w.jpg",
       "code": "V2062"
      },
      {
-      "value": "0",
+      "value": "371",
+      "id": "279",
+      "mp_optionvalue": "259",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2063-150x150w.jpg",
       "code": "V2063"
      },
      {
-      "value": "0",
+      "value": "372",
+      "id": "279",
+      "mp_optionvalue": "260",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2064-150x150w.jpg",
       "code": "V2064"
      },
      {
-      "value": "0",
+      "value": "373",
+      "id": "279",
+      "mp_optionvalue": "261",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2071-150x150w.jpg",
       "code": "V2071"
      },
      {
-      "value": "0",
+      "value": "374",
+      "id": "279",
+      "mp_optionvalue": "262",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2072-150x150w.jpg",
       "code": "V2072"
      },
      {
-      "value": "0",
+      "value": "375",
+      "id": "279",
+      "mp_optionvalue": "263",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2073-150x150w.jpg",
       "code": "V2073"
      },
      {
-      "value": "0",
+      "value": "376",
+      "id": "279",
+      "mp_optionvalue": "264",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2074-150x150w.jpg",
       "code": "V2074"
      },
      {
-      "value": "0",
+      "value": "377",
+      "id": "279",
+      "mp_optionvalue": "265",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2075-150x150w.jpg",
       "code": "V2075"
      },
      {
-      "value": "0",
+      "value": "378",
+      "id": "279",
+      "mp_optionvalue": "266",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2076-150x150w.jpg",
       "code": "V2076"
      },
      {
-      "value": "0",
+      "value": "379",
+      "id": "279",
+      "mp_optionvalue": "267",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2077-150x150w.jpg",
       "code": "V2077"
      },
      {
-      "value": "0",
+      "value": "380",
+      "id": "279",
+      "mp_optionvalue": "268",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2078-150x150w.jpg",
       "code": "V2078"
      },
      {
-      "value": "0",
+      "value": "381",
+      "id": "279",
+      "mp_optionvalue": "269",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2079-150x150w.jpg",
       "code": "V2079"
      },
      {
-      "value": "0",
+      "value": "382",
+      "id": "279",
+      "mp_optionvalue": "270",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2080-150x150w.jpg",
       "code": "V2080"
      },
      {
-      "value": "0",
+      "value": "383",
+      "id": "279",
+      "mp_optionvalue": "271",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2081-150x150w.jpg",
       "code": "V2081"
      },
      {
-      "value": "0",
+      "value": "384",
+      "id": "279",
+      "mp_optionvalue": "272",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2082-150x150w.jpg",
       "code": "V2082"
      },
      {
-      "value": "0",
+      "value": "385",
+      "id": "279",
+      "mp_optionvalue": "273",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2083-150x150w.jpg",
       "code": "V2083"
      },
      {
-      "value": "0",
+      "value": "386",
+      "id": "279",
+      "mp_optionvalue": "274",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2084-150x150w.jpg",
       "code": "V2084"
      },
      {
-      "value": "0",
+      "value": "387",
+      "id": "279",
+      "mp_optionvalue": "275",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2086-150x150w.jpg",
       "code": "V2086"
      },
      {
-      "value": "0",
+      "value": "388",
+      "id": "279",
+      "mp_optionvalue": "276",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/vertical-materials/2087-150x150w.jpg",
       "code": "V2087"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "281",
     "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "147",
+      "id": "281",
+      "mp_optionvalue": "110",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
       "code": "Left"
      },
      {
-      "value": "0",
+      "value": "148",
+      "id": "281",
+      "mp_optionvalue": "111",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
       "code": "Right"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "285",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "154",
+      "id": "285",
+      "mp_optionvalue": "108",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
       "code": "Outside"
      },
      {
-      "value": "0",
+      "value": "153",
+      "id": "285",
+      "mp_optionvalue": "109",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
       "code": "Inside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "287",
     "label": "Movement direction",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "32",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "157",
+      "id": "287",
+      "mp_optionvalue": "113",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Movement direction",
       "image": "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
       "code": "Left to right"
      },
      {
-      "value": "0",
+      "value": "158",
+      "id": "287",
+      "mp_optionvalue": "112",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Movement direction",
       "image": "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
       "code": "Right to left"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "390",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "773",
+      "id": "390",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "774",
+      "id": "390",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "383",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -1885,74 +3195,169 @@
    {
     "id": "309",
     "label": "slice width and color",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "33",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "206",
+      "id": "309",
+      "mp_optionvalue": "117",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "slice width and color",
       "image": "image/cache/catalog/icons/5mm-icon-150x150.png",
       "code": "5 cm"
      },
      {
-      "value": "0",
+      "value": "205",
+      "id": "309",
+      "mp_optionvalue": "116",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "slice width and color",
       "image": "image/cache/catalog/icons/2-5mm-icon-150x150.png",
       "code": "2.5 cm"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "278",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
      }
     ]
    },
    {
     "id": "277",
     "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "139",
+      "id": "277",
+      "mp_optionvalue": "104",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
       "code": "Left"
      },
      {
-      "value": "0",
+      "value": "140",
+      "id": "277",
+      "mp_optionvalue": "105",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Manual Operating Side",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
       "code": "Right"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "275",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "133",
+      "id": "275",
+      "mp_optionvalue": "107",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
       "code": "Inside"
      },
      {
-      "value": "0",
+      "value": "134",
+      "id": "275",
+      "mp_optionvalue": "106",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
       "code": "Outside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "387",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "767",
+      "id": "387",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "768",
+      "id": "387",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "381",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [
@@ -2011,394 +3416,692 @@
   "capture_option_id": null,
   "option_groups": [
    {
+    "id": "422",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
     "id": "425",
     "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "877",
+      "id": "425",
+      "mp_optionvalue": "559",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-01-150x150w.jpg",
       "code": "1155-01"
      },
      {
-      "value": "0",
+      "value": "878",
+      "id": "425",
+      "mp_optionvalue": "560",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-02-150x150w.jpg",
       "code": "1155-02"
      },
      {
-      "value": "0",
+      "value": "880",
+      "id": "425",
+      "mp_optionvalue": "562",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-04-150x150w.jpg",
       "code": "1155-04"
      },
      {
-      "value": "0",
+      "value": "881",
+      "id": "425",
+      "mp_optionvalue": "563",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-05-150x150w.jpg",
       "code": "1155-05"
      },
      {
-      "value": "0",
+      "value": "882",
+      "id": "425",
+      "mp_optionvalue": "564",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-06-150x150w.jpg",
       "code": "1155-06"
      },
      {
-      "value": "0",
+      "value": "883",
+      "id": "425",
+      "mp_optionvalue": "565",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-07-150x150w.jpg",
       "code": "1155-07"
      },
      {
-      "value": "0",
+      "value": "884",
+      "id": "425",
+      "mp_optionvalue": "566",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-08-150x150w.jpg",
       "code": "1155-08"
      },
      {
-      "value": "0",
+      "value": "885",
+      "id": "425",
+      "mp_optionvalue": "567",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-09-150x150w.jpg",
       "code": "1155-09"
      },
      {
-      "value": "0",
+      "value": "886",
+      "id": "425",
+      "mp_optionvalue": "568",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-10-150x150w.jpg",
       "code": "1155-10"
      },
      {
-      "value": "0",
+      "value": "887",
+      "id": "425",
+      "mp_optionvalue": "569",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-11-150x150w.jpg",
       "code": "1155-11"
      },
      {
-      "value": "0",
+      "value": "888",
+      "id": "425",
+      "mp_optionvalue": "570",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-12-150x150w.jpg",
       "code": "1155-12"
      },
      {
-      "value": "0",
+      "value": "879",
+      "id": "425",
+      "mp_optionvalue": "571",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
       "code": "1155-13"
      },
      {
-      "value": "0",
+      "value": "889",
+      "id": "425",
+      "mp_optionvalue": "571",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
       "code": "1155-13"
      },
      {
-      "value": "0",
+      "value": "890",
+      "id": "425",
+      "mp_optionvalue": "572",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-14-150x150w.jpg",
       "code": "1155-14"
      },
      {
-      "value": "0",
+      "value": "891",
+      "id": "425",
+      "mp_optionvalue": "573",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-15-150x150w.jpg",
       "code": "1155-15"
      },
      {
-      "value": "0",
+      "value": "892",
+      "id": "425",
+      "mp_optionvalue": "574",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-16-150x150w.jpg",
       "code": "1155-16"
      },
      {
-      "value": "0",
+      "value": "893",
+      "id": "425",
+      "mp_optionvalue": "575",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-17-150x150w.jpg",
       "code": "1155-17"
      },
      {
-      "value": "0",
+      "value": "894",
+      "id": "425",
+      "mp_optionvalue": "576",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-18-150x150w.jpg",
       "code": "1155-18"
      },
      {
-      "value": "0",
+      "value": "895",
+      "id": "425",
+      "mp_optionvalue": "577",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-19-150x150w.jpg",
       "code": "1155-19"
      },
      {
-      "value": "0",
+      "value": "896",
+      "id": "425",
+      "mp_optionvalue": "578",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-20-150x150w.jpg",
       "code": "1155-20"
      },
      {
-      "value": "0",
+      "value": "897",
+      "id": "425",
+      "mp_optionvalue": "579",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-21-150x150w.jpg",
       "code": "1155-21"
      },
      {
-      "value": "0",
+      "value": "898",
+      "id": "425",
+      "mp_optionvalue": "580",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1155-22-150x150w.jpg",
       "code": "1155-22"
      },
      {
-      "value": "0",
+      "value": "899",
+      "id": "425",
+      "mp_optionvalue": "581",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-01-150x150w.jpg",
       "code": "1165-01"
      },
      {
-      "value": "0",
+      "value": "900",
+      "id": "425",
+      "mp_optionvalue": "582",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-02-150x150w.jpg",
       "code": "1165-02"
      },
      {
-      "value": "0",
+      "value": "901",
+      "id": "425",
+      "mp_optionvalue": "583",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-03-150x150w.jpg",
       "code": "1165-03"
      },
      {
-      "value": "0",
+      "value": "902",
+      "id": "425",
+      "mp_optionvalue": "584",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-04-150x150w.jpg",
       "code": "1165-04"
      },
      {
-      "value": "0",
+      "value": "903",
+      "id": "425",
+      "mp_optionvalue": "585",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-05-150x150w.jpg",
       "code": "1165-05"
      },
      {
-      "value": "0",
+      "value": "904",
+      "id": "425",
+      "mp_optionvalue": "586",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-06-150x150w.jpg",
       "code": "1165-06"
      },
      {
-      "value": "0",
+      "value": "905",
+      "id": "425",
+      "mp_optionvalue": "587",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-07-150x150w.jpg",
       "code": "1165-07"
      },
      {
-      "value": "0",
+      "value": "906",
+      "id": "425",
+      "mp_optionvalue": "588",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-08-150x150w.jpg",
       "code": "1165-08"
      },
      {
-      "value": "0",
+      "value": "907",
+      "id": "425",
+      "mp_optionvalue": "589",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-09-150x150w.jpg",
       "code": "1165-09"
      },
      {
-      "value": "0",
+      "value": "908",
+      "id": "425",
+      "mp_optionvalue": "590",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-10-150x150w.jpg",
       "code": "1165-10"
      },
      {
-      "value": "0",
+      "value": "909",
+      "id": "425",
+      "mp_optionvalue": "591",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-11-150x150w.jpg",
       "code": "1165-11"
      },
      {
-      "value": "0",
+      "value": "910",
+      "id": "425",
+      "mp_optionvalue": "592",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-12-150x150w.jpg",
       "code": "1165-12"
      },
      {
-      "value": "0",
+      "value": "911",
+      "id": "425",
+      "mp_optionvalue": "593",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-13-150x150w.jpg",
       "code": "1165-13"
      },
      {
-      "value": "0",
+      "value": "912",
+      "id": "425",
+      "mp_optionvalue": "594",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-14-150x150w.jpg",
       "code": "1165-14"
      },
      {
-      "value": "0",
+      "value": "913",
+      "id": "425",
+      "mp_optionvalue": "595",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-15-150x150w.jpg",
       "code": "1165-15"
      },
      {
-      "value": "0",
+      "value": "914",
+      "id": "425",
+      "mp_optionvalue": "596",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-16-150x150w.jpg",
       "code": "1165-16"
      },
      {
-      "value": "0",
+      "value": "915",
+      "id": "425",
+      "mp_optionvalue": "597",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-17-150x150w.jpg",
       "code": "1165-17"
      },
      {
-      "value": "0",
+      "value": "916",
+      "id": "425",
+      "mp_optionvalue": "598",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-18-150x150w.jpg",
       "code": "1165-18"
      },
      {
-      "value": "0",
+      "value": "917",
+      "id": "425",
+      "mp_optionvalue": "599",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-19-150x150w.jpg",
       "code": "1165-19"
      },
      {
-      "value": "0",
+      "value": "918",
+      "id": "425",
+      "mp_optionvalue": "600",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-20-150x150w.jpg",
       "code": "1165-20"
      },
      {
-      "value": "0",
+      "value": "919",
+      "id": "425",
+      "mp_optionvalue": "601",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-21-150x150w.jpg",
       "code": "1165-21"
      },
      {
-      "value": "0",
+      "value": "920",
+      "id": "425",
+      "mp_optionvalue": "602",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-22-150x150w.jpg",
       "code": "1165-22"
      },
      {
-      "value": "0",
+      "value": "921",
+      "id": "425",
+      "mp_optionvalue": "603",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-23-150x150w.jpg",
       "code": "1165-23"
      },
      {
-      "value": "0",
+      "value": "922",
+      "id": "425",
+      "mp_optionvalue": "604",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-24-150x150w.jpg",
       "code": "1165-24"
      },
      {
-      "value": "0",
+      "value": "923",
+      "id": "425",
+      "mp_optionvalue": "605",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-25-150x150w.jpg",
       "code": "1165-25"
      },
      {
-      "value": "0",
+      "value": "924",
+      "id": "425",
+      "mp_optionvalue": "606",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-26-150x150w.jpg",
       "code": "1165-26"
      },
      {
-      "value": "0",
+      "value": "925",
+      "id": "425",
+      "mp_optionvalue": "607",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-27-150x150w.jpg",
       "code": "1165-27"
      },
      {
-      "value": "0",
+      "value": "926",
+      "id": "425",
+      "mp_optionvalue": "608",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-28-150x150w.jpg",
       "code": "1165-28"
      },
      {
-      "value": "0",
+      "value": "927",
+      "id": "425",
+      "mp_optionvalue": "609",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-29-150x150w.jpg",
       "code": "1165-29"
      },
      {
-      "value": "0",
+      "value": "928",
+      "id": "425",
+      "mp_optionvalue": "610",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Material",
       "image": "image/cache/catalog/roman-materials/1165-30-150x150w.jpg",
       "code": "1165-30"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "423",
     "label": "خيارات البطانة",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "40",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "876",
+      "id": "423",
+      "mp_optionvalue": "158",
+      "mp_parentoption_value": "0",
+      "price": "SR 0.00",
       "group": "خيارات البطانة",
       "image": "",
       "code": "بطانة (معتمة)"
      },
      {
-      "value": "0",
+      "value": "875",
+      "id": "423",
+      "mp_optionvalue": "157",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "خيارات البطانة",
       "image": "",
       "code": "بدون بطانة"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "411",
     "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "835",
+      "id": "411",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "SR 2.70",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
       "code": "Manual"
      },
      {
-      "value": "0",
+      "value": "834",
+      "id": "411",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "SR 4.20",
       "group": "Control type",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
       "code": "Motorized"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "415",
     "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "856",
+      "id": "415",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
       "code": "Outside"
      },
      {
-      "value": "0",
+      "value": "855",
+      "id": "415",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Mounting Option",
       "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
       "code": "Inside"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    },
    {
     "id": "441",
     "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
     "options": [
      {
-      "value": "0",
+      "value": "1021",
+      "id": "441",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/with-installation-150x150.png",
       "code": "With Installation"
      },
      {
-      "value": "0",
+      "value": "1022",
+      "id": "441",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
       "group": "Installation service",
       "image": "image/cache/catalog/icons/without-installation-150x150h.png",
       "code": "Without installation"
      }
-    ]
+    ],
+    "choices": [],
+    "fields": []
    }
   ],
   "images": [

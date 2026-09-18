@@ -43,11 +43,28 @@
 .cr-price-value { font-size: 24px; font-weight: 700; color: var(--cr-ok); }
 .cr-desc { color: var(--cr-muted); line-height: 1.65; margin-bottom: 24px; }
 
-.cr-group { margin-bottom: 22px; }
+/* collapsible option groups (accordion), as on the original */
+.cr-accordion { border-top: 1px solid var(--cr-line); margin: 20px 0 4px; }
+.cr-group { border-bottom: 1px solid var(--cr-line); margin: 0; }
+.cr-group-head {
+	width: 100%; display: flex; align-items: center; justify-content: space-between;
+	gap: 12px; background: none; border: 0; cursor: pointer; text-align: left;
+	padding: 14px 2px; font: inherit; color: var(--cr-ink);
+}
+.cr-group-head:hover { color: #000; }
+.cr-group-head:focus-visible { outline: 2px solid var(--cr-accent); outline-offset: -2px; }
 .cr-group-label { font-size: 13px; font-weight: 700; text-transform: uppercase;
-	letter-spacing: .05em; color: var(--cr-ink); margin: 0 0 10px; }
+	letter-spacing: .05em; color: inherit; margin: 0; }
+.cr-caret { width: 9px; height: 9px; flex: none; border-right: 2px solid var(--cr-muted);
+	border-bottom: 2px solid var(--cr-muted); transform: rotate(45deg) translate(-2px, -2px);
+	transition: transform .18s ease; }
+.cr-group.is-open .cr-caret { transform: rotate(-135deg) translate(-2px, -2px); }
+.cr-group-body { padding: 2px 2px 18px; }
 
 .cr-swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+/* the original nests each input in <div class="radio"><label>; keep that
+   structure (the bundle relies on the wrapper chain) but make it a flex item */
+.cr-swatches > .radio, .cr-choices > .radio { margin: 0; padding: 0; }
 .cr-swatch { position: relative; cursor: pointer; width: 62px; text-align: center; margin: 0; }
 .cr-swatch input { position: absolute; opacity: 0; pointer-events: none; }
 .cr-swatch img {
@@ -59,6 +76,25 @@
 .cr-swatch input:focus-visible + img { outline: 2px solid var(--cr-ink); outline-offset: 2px; }
 .cr-swatch-code { display: block; font-size: 10px; color: var(--cr-muted); margin-top: 4px;
 	overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* made-to-measure size inputs */
+.cr-size { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; }
+.cr-size .cr-field { margin-bottom: 0; }
+.cr-area { grid-column: 1 / -1; font-size: 13px; color: var(--cr-muted); min-height: 1.2em; }
+.cr-area.is-set { color: var(--cr-ink); font-weight: 600; }
+@media (max-width: 520px) { .cr-size { grid-template-columns: 1fr; } }
+
+/* plain (non-swatch) choices */
+.cr-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.cr-choice { display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+	border: 1px solid var(--cr-line); border-radius: 8px; padding: 7px 12px;
+	font-size: 14px; margin: 0; transition: border-color .15s, background .15s; }
+.cr-choice:hover { background: #fafbfc; }
+.cr-choice input { margin: 0; }
+.cr-choice:has(input:checked) { border-color: var(--cr-accent); background: #fffdf2; }
+
+.cr-qty { width: 110px; border: 1px solid var(--cr-line); border-radius: 8px;
+	padding: 9px 11px; font: inherit; }
 
 /* the bundle writes its render here; keep it in the DOM but out of sight */
 .cr-capture { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

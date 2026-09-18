@@ -34,26 +34,106 @@
 			<p class="cr-desc">{{ p.description }}</p>
 			{% endif %}
 
+			{# Collapsible accordion, matching the original (all groups start closed).
+			   The radios carry the same value / id / data-mp_* attributes the
+			   original emits, because the obfuscated bundle reads them off the
+			   $(this) element it is handed. #}
+			<div class="cr-accordion">
 			{% for g in p.option_groups %}
-			<div class="cr-group">
-				<h5 class="cr-group-label">{{ g.label }}</h5>
-				<div class="cr-swatches" id="input-option{{ g.id }}">
-					{% for o in g.options %}
-					<label class="cr-swatch" title="{{ o.code }}">
-						<input type="radio"
-							name="option[{{ g.id }}]"
-							value="{{ o.value }}"
-							data-cr-group="{{ o.group }}"
-							data-cr-image="{{ asset(o.image) }}"
-							data-cr-code="{{ o.code }}"
-							{% if loop.first %}checked{% endif %}>
-						<img src="{{ asset(o.image) }}" alt="{{ o.code }}" loading="lazy">
-						<span class="cr-swatch-code">{{ o.code }}</span>
-					</label>
-					{% endfor %}
+				{% if g.kind in ("swatch", "size", "choice") %}
+				<div class="cr-group{% if g.kind == 'size' %} cr-size-group{% endif %}">
+					<button type="button" class="cr-group-head" aria-expanded="false"
+						aria-controls="cr-body-{{ g.id }}">
+						<span class="cr-group-label">{{ g.label }}</span>
+						<span class="cr-caret" aria-hidden="true"></span>
+					</button>
+					<div class="cr-group-body" id="cr-body-{{ g.id }}" hidden>
+
+						{% if g.kind == "swatch" %}
+						{# The .mpoption wrapper is NOT decoration: modelchanger walks up
+						   from the clicked input to it and reads these data-* attributes.
+						   Without it the call succeeds but silently does nothing. #}
+						<div data-mp_option="{{ g.wrap.mp_option }}"
+							data-mp_parentoption="{{ g.wrap.mp_parentoption }}"
+							data-product_option_id="{{ g.id }}"
+							class="{{ g.wrap.class or 'form-group mpoption product-option-radio push-option' }}">
+							<div class="cr-swatches" id="input-option{{ g.id }}">
+								{% for o in g.options %}
+								<div class="radio">
+									<label class="cr-swatch" title="{{ o.code }}">
+										<input type="radio"
+											name="option[{{ g.id }}]"
+											id="{{ o.id or g.id }}"
+											value="{{ o.value }}"
+											data-mp_optionvalue="{{ o.mp_optionvalue }}"
+											data-mp_parentoption_value="{{ o.mp_parentoption_value }}"
+											data-price="{{ o.price }}"
+											data-cr-group="{{ o.group }}"
+											data-cr-image="{{ asset(o.image) }}"
+											data-cr-code="{{ o.code }}"
+											{% if loop.first %}checked{% endif %}>
+										<img src="{{ asset(o.image) }}" alt="{{ o.code }}" loading="lazy">
+										<span class="cr-swatch-code">{{ o.code }}</span>
+									</label>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						{% elif g.kind == "size" %}
+						<div class="cr-size" id="input-option{{ g.id }}">
+							{% for f in g.fields %}
+							<div class="cr-field">
+								<label for="cr-size-{{ g.id }}-{{ f.field }}">{{ f.placeholder }} (cm)</label>
+								<input type="number" inputmode="decimal" min="1" step="0.5"
+									id="cr-size-{{ g.id }}-{{ f.field }}"
+									name="option[{{ g.id }}][{{ f.field }}]"
+									data-cr-size="{{ f.field }}"
+									placeholder="{{ f.placeholder }}">
+							</div>
+							{% endfor %}
+							<div class="cr-area" data-cr-area>&nbsp;</div>
+						</div>
+
+						{% else %}
+						<div data-mp_option="{{ g.wrap.mp_option }}"
+							data-mp_parentoption="{{ g.wrap.mp_parentoption }}"
+							data-product_option_id="{{ g.id }}"
+							class="{{ g.wrap.class or 'form-group mpoption product-option-radio push-option' }}">
+							<div class="cr-choices" id="input-option{{ g.id }}">
+								{% for c in g.choices %}
+								<div class="radio">
+									<label class="cr-choice">
+										<input type="radio" name="option[{{ g.id }}]"
+											id="{{ c.id or g.id }}" value="{{ c.value }}"
+											data-mp_optionvalue="{{ c.mp_optionvalue }}"
+											data-mp_parentoption_value="{{ c.mp_parentoption_value }}"
+											data-price="{{ c.price }}"
+											data-cr-label="{{ c.label }}"
+											{% if loop.first %}checked{% endif %}>
+										<span>{{ c.label or c.value }}</span>
+									</label>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+						{% endif %}
+
+					</div>
+				</div>
+				{% endif %}
+			{% endfor %}
+
+				<div class="cr-group cr-qty-group">
+					<button type="button" class="cr-group-head" aria-expanded="false" aria-controls="cr-body-qty">
+						<span class="cr-group-label">{{ _("Quantity") }}</span>
+						<span class="cr-caret" aria-hidden="true"></span>
+					</button>
+					<div class="cr-group-body" id="cr-body-qty" hidden>
+						<input type="number" id="cr-qty" name="quantity" value="1" min="1" step="1" class="cr-qty">
+					</div>
 				</div>
 			</div>
-			{% endfor %}
 
 			{% if p.capture_option_id %}
 			{# the bundle writes its render here; kept as type=text on purpose #}

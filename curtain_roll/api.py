@@ -15,15 +15,28 @@ def _clean(value, limit=140):
 	return (value or "").strip()[:limit]
 
 
+def _num(value):
+	"""Parse a user-entered dimension; returns None if it isn't a positive number."""
+	try:
+		n = float(str(value).strip())
+	except (TypeError, ValueError):
+		return None
+	return n if n > 0 else None
+
+
 @frappe.whitelist(allow_guest=True)
 @rate_limit(limit=10, seconds=60 * 60)
 def submit_quote(product=None, name=None, phone=None, email=None, city=None,
-                 notes=None, selections=None, captured_image=None):
+                 notes=None, selections=None, captured_image=None,
+                 width=None, height=None, quantity=None):
 	"""Public endpoint behind the 'Request a quote' form on each product page.
 
 	Creates a Lead and attaches the configurator render, if one was captured.
-	Sizing happens offline (store visit / WhatsApp), which is how the business
-	actually sells, so no dimensions are collected here.
+
+	The original storefront is made-to-measure: it collects width and height as
+	option[<id>][width] / [height], so they are captured here too. The final
+	price still comes from the team, since the live site recalculates it with a
+	server-side formula we do not have.
 	"""
 	product_key = _clean(product, 40)
 	item = get_product(product_key)
@@ -53,6 +66,17 @@ def submit_quote(product=None, name=None, phone=None, email=None, city=None,
 		"%s: %s" % (_("Product"), item.get("heading") or product_key),
 		"%s: SR %s" % (_("Starting price"), item.get("price")),
 	]
+
+	w, h = _num(width), _num(height)
+	if w and h:
+		summary.append("%s: %g x %g cm (%.2f m²)" % (_("Size"), w, h, (w * h) / 10000.0))
+	elif w or h:
+		summary.append("%s: %s x %s cm" % (_("Size"), width or "?", height or "?"))
+
+	qty = _num(quantity)
+	if qty and qty != 1:
+		summary.append("%s: %g" % (_("Quantity"), qty))
+
 	if selections:
 		summary.append("%s: %s" % (_("Selections"), _clean(selections, 900)))
 	if notes:
