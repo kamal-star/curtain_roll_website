@@ -3028,6 +3028,27 @@ $(window).scroll(function() {
     'debug_mode': true,
   });
 //--></script>
+
+{% endraw %}
+
+<script>
+/* The ported pages are raw theme HTML with no Frappe boot script, so the
+   theme's jQuery AJAX sent no CSRF token and Frappe rejected every POST with
+   CSRFTokenError before our code ever ran. Hand jQuery the token here. */
+window.csrf_token = "{{ frappe.session.data.csrf_token or '' }}";
+(function () {
+  function arm() {
+    if (!window.jQuery || !window.csrf_token) return false;
+    jQuery.ajaxSetup({ headers: { "X-Frappe-CSRF-Token": window.csrf_token } });
+    return true;
+  }
+  if (!arm()) {
+    var t = setInterval(function () { if (arm()) clearInterval(t); }, 100);
+    setTimeout(function () { clearInterval(t); }, 15000);
+  }
+})();
+</script>
+{% raw %}
 </body>
 </html>
 
