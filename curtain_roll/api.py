@@ -11,6 +11,21 @@ MAX_IMAGE_BYTES = 4 * 1024 * 1024
 DATA_URL = re.compile(r"^data:image/(png|jpe?g|webp);base64,(.+)$", re.S)
 
 
+@frappe.whitelist(allow_guest=True)
+def csrf_token():
+	"""Hand the current session's CSRF token to the ported storefront pages.
+
+	Those pages are raw theme HTML with no Frappe boot script, so the theme's
+	jQuery AJAX sends no token and Frappe rejects every POST with
+	CSRFTokenError. Baking the token into the HTML does not work either -
+	website pages are cached, so visitors get a stale or blank token.
+
+	Fetching it live sidesteps the cache. This is a GET (exempt from CSRF) and
+	same-origin only, so another site cannot read the response.
+	"""
+	return {"token": (frappe.session.data.get("csrf_token") or "") if frappe.session else ""}
+
+
 def _clean(value, limit=140):
 	return (value or "").strip()[:limit]
 

@@ -3650,19 +3650,36 @@ $(window).scroll(function() {
 
 <script>
 /* The ported pages are raw theme HTML with no Frappe boot script, so the
-   theme's jQuery AJAX sent no CSRF token and Frappe rejected every POST with
-   CSRFTokenError before our code ever ran. Hand jQuery the token here. */
-window.csrf_token = "{{ frappe.session.data.csrf_token or '' }}";
+   theme's jQuery AJAX sends no CSRF token and Frappe rejects every POST with
+   CSRFTokenError before our code runs.
+
+   The token is FETCHED, not baked in: Frappe caches website pages, so a
+   template-rendered token comes back stale or blank for other sessions. */
 (function () {
-  function arm() {
-    if (!window.jQuery || !window.csrf_token) return false;
-    jQuery.ajaxSetup({ headers: { "X-Frappe-CSRF-Token": window.csrf_token } });
+  function armJQuery(token) {
+    if (!window.jQuery) return false;
+    jQuery.ajaxSetup({ headers: { "X-Frappe-CSRF-Token": token } });
+    // belt and braces: some theme calls build their own payloads
+    jQuery(document).ajaxSend(function (e, xhr) {
+      try { xhr.setRequestHeader("X-Frappe-CSRF-Token", token); } catch (err) {}
+    });
     return true;
   }
-  if (!arm()) {
-    var t = setInterval(function () { if (arm()) clearInterval(t); }, 100);
-    setTimeout(function () { clearInterval(t); }, 15000);
-  }
+
+  fetch("/api/method/curtain_roll.api.csrf_token", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      var token = (j && j.message && j.message.token) || "";
+      window.csrf_token = token;
+      if (!token) return;            // guest with no token: Frappe skips the check
+      if (!armJQuery(token)) {
+        var t = setInterval(function () {
+          if (armJQuery(token)) clearInterval(t);
+        }, 100);
+        setTimeout(function () { clearInterval(t); }, 15000);
+      }
+    })
+    .catch(function () {});
 })();
 </script>
 {% raw %}
