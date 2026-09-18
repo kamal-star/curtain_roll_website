@@ -3216,6 +3216,33 @@ $(window).scroll(function() {
     setTimeout(function () { if (box.parentNode) box.remove(); }, 9000);
   }
 
+  /* --- make the configurator render actually reach the cart -------------
+     The theme's inline handler POSTs the canvas to script.php, then writes the
+     returned filename into #input-option356 / 357 / 426 - ids hardcoded for a
+     few products. On every other page (blackout is #input-option378) those
+     elements do not exist, so the value lands nowhere and an EMPTY capture
+     field is submitted. Wrapping $.ajax lets us register a .done() BEFORE the
+     theme's, so the real field is filled before the cart request is built. */
+  function armCapture() {
+    if (!window.jQuery || jQuery.__crCaptureWrapped) return false;
+    var orig = jQuery.ajax;
+    jQuery.ajax = function (opts) {
+      var jqxhr = orig.apply(this, arguments);
+      var url = (opts && opts.url) || (typeof opts === "string" ? opts : "");
+      if (String(url).indexOf("script.php") !== -1 && jqxhr && jqxhr.done) {
+        jqxhr.done(function (resp) {
+          var value = String(resp || "").trim();
+          if (!value) return;
+          document.querySelectorAll('input[placeholder="Captured image"]')
+            .forEach(function (el) { el.value = value; });
+        });
+      }
+      return jqxhr;
+    };
+    jQuery.__crCaptureWrapped = true;
+    return true;
+  }
+
   function watchCart() {
     if (!window.jQuery) return false;
     jQuery(document).ajaxComplete(function (e, xhr, settings) {
@@ -3240,6 +3267,13 @@ $(window).scroll(function() {
     return true;
   }
 
+  // arm the capture wrapper straight away - it must be in place before the
+  // visitor can click Add to cart, not after an async round trip
+  if (!armCapture()) {
+    var a = setInterval(function () { if (armCapture()) clearInterval(a); }, 80);
+    setTimeout(function () { clearInterval(a); }, 15000);
+  }
+
   fetch("/api/method/curtain_roll.api.session_info", { credentials: "same-origin" })
     .then(function (r) { return r.json(); })
     .then(function (j) {
@@ -3251,6 +3285,10 @@ $(window).scroll(function() {
         setTimeout(function () { clearInterval(t); }, 15000);
       }
       applySession(s);
+      if (!armCapture()) {
+        var c = setInterval(function () { if (armCapture()) clearInterval(c); }, 120);
+        setTimeout(function () { clearInterval(c); }, 15000);
+      }
       if (!watchCart()) {
         var w = setInterval(function () { if (watchCart()) clearInterval(w); }, 150);
         setTimeout(function () { clearInterval(w); }, 15000);
