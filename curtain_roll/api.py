@@ -26,6 +26,24 @@ def csrf_token():
 	return {"token": (frappe.session.data.get("csrf_token") or "") if frappe.session else ""}
 
 
+@frappe.whitelist()
+def cart_set_qty(item_code=None, qty=0):
+	"""Change a cart line's quantity (0 removes it). Login required."""
+	from curtain_roll import cart as cart_api
+
+	if not item_code:
+		frappe.throw(_("Missing item"))
+	return cart_api.set_qty(item_code, qty)
+
+
+@frappe.whitelist()
+def cart_place_order():
+	"""Submit the draft cart quotation. Login required."""
+	from curtain_roll import cart as cart_api
+
+	return cart_api.place_order()
+
+
 @frappe.whitelist(allow_guest=True)
 def session_info():
 	"""Who is browsing, and what is in their cart.
@@ -44,6 +62,14 @@ def session_info():
 		              if not guest else ""),
 		"cart_text": info.get("text"),
 		"cart_count": info.get("count") or 0,
+		"cart_items": [
+			{
+				"name": i.get("name") or i.get("item_code"),
+				"qty": i.get("qty"),
+				"amount": i.get("amount"),
+			}
+			for i in (info.get("items") or [])
+		],
 		"csrf_token": (frappe.session.data.get("csrf_token") or "") if frappe.session else "",
 	}
 

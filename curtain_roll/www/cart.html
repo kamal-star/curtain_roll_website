@@ -3,55 +3,151 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block page_content %}
-<div class="cr-page" style="max-width:900px;margin:0 auto;padding:32px 16px 64px;">
-	<h1 class="cr-title">{{ _("Your Cart") }}</h1>
+<div class="cr-cart-page" style="max-width:940px;margin:0 auto;padding:32px 16px 64px;">
+	<h1 style="font-size:28px;font-weight:700;margin-bottom:18px;">{{ _("Your Cart") }}</h1>
 
 	{% if guest %}
-		<p class="cr-desc">{{ _("Please sign in to see your cart.") }}</p>
+		<p style="color:#6d767d;">{{ _("Please sign in to see your cart.") }}</p>
 		<p>
-			<a class="cr-submit" style="display:inline-block;text-decoration:none;padding:12px 22px;"
-				href="{{ login_url }}">{{ _("Sign in") }}</a>
-			<a style="margin-left:14px;" href="/login#signup">{{ _("Create an account") }}</a>
+			<a href="{{ login_url }}" style="display:inline-block;background:#f5c400;color:#14181d;
+				font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none;">{{ _("Sign in") }}</a>
+			<a href="/login#signup" style="margin-left:14px;">{{ _("Create an account") }}</a>
 		</p>
-
-	{% elif not items %}
-		<p class="cr-desc">{{ _("Your cart is empty.") }}</p>
-		<p><a href="/">{{ _("Browse curtains") }}</a></p>
 
 	{% else %}
-		<div style="overflow-x:auto;">
-		<table style="width:100%;border-collapse:collapse;margin:18px 0;">
-			<thead>
-				<tr style="text-align:left;border-bottom:2px solid #e6e8eb;">
-					<th style="padding:10px 8px;">{{ _("Product") }}</th>
-					<th style="padding:10px 8px;text-align:right;">{{ _("Qty") }}</th>
-					<th style="padding:10px 8px;text-align:right;">{{ _("Rate") }}</th>
-					<th style="padding:10px 8px;text-align:right;">{{ _("Amount") }}</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for i in items %}
-				<tr style="border-bottom:1px solid #eef0f2;">
-					<td style="padding:12px 8px;">{{ i.name or i.item_code }}</td>
-					<td style="padding:12px 8px;text-align:right;">{{ i.qty | int }}</td>
-					<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
-					<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.amount) }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		<div id="cr-cart-empty" style="{% if items %}display:none;{% endif %}">
+			<p style="color:#6d767d;">{{ _("Your cart is empty.") }}</p>
+			<p><a href="/">{{ _("Browse curtains") }}</a></p>
 		</div>
 
-		<p style="font-size:18px;font-weight:700;">{{ total_text }}</p>
+		<div id="cr-cart-body" style="{% if not items %}display:none;{% endif %}">
+			<div style="overflow-x:auto;">
+			<table style="width:100%;border-collapse:collapse;margin:18px 0;">
+				<thead>
+					<tr style="text-align:left;border-bottom:2px solid #e6e8eb;">
+						<th style="padding:10px 8px;">{{ _("Product") }}</th>
+						<th style="padding:10px 8px;width:150px;">{{ _("Qty") }}</th>
+						<th style="padding:10px 8px;text-align:right;">{{ _("Rate") }}</th>
+						<th style="padding:10px 8px;text-align:right;">{{ _("Amount") }}</th>
+						<th style="padding:10px 8px;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in items %}
+					<tr data-item="{{ i.item_code }}" style="border-bottom:1px solid #eef0f2;">
+						<td style="padding:12px 8px;">{{ i.name or i.item_code }}</td>
+						<td style="padding:12px 8px;">
+							<input type="number" min="1" step="1" value="{{ i.qty | int }}"
+								class="cr-qty-input"
+								style="width:80px;padding:7px 9px;border:1px solid #e6e8eb;border-radius:7px;">
+						</td>
+						<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
+						<td style="padding:12px 8px;text-align:right;" class="cr-amount">{{ "%.2f"|format(i.amount) }}</td>
+						<td style="padding:12px 8px;text-align:right;">
+							<button type="button" class="cr-remove"
+								style="background:none;border:0;color:#c0392b;cursor:pointer;">{{ _("Remove") }}</button>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			</div>
 
-		{% if quotation %}
-		<p class="cr-desc" style="font-size:13px;">
-			{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
-			{{ _("Our team will confirm sizes and final pricing with you.") }}
-		</p>
-		{% endif %}
+			<p id="cr-cart-total" style="font-size:19px;font-weight:700;">{{ total_text }}</p>
 
-		<p><a href="/">{{ _("Continue shopping") }}</a></p>
+			{% if quotation %}
+			<p style="font-size:13px;color:#6d767d;">
+				{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
+			</p>
+			{% endif %}
+
+			<div style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+				<button type="button" id="cr-place-order"
+					style="background:#f5c400;color:#14181d;font-weight:700;border:0;
+					padding:13px 26px;border-radius:8px;cursor:pointer;font-size:15px;">
+					{{ _("Place Order") }}
+				</button>
+				<a href="/">{{ _("Continue shopping") }}</a>
+			</div>
+			<p style="font-size:13px;color:#6d767d;margin-top:12px;">
+				{{ _("Our team confirms sizes and final pricing before anything is charged.") }}
+			</p>
+			<div id="cr-cart-msg" role="status" style="margin-top:14px;font-size:14px;"></div>
+		</div>
 	{% endif %}
 </div>
+
+<script>
+(function () {
+	var msg = document.getElementById("cr-cart-msg");
+	function say(text, ok) {
+		if (!msg) return;
+		msg.textContent = text;
+		msg.style.color = ok ? "#0a8a3c" : "#c0392b";
+	}
+
+	function post(method, body) {
+		return fetch("/api/method/" + method, {
+			method: "POST",
+			credentials: "same-origin",
+			headers: {
+				"Content-Type": "application/json",
+				"X-Frappe-CSRF-Token": (window.frappe && window.frappe.csrf_token) || ""
+			},
+			body: JSON.stringify(body || {})
+		}).then(function (r) { return r.json(); });
+	}
+
+	function setQty(row, qty) {
+		var code = row.getAttribute("data-item");
+		post("curtain_roll.api.cart_set_qty", { item_code: code, qty: qty })
+			.then(function (j) {
+				var m = (j && j.message) || {};
+				if (m.error === "login") { window.location = "/login?redirect-to=/cart"; return; }
+				if (!m.ok) { say("Could not update the cart.", false); return; }
+				if (qty <= 0) row.remove();
+				var total = document.getElementById("cr-cart-total");
+				if (total && m.total) total.textContent = m.total;
+				if (m.empty || !document.querySelector("tr[data-item]")) {
+					document.getElementById("cr-cart-body").style.display = "none";
+					document.getElementById("cr-cart-empty").style.display = "";
+				}
+				say("Cart updated.", true);
+			})
+			.catch(function () { say("Network error.", false); });
+	}
+
+	document.querySelectorAll("tr[data-item]").forEach(function (row) {
+		var input = row.querySelector(".cr-qty-input");
+		if (input) {
+			input.addEventListener("change", function () {
+				setQty(row, Math.max(1, parseInt(input.value || "1", 10)));
+			});
+		}
+		var rm = row.querySelector(".cr-remove");
+		if (rm) rm.addEventListener("click", function () { setQty(row, 0); });
+	});
+
+	var order = document.getElementById("cr-place-order");
+	if (order) {
+		order.addEventListener("click", function () {
+			order.disabled = true;
+			say("Placing your order…", true);
+			post("curtain_roll.api.cart_place_order", {})
+				.then(function (j) {
+					var m = (j && j.message) || {};
+					if (m.error === "login") { window.location = "/login?redirect-to=/cart"; return; }
+					if (m.error === "empty") { say("Your cart is empty.", false); order.disabled = false; return; }
+					if (!m.ok) { say("Could not place the order. Please try again.", false); order.disabled = false; return; }
+					document.getElementById("cr-cart-body").innerHTML =
+						'<p style="font-size:17px;font-weight:700;color:#0a8a3c;">Thank you — your order is placed.</p>' +
+						'<p style="color:#6d767d;">Quotation <b>' + m.quotation + '</b> has been submitted. ' +
+						'Our team will contact you to confirm sizes and final pricing.</p>' +
+						'<p><a href="/">Continue shopping</a></p>';
+				})
+				.catch(function () { say("Network error.", false); order.disabled = false; });
+		});
+	}
+})();
+</script>
 {% endblock %}

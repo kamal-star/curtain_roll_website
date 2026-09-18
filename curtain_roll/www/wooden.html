@@ -3062,6 +3062,43 @@ $(window).scroll(function() {
       var el = document.getElementById("cart-total");
       if (el) el.textContent = s.cart_text;
     }
+    renderDropdown(s.cart_items || [], s.cart_text, s.cart_count || 0);
+  }
+
+  /* The hover dropdown is baked as "Your shopping cart is empty!" in the
+     snapshot, so it must be rebuilt from live data. */
+  function renderDropdown(items, totalText, count) {
+    var badge = document.getElementById("cart-items");
+    if (badge) {
+      badge.textContent = count;
+      badge.classList.toggle("count-zero", count === 0);
+    }
+
+    var box = document.getElementById("cart-content");
+    if (!box) return;
+    if (!items.length) return;   // leave the theme's empty message alone
+
+    function esc(v) {
+      return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    var rows = items.map(function (i) {
+      return '<li style="padding:8px 12px;display:flex;justify-content:space-between;gap:12px;">' +
+        '<span>' + esc(i.name) + ' &times; ' + esc(parseInt(i.qty, 10)) + '</span>' +
+        '<span style="white-space:nowrap;">' + esc(Number(i.amount).toFixed(2)) + '</span>' +
+        '</li>';
+    }).join("");
+
+    box.innerHTML =
+      '<ul style="margin:0;padding:6px 0;list-style:none;">' + rows +
+      '<li style="padding:10px 12px;border-top:1px solid #e6e8eb;font-weight:700;">' +
+      esc(totalText || "") + '</li>' +
+      '<li style="padding:10px 12px;">' +
+      '<a href="/cart" style="display:block;text-align:center;background:#f5c400;color:#14181d;' +
+      'font-weight:700;padding:9px 14px;border-radius:7px;text-decoration:none;">View Cart</a>' +
+      '</li></ul>';
   }
 
   /* --- "added to cart" popup with a View Cart button -------------------- */
@@ -3103,6 +3140,11 @@ $(window).scroll(function() {
           var el = document.getElementById("cart-total");
           if (el) el.textContent = json.total;
         }
+        // rebuild the hover dropdown from live data
+        fetch("/api/method/curtain_roll.api.session_info", { credentials: "same-origin" })
+          .then(function (r) { return r.json(); })
+          .then(function (jj) { applySession((jj && jj.message) || {}); })
+          .catch(function () {});
       }
     });
     return true;

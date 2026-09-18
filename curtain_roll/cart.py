@@ -264,6 +264,53 @@ def wishlist_add(args, form):
 	}
 
 
+def set_qty(item_code, qty):
+	"""Update one line on the cart quotation; qty <= 0 removes it."""
+	if is_guest():
+		return {"error": "login"}
+	quotation = get_cart_quotation()
+	if not quotation:
+		return {"ok": True, "total": _total_text(None)}
+	try:
+		qty = float(qty)
+	except (TypeError, ValueError):
+		qty = 0
+	kept = []
+	for row in quotation.items:
+		if row.item_code == item_code:
+			if qty <= 0:
+				continue
+			row.qty = qty
+		kept.append(row)
+	quotation.set("items", kept)
+	if not quotation.items:
+		# an empty quotation cannot be saved; drop it entirely
+		name = quotation.get("name")
+		if name:
+			frappe.delete_doc("Quotation", name, force=True, ignore_permissions=True)
+			frappe.db.commit()
+		return {"ok": True, "total": _total_text(None), "empty": True}
+	_save(quotation)
+	return {"ok": True, "total": _total_text(quotation)}
+
+
+def place_order():
+	"""Submit the draft cart quotation so the team can act on it."""
+	if is_guest():
+		return {"error": "login"}
+	quotation = get_cart_quotation()
+	if not quotation or not quotation.get("items"):
+		return {"error": "empty"}
+	try:
+		quotation.flags.ignore_permissions = True
+		quotation.submit()
+		frappe.db.commit()
+	except Exception:
+		frappe.log_error(title="curtain_roll place_order", message=frappe.get_traceback())
+		return {"error": "failed"}
+	return {"ok": True, "quotation": quotation.name}
+
+
 def info():
 	"""Cart summary for the header / cart page."""
 	if is_guest():
