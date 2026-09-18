@@ -128,9 +128,24 @@ def attach_render(quotation_name, file_url):
 		)
 		if existing:
 			return existing
-		src = frappe.db.get_value("File", {"file_url": file_url}, "name")
-		if not src:
+		# script.php saved the render unattached; adopt that row rather than
+		# creating a second File pointing at the same bytes.
+		src = frappe.db.get_value(
+			"File",
+			{"file_url": file_url, "attached_to_name": ["in", ["", None]]},
+			"name",
+		)
+		if src:
+			doc = frappe.get_doc("File", src)
+			doc.attached_to_doctype = "Quotation"
+			doc.attached_to_name = quotation_name
+			doc.flags.ignore_permissions = True
+			doc.save(ignore_permissions=True)
+			return doc.name
+
+		if not frappe.db.exists("File", {"file_url": file_url}):
 			return None
+
 		doc = frappe.get_doc({
 			"doctype": "File",
 			"file_url": file_url,
