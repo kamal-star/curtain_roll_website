@@ -26,6 +26,28 @@ def csrf_token():
 	return {"token": (frappe.session.data.get("csrf_token") or "") if frappe.session else ""}
 
 
+@frappe.whitelist(allow_guest=True)
+def session_info():
+	"""Who is browsing, and what is in their cart.
+
+	The ported pages are static theme snapshots, so their header always renders
+	the logged-out state. The storefront script calls this on load and swaps the
+	Login/Register links for the account links when someone is signed in.
+	"""
+	from curtain_roll import cart as cart_api
+
+	guest = cart_api.is_guest()
+	info = cart_api.info()
+	return {
+		"logged_in": not guest,
+		"full_name": (frappe.db.get_value("User", frappe.session.user, "full_name")
+		              if not guest else ""),
+		"cart_text": info.get("text"),
+		"cart_count": info.get("count") or 0,
+		"csrf_token": (frappe.session.data.get("csrf_token") or "") if frappe.session else "",
+	}
+
+
 def _clean(value, limit=140):
 	return (value or "").strip()[:limit]
 

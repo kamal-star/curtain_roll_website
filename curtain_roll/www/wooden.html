@@ -3038,17 +3038,90 @@ $(window).scroll(function() {
     return true;
   }
 
-  fetch("/api/method/curtain_roll.api.csrf_token", { credentials: "same-origin" })
+  /* --- header: the snapshot always renders the logged-out state --------- */
+  function applySession(s) {
+    var login = null, register = null;
+    var links = document.querySelectorAll('a[href="/login"], a[href="/login#signup"]');
+    Array.prototype.forEach.call(links, function (a) {
+      var href = a.getAttribute("href");
+      if (href === "/login") login = login || a;
+      else register = register || a;
+    });
+
+    if (s.logged_in) {
+      Array.prototype.forEach.call(links, function (a) {
+        var span = a.querySelector(".links-text") || a;
+        var href = a.getAttribute("href");
+        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/me"); }
+        else { span.textContent = "Logout"; a.setAttribute("href", "/?cmd=web_logout"); }
+      });
+    }
+
+    // header cart counter (the snapshot is baked at 0)
+    if (s.cart_text) {
+      var el = document.getElementById("cart-total");
+      if (el) el.textContent = s.cart_text;
+    }
+  }
+
+  /* --- "added to cart" popup with a View Cart button -------------------- */
+  function toast(message) {
+    var old = document.getElementById("cr-toast");
+    if (old) old.remove();
+    var box = document.createElement("div");
+    box.id = "cr-toast";
+    box.setAttribute("role", "status");
+    box.style.cssText = [
+      "position:fixed", "top:20px", "right:20px", "z-index:99999",
+      "background:#fff", "border:1px solid #e6e8eb", "border-radius:10px",
+      "box-shadow:0 10px 30px rgba(0,0,0,.14)", "padding:16px 18px",
+      "max-width:330px", "font:14px/1.5 inherit", "color:#14181d"
+    ].join(";");
+    box.innerHTML =
+      '<div style="font-weight:700;margin-bottom:8px;">' + message + '</div>' +
+      '<div style="display:flex;gap:10px;align-items:center;">' +
+      '<a href="/cart" style="background:#f5c400;color:#14181d;font-weight:700;' +
+      'padding:8px 14px;border-radius:7px;text-decoration:none;">View Cart</a>' +
+      '<button type="button" style="background:none;border:0;cursor:pointer;color:#6d767d;">Continue</button>' +
+      '</div>';
+    box.querySelector("button").onclick = function () { box.remove(); };
+    document.body.appendChild(box);
+    setTimeout(function () { if (box.parentNode) box.remove(); }, 9000);
+  }
+
+  function watchCart() {
+    if (!window.jQuery) return false;
+    jQuery(document).ajaxComplete(function (e, xhr, settings) {
+      var url = String(settings.url || "");
+      if (url.indexOf("checkout/cart/add") === -1) return;
+      var json = {};
+      try { json = JSON.parse(xhr.responseText || "{}"); } catch (err) { return; }
+      if (json.redirect) { window.location = json.redirect; return; }
+      if (json.success) {
+        toast("Added to your cart");
+        if (json.total) {
+          var el = document.getElementById("cart-total");
+          if (el) el.textContent = json.total;
+        }
+      }
+    });
+    return true;
+  }
+
+  fetch("/api/method/curtain_roll.api.session_info", { credentials: "same-origin" })
     .then(function (r) { return r.json(); })
     .then(function (j) {
-      var token = (j && j.message && j.message.token) || "";
+      var s = (j && j.message) || {};
+      var token = s.csrf_token || "";
       window.csrf_token = token;
-      if (!token) return;            // guest with no token: Frappe skips the check
-      if (!armJQuery(token)) {
-        var t = setInterval(function () {
-          if (armJQuery(token)) clearInterval(t);
-        }, 100);
+      if (token && !armJQuery(token)) {
+        var t = setInterval(function () { if (armJQuery(token)) clearInterval(t); }, 100);
         setTimeout(function () { clearInterval(t); }, 15000);
+      }
+      applySession(s);
+      if (!watchCart()) {
+        var w = setInterval(function () { if (watchCart()) clearInterval(w); }, 150);
+        setTimeout(function () { clearInterval(w); }, 15000);
       }
     })
     .catch(function () {});
