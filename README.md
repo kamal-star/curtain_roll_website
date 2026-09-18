@@ -96,9 +96,27 @@ tar czf /tmp/curtain_roll.tar.gz curtain_roll
 cd ~/frappe-bench/apps && tar xzf /tmp/curtain_roll.tar.gz
 ```
 
-**Option B — Git remote.** Individual bundles sit under GitHub's 100 MB hard limit
-(largest `Roman.js`, 47 MB) but several pass the 50 MB warning and the repo is large.
-Use **Git LFS** for `*.js` bundles, `www/maps/**` and `public/image/**`.
+**Option B — GitHub + `bench get-app` (recommended).** Measured against GitHub's
+limits: no file exceeds 100 MB (hard reject) and none even exceeds the 50 MB warning
+— the largest is `Roman.js` at 48 MB. Working tree is ~425 MB (4.4 MB code,
+420 MB media). **Git LFS is not required**; a plain push works.
+
+```bash
+# once, from the app directory
+git remote add origin git@github.com:<org>/curtain_roll.git
+git push -u origin main
+
+# on any target bench — this clones, pip installs AND adds to apps.txt for you
+bench get-app https://github.com/<org>/curtain_roll --branch main
+bench --site <site> install-app curtain_roll
+bench --site <site> clear-cache
+```
+
+`bench get-app` removes the three manual steps Option A needs (pip install,
+apps.txt, assets symlink), so prefer it.
+
+Use a **private** repo: the theme, product photography and configurator bundles
+are third-party assets, and a public repo republishes them.
 
 ### 3. Install
 
