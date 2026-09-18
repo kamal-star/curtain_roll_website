@@ -8,6 +8,7 @@ HOME_ROUTE = "home"
 def after_install():
 	"""Make the storefront live the moment the app is installed."""
 	_ensure_billing_contact_field()
+	_enable_signup()
 	_point_website_at_storefront()
 	_ensure_item_group()
 	_ensure_items()
@@ -49,6 +50,19 @@ def _ensure_billing_contact_field():
 		}).insert(ignore_permissions=True)
 	except Exception:
 		frappe.log_error(title="curtain_roll is_billing_contact")
+
+
+def _enable_signup():
+	"""The storefront's Register link points at Frappe's signup, which is
+	disabled by default - without this the button leads nowhere on a fresh site."""
+	try:
+		ws = frappe.get_single("Website Settings")
+		if ws.disable_signup:
+			ws.disable_signup = 0
+			ws.flags.ignore_mandatory = True
+			ws.save(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="curtain_roll enable signup")
 
 
 def _point_website_at_storefront():

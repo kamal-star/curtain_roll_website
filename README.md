@@ -73,3 +73,75 @@ curtain_roll/
 
 Regenerate `products.json` and the pages from a fresh capture with
 `extract_products.py` and `build_app.py` in the parent directory.
+
+## Moving to another ERPNext instance
+
+The app is ~670 MB, almost all media (`public/configurator` 168 MB,
+`public/image` 173 MB, `www/maps` 73 MB). That size drives the method.
+
+### 1. Check the target's versions
+
+The app carries a workaround for ERPNext 16.35 expecting `Contact.is_billing_contact`,
+which Frappe 16.34 does not define — `after_install` adds it as a Custom Field, and
+skips itself if a newer Frappe already ships the field.
+
+### 2. Get the app across
+
+**Option A — archive (simplest, no Git host):**
+
+```bash
+cd ~/frappe-bench/apps
+tar czf /tmp/curtain_roll.tar.gz curtain_roll
+# copy across, then on the target:
+cd ~/frappe-bench/apps && tar xzf /tmp/curtain_roll.tar.gz
+```
+
+**Option B — Git remote.** Individual bundles sit under GitHub's 100 MB hard limit
+(largest `Roman.js`, 47 MB) but several pass the 50 MB warning and the repo is large.
+Use **Git LFS** for `*.js` bundles, `www/maps/**` and `public/image/**`.
+
+### 3. Install
+
+```bash
+cd ~/frappe-bench
+./env/bin/pip install -e apps/curtain_roll     # bench install-app alone will NOT do this
+printf 'curtain_roll\n' >> sites/apps.txt      # NB: file has no trailing newline
+bench --site <site> install-app curtain_roll
+ln -sfn ~/frappe-bench/apps/curtain_roll/curtain_roll/public \
+        ~/frappe-bench/sites/assets/curtain_roll
+bench --site <site> clear-cache
+```
+
+**Restart the bench.** A running `bench start` keeps its old `sys.path`; until it
+restarts every page 500s with `ModuleNotFoundError`.
+
+### 4. The one thing that does NOT travel
+
+`allowed_referrers` lives in **site_config.json**, not app code. Without it the theme's
+AJAX is rejected with `CSRFTokenError`:
+
+```json
+"allowed_referrers": ["https://yourdomain.com"]
+```
+
+Everything else is handled by `after_install`: the Custom Field, signup enabled, the
+home page route, the nav, and an Item per curtain type.
+
+### 5. Case-sensitive filename warning
+
+`www/maps/preload/Zebra/scenebk.jpg` (capital Z) and `.../zebra/` must BOTH exist.
+Windows cannot hold both, so round-tripping through a Windows filesystem loses it and
+the Zebra configurator 404s. Recreate with:
+
+```bash
+mkdir -p curtain_roll/www/maps/preload/Zebra
+cp curtain_roll/www/maps/preload/zebra/scenebk.jpg \
+   curtain_roll/www/maps/preload/Zebra/scenebk.jpg
+```
+
+### 6. Verify after install
+
+- `/` and `/blackout` render with the theme
+- a colour click fetches `/assets/curtain_roll/image/catalog/<product>-materials/<code>.jpg`
+- textures resolve at `/maps/preload/…` (site root, **not** under `/assets`)
+- currency: quotations use the company default — set a SAR company and price list
