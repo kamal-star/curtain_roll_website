@@ -1,0 +1,57 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="cr-page" style="max-width:900px;margin:0 auto;padding:32px 16px 64px;">
+	<h1 class="cr-title">{{ _("Your Cart") }}</h1>
+
+	{% if guest %}
+		<p class="cr-desc">{{ _("Please sign in to see your cart.") }}</p>
+		<p>
+			<a class="cr-submit" style="display:inline-block;text-decoration:none;padding:12px 22px;"
+				href="{{ login_url }}">{{ _("Sign in") }}</a>
+			<a style="margin-left:14px;" href="/login#signup">{{ _("Create an account") }}</a>
+		</p>
+
+	{% elif not items %}
+		<p class="cr-desc">{{ _("Your cart is empty.") }}</p>
+		<p><a href="/">{{ _("Browse curtains") }}</a></p>
+
+	{% else %}
+		<div style="overflow-x:auto;">
+		<table style="width:100%;border-collapse:collapse;margin:18px 0;">
+			<thead>
+				<tr style="text-align:left;border-bottom:2px solid #e6e8eb;">
+					<th style="padding:10px 8px;">{{ _("Product") }}</th>
+					<th style="padding:10px 8px;text-align:right;">{{ _("Qty") }}</th>
+					<th style="padding:10px 8px;text-align:right;">{{ _("Rate") }}</th>
+					<th style="padding:10px 8px;text-align:right;">{{ _("Amount") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in items %}
+				<tr style="border-bottom:1px solid #eef0f2;">
+					<td style="padding:12px 8px;">{{ i.name or i.item_code }}</td>
+					<td style="padding:12px 8px;text-align:right;">{{ i.qty | int }}</td>
+					<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
+					<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.amount) }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</div>
+
+		<p style="font-size:18px;font-weight:700;">{{ total_text }}</p>
+
+		{% if quotation %}
+		<p class="cr-desc" style="font-size:13px;">
+			{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
+			{{ _("Our team will confirm sizes and final pricing with you.") }}
+		</p>
+		{% endif %}
+
+		<p><a href="/">{{ _("Continue shopping") }}</a></p>
+	{% endif %}
+</div>
+{% endblock %}
