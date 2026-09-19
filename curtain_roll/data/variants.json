@@ -9,10 +9,10 @@
   "scene_source": "scenes/wooden-premium.jpg",
   "price": 300.0,
   "window": [
-   877,
-   425,
-   1093,
-   590
+   857,
+   357,
+   1122,
+   640
   ],
   "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it; scene_fit chooses how the two axes are reconciled.",
   "scene_fit": "uniform"
