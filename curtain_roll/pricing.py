@@ -222,6 +222,14 @@ def get_spec(product_key):
 		"base_rate": flt(doc.base_rate),
 		"min_billable_sqm": flt(doc.min_billable_sqm) or 0.0,
 		"rounding": cint(doc.rounding) or 2,
+		"pricing_mode": doc.pricing_mode or "Base Rate",
+		"minimum_price": flt(doc.minimum_price),
+		"display_from_price": flt(doc.display_from_price),
+		"install_tiers": [
+			{"from_qty": cint(t.from_qty), "to_qty": cint(t.to_qty),
+			 "rate": flt(t.rate), "description": t.description or ""}
+			for t in (doc.get("install_tiers") or [])
+		],
 		"currency": currency_symbol(),
 		"size_group": size_group,
 		"color_group": color_group,
@@ -246,6 +254,7 @@ def get_spec(product_key):
 			"enabled": cint(o.enabled),
 			"charge_type": o.charge_type,
 			"rate": flt(o.rate),
+			"tiered": cint(o.get("tiered")),
 		}
 
 	frappe.cache().set_value(CACHE_KEY % product_key, json.dumps(spec))
@@ -292,12 +301,27 @@ def texture_url(file_url):
 
 
 # ----------------------------------------------------------- calculation
-def _charge(charge_type, rate, area, base):
+def _charge(charge_type, rate, dims, base):
+	"""One option's contribution. ``dims`` carries area, width_m and height_m."""
+	rate = flt(rate)
 	if charge_type == "Per Square Meter":
-		return flt(rate) * area
+		return rate * dims["area"]
+	if charge_type == "Per Metre of Width":
+		return rate * dims["width_m"]
+	if charge_type == "Per Metre of Height":
+		return rate * dims["height_m"]
 	if charge_type == "Percent of Base":
-		return base * flt(rate) / 100.0
-	return flt(rate)  # Fixed Amount, and the fallback
+		return base * rate / 100.0
+	return rate  # Fixed Amount, and the fallback
+
+
+def tier_rate(spec, order_qty):
+	"""Installation rate per curtain, banded by the WHOLE order's count."""
+	for tier in spec.get("install_tiers") or []:
+		low, high = cint(tier["from_qty"]), cint(tier["to_qty"])
+		if order_qty >= (low or 1) and (not high or order_qty <= high):
+			return flt(tier["rate"]), tier
+	return None, None
 
 
 def _dimension(value):
@@ -308,7 +332,7 @@ def _dimension(value):
 	return n if n > 0 else None
 
 
-def calculate(product_key, form, qty=1, strict=True):
+def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 	"""Price one configured blind.
 
 	``form`` is anything exposing ``.get("option[371]")``. Errors come back
@@ -320,9 +344,14 @@ def calculate(product_key, form, qty=1, strict=True):
 	  * strict (the cart) - a required option left unchosen is an error, so a
 	    half-configured blind cannot be ordered.
 	  * lenient (the live price on the page) - it is not an error, it just
-	    makes the result ``partial``. The theme only repaints the price when
+	    makes the result ``partial``. The theme repaints the price only when
 	    the response carries no ``error``, so being strict here would freeze
 	    the total until the very last option was picked.
+
+	``order_qty`` is how many curtains are on the whole order, which is what
+	picks the installation tier. It defaults to this line's own quantity, so a
+	product page shows the price for what the visitor is adding; the cart
+	passes the real total and re-prices every line.
 	"""
 	spec = get_spec(product_key)
 	if not spec:
@@ -336,8 +365,9 @@ def calculate(product_key, form, qty=1, strict=True):
 
 	errors, lines = {}, []
 	qty = max(1, cint(qty) or 1)
+	order_qty = max(qty, cint(order_qty) or 0) if order_qty else qty
 
-	# ---- size -> area in square metres
+	# ---- size -> area, and the two edge lengths things are charged by
 	area = 1.0
 	partial = False
 	width = height = None
@@ -350,7 +380,6 @@ def calculate(product_key, form, qty=1, strict=True):
 		if not width or not height:
 			started = bool(str(raw_w or "").strip() or str(raw_h or "").strip())
 			if strict or started:
-				# blank is "still typing"; half-filled is worth saying something about
 				errors[gid] = _("Enter the width and the height in cm.")
 			else:
 				partial = True
@@ -362,11 +391,15 @@ def calculate(product_key, form, qty=1, strict=True):
 	if per_sqm and spec["min_billable_sqm"]:
 		area = max(area, spec["min_billable_sqm"])
 
-	# ---- base rate, overridden by the first matching size slab
+	dims = {
+		"area": area,
+		"width_m": (width or 0) / 100.0,
+		"height_m": (height or 0) / 100.0,
+	}
+
+	# ---- the fabric: either the chosen material's own m2 rate, or the base
 	rate, basis = spec["base_rate"], spec["rate_basis"]
 	for slab in spec["slabs"]:
-		# A row left blank in the grid would otherwise read as "every size, at
-		# nothing" and silently zero the product.
 		if slab["rate"] <= 0:
 			continue
 		low, high = slab["from_sqm"], slab["to_sqm"]
@@ -374,10 +407,10 @@ def calculate(product_key, form, qty=1, strict=True):
 			rate, basis = slab["rate"], slab["rate_basis"]
 			break
 
+	by_material = spec.get("pricing_mode") == "Material Rate"
 	base = rate * area if basis == "Per Square Meter" else rate
-	lines.append((_("Base"), base))
+	fabric_label = _("Base")
 
-	# ---- colour / material
 	if spec["color_group"]:
 		gid = spec["color_group"]
 		value = str(submitted("option[%s]" % gid) or "")
@@ -390,13 +423,25 @@ def calculate(product_key, form, qty=1, strict=True):
 					partial = True
 		elif not entry or not entry["enabled"]:
 			errors[gid] = _("That colour is not available.")
+		elif by_material:
+			# the material IS the price: its rate is per square metre
+			base = flt(entry["rate"]) * area
+			fabric_label = "%s (%s)" % (entry["label"], spec["color_label"])
 		elif entry["charge_type"] == "Override Base Rate":
-			base = entry["rate"] * area if basis == "Per Square Meter" else entry["rate"]
-			lines[0] = ("%s (%s)" % (entry["label"], spec["color_label"]), base)
+			base = flt(entry["rate"]) * area if basis == "Per Square Meter" else flt(entry["rate"])
+			fabric_label = "%s (%s)" % (entry["label"], spec["color_label"])
 		else:
-			extra = _charge(entry["charge_type"], entry["rate"], area, base)
+			extra = _charge(entry["charge_type"], entry["rate"], dims, base)
 			if extra:
 				lines.append(("%s (%s)" % (entry["label"], spec["color_label"]), extra))
+
+	# ---- the floor applies to the fabric, not to the motor or the fitting
+	minimum = flt(spec.get("minimum_price"))
+	if minimum and base < minimum:
+		lines.insert(0, (_("Minimum order price"), minimum))
+		base = minimum
+	else:
+		lines.insert(0, (fabric_label, base))
 
 	# ---- every other option group
 	for gid, choices in spec["options"].items():
@@ -412,9 +457,20 @@ def calculate(product_key, form, qty=1, strict=True):
 		if not entry or not entry["enabled"]:
 			errors[gid] = _("That choice is not available.")
 			continue
-		extra = _charge(entry["charge_type"], entry["rate"], area, base)
+
+		label = "%s (%s)" % (entry["label"], entry["group_label"])
+		if entry.get("tiered"):
+			banded, tier = tier_rate(spec, order_qty)
+			if banded is None:
+				continue                      # no band set up; charge nothing
+			if banded:
+				note = (tier or {}).get("description") or ""
+				lines.append(("%s%s" % (label, (" - %s" % note) if note else ""), banded))
+			continue
+
+		extra = _charge(entry["charge_type"], entry["rate"], dims, base)
 		if extra:
-			lines.append(("%s (%s)" % (entry["label"], entry["group_label"]), extra))
+			lines.append((label, extra))
 
 	precision = spec["rounding"]
 	unit = flt(sum(amount for _label, amount in lines), precision)
@@ -427,6 +483,7 @@ def calculate(product_key, form, qty=1, strict=True):
 		"width": width,
 		"height": height,
 		"qty": qty,
+		"order_qty": order_qty,
 		"unit_rate": unit,
 		"total": flt(unit * qty, precision),
 		"lines": [(label, flt(amount, precision)) for label, amount in lines],
@@ -481,7 +538,14 @@ def price_preview(args, form):
 	if not entry:
 		return {"error": {"warning": _("Product not available.")}}
 
-	result = calculate(entry.get("key"), form, form.get("quantity") or 1, strict=False)
+	qty = cint(form.get("quantity") or 1) or 1
+	# the installation band depends on the whole order, so count what is
+	# already in the cart as well as what is being configured now
+	try:
+		order_qty = qty + cart_api.curtain_qty_in_cart()
+	except Exception:
+		order_qty = qty
+	result = calculate(entry.get("key"), form, qty, strict=False, order_qty=order_qty)
 	if result.get("errors"):
 		return {"error": {"option": result["errors"]}}
 	if not result.get("ok"):
@@ -508,8 +572,10 @@ def get_pricing(product_key=None):
 		"colors": spec["colors"],
 		"options": spec["options"],
 		# the snapshot's "Starts from" figure is whatever the original site
-		# charged, so replace it with this site's own base rate
-		"starting_text": fmt(spec["base_rate"], spec["currency"]),
+		# charged. Replace it with the team's own display price, which is
+		# deliberately NOT part of any calculation.
+		"starting_text": fmt(spec.get("display_from_price") or spec["base_rate"],
+		                     spec["currency"]),
 		"rate_basis": spec["rate_basis"],
 	}
 

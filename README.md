@@ -71,9 +71,59 @@ record (search "Curtain Product" in the desk), named after its route:
 | Colours | every swatch on the page, each with **Show on site** and its own surcharge |
 | Options | Control type, Mounting, Valance box, Installation service ... each with a surcharge |
 
-Every row is charged as **Fixed Amount**, **Per Square Meter** or **Percent of
-Base**; a colour may also **Override Base Rate**. The area comes from the width
-and height the customer types, in cm: `width x height / 10000`.
+Every row is charged as **Fixed Amount**, **Per Square Meter**, **Per Metre of
+Width**, **Per Metre of Height** or **Percent of Base**; a colour may also
+**Override Base Rate**. The area comes from the width and height the customer
+types, in cm: `width x height / 10000`.
+
+### Price Driven By
+
+| Mode | What sets the fabric price |
+|---|---|
+| **Base Rate** | the product's Base Rate. Colours only add or subtract. |
+| **Material Rate** | each colour carries its own per-square-metre price, and that IS the fabric price. |
+
+Material Rate is the mode the business actually asked for: a rate per m2 per
+fabric, with the options added on top.
+
+### Minimum Order Price
+
+The least the **fabric** can cost, however small the curtain. Motor, box,
+handle and installation are added **on top** of it, so a small curtain with a
+motor is `minimum + motor`, not `max(minimum, everything)`.
+
+```
+100 x 120 cm = 1.20 m2 x 120/m2 = 144   ->  below the 150 minimum, so 150
+  + motor                                                            350
+  + box, 1.00 m of width x 60/m                                       60
+  + installation                                                       80
+                                                                    ------
+                                                                       640
+```
+
+### Installation Tiers
+
+Installation is charged per curtain, but the band is chosen by the **total
+number of curtains on the order** - three blackout plus three wooden counts as
+six. Fill in the Installation Tiers table, then tick **Price From Tiers** on
+the installation choice in the Options table.
+
+That has a consequence worth understanding: **a line's price depends on the
+other lines.** Adding a curtain re-prices the ones already in the cart, and
+removing one puts them back up. So each cart line stores the options it was
+configured with, in a `curtain_config` custom field on Quotation Item, and
+`cart.reprice()` recomputes every curtain line whenever the cart changes. The
+line's description is prose and cannot be parsed back, which is why the raw
+configuration has to be kept.
+
+The product page shows the band for **what is already in the cart plus what is
+being configured**, so a visitor adding a fifth curtain sees the cheaper rate
+before they commit.
+
+### Starts From
+
+Display only. It is what the page prints before anything is chosen and is never
+part of a calculation. Leave it 0 to show the Base Rate instead.
 
 So a 200 x 150 cm blackout at 120/m2, with a +25 colour, a +350 motor, a
 +15/m2 valance box and +80 installation prices as

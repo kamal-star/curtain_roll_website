@@ -27,13 +27,17 @@ def csrf_token():
 
 
 @frappe.whitelist()
-def cart_set_qty(item_code=None, qty=0):
-	"""Change a cart line's quantity (0 removes it). Login required."""
+def cart_set_qty(item_code=None, qty=0, row=None):
+	"""Change a cart line's quantity (0 removes it). Login required.
+
+	``row`` identifies the line. The same blind configured two ways shares an
+	item code, so ``item_code`` alone would change both lines.
+	"""
 	from curtain_roll import cart as cart_api
 
-	if not item_code:
+	if not item_code and not row:
 		frappe.throw(_("Missing item"))
-	return cart_api.set_qty(item_code, qty)
+	return cart_api.set_qty(item_code, qty, row_name=row)
 
 
 @frappe.whitelist()

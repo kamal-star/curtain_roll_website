@@ -34,7 +34,7 @@
 				</thead>
 				<tbody>
 					{% for i in items %}
-					<tr data-item="{{ i.item_code }}" style="border-bottom:1px solid #eef0f2;">
+					<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}" style="border-bottom:1px solid #eef0f2;">
 						<td style="padding:12px 8px;">
 							<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
 							{% if i.spec %}
@@ -104,8 +104,11 @@
 	}
 
 	function setQty(row, qty) {
-		var code = row.getAttribute("data-item");
-		post("curtain_roll.api.cart_set_qty", { item_code: code, qty: qty })
+		// the LINE, not the item: one blind configured two ways is two lines
+		// sharing an item code, and keying on the code moved both
+		var payload = { qty: qty, row: row.getAttribute("data-row"),
+		                item_code: row.getAttribute("data-item") };
+		post("curtain_roll.api.cart_set_qty", payload)
 			.then(function (j) {
 				var m = (j && j.message) || {};
 				if (m.error === "login") { window.location = "/login?redirect-to=/cart"; return; }

@@ -11,6 +11,7 @@
   "option_label",
   "charge_type",
   "rate",
+  "tiered",
   "column_break_ident",
   "group_id",
   "option_value",
@@ -49,8 +50,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Charge Type",
-   "options": "Fixed Amount\nPer Square Meter\nPercent of Base",
-   "columns": 3
+   "options": "Fixed Amount\nPer Square Meter\nPer Metre of Width\nPer Metre of Height\nPercent of Base",
+   "columns": 2
   },
   {
    "default": "0",
@@ -60,6 +61,15 @@
    "in_list_view": 1,
    "label": "Rate",
    "columns": 2
+  },
+  {
+   "fieldname": "tiered",
+   "fieldtype": "Check",
+   "label": "Price From Tiers",
+   "default": "0",
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Take the rate from the Installation Tiers table instead of the Rate here, banded by the total curtains on the order."
   },
   {
    "fieldname": "column_break_ident",

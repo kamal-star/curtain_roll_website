@@ -15,14 +15,20 @@
   "enabled",
   "item_code",
   "section_base",
+  "pricing_mode",
   "rate_basis",
   "base_rate",
   "column_break_base",
   "min_billable_sqm",
+  "minimum_price",
   "rounding",
+  "display_from_price",
   "section_slabs",
   "slab_help",
   "size_slabs",
+  "section_install",
+  "install_help",
+  "install_tiers",
   "section_colors",
   "colors",
   "section_options",
@@ -68,6 +74,15 @@
    "label": "Base Price"
   },
   {
+   "fieldname": "pricing_mode",
+   "fieldtype": "Select",
+   "label": "Price Driven By",
+   "options": "Base Rate\nMaterial Rate",
+   "default": "Base Rate",
+   "reqd": 1,
+   "description": "Material Rate: each colour carries its own per-square-metre price and that sets the fabric price. Base Rate: the Base Rate below sets it and colours only add or subtract."
+  },
+  {
    "default": "Per Square Meter",
    "description": "Per Square Meter multiplies by the width x height the customer enters.",
    "fieldname": "rate_basis",
@@ -97,10 +112,24 @@
    "label": "Minimum Billable Area (m2)"
   },
   {
+   "fieldname": "minimum_price",
+   "fieldtype": "Currency",
+   "label": "Minimum Order Price",
+   "default": "0",
+   "description": "The least the fabric can cost, however small the curtain. Options, motor, box and installation are added on top of this."
+  },
+  {
    "default": "2",
    "fieldname": "rounding",
    "fieldtype": "Int",
    "label": "Round Price To (decimals)"
+  },
+  {
+   "fieldname": "display_from_price",
+   "fieldtype": "Currency",
+   "label": "Starts From (display only)",
+   "default": "0",
+   "description": "What the page shows before anything is chosen. Never used in a calculation; leave 0 to show the Base Rate instead."
   },
   {
    "collapsible": 1,
@@ -118,6 +147,23 @@
    "fieldtype": "Table",
    "label": "Size Slabs",
    "options": "Curtain Size Slab"
+  },
+  {
+   "fieldname": "section_install",
+   "fieldtype": "Section Break",
+   "label": "Installation Tiers",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "install_help",
+   "fieldtype": "HTML",
+   "options": "<p class=\"text-muted small\">Charged per curtain, but the band is chosen by the TOTAL number of curtains on the order &mdash; so 3 blackout plus 3 wooden counts as 6. Tick <b>Price From Tiers</b> on the installation choice in the Options table to switch it on.</p>"
+  },
+  {
+   "fieldname": "install_tiers",
+   "fieldtype": "Table",
+   "label": "Installation Tiers",
+   "options": "Curtain Install Tier"
   },
   {
    "fieldname": "section_colors",

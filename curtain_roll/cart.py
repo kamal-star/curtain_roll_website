@@ -175,6 +175,77 @@ def attach_render(quotation_name, file_url):
 		return None
 
 
+# ------------------------------------------------- configuration on the line
+CONFIG_FIELD = "curtain_config"
+
+
+def capture_config(entry, form):
+	"""Keep what the customer chose, so the line can be priced again later.
+
+	Installation is banded by the total curtains on the ORDER, so adding a
+	second curtain changes the price of the first. That is only possible if
+	each line remembers its own configuration - the description is prose and
+	cannot be parsed back.
+	"""
+	options = {}
+	try:
+		for key, value in form.items():
+			if str(key).startswith("option["):
+				options[str(key)] = value
+	except Exception:
+		pass
+	return json.dumps({"product_key": entry.get("key"), "options": options})
+
+
+def read_config(row):
+	raw = row.get(CONFIG_FIELD)
+	if not raw:
+		return None
+	try:
+		cfg = json.loads(raw)
+	except Exception:
+		return None
+	return cfg if cfg.get("product_key") else None
+
+
+def line_description(product_key, options, priced):
+	lines, _captured = describe_options(product_key, options,
+	                                    pricing.label_map(product_key))
+	if priced and priced.get("ok"):
+		lines = lines + ["", "Price:"] + pricing.breakdown_lines(priced)
+	return "\n".join(lines)
+
+
+def curtain_qty_in_cart():
+	"""How many curtains are already on this visitor's draft order."""
+	if is_guest():
+		return 0
+	quotation = get_cart_quotation()
+	if not quotation:
+		return 0
+	return sum(int(float(row.qty or 0)) for row in quotation.get("items", [])
+	           if read_config(row))
+
+
+def reprice(quotation):
+	"""Re-price every curtain line against the whole order's curtain count."""
+	configs = [read_config(row) for row in quotation.get("items", [])]
+	total = sum(int(float(row.qty or 0))
+	            for row, cfg in zip(quotation.get("items", []), configs) if cfg)
+	if not total:
+		return
+
+	for row, cfg in zip(quotation.get("items", []), configs):
+		if not cfg:
+			continue
+		priced = pricing.calculate(cfg["product_key"], cfg["options"],
+		                           qty=row.qty, order_qty=total)
+		if not priced.get("ok"):
+			continue
+		row.rate = priced["unit_rate"]
+		row.description = line_description(cfg["product_key"], cfg["options"], priced)
+
+
 # ---------------------------------------------------------------------- auth
 def is_guest():
 	return frappe.session.user in (None, "", "Guest")
@@ -340,12 +411,17 @@ def add(args, form):
 			row.qty = float(row.qty or 0) + qty
 			break
 	else:
-		quotation.append("items", {
+		row = quotation.append("items", {
 			"item_code": code,
 			"qty": qty,
 			"rate": rate,
 			"description": spec or entry["name"],
 		})
+		row.set(CONFIG_FIELD, capture_config(entry, form))
+
+	# installation is banded by the order total, so adding this curtain can
+	# change what the ones already in the cart cost
+	reprice(quotation)
 
 	try:
 		_save(quotation)
@@ -394,6 +470,7 @@ def remove(args, form):
 	entry = product(pid)
 	code = item_code_for(entry) if entry else pid
 	quotation.set("items", [r for r in quotation.items if r.item_code != code])
+	reprice(quotation)
 	_save(quotation)
 	return {"success": "Item removed.", "total": _total_text(quotation)}
 
@@ -416,8 +493,13 @@ def wishlist_add(args, form):
 	}
 
 
-def set_qty(item_code, qty):
-	"""Update one line on the cart quotation; qty <= 0 removes it."""
+def set_qty(item_code, qty, row_name=None):
+	"""Change one cart line; qty <= 0 removes it.
+
+	Keyed on the LINE, not the item: the same blind configured two ways is two
+	lines sharing one item code, and matching on the code changed both at once.
+	``item_code`` is still accepted so an older page keeps working.
+	"""
 	if is_guest():
 		return {"error": "login"}
 	quotation = get_cart_quotation()
@@ -427,14 +509,18 @@ def set_qty(item_code, qty):
 		qty = float(qty)
 	except (TypeError, ValueError):
 		qty = 0
+
 	kept = []
 	for row in quotation.items:
-		if row.item_code == item_code:
+		hit = (row.name == row_name) if row_name else (row.item_code == item_code)
+		if hit:
 			if qty <= 0:
 				continue
 			row.qty = qty
 		kept.append(row)
 	quotation.set("items", kept)
+	reprice(quotation)
+
 	if not quotation.items:
 		# an empty quotation cannot be saved; drop it entirely
 		name = quotation.get("name")
@@ -472,6 +558,7 @@ def info():
 	if quotation:
 		for row in quotation.items:
 			items.append({
+				"row": row.name,
 				"item_code": row.item_code,
 				"name": row.item_name,
 				"qty": row.qty,

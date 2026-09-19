@@ -8,6 +8,7 @@ HOME_ROUTE = "home"
 def after_install():
 	"""Make the storefront live the moment the app is installed."""
 	_ensure_billing_contact_field()
+	_ensure_config_field()
 	_enable_signup()
 	_point_website_at_storefront()
 	_ensure_item_group()
@@ -77,6 +78,34 @@ def _point_website_at_storefront():
 	ws.save(ignore_permissions=True)
 
 
+def _ensure_config_field():
+	"""Remember each cart line's configuration on the line itself.
+
+	Installation is banded by the total curtains on the order, so adding a
+	second curtain re-prices the first. Re-pricing needs the options the
+	customer picked, and the line's description is prose that cannot be parsed
+	back into them.
+	"""
+	name = "Quotation Item-curtain_config"
+	if frappe.db.exists("Custom Field", name):
+		return
+	try:
+		frappe.get_doc({
+			"doctype": "Custom Field",
+			"dt": "Quotation Item",
+			"fieldname": "curtain_config",
+			"label": "Curtain Configuration",
+			"fieldtype": "Small Text",
+			"read_only": 1,
+			"no_copy": 0,
+			"print_hide": 1,
+			"insert_after": "description",
+			"description": "Set by the storefront. JSON of the options chosen.",
+		}).insert(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="curtain_roll curtain_config field")
+
+
 def _ensure_item_group():
 	if frappe.db.exists("Item Group", "Curtains"):
 		return
@@ -116,6 +145,7 @@ def after_migrate():
 	data/variants.json - and that product needs its Item before anyone can
 	add it to a cart.
 	"""
+	_ensure_config_field()
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
