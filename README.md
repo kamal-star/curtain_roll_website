@@ -297,6 +297,38 @@ a window is supposed to show. The supplied room fits wooden at x1.280, leaving
 `scene_fit` can match on `height` or `uniform` instead, or `none` to skip
 scaling, but `width` is the default for this reason.
 
+### The blind is not one fixed size
+
+Mounting changes it. Measured on the vertical blind:
+
+| Mounting | Blind |
+|---|---|
+| Inside (the default) | 54.4 x 52.8 deg |
+| **Outside** | **61.2 x 59.4 deg** - 12% bigger |
+
+That is the bundle's own behaviour, and the captured rooms live with it: in the
+vertical room an Outside mount already sits 2.6 deg past each side of the window
+and 5.5 deg above it, which is what an outside mount looks like. Fit a room to
+the **default** state and accept that Outside overhangs.
+
+The typed width and height, incidentally, do **not** change the model at all.
+
+### When the window is the wrong shape
+
+A uniform scale cannot match a window whose proportions differ from the
+reference. The supplied room is 0.97 wide-to-tall where the vertical reference
+is 1.17, which leaves a choice:
+
+| `scene_fit` | Window | Result |
+|---|---|---|
+| width | 56.1 x 57.6 | matches the reference width, but 4.8 deg of glass shows below the blind |
+| **uniform** | 51.1 x 52.5 | blind covers the whole window, overhanging 1.7 deg each side |
+| height | 46.5 x 47.8 | blind overhangs 4.0 deg each side |
+
+`vertical-premium` uses **uniform** for that reason; `wooden-premium` uses the
+default `width`, because that room's window is close to wooden's reference
+shape and width-matching reproduces it exactly.
+
 ### Every product needs its own reference
 
 The blinds are not the same size, so the windows built around them are not

@@ -30,6 +30,8 @@
    357,
    1122,
    640
-  ]
+  ],
+  "scene_fit": "uniform",
+  "_fit_note": "this window is proportionally much taller than the vertical blind's own reference window, so matching on width alone left the glass showing below the blind. uniform splits the difference and the blind covers the whole window."
  }
 ]
