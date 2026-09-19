@@ -308,12 +308,21 @@ def _dimension(value):
 	return n if n > 0 else None
 
 
-def calculate(product_key, form, qty=1):
+def calculate(product_key, form, qty=1, strict=True):
 	"""Price one configured blind.
 
 	``form`` is anything exposing ``.get("option[371]")``. Errors come back
 	keyed by option group id, which is exactly the shape the Journal3 theme
 	already knows how to render next to the offending field.
+
+	``strict`` separates "not allowed" from "not finished yet":
+
+	  * strict (the cart) - a required option left unchosen is an error, so a
+	    half-configured blind cannot be ordered.
+	  * lenient (the live price on the page) - it is not an error, it just
+	    makes the result ``partial``. The theme only repaints the price when
+	    the response carries no ``error``, so being strict here would freeze
+	    the total until the very last option was picked.
 	"""
 	spec = get_spec(product_key)
 	if not spec:
@@ -330,13 +339,22 @@ def calculate(product_key, form, qty=1):
 
 	# ---- size -> area in square metres
 	area = 1.0
+	partial = False
 	width = height = None
 	if spec["size_group"]:
 		gid = spec["size_group"]
-		width = _dimension(submitted("option[%s][width]" % gid))
-		height = _dimension(submitted("option[%s][height]" % gid))
+		raw_w = submitted("option[%s][width]" % gid)
+		raw_h = submitted("option[%s][height]" % gid)
+		width = _dimension(raw_w)
+		height = _dimension(raw_h)
 		if not width or not height:
-			errors[gid] = _("Enter the width and the height in cm.")
+			started = bool(str(raw_w or "").strip() or str(raw_h or "").strip())
+			if strict or started:
+				# blank is "still typing"; half-filled is worth saying something about
+				errors[gid] = _("Enter the width and the height in cm.")
+			else:
+				partial = True
+			width = height = None
 		else:
 			area = (width * height) / 10000.0
 
@@ -366,7 +384,10 @@ def calculate(product_key, form, qty=1):
 		entry = spec["colors"].get(value)
 		if not value:
 			if gid in spec["required"]:
-				errors[gid] = _("Please choose a colour.")
+				if strict:
+					errors[gid] = _("Please choose a colour.")
+				else:
+					partial = True
 		elif not entry or not entry["enabled"]:
 			errors[gid] = _("That colour is not available.")
 		elif entry["charge_type"] == "Override Base Rate":
@@ -382,7 +403,10 @@ def calculate(product_key, form, qty=1):
 		value = str(submitted("option[%s]" % gid) or "")
 		if not value:
 			if gid in spec["required"]:
-				errors[gid] = _("Please choose an option.")
+				if strict:
+					errors[gid] = _("Please choose an option.")
+				else:
+					partial = True
 			continue
 		entry = choices.get(value)
 		if not entry or not entry["enabled"]:
@@ -398,6 +422,7 @@ def calculate(product_key, form, qty=1):
 	return {
 		"ok": not errors,
 		"errors": errors,
+		"partial": partial,
 		"area": flt(area, 4),
 		"width": width,
 		"height": height,
@@ -456,13 +481,16 @@ def price_preview(args, form):
 	if not entry:
 		return {"error": {"warning": _("Product not available.")}}
 
-	result = calculate(entry.get("key"), form, form.get("quantity") or 1)
+	result = calculate(entry.get("key"), form, form.get("quantity") or 1, strict=False)
 	if result.get("errors"):
 		return {"error": {"option": result["errors"]}}
 	if not result.get("ok"):
 		return {"error": {"warning": result.get("message") or _("Not priced yet.")}}
 
 	total = fmt(result["total"], result["currency"])
+	if result.get("partial"):
+		# still mid-configuration, so do not present this as the final figure
+		total = "%s %s" % (_("From"), total)
 	return {"total": total, "total_extax": total}
 
 

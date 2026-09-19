@@ -3620,7 +3620,30 @@ $(window).scroll(function() {
     }
   }
 
+  /* The theme refreshes the price on the form's "change" event, which a text
+     box only fires when it loses focus - so the width and height felt dead
+     while you typed in them. (It binds keyup for the quantity box only.)
+     Mirror that for the size boxes, debounced so one number is one request. */
+  function liveSize() {
+    var boxes = document.querySelectorAll(
+      '#product input[name^="option["][name$="[width]"], ' +
+      '#product input[name^="option["][name$="[height]"]');
+    if (!boxes.length || !window.jQuery) return false;
+    var timer = null;
+    Array.prototype.forEach.call(boxes, function (box) {
+      box.addEventListener("input", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { jQuery("#product").trigger("change"); }, 450);
+      });
+    });
+    return true;
+  }
+
   function load() {
+    if (!liveSize()) {
+      var t = setInterval(function () { if (liveSize()) clearInterval(t); }, 150);
+      setTimeout(function () { clearInterval(t); }, 10000);
+    }
     fetch("/api/method/curtain_roll.pricing.get_pricing?product_key=" + encodeURIComponent(key),
           { credentials: "same-origin" })
       .then(function (r) { return r.json(); })

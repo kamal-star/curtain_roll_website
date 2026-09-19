@@ -132,6 +132,26 @@ into `#total_price`; `pricing.price_preview` answers it. The same
 `pricing.calculate` prices the quotation line, so the page and the order can
 never disagree, and the browser is never trusted with a rate.
 
+`calculate(..., strict=)` is what keeps that usable. The theme repaints the
+price only when the response carries no `error`:
+
+```js
+if (json['error']) { ...show them... } else { ...repaint the price... }
+```
+
+so returning an error for a required option the customer has simply not
+reached yet freezes the total on "Starts from" until the very last click. The
+preview therefore runs **lenient**: unchosen options make the result
+`partial`, which prints as `From SR 1,625.00`, and the prefix drops off once
+everything is picked. The cart runs **strict**, so a half-configured blind is
+still refused. Genuinely invalid input - a withdrawn colour, a half-filled
+size - errors in both.
+
+The theme fires that refresh on the form's `change` event, which a text box
+only raises on blur, so the width and height felt dead while being typed in.
+The injected script binds `input` on those two boxes as well, debounced to
+450 ms.
+
 Per-choice surcharges are written into the swatch markup as the theme's own
 `.option-price` span and tooltip. The Journal3 stylesheet hides that span with
 `display: none !important`, exactly as on the original site, so the figures
