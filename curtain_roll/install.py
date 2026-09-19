@@ -177,6 +177,103 @@ def _seed_pricing():
 		frappe.log_error(title="curtain_roll seed pricing", message=frappe.get_traceback())
 
 
+SHUTTER_COLORS = [
+	("White", "slat-white.jpg", 260),
+	("Beige", "slat-beige.jpg", 260),
+	("Grey", "slat-grey.jpg", 285),
+	("Brown", "slat-brown.jpg", 300),
+]
+
+
+def setup_shutter_colors():
+	"""Give the shutter its own colours, from the textures shipped with the app.
+
+	Run once per site:  bench --site <site> execute
+	                      curtain_roll.install.setup_shutter_colors
+
+	Not part of after_migrate, because it writes RATES, and seeding a price
+	onto a site nobody asked to be priced is not this hook's business - the
+	rest of _seed_pricing deliberately leaves the numbers to the team.
+
+	It exists because a shutter cannot inherit its colours the way the other
+	variants do. It borrows the blackout model, so it arrives carrying
+	blackout's 65 fabric swatches, and a shutter is not sold in fabric. Left
+	alone the page renders the slat casing and surround over a curtain
+	fabric, which is worse than either.
+
+	The textures are generated from a measured slat profile - see
+	make_slat_texture.py in the build directory - and ship in the app rather
+	than being uploaded per site, so a deploy carries them. They are attached
+	as Files because that is the path the configurator bundles can resolve;
+	see pricing.texture_url.
+
+	Safe to repeat: existing colours are left exactly as they are, so a rate
+	edited in Desk survives.
+	"""
+	import os
+
+	from curtain_roll import pricing
+
+	if not frappe.db.exists("Curtain Product", "shutters"):
+		print("no shutters product on this site - run migrate first")
+		return
+
+	doc = frappe.get_doc("Curtain Product", "shutters")
+	have = {(c.color_name or "").strip().lower() for c in doc.colors if c.get("is_custom")}
+
+	# the inherited fabric swatches are not something a shutter is sold in
+	withdrawn = 0
+	for row in doc.colors:
+		if not row.get("is_custom") and row.enabled:
+			row.enabled = 0
+			withdrawn += 1
+
+	src = frappe.get_app_path("curtain_roll", "public", "image", "shutters")
+	added = 0
+	for label, filename, rate in SHUTTER_COLORS:
+		if label.lower() in have:
+			continue
+		path = os.path.join(src, filename)
+		if not os.path.exists(path):
+			print("  missing texture, skipped: %s" % filename)
+			continue
+		with open(path, "rb") as fh:
+			content = fh.read()
+		photo = frappe.get_doc({
+			"doctype": "File",
+			"file_name": "shutter-" + filename,
+			"is_private": 0,
+			"content": content,
+		}).insert(ignore_permissions=True)
+		doc.append("colors", {
+			"color_name": label,
+			"fabric_image": photo.file_url,
+			"charge_type": "Per Square Meter",
+			"rate": rate,
+			"enabled": 1,
+		})
+		added += 1
+
+	if doc.pricing_mode != "Material Rate":
+		doc.pricing_mode = "Material Rate"
+		doc.rate_basis = "Per Square Meter"
+	if not doc.minimum_price:
+		doc.minimum_price = 450
+	if not doc.display_from_price:
+		doc.display_from_price = 450
+
+	doc.flags.ignore_permissions = True
+	doc.save()
+	frappe.db.commit()
+	pricing.clear_cache("shutters")
+
+	print("shutters: %d colour(s) added, %d inherited swatch(es) withdrawn"
+	      % (added, withdrawn))
+	for c in doc.colors:
+		if c.get("is_custom") and c.enabled:
+			print("  %-6s %-34s %s/m2" % (c.color_name, c.fabric_image, c.rate))
+
+
 def before_uninstall():
 	"""Hand the home page back so the site is not left pointing at a dead route."""
 	try:
