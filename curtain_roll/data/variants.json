@@ -7,6 +7,8 @@
   "title": "Wooden slat blinds shown in a modern apartment",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
   "scene_source": "scenes/wooden-premium.jpg",
-  "price": 300.0
+  "price": 300.0,
+  "scene_center": 0.2425,
+  "_scene_center_note": "where the chosen window sits in the supplied image, as a fraction of its width"
  }
 ]

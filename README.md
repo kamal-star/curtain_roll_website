@@ -214,6 +214,37 @@ which is the whole point of a variant.
 source is not 2:1 or is smaller than the captured rooms - a 360 panorama that
 is not exactly 2:1 shows a pinched ceiling and a visible seam.
 
+### Lining the blind up with a window: `scene_center`
+
+The blind hangs at the middle of the bundle's world and **cannot be moved** -
+its position is compiled into code we cannot edit. Look at any captured room
+and you can see the convention: the window sits dead centre of the panorama.
+
+What can move is the room. Rolling an equirectangular image sideways is just a
+change of longitude, so whichever window ends up in the middle of the image is
+the one the blind hangs in. `scene_center` says where that window sits in the
+**supplied** image, as a fraction of its width:
+
+```json
+"scene_center": 0.2425
+```
+
+`make_variants.py` then rolls the panorama by `0.5 - scene_center` (here +92.7
+degrees). Measure it by opening the image and reading off the window's centre;
+get it wrong and the blind hangs on a wall.
+
+Pick a window at least as wide as the captured one (about 10% of the panorama
+width, ~36 degrees). A narrower one and the blind overhangs it.
+
+### Renderer sharpness
+
+The bundles construct their `WebGLRenderer` at **pixel ratio 1**, so on any
+display with `devicePixelRatio > 1` the browser upscales a smaller image, and
+the preview looks soft for reasons that have nothing to do with the room. The
+injected script raises the backing store to the display's own density (capped
+at 2), passing `updateStyle=false` so the canvas keeps its CSS size and nothing
+in the layout moves. It applies to every product, not just variants.
+
 ### What a variant shares with its base
 
 The 3D blind, the option groups, and the product copy. Only the name,

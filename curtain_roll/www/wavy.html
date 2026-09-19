@@ -1955,7 +1955,38 @@ display:none !important;
     return true;
   }
 
+  /* The bundles build their WebGLRenderer at pixel ratio 1, so on any display
+     with devicePixelRatio > 1 the browser is upscaling a smaller image - which
+     is most of why the preview looks soft. Raise only the backing store and
+     pass updateStyle=false, so the canvas keeps its CSS size and the layout
+     does not move. Capped at 2 to avoid a huge buffer on a 3x phone. */
+  function sharpen() {
+    var r = window.renderer;
+    if (!r || !window.THREE || r.__crSharpened) return !!(r && r.__crSharpened);
+    try {
+      var want = Math.min(window.devicePixelRatio || 1, 2);
+      if (r.getPixelRatio() >= want) { r.__crSharpened = true; return true; }
+      // size from the CSS box, not getSize(): the bundle has already scaled
+      // its internal size, and multiplying that again gives a needlessly huge
+      // buffer (3x on a 1.5x display)
+      var box = r.domElement.getBoundingClientRect();
+      if (!box.width || !box.height) return false;
+      r.setPixelRatio(want);
+      r.setSize(box.width, box.height, false);
+      if (window.scene && window.camera) r.render(window.scene, window.camera);
+      r.__crSharpened = true;
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   function load() {
+    if (!sharpen()) {
+      // the bundle builds its renderer only after the model has loaded
+      var sh = setInterval(function () { if (sharpen()) clearInterval(sh); }, 400);
+      setTimeout(function () { clearInterval(sh); }, 30000);
+    }
     if (!liveSize()) {
       var t = setInterval(function () { if (liveSize()) clearInterval(t); }, 150);
       setTimeout(function () { clearInterval(t); }, 10000);
