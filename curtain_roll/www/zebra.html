@@ -3480,33 +3480,45 @@ $(window).scroll(function() {
      is most of why the preview looks soft. Raise only the backing store and
      pass updateStyle=false, so the canvas keeps its CSS size and the layout
      does not move. Capped at 2 to avoid a huge buffer on a 3x phone. */
+  /* The bundles build their WebGLRenderer at pixel ratio 1, so on any display
+     with devicePixelRatio > 1 the browser is upscaling a smaller render -
+     which softens everything, the blind included. Raise only the backing
+     store and pass updateStyle=false, so the canvas keeps its CSS size and the
+     layout does not move. Capped at 2 to avoid a huge buffer on a 3x phone.
+
+     This does NOT latch: the bundle sets its own pixel ratio back to 1 some
+     time after the model loads, so a one-shot fix silently came undone. The
+     watcher below keeps checking, and re-applying costs nothing once the ratio
+     is already right. Sizing from the CSS box rather than getSize() keeps it
+     idempotent - multiplying the renderer's own size again would compound. */
   function sharpen() {
     var r = window.renderer;
-    if (!r || !window.THREE || r.__crSharpened) return !!(r && r.__crSharpened);
+    if (!r || !window.THREE || typeof r.getPixelRatio !== "function") return false;
     try {
       var want = Math.min(window.devicePixelRatio || 1, 2);
-      if (r.getPixelRatio() >= want) { r.__crSharpened = true; return true; }
-      // size from the CSS box, not getSize(): the bundle has already scaled
-      // its internal size, and multiplying that again gives a needlessly huge
-      // buffer (3x on a 1.5x display)
+      if (r.getPixelRatio() >= want) return true;
       var box = r.domElement.getBoundingClientRect();
       if (!box.width || !box.height) return false;
       r.setPixelRatio(want);
       r.setSize(box.width, box.height, false);
       if (window.scene && window.camera) r.render(window.scene, window.camera);
-      r.__crSharpened = true;
     } catch (e) {
       return false;
     }
     return true;
   }
 
+  function watchSharpness() {
+    var tries = 0;
+    var timer = setInterval(function () {
+      sharpen();
+      if (++tries > 60) clearInterval(timer);      // 60 x 500ms = 30s
+    }, 500);
+    window.addEventListener("resize", function () { setTimeout(sharpen, 120); });
+  }
+
   function load() {
-    if (!sharpen()) {
-      // the bundle builds its renderer only after the model has loaded
-      var sh = setInterval(function () { if (sharpen()) clearInterval(sh); }, 400);
-      setTimeout(function () { clearInterval(sh); }, 30000);
-    }
+    watchSharpness();
     if (!liveSize()) {
       var t = setInterval(function () { if (liveSize()) clearInterval(t); }, 150);
       setTimeout(function () { clearInterval(t); }, 10000);
