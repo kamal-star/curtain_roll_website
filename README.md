@@ -341,21 +341,30 @@ a stopgap, and only at small factors.
 The room cannot be scaled, but the **blind** can. It is real geometry, so
 widening it distorts nothing at all.
 
-`blind_scale()` works out the factor: the blind keeps the same share of the
-window's width that it has in its own captured room - wooden fills 94% of its
-window, vertical 97%. The supplied room's window is 47.7 deg, so wooden's blind
-is widened **x1.307** (34.9 -> 44.7 deg) and vertical's narrowed **x0.832**
-(54.4 -> 46.3). The factor is baked into the page and applied by a watcher in
-the injected script.
+`blind_scale()` works out one factor per axis: the blind keeps the same share
+of the window it has in its own captured room. Wooden fills 94% of its window's
+width and 91% of its height; vertical 97% and 110%, because a vertical blind
+hangs past the bottom of its window.
+
+Against this room's 47.7 x 49.0 deg window:
+
+| | Width | Height | Lands at |
+|---|---|---|---|
+| wooden | x1.307 | x1.324 | 44.7 x 44.5 deg |
+| vertical | x0.832 | x1.028 | 46.3 x 54.1 deg |
+
+Both factors are baked into the page and applied by a watcher in the injected
+script.
 
 Three things that took a few goes to get right:
 
 * **The group already carries a scale** - 0.23 on wooden. Setting it rather
   than multiplying it made the blind three times too big.
-* **Width only.** The bundle repositions the slats every frame, so a vertical
-  scale on the group simply does not take. The blind therefore covers less of
-  the window's height than it does in its own room, and more glass shows below
-  it.
+* **Height goes on `scale.z`, not `scale.y`.** The group is rotated -90 degrees
+  about X, so its local Z is world UP and its local Y is depth. Setting
+  `scale.y` therefore only makes the blind thicker, which is why it looked like
+  vertical scaling "did not take" - the bounding box never moved. Scaling
+  `scale.z` works exactly as expected.
 * **The bundle changes the scale itself** when the mounting option changes -
   0.23 to 0.27 on wooden, so Outside is deliberately bigger. The watcher
   re-applies the factor on top of whatever it finds, which keeps that

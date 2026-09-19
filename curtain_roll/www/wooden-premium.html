@@ -2492,22 +2492,27 @@ $(document).ready(function () {
      changes - Outside is 12% bigger than Inside - so this watches for the
      value it did not put there and re-applies the factor on top, which keeps
      that behaviour intact. */
-  var BLIND_SCALE = 1.3069;
+  var BLIND_SCALE = [1.3069, 1.3244];          // [width, height]
 
   function fitBlind() {
-    if (BLIND_SCALE === 1 || !window.scene || !window.camera || !window.THREE) return;
+    if (!window.scene || !window.camera || !window.THREE) return;
+    if (BLIND_SCALE[0] === 1 && BLIND_SCALE[1] === 1) return;
     var g = null;
     scene.children.forEach(function (o) { if (o.name === "mesh_group") g = o; });
     if (!g || !g.children.length) return;
 
     // Already ours - nothing to do.
-    if (g.__crFitted !== undefined && Math.abs(g.scale.x - g.__crFitted) < 1e-9) return;
+    if (g.__crFitted &&
+        Math.abs(g.scale.x - g.__crFitted[0]) < 1e-9 &&
+        Math.abs(g.scale.z - g.__crFitted[1]) < 1e-9) return;
 
     // Not ours, so the bundle has just set it - but changing the mounting
     // rebuilds the model over several frames, and multiplying a value that is
     // still moving compounds the factor. Wait until it holds still for a tick.
-    if (g.__crSeen === undefined || Math.abs(g.scale.x - g.__crSeen) > 1e-9) {
-      g.__crSeen = g.scale.x;
+    if (!g.__crSeen ||
+        Math.abs(g.scale.x - g.__crSeen[0]) > 1e-9 ||
+        Math.abs(g.scale.z - g.__crSeen[1]) > 1e-9) {
+      g.__crSeen = [g.scale.x, g.scale.z];
       return;
     }
 
@@ -2515,7 +2520,11 @@ $(document).ready(function () {
     if (!isFinite(before.max.y)) return;
     var topY = before.max.y, midX = (before.min.x + before.max.x) / 2;
 
-    g.scale.x = g.scale.x * BLIND_SCALE;                     // on top of theirs
+    // The group is rotated -90 deg about X, so its local Z is world UP and its
+    // local Y is depth. Height therefore goes on scale.z; scale.y would only
+    // make the blind thicker, which is why setting it appeared to do nothing.
+    g.scale.x = g.scale.x * BLIND_SCALE[0];
+    g.scale.z = g.scale.z * BLIND_SCALE[1];
     g.updateMatrixWorld(true);
 
     var after = new THREE.Box3().setFromObject(g);
@@ -2523,8 +2532,8 @@ $(document).ready(function () {
     g.position.x += midX - (after.min.x + after.max.x) / 2;
     g.updateMatrixWorld(true);
 
-    g.__crFitted = g.scale.x;
-    g.__crSeen = g.scale.x;
+    g.__crFitted = [g.scale.x, g.scale.z];
+    g.__crSeen = [g.scale.x, g.scale.z];
     if (window.renderer) renderer.render(scene, camera);
   }
 
