@@ -4,16 +4,17 @@
   "based_on": "wooden",
   "product_id": "901",
   "heading": "Wooden Premium",
-  "title": "Wooden slat blinds shown in a modern apartment",
+  "title": "Wooden slat blinds shown in a modern living room",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
   "scene_source": "scenes/wooden-premium.jpg",
   "price": 300.0,
   "window": [
-   347.5,
-   395.0,
-   636.0,
-   675.0
+   877,
+   425,
+   1093,
+   590
   ],
-  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it."
+  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it; scene_fit chooses how the two axes are reconciled.",
+  "scene_fit": "uniform"
  }
 ]

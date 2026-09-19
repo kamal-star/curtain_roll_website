@@ -279,8 +279,23 @@ image and give its outer frame in that image's own pixels:
 "window": [347.5, 395.0, 636.0, 675.0]
 ```
 
-`reproject()` derives everything else - where to aim, and how much to scale
-each axis so the window ends up 36.9 x 38.2 deg. **Measure once; do not hand-
+`reproject()` derives everything else - where to aim, and how much to scale so
+the window ends up near 36.9 x 38.2 deg.
+
+`scene_fit` decides how the two axes are reconciled, because a window is rarely
+the same *shape* as the one the blind was built for:
+
+| `scene_fit` | |
+|---|---|
+| **uniform** (default) | one scale for both axes, the geometric mean. Keeps the room's proportions - it only moves the camera back or forward. |
+| exact | match each axis independently. Fits the window perfectly but stretches the room by whatever the two factors differ by. |
+| width / height | match that axis and follow it on the other. |
+| none | aim only, do not scale. |
+
+Prefer **uniform**. A room supplied with a wide, short window needed x1.05
+across but x0.78 up - matching both would have stretched it 36%. Uniform left
+the blind with a little more reveal at the sides than the top, which is what a
+real blind in a real recess looks like anyway. **Measure once; do not hand-
 compute the transform.** Deriving it by hand is how the scale got inverted the
 first time, and how `scene_zoom` ended up eyeballed at 1.25 when the real
 answer was 1.41 across and 1.25 up. Those differ because a window is rarely the
