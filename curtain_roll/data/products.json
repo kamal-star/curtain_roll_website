@@ -4201,7 +4201,7 @@
   "key": "wooden-premium",
   "route": "wooden-premium",
   "bundle": "Wooden.js",
-  "title": "Wooden slat blinds shown in a modern living room",
+  "title": "Wooden slat blinds shown in a modern apartment",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
   "meta_keywords": "",
   "heading": "Wooden Premium",
@@ -4494,8 +4494,8 @@
   "variant_of": "wooden",
   "scene": "/maps/scenes/wooden-premium.jpg",
   "blind_scale": [
-   1.3069,
-   1.3244
+   0.6645,
+   0.6159
   ]
  },
  {
