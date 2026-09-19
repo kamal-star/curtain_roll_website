@@ -12,6 +12,7 @@ def after_install():
 	_point_website_at_storefront()
 	_ensure_item_group()
 	_ensure_items()
+	_seed_pricing()
 	frappe.db.commit()
 	print("\nCurtain Roll storefront installed.")
 	print("  home            /")
@@ -106,6 +107,26 @@ def _ensure_items():
 			"description": (p.get("description") or p["heading"])[:2000],
 			"standard_rate": p.get("price") or 0,
 		}).insert(ignore_permissions=True)
+
+
+def after_migrate():
+	"""Keep the priced records in step with the pages after every migrate."""
+	_seed_pricing()
+
+
+def _seed_pricing():
+	"""One Curtain Product per curtain type, holding the colours and the rates.
+
+	Seeded from the captured pages so the team opens a record that already
+	lists every swatch and option - they only have to type the numbers. Reruns
+	add newly captured options and never overwrite a rate already set.
+	"""
+	from curtain_roll.pricing import sync_from_catalog
+
+	try:
+		sync_from_catalog()
+	except Exception:
+		frappe.log_error(title="curtain_roll seed pricing", message=frappe.get_traceback())
 
 
 def before_uninstall():

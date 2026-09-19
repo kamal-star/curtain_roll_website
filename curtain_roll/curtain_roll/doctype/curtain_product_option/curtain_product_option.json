@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "group_label",
+  "option_label",
+  "charge_type",
+  "rate",
+  "column_break_ident",
+  "group_id",
+  "option_value",
+  "image"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Show on site",
+   "columns": 1
+  },
+  {
+   "description": "Curtain size, Control type, Mounting Option, Valance Option Box, Installation service ...",
+   "fieldname": "group_label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Option Group",
+   "read_only": 1,
+   "reqd": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "option_label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Choice",
+   "reqd": 1,
+   "columns": 2
+  },
+  {
+   "default": "Fixed Amount",
+   "fieldname": "charge_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Charge Type",
+   "options": "Fixed Amount\nPer Square Meter\nPercent of Base",
+   "columns": 3
+  },
+  {
+   "default": "0",
+   "description": "Extra charge when the customer picks this choice.",
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate",
+   "columns": 2
+  },
+  {
+   "fieldname": "column_break_ident",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "group_id",
+   "fieldtype": "Data",
+   "label": "Storefront Group ID",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "option_value",
+   "fieldtype": "Data",
+   "label": "Storefront Value ID",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Data",
+   "label": "Icon",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-09-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Product Option",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

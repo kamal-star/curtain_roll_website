@@ -27,6 +27,7 @@ page_renderer = ["curtain_roll.renderers.OpenCartStub"]
 
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
+after_migrate = "curtain_roll.install.after_migrate"
 before_uninstall = "curtain_roll.install.before_uninstall"
 
 # ---------------------------------------------------------------- website

@@ -1631,6 +1631,132 @@ display:none !important;
     .catch(function () {});
 })();
 </script>
+
+<script>
+/* Back-office pricing, applied to the captured product page.
+
+   The snapshot lists every swatch the original site offered, at the original
+   site's prices. This reads the Curtain Product record for the route and:
+
+     * removes the colours and options the team has unticked, and disables the
+       inputs so they cannot be posted either
+     * relabels each remaining choice with its real surcharge
+     * corrects the "Starts from" figure
+
+   The running total is NOT computed here. Journal3 already re-posts the whole
+   option form to index.php?route=product/product/add on every change and
+   writes json.total into #total_price, and that endpoint is priced on the
+   server - so the total on the page and the rate on the quotation come from
+   exactly one place. */
+(function () {
+  var key = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0];
+  if (!key) return;
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function money(sym, n) {
+    return sym + " " + Number(n).toFixed(2);
+  }
+
+  /* What to print next to a choice, given how it is charged. */
+  function label(entry, sym) {
+    var rate = Number(entry.rate || 0);
+    if (!rate) return "";
+    if (entry.charge_type === "Per Square Meter") return "(+" + money(sym, rate) + " / m²)";
+    if (entry.charge_type === "Percent of Base") return "(+" + rate + "%)";
+    if (entry.charge_type === "Override Base Rate") return "(" + money(sym, rate) + ")";
+    return "(+" + money(sym, rate) + ")";
+  }
+
+  function price(input, entry, sym) {
+    var text = label(entry, sym);
+    input.setAttribute("data-price", text ? money(sym, entry.rate) : "");
+
+    var wrap = input.closest("label") || input.parentNode;
+    if (!wrap) return;
+    var value = wrap.querySelector(".option-value");
+    if (!value) return;
+
+    var span = value.querySelector(".option-price");
+    if (!text) {
+      if (span) span.remove();
+      return;
+    }
+    if (!span) {
+      span = document.createElement("span");
+      span.className = "option-price";
+      value.appendChild(span);
+    }
+    span.textContent = " " + text;
+
+    // the theme also bakes the surcharge into the tooltip
+    var img = wrap.querySelector("img");
+    if (img && entry.label) {
+      img.setAttribute("title", entry.label + (text ? "  " + text : " "));
+    }
+  }
+
+  function applyGroup(gid, entries, sym) {
+    var inputs = document.querySelectorAll('input[name="option[' + gid + ']"]');
+    var dropped = 0;
+    Array.prototype.forEach.call(inputs, function (input) {
+      var entry = entries[input.value];
+      var row = input.closest(".radio") || input.parentNode;
+      if (!entry || !entry.enabled) {
+        // disable as well as hide: hiding alone would still submit a checked one
+        input.disabled = true;
+        input.checked = false;
+        if (row) row.style.display = "none";
+        dropped++;
+        return;
+      }
+      input.disabled = false;
+      if (row) row.style.display = "";
+      price(input, entry, sym);
+    });
+
+    // an option group left with nothing in it is worse than no group at all
+    if (inputs.length && dropped === inputs.length) {
+      var card = (inputs[0].closest(".card") || null);
+      if (card) card.style.display = "none";
+    }
+  }
+
+  function apply(p) {
+    if (!p || !p.currency) return;
+
+    if (p.color_group) applyGroup(p.color_group, p.colors || {}, p.currency);
+    Object.keys(p.options || {}).forEach(function (gid) {
+      applyGroup(gid, p.options[gid], p.currency);
+    });
+
+    if (p.starting_text) {
+      var total = document.getElementById("total_price");
+      if (total) total.textContent = p.starting_text;
+      var wrapper = document.querySelector(".product-price.total-price");
+      if (wrapper) wrapper.setAttribute("data-price", p.starting_text);
+    }
+  }
+
+  function load() {
+    fetch("/api/method/curtain_roll.pricing.get_pricing?product_key=" + encodeURIComponent(key),
+          { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { apply((j && j.message) || {}); })
+      .catch(function () {});
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", load);
+  } else {
+    load();
+  }
+})();
+</script>
 {% raw %}
 </body>
 </html>

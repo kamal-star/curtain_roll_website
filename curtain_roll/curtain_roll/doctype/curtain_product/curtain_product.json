@@ -1,0 +1,189 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 0,
+ "autoname": "field:product_key",
+ "creation": "2026-09-19 10:00:00.000000",
+ "description": "Pricing for one curtain type on the storefront: which colours are offered, what each one costs, and what every option adds.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "product_key",
+  "product_title",
+  "column_break_head",
+  "enabled",
+  "item_code",
+  "section_base",
+  "rate_basis",
+  "base_rate",
+  "column_break_base",
+  "min_billable_sqm",
+  "rounding",
+  "section_slabs",
+  "slab_help",
+  "size_slabs",
+  "section_colors",
+  "colors",
+  "section_options",
+  "options"
+ ],
+ "fields": [
+  {
+   "description": "Storefront route, e.g. blackout. Must match the page URL.",
+   "fieldname": "product_key",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Product Key",
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "product_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Product Name"
+  },
+  {
+   "fieldname": "column_break_head",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "description": "Quotation lines are raised against this Item.",
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "section_base",
+   "fieldtype": "Section Break",
+   "label": "Base Price"
+  },
+  {
+   "default": "Per Square Meter",
+   "description": "Per Square Meter multiplies by the width x height the customer enters.",
+   "fieldname": "rate_basis",
+   "fieldtype": "Select",
+   "label": "Rate Basis",
+   "options": "Per Square Meter\nPer Piece",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "base_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Base Rate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_base",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Smallest area charged for, however small the blind is.",
+   "depends_on": "eval:doc.rate_basis=='Per Square Meter'",
+   "fieldname": "min_billable_sqm",
+   "fieldtype": "Float",
+   "label": "Minimum Billable Area (m2)"
+  },
+  {
+   "default": "2",
+   "fieldname": "rounding",
+   "fieldtype": "Int",
+   "label": "Round Price To (decimals)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_slabs",
+   "fieldtype": "Section Break",
+   "label": "Size Slabs (optional)"
+  },
+  {
+   "fieldname": "slab_help",
+   "fieldtype": "HTML",
+   "options": "<p class=\"text-muted small\">Leave this empty to charge the Base Rate for every size. Add rows to charge a different rate for different sizes &mdash; the first row whose range contains the ordered area wins, and it replaces the base rate.</p>"
+  },
+  {
+   "fieldname": "size_slabs",
+   "fieldtype": "Table",
+   "label": "Size Slabs",
+   "options": "Curtain Size Slab"
+  },
+  {
+   "fieldname": "section_colors",
+   "fieldtype": "Section Break",
+   "label": "Colours / Materials"
+  },
+  {
+   "description": "Only rows with Show on site ticked appear in the material picker on the storefront.",
+   "fieldname": "colors",
+   "fieldtype": "Table",
+   "label": "Colours",
+   "options": "Curtain Product Color"
+  },
+  {
+   "fieldname": "section_options",
+   "fieldtype": "Section Break",
+   "label": "Option Pricing"
+  },
+  {
+   "description": "Control type, Mounting Option, Valance Option Box, Installation service and so on.",
+   "fieldname": "options",
+   "fieldtype": "Table",
+   "label": "Options",
+   "options": "Curtain Product Option"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Product",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "report": 1,
+   "role": "Sales User"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

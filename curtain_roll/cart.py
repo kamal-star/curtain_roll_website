@@ -10,9 +10,9 @@ Flow:
 So the cart is real ERP data, not a session blob: it shows up in the Selling
 workspace and can be submitted into a Sales Order by the team.
 
-Known limit: rates come from the captured catalogue (the product's starting
-price). OpenCart's per-option surcharges are server-side rules we do not have,
-so a total here will not match the live site once options are priced.
+Rates come from the **Curtain Product** record for the type (see pricing.py),
+so the colour, the measured size and every option the customer picked are
+priced by the team's own figures rather than by a flat starting price.
 """
 
 import json
@@ -22,7 +22,8 @@ from urllib.parse import quote
 import frappe
 from frappe.utils import nowdate
 
-CURRENCY = "SR"
+from curtain_roll import pricing
+
 _CATALOG = None
 
 
@@ -273,11 +274,12 @@ def get_cart_quotation(create=False):
 
 
 def _total_text(quotation):
+	symbol = pricing.currency_symbol()
 	if not quotation or not quotation.get("items"):
-		return "0 item(s) - %s 0.00" % CURRENCY
+		return "0 item(s) - %s 0.00" % symbol
 	count = int(sum(float(i.qty or 0) for i in quotation.items))
 	amount = float(quotation.get("total") or 0)
-	return "%d item(s) - %s %s" % (count, CURRENCY, "{:,.2f}".format(amount))
+	return "%d item(s) - %s %s" % (count, symbol, "{:,.2f}".format(amount))
 
 
 def _save(quotation):
@@ -307,6 +309,19 @@ def add(args, form):
 		return {"error": {"warning": "Product not set up in ERPNext yet."}}
 
 	lines, captured = describe_options(entry.get("key"), form)
+
+	# Price it here, from the back-office record - never from anything the
+	# browser posted. This also rejects a colour the team has withdrawn.
+	priced = pricing.calculate(entry.get("key"), form, qty)
+	if priced.get("errors"):
+		return {"error": {"option": priced["errors"]}}
+	if priced.get("ok"):
+		rate = priced["unit_rate"]
+		lines = lines + ["", "Price:"] + pricing.breakdown_lines(priced)
+	else:
+		# not priced in the desk yet - fall back to the catalogue price
+		rate = entry.get("price") or 0
+
 	spec = "\n".join(lines)
 
 	quotation = get_cart_quotation(create=True)
@@ -320,7 +335,7 @@ def add(args, form):
 		quotation.append("items", {
 			"item_code": code,
 			"qty": qty,
-			"rate": entry.get("price") or 0,
+			"rate": rate,
 			"description": spec or entry["name"],
 		})
 

@@ -49,11 +49,66 @@ It happily matches the original site's SEO URLs.
 
 ## Ordering
 
-`webshop` is not installed, so there is no cart. Each product page carries a
-**Request a quote** form posting to `curtain_roll.api.submit_quote`, which
-creates a **Lead** and attaches the configurator render as a private File.
-That matches how the business actually sells — sizing is done on site, and the
-original storefront collected no dimensions either.
+Add to cart on a product page writes to a **draft Quotation** with
+`order_type = "Shopping Cart"`, one per signed-in customer. A guest who clicks
+it is sent to login first. The line carries every option the customer picked,
+the price breakdown, and the 3D render as an attachment. `/cart` lists the
+lines with qty / remove / Place Order, which submits the Quotation.
+
+Each page also carries a **Request a quote** form posting to
+`curtain_roll.api.submit_quote`, which creates a **Lead** instead - for
+visitors who want a call back rather than a cart.
+
+## Pricing from the desk
+
+Rates are **not** in the code. Each curtain type has a **Curtain Product**
+record (search "Curtain Product" in the desk), named after its route:
+
+| Section | What the team sets |
+|---|---|
+| Base Price | `Per Square Meter` or `Per Piece`, the rate, and the minimum billable area |
+| Size Slabs | optional: a different rate for a range of m2, which replaces the base rate |
+| Colours | every swatch on the page, each with **Show on site** and its own surcharge |
+| Options | Control type, Mounting, Valance box, Installation service ... each with a surcharge |
+
+Every row is charged as **Fixed Amount**, **Per Square Meter** or **Percent of
+Base**; a colour may also **Override Base Rate**. The area comes from the width
+and height the customer types, in cm: `width x height / 10000`.
+
+So a 200 x 150 cm blackout at 120/m2, with a +25 colour, a +350 motor, a
++15/m2 valance box and +80 installation prices as
+`120x3 + 25 + 350 + 15x3 + 80 = 860`.
+
+**Unticking Show on site removes that colour from the page** - the swatch is
+hidden and the input disabled - and the server refuses it even if the form is
+tampered with.
+
+Two buttons on the form do the tedious parts: *Bulk edit* sets one rate across
+all 65 swatches at once, and *Reload options from page* pulls in swatches added
+by a later capture without touching rates already set.
+
+### How it reaches the page
+
+`after_install` and `after_migrate` seed one record per type from
+`data/products.json`, so the team opens a form that already lists every swatch
+and option and only has to type numbers.
+
+The live total on the product page is **not** computed in the browser. The
+Journal3 theme already re-posts the whole option form to
+`index.php?route=product/product/add` on every change and writes `json.total`
+into `#total_price`; `pricing.price_preview` answers it. The same
+`pricing.calculate` prices the quotation line, so the page and the order can
+never disagree, and the browser is never trusted with a rate.
+
+Per-choice surcharges are written into the swatch markup as the theme's own
+`.option-price` span and tooltip. The Journal3 stylesheet hides that span with
+`display: none !important`, exactly as on the original site, so the figures
+show on hover and in the running total. To print them under each swatch
+instead, add to `public/css/curtain.css`:
+
+```css
+.product-info .option-price { display: inline !important; }
+```
 
 ## Layout
 
@@ -66,8 +121,12 @@ curtain_roll/
 │   ├── configurator/       the 9 bundles (~176 MB)
 │   ├── three/              three.js, OrbitControls, OBJLoader, dat.gui
 │   └── image/              product and swatch images
-├── api.py                  quote endpoint
-├── install.py              after_install / before_uninstall
+├── curtain_roll/doctype/   Curtain Product (+ colour / option / slab rows)
+├── pricing.py              rates, the live total, and what the cart is charged
+├── cart.py                 cart -> draft Quotation
+├── renderers.py            the OpenCart endpoints the theme still calls
+├── api.py                  quote endpoint, session info, CSRF token
+├── install.py              after_install / after_migrate / before_uninstall
 └── utils.py                product lookup + asset path helper
 ```
 
@@ -162,4 +221,7 @@ cp curtain_roll/www/maps/preload/zebra/scenebk.jpg \
 - `/` and `/blackout` render with the theme
 - a colour click fetches `/assets/curtain_roll/image/catalog/<product>-materials/<code>.jpg`
 - textures resolve at `/maps/preload/…` (site root, **not** under `/assets`)
-- currency: quotations use the company default — set a SAR company and price list
+- currency: the storefront prints the **company default currency**, so set a SAR
+  company or every price on the site reads in the wrong currency
+- open one **Curtain Product** record and set the rates before going live: a
+  fresh install seeds them from the captured "starts from" prices

@@ -4,7 +4,7 @@ import frappe
 from frappe.website.page_renderers.base_renderer import BaseRenderer
 from werkzeug.wrappers import Response
 
-from curtain_roll import cart
+from curtain_roll import cart, pricing
 
 
 class OpenCartStub(BaseRenderer):
@@ -26,6 +26,10 @@ class OpenCartStub(BaseRenderer):
 		"checkout/cart/edit": cart.edit,
 		"checkout/cart/remove": cart.remove,
 		"account/wishlist/add": cart.wishlist_add,
+		# the theme re-posts the whole option form here on every change and
+		# writes json.total into #total_price, which is how the live price on
+		# the page follows the rates set in Curtain Product
+		"product/product/add": pricing.price_preview,
 	}
 
 	def can_render(self):
