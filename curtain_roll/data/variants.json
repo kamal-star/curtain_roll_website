@@ -8,9 +8,12 @@
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
   "scene_source": "scenes/wooden-premium.jpg",
   "price": 300.0,
-  "scene_center": 0.2425,
-  "_scene_center_note": "where the chosen window sits in the supplied image, as a fraction of its width",
-  "scene_zoom": 1.25,
-  "_scene_zoom_note": "push the room back so its window matches the blind; >1 makes the room smaller"
+  "window": [
+   347.5,
+   395.0,
+   636.0,
+   675.0
+  ],
+  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it."
  }
 ]

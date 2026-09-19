@@ -214,48 +214,53 @@ which is the whole point of a variant.
 source is not 2:1 or is smaller than the captured rooms - a 360 panorama that
 is not exactly 2:1 shows a pinched ceiling and a visible seam.
 
-### Lining the blind up with a window: `scene_center`
+### Fitting a room to the blind: `window`
 
-The blind hangs at the middle of the bundle's world and **cannot be moved** -
-its position is compiled into code we cannot edit. Look at any captured room
-and you can see the convention: the window sits dead centre of the panorama.
+The blind hangs at the middle of the bundle's world and **cannot be moved or
+resized** - it is geometry at a fixed distance from a fixed camera, compiled in.
+Measured off the running scene it is **34.9 deg wide by 34.3 deg tall, 3.5 deg
+above the horizon**, and every captured room puts a window right there:
+**36.9 x 38.2 deg, dead centre**, leaving a little reveal around the blind.
 
-What can move is the room. Rolling an equirectangular image sideways is just a
-change of longitude, so whichever window ends up in the middle of the image is
-the one the blind hangs in. `scene_center` says where that window sits in the
-**supplied** image, as a fraction of its width:
-
-```json
-"scene_center": 0.2425
-```
-
-`make_variants.py` then rolls the panorama by `0.5 - scene_center` (here +92.7
-degrees). Measure it by opening the image and reading off the window's centre;
-get it wrong and the blind hangs on a wall.
-
-### Matching the window's size: `scene_zoom`
-
-Getting the window in front of the blind is only half of it. The blind's size
-on screen is fixed too - it is real geometry, a fixed distance from a fixed
-camera - so a room whose window is wider than the captured one leaves the blind
-looking lost in it, and a narrower one leaves the blind overhanging.
-
-Again the room is what can move. An equirectangular image is linear in
-longitude and latitude, so scaling it about its centre scales the room's
-angular size directly, as though the camera had stepped back:
+So the room has to be fitted to the blind. Measure the window in the supplied
+image and give its outer frame in that image's own pixels:
 
 ```json
-"scene_zoom": 1.25
+"window": [347.5, 395.0, 636.0, 675.0]
 ```
 
-`rescale()` shrinks the panorama by that factor and fills the margins - sideways
-by tiling (a panorama is a loop, so it is seamless) and top and bottom by
-repeating the edge rows, which is what the poles look like anyway. Those
-margins sit behind and above the camera. The window stays a true projection.
+`reproject()` derives everything else - where to aim, and how much to scale
+each axis so the window ends up 36.9 x 38.2 deg. **Measure once; do not hand-
+compute the transform.** Deriving it by hand is how the scale got inverted the
+first time, and how `scene_zoom` ended up eyeballed at 1.25 when the real
+answer was 1.41 across and 1.25 up. Those differ because a window is rarely the
+same shape as the one the blind was built for, which a single uniform zoom
+cannot fix.
 
-Keep it gentle. Past about 1.4 the room visibly bends, because this is a cheat
-and not a re-render, and every step also costs sharpness - the visible area is
-resampled twice.
+An equirectangular image is linear in longitude and latitude, so aiming is a
+translation and fitting is a scale. It is done in **one resample straight from
+the supplied file** - rolling, then scaling, then resizing would interpolate
+three times and throw away detail a small source cannot spare. The margins that
+opens up are filled by tiling sideways (a panorama is a loop, so it is
+seamless) and by repeating the top and bottom rows, which is what the poles
+look like anyway.
+
+Check the result with `verify_room.py <key>`, which draws the target box over
+the generated room. The window should sit inside it.
+
+`scene_center` / `scene_center_y` / `scene_zoom` still work if `window` is
+absent, but there is no good reason to use them.
+
+### What this cannot fix
+
+Fitting is geometry, not quality:
+
+* **Resolution.** A 2000 px source stretched to 4096 has a quarter of the
+  detail the captured rooms carry, and no transform puts it back.
+* **Shape.** Scaling the axes differently distorts the room by whatever the
+  two factors differ by - about 12% for the supplied room.
+* **Light.** The blind is lit by fixed white lights, so a night-time or warm
+  room will never sit right behind it.
 
 ### What to ask for instead
 
