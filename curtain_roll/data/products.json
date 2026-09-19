@@ -4492,6 +4492,8 @@
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "wooden",
+  "flat": false,
+  "room": null,
   "scene": "/maps/scenes/wooden-premium.jpg",
   "blind_scale": [
    0.7033,
@@ -5371,6 +5373,8 @@
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "vertical",
+  "flat": false,
+  "room": null,
   "scene": "/maps/scenes/vertical-premium.jpg",
   "blind_scale": [
    0.8315,
@@ -5379,6 +5383,907 @@
   "window_angles": [
    28.2115,
    -1.89
+  ]
+ },
+ {
+  "key": "shutters",
+  "route": "shutters",
+  "bundle": "blackout.js",
+  "title": "Rolling shutters - privacy, insulation and security",
+  "meta_description": "Imported rolling shutters: weather resistant, sound and heat insulating, and secure. Choose your colour and size.",
+  "meta_keywords": "",
+  "heading": "Shutters",
+  "price": 0.0,
+  "price_text": "SR 150.00",
+  "description": "",
+  "capture_option_id": "378",
+  "option_groups": [
+   {
+    "id": "371",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "664",
+      "id": "371",
+      "mp_optionvalue": "294",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7200-150x150.jpg",
+      "code": "7200"
+     },
+     {
+      "value": "665",
+      "id": "371",
+      "mp_optionvalue": "295",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7234-150x150.jpg",
+      "code": "7234"
+     },
+     {
+      "value": "666",
+      "id": "371",
+      "mp_optionvalue": "296",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7260-150x150.jpg",
+      "code": "7260"
+     },
+     {
+      "value": "667",
+      "id": "371",
+      "mp_optionvalue": "297",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7262-150x150.jpg",
+      "code": "7262"
+     },
+     {
+      "value": "668",
+      "id": "371",
+      "mp_optionvalue": "298",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7263-150x150.jpg",
+      "code": "7263"
+     },
+     {
+      "value": "669",
+      "id": "371",
+      "mp_optionvalue": "299",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7265-150x150.jpg",
+      "code": "7265"
+     },
+     {
+      "value": "670",
+      "id": "371",
+      "mp_optionvalue": "300",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7266-150x150.jpg",
+      "code": "7266"
+     },
+     {
+      "value": "671",
+      "id": "371",
+      "mp_optionvalue": "301",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7267-150x150.jpg",
+      "code": "7267"
+     },
+     {
+      "value": "672",
+      "id": "371",
+      "mp_optionvalue": "302",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7268-150x150.jpg",
+      "code": "7268"
+     },
+     {
+      "value": "673",
+      "id": "371",
+      "mp_optionvalue": "303",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7281-150x150.jpg",
+      "code": "7281"
+     },
+     {
+      "value": "674",
+      "id": "371",
+      "mp_optionvalue": "304",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7282-150x150.jpg",
+      "code": "7282"
+     },
+     {
+      "value": "675",
+      "id": "371",
+      "mp_optionvalue": "305",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7285-150x150.jpg",
+      "code": "7285"
+     },
+     {
+      "value": "676",
+      "id": "371",
+      "mp_optionvalue": "306",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7286-150x150.jpg",
+      "code": "7286"
+     },
+     {
+      "value": "677",
+      "id": "371",
+      "mp_optionvalue": "307",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7290-150x150.jpg",
+      "code": "7290"
+     },
+     {
+      "value": "678",
+      "id": "371",
+      "mp_optionvalue": "308",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7292-150x150.jpg",
+      "code": "7292"
+     },
+     {
+      "value": "679",
+      "id": "371",
+      "mp_optionvalue": "309",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7293-150x150.jpg",
+      "code": "7293"
+     },
+     {
+      "value": "680",
+      "id": "371",
+      "mp_optionvalue": "310",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7295-150x150.jpg",
+      "code": "7295"
+     },
+     {
+      "value": "681",
+      "id": "371",
+      "mp_optionvalue": "311",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7304-150x150.jpg",
+      "code": "7304"
+     },
+     {
+      "value": "692",
+      "id": "371",
+      "mp_optionvalue": "312",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7305-150x150.jpg",
+      "code": "7305"
+     },
+     {
+      "value": "693",
+      "id": "371",
+      "mp_optionvalue": "313",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7306-150x150.jpg",
+      "code": "7306"
+     },
+     {
+      "value": "694",
+      "id": "371",
+      "mp_optionvalue": "314",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7315-150x150.jpg",
+      "code": "7315"
+     },
+     {
+      "value": "695",
+      "id": "371",
+      "mp_optionvalue": "315",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7316-150x150.jpg",
+      "code": "7316"
+     },
+     {
+      "value": "696",
+      "id": "371",
+      "mp_optionvalue": "316",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7317-150x150.jpg",
+      "code": "7317"
+     },
+     {
+      "value": "697",
+      "id": "371",
+      "mp_optionvalue": "317",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7318-150x150.jpg",
+      "code": "7318"
+     },
+     {
+      "value": "698",
+      "id": "371",
+      "mp_optionvalue": "318",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7319-150x150.jpg",
+      "code": "7319"
+     },
+     {
+      "value": "699",
+      "id": "371",
+      "mp_optionvalue": "319",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7320-150x150.jpg",
+      "code": "7320"
+     },
+     {
+      "value": "700",
+      "id": "371",
+      "mp_optionvalue": "320",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7321-150x150.jpg",
+      "code": "7321"
+     },
+     {
+      "value": "701",
+      "id": "371",
+      "mp_optionvalue": "321",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7322-150x150.jpg",
+      "code": "7322"
+     },
+     {
+      "value": "702",
+      "id": "371",
+      "mp_optionvalue": "322",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7323-150x150.jpg",
+      "code": "7323"
+     },
+     {
+      "value": "703",
+      "id": "371",
+      "mp_optionvalue": "323",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7324-150x150.jpg",
+      "code": "7324"
+     },
+     {
+      "value": "704",
+      "id": "371",
+      "mp_optionvalue": "324",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7325-150x150.jpg",
+      "code": "7325"
+     },
+     {
+      "value": "705",
+      "id": "371",
+      "mp_optionvalue": "325",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7377-150x150.jpg",
+      "code": "7377"
+     },
+     {
+      "value": "706",
+      "id": "371",
+      "mp_optionvalue": "326",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7378-150x150.jpg",
+      "code": "7378"
+     },
+     {
+      "value": "707",
+      "id": "371",
+      "mp_optionvalue": "327",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7379-150x150.jpg",
+      "code": "7379"
+     },
+     {
+      "value": "708",
+      "id": "371",
+      "mp_optionvalue": "328",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7381-150x150.jpg",
+      "code": "7381"
+     },
+     {
+      "value": "709",
+      "id": "371",
+      "mp_optionvalue": "329",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7382-150x150.jpg",
+      "code": "7382"
+     },
+     {
+      "value": "710",
+      "id": "371",
+      "mp_optionvalue": "330",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7383-150x150.jpg",
+      "code": "7383"
+     },
+     {
+      "value": "711",
+      "id": "371",
+      "mp_optionvalue": "331",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7384-150x150.jpg",
+      "code": "7384"
+     },
+     {
+      "value": "712",
+      "id": "371",
+      "mp_optionvalue": "332",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7390-150x150.jpg",
+      "code": "7390"
+     },
+     {
+      "value": "713",
+      "id": "371",
+      "mp_optionvalue": "333",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7391-150x150.jpg",
+      "code": "7391"
+     },
+     {
+      "value": "714",
+      "id": "371",
+      "mp_optionvalue": "334",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7392-150x150.jpg",
+      "code": "7392"
+     },
+     {
+      "value": "715",
+      "id": "371",
+      "mp_optionvalue": "335",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7393-150x150.jpg",
+      "code": "7393"
+     },
+     {
+      "value": "716",
+      "id": "371",
+      "mp_optionvalue": "336",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7394-150x150.jpg",
+      "code": "7394"
+     },
+     {
+      "value": "717",
+      "id": "371",
+      "mp_optionvalue": "337",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7395-150x150.jpg",
+      "code": "7395"
+     },
+     {
+      "value": "718",
+      "id": "371",
+      "mp_optionvalue": "338",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7396-150x150.jpg",
+      "code": "7396"
+     },
+     {
+      "value": "719",
+      "id": "371",
+      "mp_optionvalue": "339",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7401-150x150.jpg",
+      "code": "7401"
+     },
+     {
+      "value": "720",
+      "id": "371",
+      "mp_optionvalue": "340",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7402-150x150.jpg",
+      "code": "7402"
+     },
+     {
+      "value": "721",
+      "id": "371",
+      "mp_optionvalue": "341",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7403-150x150.jpg",
+      "code": "7403"
+     },
+     {
+      "value": "722",
+      "id": "371",
+      "mp_optionvalue": "501",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7198-150x150w.jpg",
+      "code": "7198"
+     },
+     {
+      "value": "723",
+      "id": "371",
+      "mp_optionvalue": "502",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7199-150x150w.jpg",
+      "code": "7199"
+     },
+     {
+      "value": "724",
+      "id": "371",
+      "mp_optionvalue": "503",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7205-150x150w.jpg",
+      "code": "7205"
+     },
+     {
+      "value": "725",
+      "id": "371",
+      "mp_optionvalue": "504",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7261-150x150w.jpg",
+      "code": "7261"
+     },
+     {
+      "value": "726",
+      "id": "371",
+      "mp_optionvalue": "505",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7269-150x150w.jpg",
+      "code": "7269"
+     },
+     {
+      "value": "727",
+      "id": "371",
+      "mp_optionvalue": "506",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7270-150x150w.jpg",
+      "code": "7270"
+     },
+     {
+      "value": "728",
+      "id": "371",
+      "mp_optionvalue": "507",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7278-150x150w.jpg",
+      "code": "7278"
+     },
+     {
+      "value": "729",
+      "id": "371",
+      "mp_optionvalue": "508",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7283-150x150w.jpg",
+      "code": "7283"
+     },
+     {
+      "value": "730",
+      "id": "371",
+      "mp_optionvalue": "509",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7284-150x150w.jpg",
+      "code": "7284"
+     },
+     {
+      "value": "731",
+      "id": "371",
+      "mp_optionvalue": "510",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7287-150x150w.jpg",
+      "code": "7287"
+     },
+     {
+      "value": "732",
+      "id": "371",
+      "mp_optionvalue": "511",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7291-150x150w.jpg",
+      "code": "7291"
+     },
+     {
+      "value": "733",
+      "id": "371",
+      "mp_optionvalue": "512",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7294-150x150w.jpg",
+      "code": "7294"
+     },
+     {
+      "value": "738",
+      "id": "371",
+      "mp_optionvalue": "517",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7360-150x150w.jpg",
+      "code": "7360"
+     },
+     {
+      "value": "740",
+      "id": "371",
+      "mp_optionvalue": "519",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7362-150x150w.jpg",
+      "code": "7362"
+     },
+     {
+      "value": "741",
+      "id": "371",
+      "mp_optionvalue": "520",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7363-150x150w.jpg",
+      "code": "7363"
+     },
+     {
+      "value": "742",
+      "id": "371",
+      "mp_optionvalue": "521",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7373-150x150w.jpg",
+      "code": "7373"
+     },
+     {
+      "value": "743",
+      "id": "371",
+      "mp_optionvalue": "522",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/blackout-materials/7380-150x150w.jpg",
+      "code": "7380"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "375",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "369",
+    "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "660",
+      "id": "369",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "661",
+      "id": "369",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "372",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "682",
+      "id": "372",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     },
+     {
+      "value": "683",
+      "id": "372",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "393",
+    "label": "Valance Option Box",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "23",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "779",
+      "id": "393",
+      "mp_optionvalue": "76",
+      "mp_parentoption_value": "0",
+      "price": "SR 1.60",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+      "code": "With Valance Box"
+     },
+     {
+      "value": "780",
+      "id": "393",
+      "mp_optionvalue": "77",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Without Valance Box"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "386",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "765",
+      "id": "386",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "766",
+      "id": "386",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "378",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/blackout-materials/7198-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7199-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7200-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7205-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7234-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7260-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7261-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7262-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7263-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7265-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7266-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7267-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7268-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7269-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7270-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7278-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7281-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7282-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7283-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7284-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7285-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7286-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7287-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7290-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7291-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7292-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7293-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7294-150x150w.jpg",
+   "image/cache/catalog/blackout-materials/7295-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7304-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7305-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7306-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7315-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7316-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7317-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7318-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7319-150x150.jpg",
+   "image/cache/catalog/blackout-materials/7320-150x150.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "blackout",
+  "flat": true,
+  "room": "/assets/curtain_roll/image/flat/shutters.jpg",
+  "scene": null,
+  "blind_scale": [
+   1.0,
+   1.0
+  ],
+  "window_angles": [
+   0.0,
+   0.0
   ]
  }
 ]

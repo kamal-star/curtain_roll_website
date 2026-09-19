@@ -405,6 +405,74 @@ of 3 m. Vertical needs 56.1, so the opposite: **0.83x**, about 2.5 m.
 One room cannot suit both. Either the client renders one per product, or picks
 a distance that suits the product it is for.
 
+## Flat products - adding a product with no 3D bundle
+
+The eight captured products each ship a compiled, obfuscated three.js app with
+the geometry welded inside, 9 to 50 MB apiece, and there is no way to author a
+ninth. A **flat product** sidesteps that entirely: the room is an ordinary
+picture and each colour is a transparent PNG laid over it.
+
+`/shutters` is the first one. Mark it in `data/variants.json`:
+
+```json
+{
+  "key": "shutters",
+  "based_on": "blackout",
+  "flat": true,
+  "product_id": "903",
+  "heading": "Shutters",
+  "room_source": "scenes/shutters-room.jpg"
+}
+```
+
+`based_on` still supplies the page shell - header, nav, the option accordion,
+the cart - but the bundle's `<script>` tag is replaced by a compositor instead
+of having a room injected above it.
+
+### How it stands in for the bundle
+
+The theme calls three things the bundle used to provide, so the compositor
+provides them:
+
+| | |
+|---|---|
+| `modelchanger(group, url, code, $el)` | every swatch calls this on click |
+| `renderer.domElement` | add-to-cart reads `.toDataURL()` off it for the quotation |
+| `resetScean()` | called just before that capture |
+
+Because `modelchanger` keeps its signature, the swatches drive it without
+knowing anything changed - including the ones the pricing script injects from
+the desk. The canvas is 2D, so it is never tainted and the capture always
+works; a WebGL canvas needs `preserveDrawingBuffer` for that.
+
+Two things that caught me out:
+
+* **`#c` is a flex child** and stretches to the height of the options column
+  beside it - 2245 px on a full page - so its own height says nothing about how
+  tall the picture should be. The canvas takes the room image's proportions
+  instead, which lands on 601 x 768, the same as the bundle's.
+* **No `-x` on the texture URL.** `texture_url()` appends it to survive the
+  obfuscated loaders mangling the path; a flat product loads exactly the URL it
+  is handed, so `_color_entry()` skips the trick when the product is flat.
+
+### Why this is the better route
+
+It is sharper. A 360 panorama spends **83% of its width** on parts of the room
+the camera never shows; here every pixel of the file lands on screen.
+
+It is also the conclusion the client's own newer site reached: kayancurtain.com
+runs A-Frame with an `<a-sky>` room and **twelve flat PNGs** for the blind, at
+2088 x 2000. No 3D model at all.
+
+### What a flat product needs
+
+* a room picture - `flatten_room.py` will pull one out of a panorama if that is
+  all there is, by gnomonic projection, so straight lines stay straight
+* one transparent PNG per colour, **on the room's own canvas** so overlaying is
+  exact, uploaded against each row of the Colours table
+
+Everything else - options, pricing, cart, quotation - is unchanged.
+
 ### Every product needs its own reference### Every product needs its own reference
 
 The blinds are not the same size, so the windows built around them are not

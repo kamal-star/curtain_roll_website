@@ -64,5 +64,11 @@
   "name": "Vertical Premium",
   "price": 128.0,
   "variant_of": "vertical"
+ },
+ "903": {
+  "key": "shutters",
+  "name": "Shutters",
+  "price": 0.0,
+  "variant_of": "blackout"
  }
 }

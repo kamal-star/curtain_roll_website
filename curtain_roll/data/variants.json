@@ -40,5 +40,17 @@
   ],
   "scene_fit": "none",
   "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
+ },
+ {
+  "key": "shutters",
+  "based_on": "blackout",
+  "flat": true,
+  "product_id": "903",
+  "heading": "Shutters",
+  "title": "Rolling shutters - privacy, insulation and security",
+  "meta_description": "Imported rolling shutters: weather resistant, sound and heat insulating, and secure. Choose your colour and size.",
+  "room_source": "scenes/shutters-room.jpg",
+  "price": 0.0,
+  "_note": "flat product: no 3D bundle. The room is an ordinary picture and each colour is a transparent PNG laid over it, which is how the client's own newer site works."
  }
 ]

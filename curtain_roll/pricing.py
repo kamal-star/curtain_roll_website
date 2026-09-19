@@ -198,6 +198,7 @@ def get_spec(product_key):
 	if not cint(doc.enabled):
 		return None
 
+	flat = bool(page.get("flat"))
 	size_group = color_group = capture_group = None
 	color_label = "Material"
 	required = {}
@@ -231,6 +232,7 @@ def get_spec(product_key):
 			for t in (doc.get("install_tiers") or [])
 		],
 		"currency": currency_symbol(),
+		"flat": flat,
 		"size_group": size_group,
 		"color_group": color_group,
 		"color_label": color_label,
@@ -242,7 +244,7 @@ def get_spec(product_key):
 			for s in (doc.get("size_slabs") or [])
 		],
 		"colors": {
-			str(c.option_value): _color_entry(c)
+			str(c.option_value): _color_entry(c, flat)
 			for c in (doc.get("colors") or [])
 		},
 		"options": {},
@@ -261,7 +263,7 @@ def get_spec(product_key):
 	return spec
 
 
-def _color_entry(row):
+def _color_entry(row, flat=False):
 	entry = {
 		"label": row.color_name,
 		"enabled": cint(row.enabled),
@@ -271,10 +273,13 @@ def _color_entry(row):
 	}
 	if entry["custom"]:
 		# This colour has no swatch in the captured HTML, so the page has to
-		# build one. It needs the photo, and a path the 3D bundle will resolve
-		# back to that same photo - see texture_url().
+		# build one. It needs the photo, and the path to hand the viewer.
 		entry["image"] = row.fabric_image or ""
-		entry["texture"] = texture_url(row.fabric_image)
+		# A flat product loads exactly the URL it is given. The "-x" in
+		# texture_url() exists only to survive the obfuscated bundles, which
+		# mangle the path before loading it - there is no bundle here.
+		entry["texture"] = ((row.fabric_image or "") if flat
+						else texture_url(row.fabric_image))
 		entry["code"] = row.texture_code or row.color_name
 	return entry
 
