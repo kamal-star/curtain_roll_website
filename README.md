@@ -233,8 +233,44 @@ the one the blind hangs in. `scene_center` says where that window sits in the
 degrees). Measure it by opening the image and reading off the window's centre;
 get it wrong and the blind hangs on a wall.
 
-Pick a window at least as wide as the captured one (about 10% of the panorama
-width, ~36 degrees). A narrower one and the blind overhangs it.
+### Matching the window's size: `scene_zoom`
+
+Getting the window in front of the blind is only half of it. The blind's size
+on screen is fixed too - it is real geometry, a fixed distance from a fixed
+camera - so a room whose window is wider than the captured one leaves the blind
+looking lost in it, and a narrower one leaves the blind overhanging.
+
+Again the room is what can move. An equirectangular image is linear in
+longitude and latitude, so scaling it about its centre scales the room's
+angular size directly, as though the camera had stepped back:
+
+```json
+"scene_zoom": 1.25
+```
+
+`rescale()` shrinks the panorama by that factor and fills the margins - sideways
+by tiling (a panorama is a loop, so it is seamless) and top and bottom by
+repeating the edge rows, which is what the poles look like anyway. Those
+margins sit behind and above the camera. The window stays a true projection.
+
+Keep it gentle. Past about 1.4 the room visibly bends, because this is a cheat
+and not a re-render, and every step also costs sharpness - the visible area is
+resampled twice.
+
+### What to ask for instead
+
+Measured off the captured wooden room, which is the convention all eight
+follow. For a **4096 x 2048** panorama:
+
+| | |
+|---|---|
+| Window centre | x = 2048 (exactly 50% of width), y ~ 1005 (on the horizon) |
+| Window outer frame | ~420 px wide (10.3% of width, 36.9 deg) |
+| | ~435 px tall (21.2% of height, 38.2 deg) |
+
+A room rendered to that needs neither `scene_center` nor `scene_zoom`, and
+loses none of its sharpness. It is worth asking for before a whole range is
+produced.
 
 ### Renderer sharpness
 
