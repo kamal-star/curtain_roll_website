@@ -3082,6 +3082,58 @@ $(document).ready(function () {
    "ImageBitmapLoader"].forEach(function (name) {
     if (THREE[name]) redirect(THREE[name].prototype);
   });
+
+  /* Fit the BLIND to this room's window, rather than the room to the blind.
+
+     The room cannot be scaled - stretching an equirectangular bows every
+     straight line in it. The blind can: it is real geometry, so widening it
+     distorts nothing. It keeps the same share of the window's width that it
+     has in its own captured room.
+
+     Width only. The bundle repositions the slats every frame, so a vertical
+     scale on the group simply does not take.
+
+     The bundle sets its own scale, and changes it when the mounting option
+     changes - Outside is 12% bigger than Inside - so this watches for the
+     value it did not put there and re-applies the factor on top, which keeps
+     that behaviour intact. */
+  var BLIND_SCALE = 0.8315;
+
+  function fitBlind() {
+    if (BLIND_SCALE === 1 || !window.scene || !window.camera || !window.THREE) return;
+    var g = null;
+    scene.children.forEach(function (o) { if (o.name === "mesh_group") g = o; });
+    if (!g || !g.children.length) return;
+
+    // Already ours - nothing to do.
+    if (g.__crFitted !== undefined && Math.abs(g.scale.x - g.__crFitted) < 1e-9) return;
+
+    // Not ours, so the bundle has just set it - but changing the mounting
+    // rebuilds the model over several frames, and multiplying a value that is
+    // still moving compounds the factor. Wait until it holds still for a tick.
+    if (g.__crSeen === undefined || Math.abs(g.scale.x - g.__crSeen) > 1e-9) {
+      g.__crSeen = g.scale.x;
+      return;
+    }
+
+    var before = new THREE.Box3().setFromObject(g);
+    if (!isFinite(before.max.y)) return;
+    var topY = before.max.y, midX = (before.min.x + before.max.x) / 2;
+
+    g.scale.x = g.scale.x * BLIND_SCALE;                     // on top of theirs
+    g.updateMatrixWorld(true);
+
+    var after = new THREE.Box3().setFromObject(g);
+    g.position.y += topY - after.max.y;                      // headrail stays put
+    g.position.x += midX - (after.min.x + after.max.x) / 2;
+    g.updateMatrixWorld(true);
+
+    g.__crFitted = g.scale.x;
+    g.__crSeen = g.scale.x;
+    if (window.renderer) renderer.render(scene, camera);
+  }
+
+  setInterval(fitBlind, 400);
 })();
 </script>
 <script src="/assets/curtain_roll/configurator/Vertical.js"></script>

@@ -336,6 +336,34 @@ exist, but every one of them bends the room, and the bend grows with the
 distance from 1 and with how far the line sits from eye level. Use them only as
 a stopgap, and only at small factors.
 
+### Scale the blind instead
+
+The room cannot be scaled, but the **blind** can. It is real geometry, so
+widening it distorts nothing at all.
+
+`blind_scale()` works out the factor: the blind keeps the same share of the
+window's width that it has in its own captured room - wooden fills 94% of its
+window, vertical 97%. The supplied room's window is 47.7 deg, so wooden's blind
+is widened **x1.307** (34.9 -> 44.7 deg) and vertical's narrowed **x0.832**
+(54.4 -> 46.3). The factor is baked into the page and applied by a watcher in
+the injected script.
+
+Three things that took a few goes to get right:
+
+* **The group already carries a scale** - 0.23 on wooden. Setting it rather
+  than multiplying it made the blind three times too big.
+* **Width only.** The bundle repositions the slats every frame, so a vertical
+  scale on the group simply does not take. The blind therefore covers less of
+  the window's height than it does in its own room, and more glass shows below
+  it.
+* **The bundle changes the scale itself** when the mounting option changes -
+  0.23 to 0.27 on wooden, so Outside is deliberately bigger. The watcher
+  re-applies the factor on top of whatever it finds, which keeps that
+  behaviour: Outside ends up 1.24x the window's width where the original is
+  1.26x. It waits for the value to hold still for a tick first, because
+  changing mounting rebuilds the model over several frames and multiplying a
+  moving value compounds the factor.
+
 ### Which means the window's size has to be right in the render
 
 It is the one thing that cannot be corrected afterwards. The window must

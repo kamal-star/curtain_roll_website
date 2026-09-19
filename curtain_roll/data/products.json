@@ -4492,7 +4492,8 @@
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "wooden",
-  "scene": "/maps/scenes/wooden-premium.jpg"
+  "scene": "/maps/scenes/wooden-premium.jpg",
+  "blind_scale": 1.3069
  },
  {
   "key": "vertical-premium",
@@ -5363,6 +5364,7 @@
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "vertical",
-  "scene": "/maps/scenes/vertical-premium.jpg"
+  "scene": "/maps/scenes/vertical-premium.jpg",
+  "blind_scale": 0.8315
  }
 ]
