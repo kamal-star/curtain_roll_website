@@ -313,23 +313,45 @@ the **default** state and accept that Outside overhangs.
 
 The typed width and height, incidentally, do **not** change the model at all.
 
-### When the window is the wrong shape
+### Do not scale the room
 
-A uniform scale cannot match a window whose proportions differ from the
-reference. The supplied room is 0.97 wide-to-tall where the vertical reference
-is 1.17, which leaves a choice:
+**A panorama can be rotated. It cannot be zoomed.**
 
-| `scene_fit` | Window | Result |
-|---|---|---|
-| width | 56.1 x 57.6 | matches the reference width, but 4.8 deg of glass shows below the blind |
-| **uniform** | 51.1 x 52.5 | blind covers the whole window, overhanging 1.7 deg each side |
-| height | 46.5 x 47.8 | blind overhangs 4.0 deg each side |
+Rotating an equirectangular image is a real rotation of the sphere, so every
+straight line in the room stays straight. Scaling one stretches longitude and
+latitude linearly, which is not a camera move and not any other rigid
+transformation - so straight lines come out bowed.
 
-`vertical-premium` uses **uniform** for that reason; `wooden-premium` uses the
-default `width`, because that room's window is close to wooden's reference
-shape and width-matching reproduces it exactly.
+The maths is unforgiving. A straight horizontal line at elevation `p0` renders
+straight only when
 
-### Every product needs its own reference
+    z * sin(2*p0) = sin(2*p0 / z)
+
+which holds only at `z = 1`. At `z = 1.28`, with a cornice 20 degrees above eye
+level, the curvature comes out **59% too strong**. The client spotted it
+immediately: a ceiling line that sagged in the middle.
+
+So `scene_fit` defaults to **none**. `width`, `height` and `uniform` still
+exist, but every one of them bends the room, and the bend grows with the
+distance from 1 and with how far the line sits from eye level. Use them only as
+a stopgap, and only at small factors.
+
+### Which means the window's size has to be right in the render
+
+It is the one thing that cannot be corrected afterwards. The window must
+already subtend the right angle, which is a matter of how far the camera stands
+from it:
+
+    distance = (window width / 2) / tan(target angle / 2)
+
+The supplied room's window is 47.7 degrees. Wooden needs 37.3, so that room
+would have to be re-rendered from **1.31x the distance** - about 3.9 m instead
+of 3 m. Vertical needs 56.1, so the opposite: **0.83x**, about 2.5 m.
+
+One room cannot suit both. Either the client renders one per product, or picks
+a distance that suits the product it is for.
+
+### Every product needs its own reference### Every product needs its own reference
 
 The blinds are not the same size, so the windows built around them are not
 either:

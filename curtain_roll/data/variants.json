@@ -14,7 +14,9 @@
    1122,
    640
   ],
-  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Everything else is derived from it and from the blind's own geometry - see BLINDS in make_variants.py."
+  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Everything else is derived from it and from the blind's own geometry - see BLINDS in make_variants.py.",
+  "scene_fit": "none",
+  "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
  },
  {
   "key": "vertical-premium",
@@ -31,7 +33,7 @@
    1122,
    640
   ],
-  "scene_fit": "uniform",
-  "_fit_note": "this window is proportionally much taller than the vertical blind's own reference window, so matching on width alone left the glass showing below the blind. uniform splits the difference and the blind covers the whole window."
+  "scene_fit": "none",
+  "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
  }
 ]
