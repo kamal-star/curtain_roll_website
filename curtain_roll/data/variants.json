@@ -14,8 +14,8 @@
    1122,
    640
   ],
-  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it; scene_fit chooses how the two axes are reconciled.",
-  "scene_fit": "uniform"
+  "scene_fit": "uniform",
+  "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Everything else is derived from it and from the blind's own geometry - see BLINDS in make_variants.py."
  },
  {
   "key": "vertical-premium",
@@ -32,7 +32,6 @@
    1122,
    640
   ],
-  "scene_fit": "width",
-  "_note": "the vertical blind is much wider than the wooden one, so this room is fitted on WIDTH - a uniform fit would leave the blind overhanging the glass"
+  "scene_fit": "uniform"
  }
 ]
