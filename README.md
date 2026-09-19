@@ -374,6 +374,14 @@ Three things that took a few goes to get right:
   (`WINDOW_TOP_DEG`, `WINDOW_CX_DEG`) and aims at those, which cannot drift
   however many times the model is rebuilt. Measured over four switches: top
   21.01 deg and centre 0.18 deg every time.
+* **Derive the scale from the bundle's base, never from your own last output.**
+  Multiplying what is already there compounds. The bundle resets `scale.x` when
+  the mounting changes but never touches `scale.z` again after building the
+  model, so a factor applied to `scale.z` landed on top of itself on every
+  rebuild: 0.3046, then 0.4034, then 0.7076, with the slats stretching from
+  17.5 units to 23.2 and the blind visibly changing shape. `scale.y` is the
+  anchor - the bundle sets the group uniformly when it builds it and then only
+  drives width, through `scale.x`.
 * **The bundle changes the scale itself** when the mounting option changes -
   0.23 to 0.27 on wooden, so Outside is deliberately bigger. The watcher
   re-applies the factor on top of whatever it finds, which keeps that
