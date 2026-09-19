@@ -365,6 +365,15 @@ Three things that took a few goes to get right:
   `scale.y` therefore only makes the blind thicker, which is why it looked like
   vertical scaling "did not take" - the bounding box never moved. Scaling
   `scale.z` works exactly as expected.
+* **Aim the headrail at the window's ANGLE, not at its last position.** Pinning
+  it to wherever it was a moment ago looks equivalent and is not: changing the
+  mounting resets the bundle's scale but *not* its position, so the correction
+  made for the previous scale is left behind and the next one stacks on it.
+  After a couple of Inside/Outside clicks the blind had walked off the window.
+  The page therefore carries the window's own top and centre angles
+  (`WINDOW_TOP_DEG`, `WINDOW_CX_DEG`) and aims at those, which cannot drift
+  however many times the model is rebuilt. Measured over four switches: top
+  21.01 deg and centre 0.18 deg every time.
 * **The bundle changes the scale itself** when the mounting option changes -
   0.23 to 0.27 on wooden, so Outside is deliberately bigger. The watcher
   re-applies the factor on top of whatever it finds, which keeps that

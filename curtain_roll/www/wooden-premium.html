@@ -2493,6 +2493,8 @@ $(document).ready(function () {
      value it did not put there and re-applies the factor on top, which keeps
      that behaviour intact. */
   var BLIND_SCALE = [1.3069, 1.3244];          // [width, height]
+  var WINDOW_TOP_DEG = 21.006;        // window top, above the horizon
+  var WINDOW_CX_DEG = 0.18;          // window centre, off dead ahead
 
   function fitBlind() {
     if (!window.scene || !window.camera || !window.THREE) return;
@@ -2516,10 +2518,6 @@ $(document).ready(function () {
       return;
     }
 
-    var before = new THREE.Box3().setFromObject(g);
-    if (!isFinite(before.max.y)) return;
-    var topY = before.max.y, midX = (before.min.x + before.max.x) / 2;
-
     // The group is rotated -90 deg about X, so its local Z is world UP and its
     // local Y is depth. Height therefore goes on scale.z; scale.y would only
     // make the blind thicker, which is why setting it appeared to do nothing.
@@ -2527,9 +2525,24 @@ $(document).ready(function () {
     g.scale.z = g.scale.z * BLIND_SCALE[1];
     g.updateMatrixWorld(true);
 
-    var after = new THREE.Box3().setFromObject(g);
-    g.position.y += topY - after.max.y;                      // headrail stays put
-    g.position.x += midX - (after.min.x + after.max.x) / 2;
+    /* Put the headrail on the window, by ANGLE.
+
+       Pinning it to wherever it was a moment ago looks equivalent and is not:
+       changing the mounting resets the bundle's scale but not its position, so
+       the correction made for the previous scale is left behind and the next
+       one stacks on top of it. After a couple of Inside/Outside clicks the
+       blind has walked off the window. Aiming at the window's own angle is
+       absolute, so it cannot drift however many times the model is rebuilt. */
+    var box = new THREE.Box3().setFromObject(g);
+    if (!isFinite(box.max.y)) return;
+    var mid = box.getCenter(new THREE.Vector3());
+    var dz = Math.abs(mid.z - camera.position.z);
+    var rad = Math.PI / 180;
+
+    var wantTop = camera.position.y + dz * Math.tan(WINDOW_TOP_DEG * rad);
+    var wantMid = camera.position.x + dz * Math.tan(WINDOW_CX_DEG * rad);
+    g.position.y += wantTop - box.max.y;
+    g.position.x += wantMid - (box.min.x + box.max.x) / 2;
     g.updateMatrixWorld(true);
 
     g.__crFitted = [g.scale.x, g.scale.z];
