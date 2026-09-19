@@ -64,7 +64,7 @@ def _products():
 	return _PRODUCTS
 
 
-def describe_options(product_key, form):
+def describe_options(product_key, form, labels=None):
 	"""Turn the submitted option[...] fields into readable lines.
 
 	The storefront posts option[371]=664 (a swatch), option[375][width]=120 and
@@ -72,8 +72,13 @@ def describe_options(product_key, form):
 	so map each back to its group label and the swatch code the customer saw
 	(e.g. "Material: ss7003", "Control type: Motor").
 
+	``labels`` is {group id: {value: label}} from pricing.label_map, which also
+	covers colours added in the desk - those are not in products.json, so
+	without it they would land on the quotation as a raw id.
+
 	Returns (lines, captured_image_url).
 	"""
+	labels = labels or {}
 	spec = _products().get(product_key) or {}
 	lines = []
 	captured = ""
@@ -102,11 +107,13 @@ def describe_options(product_key, form):
 			value = submitted("option[%s]" % gid)
 			if not value:
 				continue
-			shown = value
-			for opt in (group.get("options") or []) + (group.get("choices") or []):
-				if str(opt.get("value")) == str(value):
-					shown = opt.get("code") or opt.get("label") or value
-					break
+			shown = (labels.get(str(gid)) or {}).get(str(value))
+			if not shown:
+				for opt in (group.get("options") or []) + (group.get("choices") or []):
+					if str(opt.get("value")) == str(value):
+						shown = opt.get("code") or opt.get("label") or value
+						break
+			shown = shown or value
 			lines.append("%s: %s" % (label, shown))
 
 	# a capture field can also live outside the groups
@@ -308,7 +315,8 @@ def add(args, form):
 	if not frappe.db.exists("Item", code):
 		return {"error": {"warning": "Product not set up in ERPNext yet."}}
 
-	lines, captured = describe_options(entry.get("key"), form)
+	lines, captured = describe_options(entry.get("key"), form,
+									  pricing.label_map(entry.get("key")))
 
 	# Price it here, from the back-office record - never from anything the
 	# browser posted. This also rejects a colour the team has withdrawn.

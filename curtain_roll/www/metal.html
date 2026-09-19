@@ -3232,10 +3232,54 @@ $(window).scroll(function() {
     }
   }
 
+  /* A colour added in the desk has no markup in the captured page, so build
+     the swatch here, in the theme's own shape so its CSS and tooltips apply.
+     The onclick mirrors what the captured swatches do - it hands the bundle a
+     path it will resolve back to the uploaded photo (see pricing.texture_url). */
+  function addCustom(gid, groupLabel, value, entry, sym) {
+    var box = document.getElementById("input-option" + gid);
+    if (!box || box.querySelector('input[value="' + value + '"]')) return;
+
+    var row = document.createElement("div");
+    row.className = "radio";
+    row.setAttribute("data-cr-custom", "1");
+    row.innerHTML =
+      "<label>" +
+      '<input type="radio" name="option[' + gid + ']" data-mp_parentoption_value="0" ' +
+      'id="' + gid + '" data-price="" value="' + esc(value) + '" />' +
+      '<img src="' + esc(entry.image) + '" alt="' + esc(entry.label) + '" ' +
+      'data-toggle="tooltip" data-tooltip-class="push-tooltip" data-placement="top" ' +
+      'title="' + esc(entry.label) + '" style="background:none" />' +
+      '<span class="option-value">' + esc(entry.label) + "</span>" +
+      "</label>";
+
+    var input = row.querySelector("input");
+    input.addEventListener("click", function () {
+      if (typeof window.modelchanger === "function" && window.jQuery) {
+        window.modelchanger(groupLabel, entry.texture, entry.code || entry.label,
+                            window.jQuery(this));
+      }
+    });
+
+    box.appendChild(row);
+    price(input, entry, sym);
+    if (window.jQuery && jQuery.fn.tooltip) {
+      try { jQuery(row).find("img").tooltip(); } catch (e) {}
+    }
+  }
+
   function apply(p) {
     if (!p || !p.currency) return;
 
-    if (p.color_group) applyGroup(p.color_group, p.colors || {}, p.currency);
+    if (p.color_group) {
+      Object.keys(p.colors || {}).forEach(function (value) {
+        var entry = p.colors[value];
+        if (entry.custom && entry.enabled && entry.image) {
+          addCustom(p.color_group, p.color_label || "Material", value, entry, p.currency);
+        }
+      });
+      applyGroup(p.color_group, p.colors || {}, p.currency);
+    }
     Object.keys(p.options || {}).forEach(function (gid) {
       applyGroup(gid, p.options[gid], p.currency);
     });

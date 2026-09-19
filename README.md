@@ -83,6 +83,38 @@ So a 200 x 150 cm blackout at 120/m2, with a +25 colour, a +350 motor, a
 hidden and the input disabled - and the server refuses it even if the form is
 tampered with.
 
+A **Size Slab** row left blank would read as "every size, priced at nothing",
+so a blank row is dropped on save and a zero-rate slab is ignored when pricing.
+
+### Adding a colour that was never on the original site
+
+Add a row to the **Colours** grid, type the name, upload a **Fabric Photo**,
+set the price, save. The swatch appears on the product page straight away,
+with working 3D - no files to place, no deploy.
+
+One photo does both jobs, so give it a decent size (roughly square, 500 px or
+more). Any format works: jpg, jpeg, png, webp.
+
+That works because of a measured quirk of the obfuscated bundles. They do not
+load the image URL they are handed - they *derive* the fabric from it: drop
+`/cache`, cut at the last hyphen, put the extension back.
+
+```
+.../cache/blackout-materials/7200-150x150.jpg  ->  .../blackout-materials/7200.jpg
+/files/probe-x.png                             ->  /files/probe.png
+```
+
+`pricing.texture_url()` exploits that: it appends `-x` before the extension,
+so the derivation lands exactly on the uploaded file whatever it is called -
+hyphens in the filename included. The page script then builds the swatch into
+the material list in the theme's own markup, and wires its click to
+`modelchanger`.
+
+Such a row is flagged `is_custom`, which is what stops *Reload options from
+page* and `after_migrate` from pruning it as "no longer on the page". It also
+gets a generated storefront id prefixed `c`, so it can never collide with a
+captured one.
+
 Two buttons on the form do the tedious parts: *Bulk edit* sets one rate across
 all 65 swatches at once, and *Reload options from page* pulls in swatches added
 by a later capture without touching rates already set.

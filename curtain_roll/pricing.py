@@ -109,11 +109,20 @@ def _sync_colors(doc, page, prune):
 	existing = {str(r.option_value): r for r in (doc.get("colors") or [])}
 	seen, rows = set(), []
 
+	# colours the team added in the desk are not on the captured page, so they
+	# would be pruned as "no longer exists". Carry them through untouched.
+	for row in doc.get("colors") or []:
+		if cint(row.get("is_custom")):
+			rows.append(row.as_dict())
+			seen.add(str(row.option_value))
+
 	for group in page.get("option_groups") or []:
 		if group.get("kind") != "swatch" or not is_color_group(group):
 			continue
 		for opt in group.get("options") or []:
 			value = str(opt.get("value"))
+			if value in seen:
+				continue
 			seen.add(value)
 			old = existing.get(value)
 			rows.append({
@@ -225,12 +234,7 @@ def get_spec(product_key):
 			for s in (doc.get("size_slabs") or [])
 		],
 		"colors": {
-			str(c.option_value): {
-				"label": c.color_name,
-				"enabled": cint(c.enabled),
-				"charge_type": c.charge_type,
-				"rate": flt(c.rate),
-			}
+			str(c.option_value): _color_entry(c)
 			for c in (doc.get("colors") or [])
 		},
 		"options": {},
@@ -246,6 +250,45 @@ def get_spec(product_key):
 
 	frappe.cache().set_value(CACHE_KEY % product_key, json.dumps(spec))
 	return spec
+
+
+def _color_entry(row):
+	entry = {
+		"label": row.color_name,
+		"enabled": cint(row.enabled),
+		"charge_type": row.charge_type,
+		"rate": flt(row.rate),
+		"custom": cint(row.get("is_custom")),
+	}
+	if entry["custom"]:
+		# This colour has no swatch in the captured HTML, so the page has to
+		# build one. It needs the photo, and a path the 3D bundle will resolve
+		# back to that same photo - see texture_url().
+		entry["image"] = row.fabric_image or ""
+		entry["texture"] = texture_url(row.fabric_image)
+		entry["code"] = row.texture_code or row.color_name
+	return entry
+
+
+def texture_url(file_url):
+	"""Turn an uploaded photo into what the configurator must be handed.
+
+	The obfuscated bundles do not load the URL they are given. They derive the
+	fabric from it: drop "/cache", cut at the LAST hyphen, put the extension
+	back. Measured against the real bundle:
+
+	    .../cache/blackout-materials/7200-150x150.jpg -> .../blackout-materials/7200.jpg
+	    /files/probe-x.png                            -> /files/probe.png
+
+	So appending "-x" before the extension makes that derivation land exactly
+	on the uploaded file, whatever it is called and whatever format it is.
+	"""
+	if not file_url:
+		return ""
+	head, dot, ext = file_url.rpartition(".")
+	if not dot:
+		return file_url + "-x"
+	return "%s-x.%s" % (head, ext)
 
 
 # ----------------------------------------------------------- calculation
@@ -304,6 +347,10 @@ def calculate(product_key, form, qty=1):
 	# ---- base rate, overridden by the first matching size slab
 	rate, basis = spec["base_rate"], spec["rate_basis"]
 	for slab in spec["slabs"]:
+		# A row left blank in the grid would otherwise read as "every size, at
+		# nothing" and silently zero the product.
+		if slab["rate"] <= 0:
+			continue
 		low, high = slab["from_sqm"], slab["to_sqm"]
 		if area >= low and (not high or area <= high):
 			rate, basis = slab["rate"], slab["rate_basis"]
@@ -363,6 +410,25 @@ def calculate(product_key, form, qty=1):
 	}
 
 
+def label_map(product_key):
+	"""{group id: {value: label}} - what the customer actually saw.
+
+	data/products.json only knows the captured swatches, so without this a
+	colour added in the desk would land on the quotation as a raw id.
+	"""
+	spec = get_spec(product_key)
+	if not spec:
+		return {}
+	out = {}
+	if spec["color_group"]:
+		out[spec["color_group"]] = {
+			value: entry["label"] for value, entry in spec["colors"].items()
+		}
+	for gid, choices in spec["options"].items():
+		out[gid] = {value: entry["label"] for value, entry in choices.items()}
+	return out
+
+
 def breakdown_lines(result):
 	"""Human-readable price rows for the quotation line description."""
 	sym = result.get("currency") or currency_symbol()
@@ -410,6 +476,7 @@ def get_pricing(product_key=None):
 		"product_key": spec["product_key"],
 		"currency": spec["currency"],
 		"color_group": spec["color_group"],
+		"color_label": spec["color_label"],
 		"colors": spec["colors"],
 		"options": spec["options"],
 		# the snapshot's "Starts from" figure is whatever the original site

@@ -8,9 +8,11 @@
  "field_order": [
   "enabled",
   "color_name",
+  "fabric_image",
   "charge_type",
   "rate",
   "column_break_ident",
+  "is_custom",
   "option_value",
   "texture_code",
   "image"
@@ -33,13 +35,21 @@
    "columns": 3
   },
   {
+   "description": "Upload the fabric photo for a colour you are adding here. The same photo is used for the swatch button and for the 3D preview, so use a clear, square, reasonably large image. Leave empty for the colours that came with the page.",
+   "fieldname": "fabric_image",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Fabric Photo",
+   "columns": 2
+  },
+  {
    "default": "Fixed Amount",
    "fieldname": "charge_type",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Charge Type",
    "options": "Fixed Amount\nPer Square Meter\nPercent of Base\nOverride Base Rate",
-   "columns": 3
+   "columns": 2
   },
   {
    "default": "0",
@@ -55,19 +65,27 @@
    "fieldtype": "Column Break"
   },
   {
-   "description": "Matches the swatch on the storefront. Do not change.",
+   "default": "0",
+   "description": "Set automatically for colours added here rather than captured from the page. These are never removed by Reload options from page.",
+   "fieldname": "is_custom",
+   "fieldtype": "Check",
+   "label": "Added in the desk",
+   "read_only": 1
+  },
+  {
+   "description": "Matches the swatch on the storefront. Filled in automatically for a colour you add here.",
    "fieldname": "option_value",
    "fieldtype": "Data",
    "label": "Storefront Value ID",
    "read_only": 1,
-   "reqd": 1
+   "reqd": 0
   },
   {
-   "description": "Texture the 3D preview loads for this colour.",
+   "description": "What the 3D preview calls this fabric. Filled in from the name when you add a colour.",
    "fieldname": "texture_code",
    "fieldtype": "Data",
    "label": "Texture Code",
-   "read_only": 1
+   "read_only": 0
   },
   {
    "fieldname": "image",
