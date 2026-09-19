@@ -412,7 +412,15 @@ the geometry welded inside, 9 to 50 MB apiece, and there is no way to author a
 ninth. A **flat product** sidesteps that entirely: the room is an ordinary
 picture and each colour is a transparent PNG laid over it.
 
-`/shutters` is the first one. Mark it in `data/variants.json`:
+`/shutters` was built this way first and then moved to 3D - the flat version
+worked, but it did not match the other eight, which are real 3D. It is now a
+normal variant of blackout: that blind is already a solid flat panel with a box
+above it, which is what a closed roller shutter is, so a slat texture as its
+material gives a 3D shutter that rolls, re-lights and responds to the mounting
+and control options like every other product.
+
+The flat type stays because it is the only route for a product with no
+comparable bundle. Mark one in `data/variants.json`:
 
 ```json
 {
@@ -442,7 +450,9 @@ provides them:
 
 Because `modelchanger` keeps its signature, the swatches drive it without
 knowing anything changed - including the ones the pricing script injects from
-the desk. The canvas is 2D, so it is never tainted and the capture always
+the desk. It only acts on the **material** group, though: every other group
+passes its own little icon, and painting a 150 px "Manual" icon across the room
+is exactly what it did until that filter went in. The canvas is 2D, so it is never tainted and the capture always
 works; a WebGL canvas needs `preserveDrawingBuffer` for that.
 
 Two things that caught me out:

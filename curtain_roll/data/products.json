@@ -6274,16 +6274,16 @@
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "blackout",
-  "flat": true,
-  "room": "/assets/curtain_roll/image/flat/shutters.jpg",
-  "scene": null,
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/shutters.jpg",
   "blind_scale": [
-   1.0,
-   1.0
+   0.7035,
+   0.6425
   ],
   "window_angles": [
-   0.0,
-   0.0
+   8.6161,
+   3.24
   ]
  }
 ]

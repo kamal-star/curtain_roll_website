@@ -44,13 +44,23 @@
  {
   "key": "shutters",
   "based_on": "blackout",
-  "flat": true,
   "product_id": "903",
   "heading": "Shutters",
   "title": "Rolling shutters - privacy, insulation and security",
   "meta_description": "Imported rolling shutters: weather resistant, sound and heat insulating, and secure. Choose your colour and size.",
-  "room_source": "scenes/shutters-room.jpg",
   "price": 0.0,
-  "_note": "flat product: no 3D bundle. The room is an ordinary picture and each colour is a transparent PNG laid over it, which is how the client's own newer site works."
+  "_note": "a shutter is a solid panel with a box above it, which is what the blackout roller blind already is - so it reuses that 3D model with a slat texture as its material",
+  "scene_source": "scenes/room-wooden.jpg",
+  "window": [
+   948,
+   477,
+   1088,
+   610
+  ],
+  "fill": [
+   0.99,
+   0.95
+  ],
+  "description": "Rolling shutters close the window completely, for privacy and security as well as shade. The interlocking slats block heat and cut outside noise, and the imported aluminium resists weather and daily use. Choose your colour, your size and manual or motorised operation."
  }
 ]
