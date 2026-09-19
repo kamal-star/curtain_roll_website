@@ -2509,6 +2509,24 @@ $(document).ready(function () {
      it builds it and then only ever drives WIDTH, through scale.x, which is
      how Outside comes out bigger than Inside. So the height base is scale.y,
      and the width base is whatever the bundle last put in scale.x. */
+  /* THREE.Box3().setFromObject() walks every child, visible or not, and the
+     bundle keeps hidden helper meshes in the group - Arrow_Left, Arrow_Top and
+     friends. They stretched the box 1.7 degrees further left than the blind
+     actually reaches, so centring on it pushed the visible blind to the right
+     of the window. Measure what is actually drawn. */
+  function visibleBox(root) {
+    var box = new THREE.Box3();
+    var found = false;
+    root.traverse(function (o) {
+      if (!o.isMesh || !o.visible) return;
+      var p = o;
+      while (p && p !== root) { if (!p.visible) return; p = p.parent; }
+      box.expandByObject(o);
+      found = true;
+    });
+    return found ? box : null;
+  }
+
   function fitBlind() {
     if (!window.scene || !window.camera || !window.THREE) return;
     if (BLIND_SCALE[0] === 1 && BLIND_SCALE[1] === 1) return;
@@ -2547,8 +2565,8 @@ $(document).ready(function () {
        the bundle resets its scale without resetting its position, so the
        correction made for the previous scale is left behind and the next one
        stacks on it. Aiming at the window's own angle is absolute. */
-    var box = new THREE.Box3().setFromObject(g);
-    if (!isFinite(box.max.y)) return;
+    var box = visibleBox(g);
+    if (!box || !isFinite(box.max.y)) return;
     var mid = box.getCenter(new THREE.Vector3());
     var dz = Math.abs(mid.z - camera.position.z);
     var rad = Math.PI / 180;
