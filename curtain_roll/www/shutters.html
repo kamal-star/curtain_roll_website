@@ -948,7 +948,7 @@ display:none !important;
                           </a>
                         </li><li class="menu-item main-menu-item main-menu-item-10 multi-level dropdown drop-menu " >
                               <a href="/wooden-premium" >
-              <span class="links-text">Wooden Premium</span>
+              <span class="links-text">WOODEN KAYAN</span>
                           </a>
                         </li>
                 <li class="menu-item main-menu-item main-menu-item-12 multi-level drop-menu " >
@@ -957,7 +957,7 @@ display:none !important;
                           </a>
                         </li><li class="menu-item main-menu-item main-menu-item-12 multi-level drop-menu " >
                               <a href="/vertical-premium" >
-              <span class="links-text">Vertical Premium</span>
+              <span class="links-text">VERTICAL KAYAN</span>
                           </a>
                         </li>
                 <li class="menu-item main-menu-item main-menu-item-13 multi-level drop-menu " >
@@ -3124,7 +3124,7 @@ $(document).ready(function () {
      changes - Outside is 12% bigger than Inside - so this watches for the
      value it did not put there and re-applies the factor on top, which keeps
      that behaviour intact. */
-  var BLIND_SCALE = [0.7035, 0.6425];          // [width, height]
+  var BLIND_SCALE = [0.6606, 0.6575];          // [width, height]
   var WINDOW_TOP_DEG = 8.6161;        // window top, above the horizon
   var WINDOW_CX_DEG = 3.24;          // window centre, off dead ahead
 
@@ -3182,13 +3182,16 @@ $(document).ready(function () {
     }
     var wantX = (g.__crBase || g.scale.y) * BLIND_SCALE[0];
 
-    if (Math.abs(g.scale.x - wantX) < 1e-9 && Math.abs(g.scale.z - wantZ) < 1e-9) return;
-
-    // The group is rotated -90 deg about X, so its local Z is world UP and its
-    // local Y is depth. Height therefore goes on scale.z; scale.y would only
-    // make the blind thicker, which is why setting it appeared to do nothing.
-    g.scale.x = wantX;
-    g.scale.z = wantZ;
+    var changed = false;
+    if (Math.abs(g.scale.x - wantX) > 1e-9 || Math.abs(g.scale.z - wantZ) > 1e-9) {
+      // The group is rotated -90 deg about X, so its local Z is world UP and
+      // its local Y is depth. Height therefore goes on scale.z; scale.y would
+      // only make the blind thicker, which is why setting it appeared to do
+      // nothing.
+      g.scale.x = wantX;
+      g.scale.z = wantZ;
+      changed = true;
+    }
     g.updateMatrixWorld(true);
 
     /* Put the headrail on the window, by ANGLE.
@@ -3203,17 +3206,177 @@ $(document).ready(function () {
     var dz = Math.abs(mid.z - camera.position.z);
     var rad = Math.PI / 180;
 
-    g.position.y += (camera.position.y + dz * Math.tan(WINDOW_TOP_DEG * rad)) - box.max.y;
-    g.position.x += (camera.position.x + dz * Math.tan(WINDOW_CX_DEG * rad))
-                    - (box.min.x + box.max.x) / 2;
-    g.updateMatrixWorld(true);
+    /* Aim on EVERY pass, not only when the scale changed.
+
+       Mounting is not always a resize. On the blackout model - and so on the
+       shutter, which reuses it - Outside leaves the scale alone and moves the
+       blind forward in z instead, out of the recess and onto the wall. The
+       aim used to be tucked in behind the scale check, so that move was never
+       corrected: the blind kept the position the bundle gave it, which at the
+       new depth put it up and to the left of the window, floating on the
+       wall. Aiming is absolute and idempotent, so there is no cost to
+       re-checking it - it either already points at the window or it does not.
+
+       The dead zone is there so a blind that is already on target does not
+       force a redraw four times every two seconds. */
+    var dy = (camera.position.y + dz * Math.tan(WINDOW_TOP_DEG * rad)) - box.max.y;
+    var dx = (camera.position.x + dz * Math.tan(WINDOW_CX_DEG * rad))
+             - (box.min.x + box.max.x) / 2;
+    if (Math.abs(dy) > 0.2 || Math.abs(dx) > 0.2) {
+      g.position.y += dy;
+      g.position.x += dx;
+      g.updateMatrixWorld(true);
+      changed = true;
+    }
 
     g.__crOut = g.scale.x;
     g.__crSeen = g.scale.x;
-    if (window.renderer) renderer.render(scene, camera);
+    if (changed && window.renderer) renderer.render(scene, camera);
   }
 
   setInterval(fitBlind, 400);
+})();
+</script>
+
+<script>
+/* Turn the roller blind into a rolling shutter.
+
+   A shutter and a roller blind share a skeleton - a panel that winds into a
+   casing at the top - which is why the shutter reuses the blackout model. But
+   the captured model is dressed as a blind: a thin valance, a pull chain down
+   one side, wall brackets, a grey weight bar. Left alone it reads as a
+   blackout blind wearing a slat texture, which is what came back from the
+   client the first time.
+
+   The rest of the difference is joinery, and it is all measured off the
+   photograph of one of the client's own installations rather than off the
+   marketing flyer, because the flyer is a rendering and the photograph is the
+   product:
+
+     - a square casing across the top, deeper than it is tall, overhanging the
+       opening at both ends, with a thin metal capping strip along its top.
+       Not the bullnose the flyer draws.
+     - a flat surround down both sides and across the bottom, so the shutter
+       closes the whole opening. This is the "strip" the client asked for, and
+       it is what makes the thing read as fitted rather than hung.
+     - everything that says "blind": chain, winding gear, wall brackets,
+       valance, weight bar. Hidden.
+
+   Every part is a box, so they are all described the same way in
+   variants.json - min and max on each of the group's three local axes - and
+   the measuring stays in the data file where it can be re-read against the
+   photograph. In that space the panel is -521.9..548.6 across and
+   -488.9..397.2 tall, +Z is up, and +Y points AWAY from the room, because the
+   group is rotated -90 degrees about X.
+
+   It runs on a timer because the bundle rebuilds the model whenever an option
+   changes, which puts the chain and the valance back. Every step is written to
+   be safe to repeat. */
+(function () {
+  var S = {"trim": "#e9e9e9", "trim_lift": 1.18, "_note": "Every part is a box, given as min/max on the blind group's three LOCAL axes: +Z up, +Y away from the room, +X across. The panel itself is -521.9..548.6 across and -488.9..397.2 tall, so these numbers are read against that.", "_measured": "off the client's installation photo: surround 5.0% of the panel width each side, casing 14.2% of its height, capping strip 1.6%, sill 5.5%", "parts": [{"name": "CR_Cap", "_": "the thin metal strip capping the casing, proud of it all round", "x": [-590.4, 617.1], "y": [-82, 34], "z": [526.0, 540.2]}, {"name": "CR_Casing", "_": "square, deeper than it is tall, overhanging the opening", "x": [-582.9, 609.6], "y": [-72, 30], "z": [400.2, 526.0]}, {"name": "CR_Frame_L", "x": [-575.4, -521.9], "y": [-46, 26], "z": [-537.6, 400.2]}, {"name": "CR_Frame_R", "x": [548.6, 602.1], "y": [-46, 26], "z": [-537.6, 400.2]}, {"name": "CR_Frame_B", "_": "the sill, closing the surround under the panel", "x": [-575.4, 602.1], "y": [-46, 26], "z": [-537.6, -488.9]}], "_trim_lift_note": "the ratio of a slat's LIT FACE to the texture's average (253/215), so the casing reads as bright as the slats facing you rather than as their average. Safe at this value only because the colour now goes through the panel's own tint first - before that it clipped."};
+  var TRIM = parseInt(S.trim.replace("#", ""), 16);
+
+  // parts of a blind that a shutter does not have
+  var HIDE = ["Core_Closer", "Valance_inside", "Valance", "Box_Cover", "Box",
+              "Machine", "RTL_Puller", "Wall_Holders_L", "Wall_Holders_R",
+              "Bottom_Bar"];
+
+  function dress() {
+    if (!window.scene || !window.THREE) return;
+    var g = null;
+    scene.children.forEach(function (o) { if (o.name === "mesh_group") g = o; });
+    if (!g || !g.children.length) return;
+
+    var by = {};
+    g.traverse(function (o) { if (o.isMesh) by[o.name] = o; });
+    if (!by.Valance_Front) return;          // not built yet
+
+    var changed = false;
+    HIDE.forEach(function (n) {
+      if (by[n] && by[n].visible) { by[n].visible = false; changed = true; }
+    });
+
+    if (!g.__crTrim) {
+      g.__crTrim = new THREE.MeshPhongMaterial({
+        color: TRIM, shininess: 30, specular: 0x2a2a2a });
+      S.parts.forEach(function (part) {
+        var mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(part.x[1] - part.x[0],
+                                part.y[1] - part.y[0],
+                                part.z[1] - part.z[0]),
+          g.__crTrim);
+        mesh.name = part.name;
+        mesh.position.set((part.x[0] + part.x[1]) / 2,
+                          (part.y[0] + part.y[1]) / 2,
+                          (part.z[0] + part.z[1]) / 2);
+        g.add(mesh);
+      });
+      changed = true;
+    }
+
+    if (matchTrim(g, by.Valance_Front)) changed = true;
+
+    if (changed && window.renderer && window.camera) {
+      renderer.render(scene, camera);
+    }
+  }
+
+  /* Paint the casing and the surround to match the slats.
+
+     A shutter is extruded and powder-coated in one colour - the casing of a
+     brown shutter is brown, and in the client's photograph the casing, the
+     surround and the slats are all the same beige. Leaving the trim white on
+     the brown and grey options read as a white shutter with a brown blind
+     hung inside it.
+
+     The colour is taken from the slat texture itself rather than configured
+     per colour, so a colour the client uploads later is matched too, with no
+     second thing to keep in step.
+
+     It is the texture's average times the PANEL MATERIAL'S own colour, not the
+     average alone. The bundle tints the slats by #959595 before they are lit,
+     and the scene carries 2.3 units of light across three lamps, so a trim set
+     to the raw average is 70% brighter than the slats it is supposed to match
+     and any face turned towards a lamp clips to white - which is how a beige
+     shutter ended up with a white casing. Going through the same tint puts the
+     trim on the same footing as the slats, and the shading model is copied off
+     the panel for the same reason: the trim differs from the slats in having
+     no texture, and in nothing else.
+
+     `trim_lift` then nudges it, because the trim is smooth flat faces and the
+     slats are a run of shadowed steps, so an average over the slats still
+     comes out a little darker than the metal reads. */
+  function matchTrim(g, panel) {
+    if (!g.__crTrim || !panel) return false;
+    var m = Array.isArray(panel.material) ? panel.material[0] : panel.material;
+    var img = m && m.map && m.map.image;
+    if (!img || !img.width) return false;
+    var src = img.src || "";
+    if (src === g.__crTrimFrom) return false;
+    g.__crTrimFrom = src;
+
+    try {
+      var cv = document.createElement("canvas");
+      cv.width = cv.height = 1;
+      var cx = cv.getContext("2d");
+      cx.drawImage(img, 0, 0, 1, 1);          // the browser averages it for us
+      var d = cx.getImageData(0, 0, 1, 1).data;
+      var lift = S.trim_lift || 1.06;
+      var tint = m.color;                     // what the bundle tints slats by
+      g.__crTrim.color.setRGB(
+        Math.min(1, d[0] / 255 * tint.r * lift),
+        Math.min(1, d[1] / 255 * tint.g * lift),
+        Math.min(1, d[2] / 255 * tint.b * lift));
+      if (m.specular) g.__crTrim.specular.copy(m.specular);
+      if (m.shininess !== undefined) g.__crTrim.shininess = m.shininess;
+      g.__crTrim.needsUpdate = true;
+    } catch (e) {
+      return false;                            // tainted canvas: keep the default
+    }
+    return true;
+  }
+
+  setInterval(dress, 400);
 })();
 </script>
 <script src="/assets/curtain_roll/configurator/blackout.js"></script>

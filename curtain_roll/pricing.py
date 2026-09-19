@@ -166,6 +166,12 @@ def _sync_options(doc, page, prune):
 				"option_value": value,
 				"charge_type": (old.charge_type if old else None) or "Fixed Amount",
 				"rate": flt(old.rate) if old else money(opt.get("price")),
+				# Carried over like every other setting on the row. Leaving it
+				# out silently dropped it on every sync, which took the
+				# installation banding with it: the tiers stayed on the product
+				# but nothing was flagged to use them, so 1-4 and 5+ both
+				# charged the flat captured rate and no one could see why.
+				"tiered": cint(old.tiered) if old else 0,
 				"image": opt.get("image") or "",
 			})
 

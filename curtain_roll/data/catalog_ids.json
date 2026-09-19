@@ -55,13 +55,13 @@
  },
  "901": {
   "key": "wooden-premium",
-  "name": "Wooden Premium",
+  "name": "WOODEN KAYAN",
   "price": 300.0,
   "variant_of": "wooden"
  },
  "902": {
   "key": "vertical-premium",
-  "name": "Vertical Premium",
+  "name": "VERTICAL KAYAN",
   "price": 128.0,
   "variant_of": "vertical"
  },

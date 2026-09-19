@@ -4204,7 +4204,7 @@
   "title": "Wooden slat blinds shown in a modern apartment",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
   "meta_keywords": "",
-  "heading": "Wooden Premium",
+  "heading": "WOODEN KAYAN",
   "price": 300.0,
   "price_text": "SR 300.00",
   "description": "Wooden blinds are characterized by their high quality and classic luxurious design. Made of natural wood or fiber material that gives them flexibility and elegance, these blinds add a touch of class and elegance to any space, whether home or office. Thanks to their installation with a metal track, they combine durability with modern beauty, making them the perfect choice for those seeking a luxurious and distinctive decor.",
@@ -4511,7 +4511,7 @@
   "title": "Vertical blinds shown in a modern living room",
   "meta_description": "The same vertical blind, previewed in a contemporary living room. Choose your fabric and size and see it in the room before you order.",
   "meta_keywords": "",
-  "heading": "Vertical Premium",
+  "heading": "VERTICAL KAYAN",
   "price": 128.0,
   "price_text": "SR 128.00",
   "description": "Vertical blinds are designed to provide complete control over the amount of light entering a room while maintaining privacy. They consist of long, wide slats made from durable materials such as fabric, plastic or wood, making them ideal for large windows and glass doors. Their modern design is simple and elegant, and they are easy to clean and dust-resistant, adding a touch of sophistication and functionality to any space.",
@@ -6278,8 +6278,8 @@
   "room": null,
   "scene": "/maps/scenes/shutters.jpg",
   "blind_scale": [
-   0.7035,
-   0.6425
+   0.6606,
+   0.6575
   ],
   "window_angles": [
    8.6161,

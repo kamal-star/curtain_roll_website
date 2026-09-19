@@ -125,6 +125,17 @@ def _ensure_items():
 	for p in get_products():
 		code = "CR-" + p["key"].upper()
 		if frappe.db.exists("Item", code):
+			# Keep the NAME in step. A product can be renamed - the storefront
+			# heading is what the customer sees and what belongs on their quote -
+			# and simply skipping every Item that already existed left the old
+			# name printing on documents long after the page had changed.
+			#
+			# Only the name. The rate and the description are editable in Desk
+			# and rewriting them on every migrate would throw away whatever the
+			# client had set there.
+			want = p["heading"][:140]
+			if frappe.db.get_value("Item", code, "item_name") != want:
+				frappe.db.set_value("Item", code, "item_name", want)
 			continue
 		frappe.get_doc({
 			"doctype": "Item",
