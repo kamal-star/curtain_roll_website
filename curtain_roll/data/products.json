@@ -4493,5 +4493,876 @@
   "main_image": "image/cache/catalog/MAROOF7-200x99.png",
   "variant_of": "wooden",
   "scene": "/maps/scenes/wooden-premium.jpg"
+ },
+ {
+  "key": "vertical-premium",
+  "route": "vertical-premium",
+  "bundle": "Vertical.js",
+  "title": "Vertical blinds shown in a modern living room",
+  "meta_description": "The same vertical blind, previewed in a contemporary living room. Choose your fabric and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "Vertical Premium",
+  "price": 128.0,
+  "price_text": "SR 128.00",
+  "description": "Vertical blinds are designed to provide complete control over the amount of light entering a room while maintaining privacy. They consist of long, wide slats made from durable materials such as fabric, plastic or wood, making them ideal for large windows and glass doors. Their modern design is simple and elegant, and they are easy to clean and dust-resistant, adding a touch of sophistication and functionality to any space.",
+  "capture_option_id": "383",
+  "option_groups": [
+   {
+    "id": "283",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "279",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "143",
+      "id": "279",
+      "mp_optionvalue": "243",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
+      "code": "V2006"
+     },
+     {
+      "value": "144",
+      "id": "279",
+      "mp_optionvalue": "213",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/424-150x150w.jpg",
+      "code": "V424"
+     },
+     {
+      "value": "141",
+      "id": "279",
+      "mp_optionvalue": "215",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/826-150x150w.jpg",
+      "code": "V826"
+     },
+     {
+      "value": "142",
+      "id": "279",
+      "mp_optionvalue": "216",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/859-150x150w.jpg",
+      "code": "V859"
+     },
+     {
+      "value": "330",
+      "id": "279",
+      "mp_optionvalue": "217",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/890-150x150w.jpg",
+      "code": "V890"
+     },
+     {
+      "value": "331",
+      "id": "279",
+      "mp_optionvalue": "218",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/891-150x150w.jpg",
+      "code": "V891"
+     },
+     {
+      "value": "332",
+      "id": "279",
+      "mp_optionvalue": "219",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/893-150x150w.jpg",
+      "code": "V893"
+     },
+     {
+      "value": "333",
+      "id": "279",
+      "mp_optionvalue": "220",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+      "code": "V1001"
+     },
+     {
+      "value": "334",
+      "id": "279",
+      "mp_optionvalue": "221",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1003-150x150w.jpg",
+      "code": "V1003"
+     },
+     {
+      "value": "335",
+      "id": "279",
+      "mp_optionvalue": "222",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1043-150x150w.jpg",
+      "code": "V1043"
+     },
+     {
+      "value": "336",
+      "id": "279",
+      "mp_optionvalue": "223",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1057-150x150w.jpg",
+      "code": "V1057"
+     },
+     {
+      "value": "337",
+      "id": "279",
+      "mp_optionvalue": "224",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1058-150x150w.jpg",
+      "code": "V1058"
+     },
+     {
+      "value": "338",
+      "id": "279",
+      "mp_optionvalue": "225",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1059-150x150w.jpg",
+      "code": "V1059"
+     },
+     {
+      "value": "339",
+      "id": "279",
+      "mp_optionvalue": "226",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1061-150x150w.jpg",
+      "code": "V1061"
+     },
+     {
+      "value": "340",
+      "id": "279",
+      "mp_optionvalue": "227",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1063-150x150w.jpg",
+      "code": "V1063"
+     },
+     {
+      "value": "341",
+      "id": "279",
+      "mp_optionvalue": "228",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1068-150x150w.jpg",
+      "code": "V1068"
+     },
+     {
+      "value": "342",
+      "id": "279",
+      "mp_optionvalue": "229",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1069-150x150w.jpg",
+      "code": "V1069"
+     },
+     {
+      "value": "343",
+      "id": "279",
+      "mp_optionvalue": "230",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1090-150x150w.jpg",
+      "code": "V1090"
+     },
+     {
+      "value": "344",
+      "id": "279",
+      "mp_optionvalue": "231",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1091-150x150w.jpg",
+      "code": "V1091"
+     },
+     {
+      "value": "345",
+      "id": "279",
+      "mp_optionvalue": "232",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1092-150x150w.jpg",
+      "code": "V1092"
+     },
+     {
+      "value": "346",
+      "id": "279",
+      "mp_optionvalue": "233",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1093-150x150w.jpg",
+      "code": "V1093"
+     },
+     {
+      "value": "347",
+      "id": "279",
+      "mp_optionvalue": "234",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1094-150x150w.jpg",
+      "code": "V1094"
+     },
+     {
+      "value": "348",
+      "id": "279",
+      "mp_optionvalue": "235",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1095-150x150w.jpg",
+      "code": "V1095"
+     },
+     {
+      "value": "349",
+      "id": "279",
+      "mp_optionvalue": "236",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1096-150x150w.jpg",
+      "code": "V1096"
+     },
+     {
+      "value": "350",
+      "id": "279",
+      "mp_optionvalue": "237",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1097-150x150w.jpg",
+      "code": "V1097"
+     },
+     {
+      "value": "351",
+      "id": "279",
+      "mp_optionvalue": "238",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1098-150x150w.jpg",
+      "code": "V1098"
+     },
+     {
+      "value": "352",
+      "id": "279",
+      "mp_optionvalue": "239",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/1099-150x150w.jpg",
+      "code": "V1099"
+     },
+     {
+      "value": "353",
+      "id": "279",
+      "mp_optionvalue": "240",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2000-150x150w.jpg",
+      "code": "V2000"
+     },
+     {
+      "value": "354",
+      "id": "279",
+      "mp_optionvalue": "241",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2004-150x150w.jpg",
+      "code": "V2004"
+     },
+     {
+      "value": "355",
+      "id": "279",
+      "mp_optionvalue": "242",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2005-150x150w.jpg",
+      "code": "V2005"
+     },
+     {
+      "value": "356",
+      "id": "279",
+      "mp_optionvalue": "244",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2006-150x150w.jpg",
+      "code": "V2006"
+     },
+     {
+      "value": "357",
+      "id": "279",
+      "mp_optionvalue": "245",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2007-150x150w.jpg",
+      "code": "V2007"
+     },
+     {
+      "value": "358",
+      "id": "279",
+      "mp_optionvalue": "246",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2009-150x150w.jpg",
+      "code": "V2009"
+     },
+     {
+      "value": "359",
+      "id": "279",
+      "mp_optionvalue": "247",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2010-150x150w.jpg",
+      "code": "V2010"
+     },
+     {
+      "value": "360",
+      "id": "279",
+      "mp_optionvalue": "248",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2011-150x150w.jpg",
+      "code": "V2011"
+     },
+     {
+      "value": "361",
+      "id": "279",
+      "mp_optionvalue": "249",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2012-150x150w.jpg",
+      "code": "V2012"
+     },
+     {
+      "value": "362",
+      "id": "279",
+      "mp_optionvalue": "250",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2013-150x150w.jpg",
+      "code": "V2013"
+     },
+     {
+      "value": "363",
+      "id": "279",
+      "mp_optionvalue": "251",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2014-150x150w.jpg",
+      "code": "V2014"
+     },
+     {
+      "value": "364",
+      "id": "279",
+      "mp_optionvalue": "252",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2015-150x150w.jpg",
+      "code": "V2015"
+     },
+     {
+      "value": "365",
+      "id": "279",
+      "mp_optionvalue": "253",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2029-150x150w.jpg",
+      "code": "V2029"
+     },
+     {
+      "value": "366",
+      "id": "279",
+      "mp_optionvalue": "254",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2033-150x150w.jpg",
+      "code": "V2033"
+     },
+     {
+      "value": "367",
+      "id": "279",
+      "mp_optionvalue": "255",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2040-150x150w.jpg",
+      "code": "V2040"
+     },
+     {
+      "value": "368",
+      "id": "279",
+      "mp_optionvalue": "256",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2060-150x150w.jpg",
+      "code": "V2060"
+     },
+     {
+      "value": "369",
+      "id": "279",
+      "mp_optionvalue": "257",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2061-150x150w.jpg",
+      "code": "V2061"
+     },
+     {
+      "value": "370",
+      "id": "279",
+      "mp_optionvalue": "258",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2062-150x150w.jpg",
+      "code": "V2062"
+     },
+     {
+      "value": "371",
+      "id": "279",
+      "mp_optionvalue": "259",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2063-150x150w.jpg",
+      "code": "V2063"
+     },
+     {
+      "value": "372",
+      "id": "279",
+      "mp_optionvalue": "260",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2064-150x150w.jpg",
+      "code": "V2064"
+     },
+     {
+      "value": "373",
+      "id": "279",
+      "mp_optionvalue": "261",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2071-150x150w.jpg",
+      "code": "V2071"
+     },
+     {
+      "value": "374",
+      "id": "279",
+      "mp_optionvalue": "262",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2072-150x150w.jpg",
+      "code": "V2072"
+     },
+     {
+      "value": "375",
+      "id": "279",
+      "mp_optionvalue": "263",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2073-150x150w.jpg",
+      "code": "V2073"
+     },
+     {
+      "value": "376",
+      "id": "279",
+      "mp_optionvalue": "264",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2074-150x150w.jpg",
+      "code": "V2074"
+     },
+     {
+      "value": "377",
+      "id": "279",
+      "mp_optionvalue": "265",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2075-150x150w.jpg",
+      "code": "V2075"
+     },
+     {
+      "value": "378",
+      "id": "279",
+      "mp_optionvalue": "266",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2076-150x150w.jpg",
+      "code": "V2076"
+     },
+     {
+      "value": "379",
+      "id": "279",
+      "mp_optionvalue": "267",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2077-150x150w.jpg",
+      "code": "V2077"
+     },
+     {
+      "value": "380",
+      "id": "279",
+      "mp_optionvalue": "268",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2078-150x150w.jpg",
+      "code": "V2078"
+     },
+     {
+      "value": "381",
+      "id": "279",
+      "mp_optionvalue": "269",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2079-150x150w.jpg",
+      "code": "V2079"
+     },
+     {
+      "value": "382",
+      "id": "279",
+      "mp_optionvalue": "270",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2080-150x150w.jpg",
+      "code": "V2080"
+     },
+     {
+      "value": "383",
+      "id": "279",
+      "mp_optionvalue": "271",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2081-150x150w.jpg",
+      "code": "V2081"
+     },
+     {
+      "value": "384",
+      "id": "279",
+      "mp_optionvalue": "272",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2082-150x150w.jpg",
+      "code": "V2082"
+     },
+     {
+      "value": "385",
+      "id": "279",
+      "mp_optionvalue": "273",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2083-150x150w.jpg",
+      "code": "V2083"
+     },
+     {
+      "value": "386",
+      "id": "279",
+      "mp_optionvalue": "274",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2084-150x150w.jpg",
+      "code": "V2084"
+     },
+     {
+      "value": "387",
+      "id": "279",
+      "mp_optionvalue": "275",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2086-150x150w.jpg",
+      "code": "V2086"
+     },
+     {
+      "value": "388",
+      "id": "279",
+      "mp_optionvalue": "276",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/vertical-materials/2087-150x150w.jpg",
+      "code": "V2087"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "281",
+    "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "147",
+      "id": "281",
+      "mp_optionvalue": "110",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+      "code": "Left"
+     },
+     {
+      "value": "148",
+      "id": "281",
+      "mp_optionvalue": "111",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+      "code": "Right"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "285",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "154",
+      "id": "285",
+      "mp_optionvalue": "108",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "153",
+      "id": "285",
+      "mp_optionvalue": "109",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+      "code": "Inside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "287",
+    "label": "Movement direction",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "32",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "157",
+      "id": "287",
+      "mp_optionvalue": "113",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Movement direction",
+      "image": "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+      "code": "Left to right"
+     },
+     {
+      "value": "158",
+      "id": "287",
+      "mp_optionvalue": "112",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Movement direction",
+      "image": "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+      "code": "Right to left"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "390",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "773",
+      "id": "390",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "774",
+      "id": "390",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "383",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/vertical-g-200x200.png",
+   "image/cache/catalog/curtains/vertical-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+   "image/cache/catalog/vertical-materials/1003-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "vertical",
+  "scene": "/maps/scenes/vertical-premium.jpg"
  }
 ]

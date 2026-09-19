@@ -268,9 +268,27 @@ is not exactly 2:1 shows a pinched ceiling and a visible seam.
 
 The blind hangs at the middle of the bundle's world and **cannot be moved or
 resized** - it is geometry at a fixed distance from a fixed camera, compiled in.
-Measured off the running scene it is **34.9 deg wide by 34.3 deg tall, 3.5 deg
-above the horizon**, and every captured room puts a window right there:
-**36.9 x 38.2 deg, dead centre**, leaving a little reveal around the blind.
+Measured off the running wooden scene it is **34.9 deg wide by 34.3 deg tall,
+3.5 deg above the horizon**, and the wooden room puts a window right there:
+**36.9 x 38.2 deg, dead centre**, leaving a little reveal around it.
+
+**Each product has its own target**, because the blinds are not the same size.
+A vertical blind is far wider than a wooden one, and its room's window is
+**56.1 x 47.8 deg**. Fitting a room against the wrong product's target hangs
+the blind over the wall or leaves it lost in the glass, so `make_variants.py`
+keeps a `TARGETS` table keyed by `based_on`. To add a base product, grid its
+own room and read the window off it:
+
+```bash
+python grid_window.py <bench>/.../maps/preload/<product>/scenebk.jpg 1700 700 2400 1400 1
+```
+
+One supplied room can serve several products - each variant fits it to its own
+blind and writes its own `/maps/scenes/<key>.jpg`. `wooden-premium` and
+`vertical-premium` share one file: the wooden blind needs the room pushed back
+(x1.287), the vertical blind needs it pulled forward (x0.850), and
+`scene_fit: "width"` on the vertical one stops the wide blind overhanging the
+glass.
 
 So the room has to be fitted to the blind. Measure the window in the supplied
 image and give its outer frame in that image's own pixels:

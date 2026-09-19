@@ -6,7 +6,7 @@
   "heading": "Wooden Premium",
   "title": "Wooden slat blinds shown in a modern living room",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
-  "scene_source": "scenes/wooden-premium.jpg",
+  "scene_source": "scenes/room-living.jpg",
   "price": 300.0,
   "window": [
    857,
@@ -16,5 +16,23 @@
   ],
   "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Aim and scale are derived from it; scene_fit chooses how the two axes are reconciled.",
   "scene_fit": "uniform"
+ },
+ {
+  "key": "vertical-premium",
+  "based_on": "vertical",
+  "product_id": "902",
+  "heading": "Vertical Premium",
+  "title": "Vertical blinds shown in a modern living room",
+  "meta_description": "The same vertical blind, previewed in a contemporary living room. Choose your fabric and size and see it in the room before you order.",
+  "scene_source": "scenes/room-living.jpg",
+  "price": 128.0,
+  "window": [
+   857,
+   357,
+   1122,
+   640
+  ],
+  "scene_fit": "width",
+  "_note": "the vertical blind is much wider than the wooden one, so this room is fitted on WIDTH - a uniform fit would leave the blind overhanging the glass"
  }
 ]

@@ -58,5 +58,11 @@
   "name": "Wooden Premium",
   "price": 300.0,
   "variant_of": "wooden"
+ },
+ "902": {
+  "key": "vertical-premium",
+  "name": "Vertical Premium",
+  "price": 128.0,
+  "variant_of": "vertical"
  }
 }
