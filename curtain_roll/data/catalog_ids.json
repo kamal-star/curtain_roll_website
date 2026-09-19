@@ -52,5 +52,11 @@
   "name": "wavy",
   "price": 0,
   "route": "wavy"
+ },
+ "901": {
+  "key": "wooden-premium",
+  "name": "Wooden Premium",
+  "price": 300.0,
+  "variant_of": "wooden"
  }
 }

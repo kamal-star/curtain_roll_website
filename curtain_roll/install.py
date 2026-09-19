@@ -110,7 +110,14 @@ def _ensure_items():
 
 
 def after_migrate():
-	"""Keep the priced records in step with the pages after every migrate."""
+	"""Keep the site in step with the pages after every migrate.
+
+	An app update can add a product - a new capture, or a variant in
+	data/variants.json - and that product needs its Item before anyone can
+	add it to a cart.
+	"""
+	_ensure_item_group()
+	_ensure_items()
 	_seed_pricing()
 
 

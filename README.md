@@ -162,6 +162,70 @@ instead, add to `public/css/curtain.css`:
 .product-info .option-price { display: inline !important; }
 ```
 
+## Adding a product (variants)
+
+A **variant** is a product that is physically the same blind as a captured one
+- it reuses that blind's page, its obfuscated 3D bundle and its slat and
+bracket textures - but is sold under its own name, at its own prices, and is
+previewed in its own room. `/wooden-premium` is one, built from `/wooden`.
+
+Define it in `curtain_roll/data/variants.json`:
+
+```json
+{
+  "key": "wooden-premium",
+  "based_on": "wooden",
+  "product_id": "901",
+  "heading": "Wooden Premium",
+  "title": "Wooden slat blinds shown in a modern apartment",
+  "scene_source": "scenes/wooden-premium.jpg",
+  "price": 300.0
+}
+```
+
+then, from the parent directory:
+
+```bash
+python make_variants.py     # room image + products.json + catalog_ids.json
+python port_pages.py        # the page itself
+bench --site <site> migrate # Item + Curtain Product record
+```
+
+`after_migrate` creates the Item and seeds a Curtain Product record, so the new
+product arrives with all its colours and options listed and is priced entirely
+independently of the blind it came from.
+
+### The room
+
+Each configurator loads its room from `/maps/preload/<product>/scenebk.jpg`, an
+**equirectangular 4096x2048** panorama, and that path is assembled inside
+obfuscated code. In most bundles the filename is not even a literal, so it
+cannot be string-replaced.
+
+A variant therefore does not copy the bundle or the texture folder. The
+generated page injects a short script **above** the bundle's `<script>` tag
+that wraps THREE's loaders and redirects any request for `scenebk` to
+`/maps/scenes/<key>.jpg`. Whatever the bundle builds, it hands THREE a finished
+URL, so the intercept catches it however it was assembled - and only the room
+moves. The slat and bracket textures still come from the base product's folder,
+which is the whole point of a variant.
+
+`make_variants.py` resizes the supplied panorama to 4096x2048 and warns if the
+source is not 2:1 or is smaller than the captured rooms - a 360 panorama that
+is not exactly 2:1 shows a pinched ceiling and a visible seam.
+
+### What a variant shares with its base
+
+The 3D blind, the option groups, and the product copy. Only the name,
+breadcrumb, title, catalogue id, room and prices differ. If a variant needs its
+own description text, that has to be added to `variant_rewrite()`.
+
+### The top menu
+
+The menu is baked into every captured page, so `nav_inject()` clones the base
+product's `<li>` into every generated page. Without it a new product is
+reachable only by typing its URL.
+
 ## Layout
 
 ```

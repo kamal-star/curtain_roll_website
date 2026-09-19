@@ -4196,5 +4196,302 @@
    "image/cache/catalog/wavy-images/two-layer-1400x600.png"
   ],
   "main_image": "image/cache/catalog/MAROOF7-200x99.png"
+ },
+ {
+  "key": "wooden-premium",
+  "route": "wooden-premium",
+  "bundle": "Wooden.js",
+  "title": "Wooden slat blinds shown in a modern apartment",
+  "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "Wooden Premium",
+  "price": 300.0,
+  "price_text": "SR 300.00",
+  "description": "Wooden blinds are characterized by their high quality and classic luxurious design. Made of natural wood or fiber material that gives them flexibility and elegance, these blinds add a touch of class and elegance to any space, whether home or office. Thanks to their installation with a metal track, they combine durability with modern beauty, making them the perfect choice for those seeking a luxurious and distinctive decor.",
+  "capture_option_id": "384",
+  "option_groups": [
+   {
+    "id": "271",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "267",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "493",
+      "id": "267",
+      "mp_optionvalue": "366",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5026-150x150h.jpg",
+      "code": "w5026"
+     },
+     {
+      "value": "495",
+      "id": "267",
+      "mp_optionvalue": "368",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5028-150x150h.jpg",
+      "code": "w5028"
+     },
+     {
+      "value": "496",
+      "id": "267",
+      "mp_optionvalue": "369",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5029-150x150h.jpg",
+      "code": "w5029"
+     },
+     {
+      "value": "497",
+      "id": "267",
+      "mp_optionvalue": "370",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5030-150x150h.jpg",
+      "code": "w5030"
+     },
+     {
+      "value": "498",
+      "id": "267",
+      "mp_optionvalue": "371",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5031-150x150h.jpg",
+      "code": "w5031"
+     },
+     {
+      "value": "499",
+      "id": "267",
+      "mp_optionvalue": "372",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5032-150x150h.jpg",
+      "code": "w5032"
+     },
+     {
+      "value": "500",
+      "id": "267",
+      "mp_optionvalue": "373",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5033-150x150h.jpg",
+      "code": "w5033"
+     },
+     {
+      "value": "501",
+      "id": "267",
+      "mp_optionvalue": "374",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5034-150x150h.jpg",
+      "code": "w5034"
+     },
+     {
+      "value": "502",
+      "id": "267",
+      "mp_optionvalue": "375",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/wooden-materials/5035-150x150h.jpg",
+      "code": "w5035"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "269",
+    "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "124",
+      "id": "269",
+      "mp_optionvalue": "105",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+      "code": "Right"
+     },
+     {
+      "value": "123",
+      "id": "269",
+      "mp_optionvalue": "104",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Left"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "273",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "130",
+      "id": "273",
+      "mp_optionvalue": "106",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "129",
+      "id": "273",
+      "mp_optionvalue": "107",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+      "code": "Inside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "391",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "775",
+      "id": "391",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "776",
+      "id": "391",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "384",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/wooden-g-200x200.png",
+   "image/cache/catalog/curtains/wooden-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png",
+   "image/cache/catalog/wooden-materials/5026-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5028-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5029-150x150h.jpg",
+   "image/cache/catalog/wooden-materials/5030-150x150h.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "wooden",
+  "scene": "/maps/scenes/wooden-premium.jpg"
  }
 ]

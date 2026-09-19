@@ -1,0 +1,12 @@
+[
+ {
+  "key": "wooden-premium",
+  "based_on": "wooden",
+  "product_id": "901",
+  "heading": "Wooden Premium",
+  "title": "Wooden slat blinds shown in a modern apartment",
+  "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
+  "scene_source": "scenes/wooden-premium.jpg",
+  "price": 300.0
+ }
+]
