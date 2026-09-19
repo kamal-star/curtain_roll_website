@@ -14,7 +14,6 @@
    1122,
    640
   ],
-  "scene_fit": "uniform",
   "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Everything else is derived from it and from the blind's own geometry - see BLINDS in make_variants.py."
  },
  {
@@ -31,7 +30,6 @@
    357,
    1122,
    640
-  ],
-  "scene_fit": "uniform"
+  ]
  }
 ]

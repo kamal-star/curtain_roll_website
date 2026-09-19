@@ -266,73 +266,64 @@ is not exactly 2:1 shows a pinched ceiling and a visible seam.
 
 ### Fitting a room to the blind: `window`
 
-The blind hangs at the middle of the bundle's world and **cannot be moved or
-resized** - it is geometry at a fixed distance from a fixed camera, compiled in.
-Measured off the running wooden scene it is **34.9 deg wide by 34.3 deg tall,
-3.5 deg above the horizon**, and the wooden room puts a window right there:
-**36.9 x 38.2 deg, dead centre**, leaving a little reveal around it.
+The blind **cannot be moved or resized** - it is geometry at a fixed distance
+from a fixed camera, compiled into the bundle. So the room is fitted to it.
 
-**Each product has its own target**, because the blinds are not the same size.
-A vertical blind is far wider than a wooden one, and its room's window is
-**56.1 x 47.8 deg**. Fitting a room against the wrong product's target hangs
-the blind over the wall or leaves it lost in the glass, so `make_variants.py`
-keeps a `TARGETS` table keyed by `based_on`. To add a base product, grid its
-own room and read the window off it:
-
-```bash
-python grid_window.py <bench>/.../maps/preload/<product>/scenebk.jpg 1700 700 2400 1400 1
-```
-
-One supplied room can serve several products - each variant fits it to its own
-blind and writes its own `/maps/scenes/<key>.jpg`. `wooden-premium` and
-`vertical-premium` share one file: the wooden blind needs the room pushed back
-(x1.287), the vertical blind needs it pulled forward (x0.850), and
-`scene_fit: "width"` on the vertical one stops the wide blind overhanging the
-glass.
-
-So the room has to be fitted to the blind. Measure the window in the supplied
-image and give its outer frame in that image's own pixels:
+Measure the window in the supplied image and give its outer frame in that
+image's own pixels:
 
 ```json
-"window": [347.5, 395.0, 636.0, 675.0]
+"window": [857, 357, 1122, 640]
 ```
 
-`reproject()` derives everything else - where to aim, and how much to scale so
-the window ends up near 36.9 x 38.2 deg.
+Everything else follows. `make_variants.py` scales the room uniformly until
+that window is as wide as the one in the product's **own** captured room, then
+pins the window's **top edge**.
 
-`scene_fit` decides how the two axes are reconciled, because a window is rarely
-the same *shape* as the one the blind was built for:
+### Why the top, and not the centre
 
-| `scene_fit` | |
-|---|---|
-| **uniform** (default) | one scale for both axes, the geometric mean. Keeps the room's proportions - it only moves the camera back or forward. |
-| exact | match each axis independently. Fits the window perfectly but stretches the room by whatever the two factors differ by. |
-| width / height | match that axis and follow it on the other. |
-| none | aim only, do not scale. |
+A blind hangs from a headrail fixed at the top of the window. It does not float
+in the middle of it. In the wooden room the blind's own geometry puts its box
+at (1837, 788)-(2234, 1179) and the window is (1838, 785)-(2262, 1215): the
+**top edges are flush to within 3 px**, and the window carries on below the
+blind. Matching the two centres instead - which this used to do - drops the
+blind by half that overhang, and it reads immediately as a blind hung too low.
 
-Prefer **uniform**. A room supplied with a wide, short window needed x1.05
-across but x0.78 up - matching both would have stretched it 36%. Uniform left
-the blind with a little more reveal at the sides than the top, which is what a
-real blind in a real recess looks like anyway. **Measure once; do not hand-
-compute the transform.** Deriving it by hand is how the scale got inverted the
-first time, and how `scene_zoom` ended up eyeballed at 1.25 when the real
-answer was 1.41 across and 1.25 up. Those differ because a window is rarely the
-same shape as the one the blind was built for, which a single uniform zoom
-cannot fix.
+Width is what decides whether the blind covers the glass, so that is what the
+scale is matched on; the leftover height shows below the blind, which is where
+a window is supposed to show. The supplied room fits wooden at x1.280, leaving
+3.9 degrees of window below the blind - the reference room has 3.9.
 
-An equirectangular image is linear in longitude and latitude, so aiming is a
-translation and fitting is a scale. It is done in **one resample straight from
-the supplied file** - rolling, then scaling, then resizing would interpolate
-three times and throw away detail a small source cannot spare. The margins that
-opens up are filled by tiling sideways (a panorama is a loop, so it is
-seamless) and by repeating the top and bottom rows, which is what the poles
-look like anyway.
+`scene_fit` can match on `height` or `uniform` instead, or `none` to skip
+scaling, but `width` is the default for this reason.
 
-Check the result with `verify_room.py <key>`, which draws the target box over
-the generated room. The window should sit inside it.
+### Every product needs its own reference
 
-`scene_center` / `scene_center_y` / `scene_zoom` still work if `window` is
-absent, but there is no good reason to use them.
+The blinds are not the same size, so the windows built around them are not
+either:
+
+| | Blind | Its room's window |
+|---|---|---|
+| wooden | 34.9 x 34.3 deg | 37.3 x 37.8 deg, top at 0.3833 |
+| vertical | 54.4 x 52.8 deg | 56.1 x 47.8 deg, top at 0.3652 |
+
+Fitting against the wrong product's reference hangs the blind over the wall.
+`WINDOWS` in `make_variants.py` holds them; to add one, grid that product's own
+room and read the window off it:
+
+```bash
+python grid_window.py <bench>/.../maps/preload/<product>/scenebk.jpg 1780 720 2320 1280 1
+```
+
+`blind_geometry.js` prints the blind's own angles from a product page's console,
+which is how the reference measurements get checked rather than eyeballed.
+
+One supplied room can serve several products - each fits it to its own blind and
+writes its own `/maps/scenes/<key>.jpg`. `wooden-premium` and `vertical-premium`
+share one file at x1.280 and x0.851.
+
+Check the result with `verify_room.py <key>`, which draws the blind's real
+footprint over the generated room. Its top should sit on the window's top.
 
 ### What this cannot fix
 
