@@ -99,7 +99,12 @@
 		msg.style.color = ok ? "#0a8a3c" : "#c0392b";
 	}
 
-	function post(method, body) {
+	// The token baked into this page belongs to the session that rendered it.
+	// Sign in, sign out, or leave a tab open until the session expires and it
+	// is stale - Frappe then answers 400 before any of our code runs, so the
+	// button looks broken and nothing is logged. Fetch a fresh one and try
+	// once more instead. That endpoint is a GET, so it needs no token itself.
+	function post(method, body, retried) {
 		return fetch("/api/method/" + method, {
 			method: "POST",
 			credentials: "same-origin",
@@ -108,7 +113,19 @@
 				"X-Frappe-CSRF-Token": (window.frappe && window.frappe.csrf_token) || ""
 			},
 			body: JSON.stringify(body || {})
-		}).then(function (r) { return r.json(); });
+		}).then(function (r) {
+			if (r.status === 400 && !retried) {
+				return fetch("/api/method/curtain_roll.api.csrf_token",
+				             { credentials: "same-origin" })
+					.then(function (t) { return t.json(); })
+					.then(function (t) {
+						window.frappe = window.frappe || {};
+						window.frappe.csrf_token = ((t && t.message) || {}).token || "";
+						return post(method, body, true);
+					});
+			}
+			return r.json();
+		});
 	}
 
 	function setQty(row, qty) {
