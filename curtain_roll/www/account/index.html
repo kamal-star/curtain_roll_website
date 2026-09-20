@@ -1,0 +1,49 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{#- defined ABOVE the block deliberately. Under {% extends %} only blocks are
+    rendered, and a macro declared after the block it is called from is not
+    reliably in scope by then. -#}
+{% macro tile(href, icon, label, count=0) %}
+  <a class="cr-tile" href="{{ href }}">
+    <span class="cr-tile-icon"><i class="fa {{ icon }}"></i></span>
+    <span class="cr-tile-label">{{ label }}</span>
+    {%- if count %}<span class="cr-tile-count">{{ count }}</span>{% endif %}
+  </a>
+{% endmacro %}
+
+{% block title %}{{ _("My Account") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li>{{ _("My Account") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("My Account") }}</h1>
+  <p class="cr-acc-sub">{{ _("Signed in as") }} <b>{{ account_user.full_name or account_user.name }}</b></p>
+
+  <h2 class="cr-acc-head">{{ _("My Account") }}</h2>
+  <div class="cr-tiles">
+    {{ tile("/account/edit", "fa-pencil", _("Edit your account information")) }}
+    {{ tile("/account/password", "fa-lock", _("Change your password")) }}
+    {{ tile("/account/addresses", "fa-address-card-o",
+            _("Modify your address book entries"), counts.addresses) }}
+    {{ tile("/account/wishlist", "fa-heart", _("Modify your wish list"),
+            counts.wishlist) }}
+  </div>
+
+  <h2 class="cr-acc-head">{{ _("My Orders") }}</h2>
+  <div class="cr-tiles">
+    {{ tile("/account/orders", "fa-list-alt", _("View your order history"),
+            counts.orders) }}
+    {{ tile("/account/returns", "fa-reply", _("View your return requests")) }}
+    {{ tile("/account/transactions", "fa-exchange", _("Your Transactions")) }}
+  </div>
+
+</div>
+{% endblock %}

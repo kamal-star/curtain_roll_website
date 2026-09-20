@@ -1,0 +1,72 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Wish List") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Wish List") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Wish List") }}</h1>
+
+  {% if saved %}
+  <div class="cr-panel" style="padding:8px 18px 18px;">
+    <table class="cr-table">
+      <thead>
+        <tr>
+          <th>{{ _("Product") }}</th>
+          <th style="text-align:right;">{{ _("From") }}</th>
+          <th style="width:1%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in saved %}
+        <tr data-key="{{ p.key }}">
+          <td><a href="/{{ p.route or p.key }}"><b>{{ p.name or p.heading }}</b></a></td>
+          <td style="text-align:right;">
+            {%- if p.price %}{{ frappe.utils.fmt_money(p.price) }}{% endif -%}
+          </td>
+          <td style="text-align:right;white-space:nowrap;">
+            <a class="cr-btn cr-btn-light" href="/{{ p.route or p.key }}"
+               style="padding:7px 14px;">{{ _("View") }}</a>
+            <button type="button" class="cr-btn cr-btn-light cr-remove"
+                    data-key="{{ p.key }}" style="padding:7px 14px;">{{ _("Remove") }}</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="cr-result"></div>
+  </div>
+  {% else %}
+  <div class="cr-panel cr-empty">
+    <i class="fa fa-heart-o"></i>
+    <p>{{ _("You have not saved anything yet.") }}</p>
+    <p style="margin-top:16px;"><a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+  </div>
+  {% endif %}
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+
+{% include "curtain_roll/templates/includes/account_form.html" %}
+<script>
+document.querySelectorAll(".cr-remove").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var key = btn.getAttribute("data-key");
+    crPost("curtain_roll.account.wishlist_remove", { product_key: key },
+           { then: function () {
+      var row = document.querySelector('tr[data-key="' + key + '"]');
+      if (row) { row.remove(); }
+      if (!document.querySelectorAll("tbody tr").length) { location.reload(); }
+    }});
+  });
+});
+</script>
+{% endblock %}

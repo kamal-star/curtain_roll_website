@@ -66,6 +66,8 @@ def session_info():
 		              if not guest else ""),
 		"cart_text": info.get("text"),
 		"cart_count": info.get("count") or 0,
+		# the snapshot bakes the wishlist badge at 0, so it has to be told
+		"wishlist_count": 0 if guest else len(cart_api.wishlist_keys()),
 		"cart_items": [
 			{
 				"name": i.get("name") or i.get("item_code"),

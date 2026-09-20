@@ -1,0 +1,76 @@
+{#- Shared form plumbing for the /account pages.
+
+    These pages are rendered per request and never cached, so unlike the
+    captured storefront pages they can be handed a CSRF token directly instead
+    of having to fetch one after load. -#}
+<script>
+window.crToken = "{{ frappe.session.csrf_token }}";
+
+/* Call a whitelisted method and report the outcome in the page.
+
+   Frappe answers a thrown error with a 4xx and a `_server_messages` payload -
+   a JSON string holding a JSON list of JSON objects. Reading it is ugly and
+   worth doing anyway: the alternative is showing "something went wrong" when
+   the server said exactly what was wrong. */
+window.crPost = function (method, data, opts) {
+  opts = opts || {};
+  var note = document.querySelector(opts.note || ".cr-result");
+  /* Keep the hook class. Writing className outright dropped "cr-result",
+     so the element stopped matching its own selector and every message
+     after the first went nowhere - with the first one still on screen,
+     which reads as the second action having done nothing. */
+  function say(kind, text) {
+    if (!note) { return; }
+    note.className = "cr-result cr-note cr-note-" + kind;
+    note.textContent = text;
+  }
+  var button = opts.button ? document.querySelector(opts.button) : null;
+  if (button) { button.disabled = true; }
+
+  return fetch("/api/method/" + method, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Frappe-CSRF-Token": window.crToken },
+    body: JSON.stringify(data)
+  }).then(function (res) {
+    return res.json().then(function (body) { return { res: res, body: body }; });
+  }).then(function (out) {
+    if (button) { button.disabled = false; }
+    var msg = (out.body && out.body.message) || {};
+    if (out.res.ok && msg.ok) {
+      say("ok", msg.message);
+      if (opts.then) { opts.then(msg); }
+      return msg;
+    }
+    var text = crServerMessage(out.body) || "Sorry, that did not work.";
+    say("bad", text);
+    throw new Error(text);
+  }).catch(function (err) {
+    if (button) { button.disabled = false; }
+    if (note && !note.textContent) {
+      say("bad", err.message || "Sorry, that did not work.");
+    }
+  });
+};
+
+function crServerMessage(body) {
+  try {
+    var list = JSON.parse(body._server_messages || "[]");
+    var first = JSON.parse(list[0] || "{}");
+    var msg = first.message || "";
+    var tmp = document.createElement("div");
+    tmp.innerHTML = msg;                       // the server sends HTML
+    return tmp.textContent.trim();
+  } catch (e) {
+    return (body && body.exc_type) || "";
+  }
+}
+
+/* Collect a form's named fields without submitting it. */
+window.crFields = function (selector) {
+  var out = {};
+  document.querySelectorAll(selector + " [name]").forEach(function (el) {
+    out[el.getAttribute("name")] = el.value;
+  });
+  return out;
+};
+</script>

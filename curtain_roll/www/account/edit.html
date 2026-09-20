@@ -1,0 +1,58 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Account Information") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Account Information") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Account Information") }}</h1>
+  <p class="cr-acc-sub">{{ _("This is the name that appears on your quotes and orders.") }}</p>
+
+  <div class="cr-panel" style="max-width:540px;">
+    <form id="cr-profile" onsubmit="return false;">
+      <div class="cr-field">
+        <label for="cr-first">{{ _("First name") }}</label>
+        <input id="cr-first" name="first_name" type="text"
+               value="{{ account_user.first_name or '' }}" autocomplete="given-name">
+      </div>
+      <div class="cr-field">
+        <label for="cr-last">{{ _("Last name") }}</label>
+        <input id="cr-last" name="last_name" type="text"
+               value="{{ account_user.last_name or '' }}" autocomplete="family-name">
+      </div>
+      <div class="cr-field">
+        <label for="cr-phone">{{ _("Phone") }}</label>
+        <input id="cr-phone" name="phone" type="tel"
+               value="{{ account_user.phone or '' }}" autocomplete="tel">
+      </div>
+      <div class="cr-field">
+        <label>{{ _("Email") }}</label>
+        <input type="email" value="{{ account_user.name }}" disabled>
+        <p style="font-size:13px;color:#6d767d;margin:6px 0 0;">
+          {{ _("Your email is your sign-in, so it cannot be changed here.") }}</p>
+      </div>
+
+      <div class="cr-result"></div>
+      <button type="button" class="cr-btn" id="cr-save">{{ _("Save changes") }}</button>
+    </form>
+  </div>
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+
+{% include "curtain_roll/templates/includes/account_form.html" %}
+<script>
+document.getElementById("cr-save").addEventListener("click", function () {
+  crPost("curtain_roll.account.update_profile", crFields("#cr-profile"),
+         { button: "#cr-save" });
+});
+</script>
+{% endblock %}

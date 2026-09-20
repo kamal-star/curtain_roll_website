@@ -1,0 +1,141 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Address Book") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Address Book") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Address Book") }}</h1>
+  <p class="cr-acc-sub">{{ _("Where we measure, fit and deliver.") }}</p>
+
+  {% if addresses %}
+  <div class="cr-tiles" style="align-items:stretch;">
+    {% for a in addresses %}
+    <div class="cr-panel" style="flex:1 1 300px;max-width:360px;margin-top:0;text-align:left;">
+      <b>{{ a.address_title }}</b>
+      {%- if a.is_primary_address %}
+        <span class="cr-tile-count" style="position:static;margin-left:8px;">
+          {{ _("Primary") }}</span>
+      {%- endif %}
+      <p style="color:#6d767d;font-size:14px;margin:10px 0 16px;line-height:1.6;">
+        {{ a.address_line1 }}{% if a.address_line2 %}<br>{{ a.address_line2 }}{% endif %}
+        {% if a.city %}<br>{{ a.city }}{% endif %}{% if a.state %}, {{ a.state }}{% endif %}
+        {% if a.pincode %} {{ a.pincode }}{% endif %}
+        {% if a.country %}<br>{{ a.country }}{% endif %}
+        {% if a.phone %}<br>{{ a.phone }}{% endif %}
+      </p>
+      <button type="button" class="cr-btn cr-btn-light cr-edit" style="padding:7px 14px;"
+              {#- tojson, not frappe.as_json: the Jinja sandbox does not
+                  expose as_json, and tojson escapes quotes for safe
+                  embedding in this single-quoted attribute -#}
+              data-address='{{ a | tojson }}'>{{ _("Edit") }}</button>
+      <button type="button" class="cr-btn cr-btn-light cr-del" style="padding:7px 14px;"
+              data-name="{{ a.name }}">{{ _("Delete") }}</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="cr-panel cr-empty">
+    <i class="fa fa-address-card-o"></i>
+    <p>{{ _("No addresses saved yet.") }}</p>
+  </div>
+  {% endif %}
+
+  <h2 class="cr-acc-head" id="cr-form-head">{{ _("Add an address") }}</h2>
+  <div class="cr-panel" style="max-width:540px;">
+    <form id="cr-addr" onsubmit="return false;">
+      <input type="hidden" name="name" value="">
+      <div class="cr-field">
+        <label for="cr-t">{{ _("Label") }}</label>
+        <input id="cr-t" name="address_title" type="text" placeholder="{{ _('Home, Office…') }}">
+      </div>
+      <div class="cr-field">
+        <label for="cr-l1">{{ _("Street address") }}</label>
+        <input id="cr-l1" name="address_line1" type="text">
+      </div>
+      <div class="cr-field">
+        <label for="cr-l2">{{ _("Building, flat, landmark") }}</label>
+        <input id="cr-l2" name="address_line2" type="text">
+      </div>
+      <div class="cr-field">
+        <label for="cr-city">{{ _("City") }}</label>
+        <input id="cr-city" name="city" type="text">
+      </div>
+      <div class="cr-field">
+        <label for="cr-state">{{ _("Region") }}</label>
+        <input id="cr-state" name="state" type="text">
+      </div>
+      <div class="cr-field">
+        <label for="cr-pin">{{ _("Postcode") }}</label>
+        <input id="cr-pin" name="pincode" type="text">
+      </div>
+      <div class="cr-field">
+        <label for="cr-country">{{ _("Country") }}</label>
+        <select id="cr-country" name="country">
+          {% for c in countries %}
+          <option value="{{ c }}" {% if c == "Saudi Arabia" %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="cr-field">
+        <label for="cr-ph">{{ _("Phone") }}</label>
+        <input id="cr-ph" name="phone" type="tel">
+      </div>
+
+      <div class="cr-result"></div>
+      <button type="button" class="cr-btn" id="cr-save">{{ _("Save address") }}</button>
+      <button type="button" class="cr-btn cr-btn-light" id="cr-cancel"
+              style="display:none;">{{ _("Cancel") }}</button>
+    </form>
+  </div>
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+
+{% include "curtain_roll/templates/includes/account_form.html" %}
+<script>
+var form = document.getElementById("cr-addr");
+
+document.getElementById("cr-save").addEventListener("click", function () {
+  var data = crFields("#cr-addr");
+  if (!data.name) { delete data.name; }        // blank means "new", not "id ''"
+  crPost("curtain_roll.account.save_address", data,
+         { button: "#cr-save", then: function () {
+    setTimeout(function () { location.reload(); }, 600);
+  }});
+});
+
+document.querySelectorAll(".cr-edit").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var a = JSON.parse(btn.getAttribute("data-address"));
+    Object.keys(a).forEach(function (k) {
+      var el = form.querySelector('[name="' + k + '"]');
+      if (el) { el.value = a[k] == null ? "" : a[k]; }
+    });
+    document.getElementById("cr-form-head").textContent = "{{ _('Edit address') }}";
+    document.getElementById("cr-cancel").style.display = "";
+    document.getElementById("cr-form-head").scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+document.getElementById("cr-cancel").addEventListener("click", function () {
+  location.reload();
+});
+
+document.querySelectorAll(".cr-del").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    if (!confirm("{{ _('Delete this address?') }}")) { return; }
+    crPost("curtain_roll.account.delete_address", { name: btn.getAttribute("data-name") },
+           { then: function () { setTimeout(function () { location.reload(); }, 500); }});
+  });
+});
+</script>
+{% endblock %}

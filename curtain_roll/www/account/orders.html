@@ -1,0 +1,60 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Order History") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Order History") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Order History") }}</h1>
+
+  {% if orders %}
+  <div class="cr-panel" style="padding:8px 18px 18px;">
+    <table class="cr-table">
+      <thead>
+        <tr>
+          <th>{{ _("Reference") }}</th>
+          <th>{{ _("Date") }}</th>
+          <th>{{ _("Status") }}</th>
+          <th style="text-align:right;">{{ _("Total") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td><b>{{ o.name }}</b></td>
+          <td>{{ frappe.format(o.date, {"fieldtype": "Date"}) if o.date else "" }}</td>
+          <td>
+            {{ o.stage }}
+            {%- if o.open %}
+              &nbsp;<a href="/cart" style="font-size:13px;">{{ _("open basket") }}</a>
+            {%- endif %}
+          </td>
+          <td style="text-align:right;">
+            {{ frappe.utils.fmt_money(o.total, currency=o.currency) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:#6d767d;margin-top:14px;">
+    {{ _("A basket is an order you have started but not sent. Everything else has reached us.") }}
+  </p>
+  {% else %}
+  <div class="cr-panel cr-empty">
+    <i class="fa fa-list-alt"></i>
+    <p>{{ _("You have not placed an order yet.") }}</p>
+    <p style="margin-top:16px;"><a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+  </div>
+  {% endif %}
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+{% endblock %}
