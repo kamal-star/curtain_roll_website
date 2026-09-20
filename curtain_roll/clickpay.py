@@ -22,6 +22,7 @@ Credentials are read from site_config.json and never from the repo:
     bench --site <site> set-config clickpay_server_key <key>
     bench --site <site> set-config clickpay_live 0
 """
+import contextlib
 import hashlib
 import hmac
 import json
@@ -369,6 +370,31 @@ def _keep_the_browsers_session():
 		del manager.to_delete[:]
 
 
+@contextlib.contextmanager
+def _as_system_user():
+	"""Run the settlement as a user allowed to read what ERPNext reads.
+
+	Both ways in are unauthenticated, and have to be: the callback is ClickPay's
+	server, and the return arrives without the customer's cookie because it is a
+	cross-site POST. So the session user here is Guest.
+
+	Submitting the quotation makes ERPNext validate it, which reads each Item
+	through get_item_details, which calls check_permission - and that only
+	honours the flag on the document it is checking, not one we set on the
+	quotation and not any global. Guest cannot read Item, so it raised.
+
+	Switching the session user leaves every permission check in place and gives
+	it someone who passes, which is the honest version of this: the system is
+	creating the invoice, so the system is who it runs as.
+	"""
+	previous = frappe.session.user
+	frappe.set_user("Administrator")
+	try:
+		yield
+	finally:
+		frappe.set_user(previous)
+
+
 def settle(result):
 	"""Record a successful payment. Safe to call more than once.
 
@@ -408,8 +434,9 @@ def settle(result):
 			        % (name, charged, expected, result.get("tran_ref")))
 		return
 
-	invoice = _raise_invoice(quotation)
-	_record_payment(invoice, result)
+	with _as_system_user():
+		invoice = _raise_invoice(quotation)
+		_record_payment(invoice, result)
 
 	frappe.db.set_value("Quotation", name,
 	                    {STATUS_FIELD: PAID, REF_FIELD: result.get("tran_ref")},
