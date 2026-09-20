@@ -6,14 +6,13 @@
 {% block content %}
 {% include "curtain_roll/templates/includes/account_style.html" %}
 <div class="cr-acc cr-cart-page">
-	<h1 style="font-size:28px;font-weight:700;margin-bottom:18px;">{{ _("Your Cart") }}</h1>
+	<h1 class="cr-acc-title">{{ _("Your Cart") }}</h1>
 
 	{% if guest %}
 		<p style="color:#6d767d;">{{ _("Please sign in to see your cart.") }}</p>
 		<p>
-			<a href="{{ login_url }}" style="display:inline-block;background:#f5c400;color:#14181d;
-				font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none;">{{ _("Sign in") }}</a>
-			<a href="/login#signup" style="margin-left:14px;">{{ _("Create an account") }}</a>
+			<a href="{{ login_url }}" class="cr-btn">{{ _("Sign in") }}</a>
+			<a href="/login#signup" class="cr-btn cr-btn-light" style="margin-left:10px;">{{ _("Create an account") }}</a>
 		</p>
 
 	{% else %}
@@ -24,33 +23,33 @@
 
 		<div id="cr-cart-body" style="{% if not items %}display:none;{% endif %}">
 			<div style="overflow-x:auto;">
-			<table style="width:100%;border-collapse:collapse;margin:18px 0;">
+			<table class="cr-table">
 				<thead>
-					<tr style="text-align:left;border-bottom:2px solid #e6e8eb;">
-						<th style="padding:10px 8px;">{{ _("Product") }}</th>
-						<th style="padding:10px 8px;width:150px;">{{ _("Qty") }}</th>
-						<th style="padding:10px 8px;text-align:right;">{{ _("Rate") }}</th>
-						<th style="padding:10px 8px;text-align:right;">{{ _("Amount") }}</th>
-						<th style="padding:10px 8px;"></th>
+					<tr>
+						<th>{{ _("Product") }}</th>
+						<th style="width:150px;">{{ _("Qty") }}</th>
+						<th style="text-align:right;">{{ _("Rate") }}</th>
+						<th style="text-align:right;">{{ _("Amount") }}</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for i in items %}
-					<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}" style="border-bottom:1px solid #eef0f2;">
-						<td style="padding:12px 8px;">
+					<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}">
+						<td>
 							<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
 							{% if i.spec %}
-							<div style="font-size:12px;color:#6d767d;margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
+							<div style="font-size:12px;color:var(--text-muted,#54667a);margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
 							{% endif %}
 						</td>
-						<td style="padding:12px 8px;">
+						<td>
 							<input type="number" min="1" step="1" value="{{ i.qty | int }}"
 								class="cr-qty-input"
 								style="width:80px;padding:7px 9px;border:1px solid #e6e8eb;border-radius:7px;">
 						</td>
-						<td style="padding:12px 8px;text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
+						<td style="text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
 						<td style="padding:12px 8px;text-align:right;" class="cr-amount">{{ "%.2f"|format(i.amount) }}</td>
-						<td style="padding:12px 8px;text-align:right;">
+						<td style="text-align:right;">
 							<button type="button" class="cr-remove"
 								style="background:none;border:0;color:#c0392b;cursor:pointer;">{{ _("Remove") }}</button>
 						</td>

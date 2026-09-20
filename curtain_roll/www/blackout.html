@@ -1145,10 +1145,13 @@
         <ul class="catalog-nav-list">
           <li><a href="/" class="catalog-nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
           <li><a href="/blackout" class="catalog-nav-link active">Blackout</a></li>
+            <li><a href="/shutters" class="catalog-nav-link">Shutters</a></li>
           <li><a href="/sunscreen" class="catalog-nav-link">Sunscreen</a></li>
           <li><a href="/zebra" class="catalog-nav-link">Zebra</a></li>
           <li><a href="/wooden" class="catalog-nav-link">Wooden</a></li>
+            <li><a href="/wooden-premium" class="catalog-nav-link">Wooden Kayan</a></li>
           <li><a href="/vertical" class="catalog-nav-link">Vertical</a></li>
+            <li><a href="/vertical-premium" class="catalog-nav-link">Vertical Kayan</a></li>
           <li><a href="/metal" class="catalog-nav-link">Metal</a></li>
           <li><a href="/roman" class="catalog-nav-link">Roman</a></li>
           <li><a href="/wavy" class="catalog-nav-link">Wavy</a></li>
@@ -1174,10 +1177,28 @@
         <ul class="drawer-links-box">
           <li><a href="/" class="drawer-nav-item"><span><i class="fa-solid fa-house nav-icon"></i> Home</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="/blackout" class="drawer-nav-item active"><span><i class="fa-solid fa-moon nav-icon"></i> Blackout Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li>
+            <a href="/shutters" class="drawer-nav-item">
+              <span>Shutters</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
           <li><a href="/sunscreen" class="drawer-nav-item"><span><i class="fa-solid fa-sun nav-icon"></i> Sunscreen Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="/zebra" class="drawer-nav-item"><span><i class="fa-solid fa-bars nav-icon"></i> Zebra Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="/wooden" class="drawer-nav-item"><span><i class="fa-solid fa-tree nav-icon"></i> Wooden Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li>
+            <a href="/wooden-premium" class="drawer-nav-item">
+              <span>Wooden Kayan</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
           <li><a href="/vertical" class="drawer-nav-item"><span><i class="fa-solid fa-arrows-left-right nav-icon"></i> Vertical Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li>
+            <a href="/vertical-premium" class="drawer-nav-item">
+              <span>Vertical Kayan</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
           <li><a href="/metal" class="drawer-nav-item"><span><i class="fa-solid fa-shield-halved nav-icon"></i> Metal Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="/roman" class="drawer-nav-item"><span><i class="fa-solid fa-scroll nav-icon"></i> Roman Blinds</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="/wavy" class="drawer-nav-item"><span><i class="fa-solid fa-water nav-icon"></i> Wavy Drapes</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
@@ -1769,7 +1790,7 @@
       Array.prototype.forEach.call(links, function (a) {
         var span = a.querySelector(".links-text") || a;
         var href = a.getAttribute("href");
-        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/account"); }
+        if (href === "/login") { span.textContent = "My Account"; a.setAttribute("href", "/account"); }
         else { span.textContent = "Logout"; a.setAttribute("href", "/logout"); }
       });
     }

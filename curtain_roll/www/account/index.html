@@ -5,7 +5,7 @@
     reliably in scope by then. -#}
 {% macro tile(href, icon, label, count=0) %}
   <a class="cr-tile" href="{{ href }}">
-    <span class="cr-tile-icon"><i class="fa {{ icon }}"></i></span>
+    <span class="cr-tile-icon"><i class="{{ icon }}"></i></span>
     <span class="cr-tile-label">{{ label }}</span>
     {%- if count %}<span class="cr-tile-count">{{ count }}</span>{% endif %}
   </a>
@@ -29,20 +29,20 @@
 
   <h2 class="cr-acc-head">{{ _("My Account") }}</h2>
   <div class="cr-tiles">
-    {{ tile("/account/edit", "fa-pencil", _("Edit your account information")) }}
-    {{ tile("/account/password", "fa-lock", _("Change your password")) }}
-    {{ tile("/account/addresses", "fa-address-card-o",
+    {{ tile("/account/edit", "fa-solid fa-pencil", _("Edit your account information")) }}
+    {{ tile("/account/password", "fa-solid fa-lock", _("Change your password")) }}
+    {{ tile("/account/addresses", "fa-regular fa-address-card",
             _("Modify your address book entries"), counts.addresses) }}
-    {{ tile("/account/wishlist", "fa-heart", _("Modify your wish list"),
+    {{ tile("/account/wishlist", "fa-solid fa-heart", _("Modify your wish list"),
             counts.wishlist) }}
   </div>
 
   <h2 class="cr-acc-head">{{ _("My Orders") }}</h2>
   <div class="cr-tiles">
-    {{ tile("/account/orders", "fa-list-alt", _("View your order history"),
+    {{ tile("/account/orders", "fa-regular fa-rectangle-list", _("View your order history"),
             counts.orders) }}
-    {{ tile("/account/returns", "fa-reply", _("View your return requests")) }}
-    {{ tile("/account/transactions", "fa-exchange", _("Your Transactions")) }}
+    {{ tile("/account/returns", "fa-solid fa-reply", _("View your return requests")) }}
+    {{ tile("/account/transactions", "fa-solid fa-right-left", _("Your Transactions")) }}
   </div>
 
 </div>
