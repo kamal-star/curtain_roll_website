@@ -334,6 +334,16 @@ def payment_return(**kwargs):
 	             fields.get("signature"))
 	result = outcome(fields)
 
+	# Worth saying out loud. The return and the callback sign different things,
+	# so this can fail while the callback succeeds - the money is fine, but the
+	# customer is shown the wrong page, and without this there is nothing to
+	# look at afterwards. No card data comes back here, only a masked number.
+	if not ok:
+		frappe.log_error(
+			title="ClickPay return signature rejected",
+			message=json.dumps({k: v for k, v in fields.items()
+			                    if k != "signature"}, indent=1, default=str)[:2000])
+
 	# The callback is the source of truth and usually arrives first, but not
 	# always. Settling here too - idempotently - keeps a customer from being
 	# shown "unpaid" for a payment that went through.
