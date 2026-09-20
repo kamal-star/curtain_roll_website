@@ -370,6 +370,31 @@ def _keep_the_browsers_session():
 		del manager.to_delete[:]
 
 
+def reconcile(quotation):
+	"""Ask ClickPay what happened to an order, and settle from their answer.
+
+	The repair for a callback that never landed: a deploy at the wrong moment,
+	a network blip, or a bug on our side that made settlement raise. ClickPay
+	is asked directly rather than trusting anything stored here, and settle()
+	is idempotent, so running this on an order that is already paid does
+	nothing.
+	"""
+	ref = frappe.db.get_value("Quotation", quotation, REF_FIELD)
+	if not ref:
+		return {"ok": 0, "reason": "no transaction reference on %s" % quotation}
+
+	body = query(ref)
+	if not body:
+		return {"ok": 0, "reason": "ClickPay did not answer for %s" % ref}
+
+	result = outcome(body)
+	result["cart_id"] = result.get("cart_id") or quotation
+	settle(result)
+	return {"ok": 1, "tran_ref": ref,
+	        "gateway_said": result.get("status"),
+	        "status": frappe.db.get_value("Quotation", quotation, STATUS_FIELD)}
+
+
 @contextlib.contextmanager
 def _as_system_user():
 	"""Run the settlement as a user allowed to read what ERPNext reads.
