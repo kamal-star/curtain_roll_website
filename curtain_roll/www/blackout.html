@@ -1758,8 +1758,8 @@
       Array.prototype.forEach.call(links, function (a) {
         var span = a.querySelector(".links-text") || a;
         var href = a.getAttribute("href");
-        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/me"); }
-        else { span.textContent = "Logout"; a.setAttribute("href", "/?cmd=web_logout"); }
+        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/account"); }
+        else { span.textContent = "Logout"; a.setAttribute("href", "/logout"); }
       });
     }
 
