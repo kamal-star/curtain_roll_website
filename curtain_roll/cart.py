@@ -475,6 +475,31 @@ def remove(args, form):
 	return {"success": "Item removed.", "total": _total_text(quotation)}
 
 
+WISHLIST = "Curtain Wishlist Item"
+
+
+def wishlist_keys(user=None):
+	"""Product keys this user has saved, newest first."""
+	return frappe.get_all(
+		WISHLIST, filters={"user": user or frappe.session.user},
+		pluck="product_key", order_by="creation desc")
+
+
+def wishlist_items(user=None):
+	"""The saved products themselves, skipping any that have since gone."""
+	# catalog(), not _products(): _products() is keyed BY product key and holds
+	# the option definitions, so iterating it yields the keys as bare strings.
+	# catalog() is keyed by catalogue id, and its values carry the name, price
+	# and route that a listing actually needs.
+	by_key = {e["key"]: e for e in catalog().values() if e.get("key")}
+	out = []
+	for key in wishlist_keys(user):
+		entry = by_key.get(key)
+		if entry:
+			out.append(entry)
+	return out
+
+
 def wishlist_add(args, form):
 	if is_guest():
 		return login_redirect(args)
@@ -482,15 +507,33 @@ def wishlist_add(args, form):
 	entry = product(pid)
 	if not entry:
 		return {"error": {"warning": "Product not available."}}
-	key = "curtain_roll_wishlist:%s" % frappe.session.user
-	items = frappe.cache().get_value(key) or []
-	if pid not in items:
-		items.append(pid)
-	frappe.cache().set_value(key, items)
+
+	# Stored, not cached. This used to live in frappe.cache(), which tested
+	# fine and silently emptied every customer's list on each clear-cache,
+	# migrate and deploy.
+	if not frappe.db.exists(WISHLIST, {"user": frappe.session.user,
+	                                   "product_key": entry["key"]}):
+		frappe.get_doc({
+			"doctype": WISHLIST,
+			"user": frappe.session.user,
+			"product_key": entry["key"],
+		}).insert(ignore_permissions=True)
+		frappe.db.commit()
+
 	return {
 		"success": "Added <b>%s</b> to your wish list." % frappe.utils.escape_html(entry["name"]),
-		"total": "%d" % len(items),
+		"total": "%d" % len(wishlist_keys()),
 	}
+
+
+def wishlist_remove(product_key):
+	"""Drop one saved product. Safe to call for something already gone."""
+	name = frappe.db.get_value(WISHLIST, {"user": frappe.session.user,
+	                                      "product_key": product_key})
+	if name:
+		frappe.delete_doc(WISHLIST, name, ignore_permissions=True, force=True)
+		frappe.db.commit()
+	return len(wishlist_keys())
 
 
 def set_qty(item_code, qty, row_name=None):

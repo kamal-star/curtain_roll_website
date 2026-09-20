@@ -1,0 +1,80 @@
+{#- Styling for every /account page.
+
+    One include rather than a stylesheet under public/, because the theme's own
+    CSS is 1800 rules deep and specific; keeping these next to the markup they
+    style makes them easy to reconcile with whatever the designer sends back.
+    Scoped under .cr-acc so nothing here can reach the captured pages. -#}
+<style>
+/* Deliberately NOT reusing the theme's .container and .breadcrumb classes.
+   .container is a flex row in this theme, which turned the page into columns
+   and dropped the padding; .breadcrumb is set to display:none, so the trail
+   rendered into the DOM and was never seen. Borrowing theme classes for a
+   page the theme has never seen is a losing game. */
+.cr-acc { max-width: 1170px; margin: 0 auto; padding: 14px 15px 70px;
+  display: block; box-sizing: border-box; }
+.cr-crumbs { list-style: none; display: block; margin: 0 0 6px; padding: 0;
+  font-size: 13px; color: #9aa3ab; }
+.cr-crumbs li { display: inline; }
+.cr-crumbs li + li:before { content: "/"; margin: 0 8px; color: #c8ccd0; }
+.cr-crumbs a { color: #6d767d; text-decoration: none; }
+.cr-crumbs a:hover { color: #14181d; text-decoration: underline; }
+.cr-acc-title { font-size: 30px; font-weight: 700; margin: 6px 0 4px; letter-spacing: -.01em; }
+.cr-acc-title:after { content: ""; display: block; width: 58px; height: 3px;
+  background: #d5122a; margin-top: 10px; }
+.cr-acc-sub { color: #6d767d; margin: 14px 0 26px; font-size: 14px; }
+.cr-acc-head { font-size: 15px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; margin: 30px 0 4px; }
+.cr-acc-head:after { content: ""; display: block; width: 42px; height: 3px;
+  background: #d5122a; margin-top: 8px; }
+
+.cr-tiles { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 18px; }
+.cr-tile { position: relative; flex: 1 1 210px; min-width: 190px; max-width: 280px;
+  border: 1px solid #e3e6e8; border-radius: 4px; background: #fff;
+  padding: 26px 18px 22px; text-align: center; text-decoration: none;
+  color: #6d767d; transition: border-color .15s, box-shadow .15s, color .15s; }
+.cr-tile:hover { border-color: #c8ccd0; color: #14181d;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06); text-decoration: none; }
+.cr-tile-icon { display: block; font-size: 30px; color: #14181d; margin-bottom: 14px; }
+.cr-tile-icon i { display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border: 2px solid #14181d; border-radius: 50%; }
+.cr-tile-label { display: block; font-size: 14px; line-height: 1.45; }
+.cr-tile-count { position: absolute; top: 12px; right: 12px; min-width: 22px;
+  height: 22px; padding: 0 6px; border-radius: 11px; background: #d5122a;
+  color: #fff; font-size: 12px; line-height: 22px; font-weight: 700; }
+
+/* panels used by the sub-pages */
+.cr-panel { border: 1px solid #e3e6e8; border-radius: 4px; background: #fff;
+  padding: 24px; margin-top: 20px; }
+.cr-field { margin-bottom: 16px; }
+.cr-field label { display: block; font-size: 13px; font-weight: 600;
+  margin-bottom: 6px; color: #14181d; }
+.cr-field input, .cr-field select, .cr-field textarea { width: 100%; max-width: 420px;
+  border: 1px solid #d8dcdf; border-radius: 3px; padding: 9px 11px; font-size: 14px;
+  background: #fff; color: #14181d; }
+.cr-field input:focus, .cr-field textarea:focus { outline: none; border-color: #14181d; }
+.cr-btn { display: inline-block; border: 0; border-radius: 3px; cursor: pointer;
+  background: #14181d; color: #fff; padding: 11px 26px; font-size: 14px;
+  font-weight: 600; text-decoration: none; }
+.cr-btn:hover { background: #2a3038; color: #fff; text-decoration: none; }
+.cr-btn-light { background: #fff; color: #14181d; border: 1px solid #d8dcdf; }
+.cr-btn-light:hover { background: #f4f5f6; color: #14181d; }
+.cr-note { padding: 12px 14px; border-radius: 3px; font-size: 14px; margin: 14px 0; }
+.cr-note-ok { background: #edf7ee; color: #1f6b2a; border: 1px solid #cfe8d3; }
+.cr-note-bad { background: #fdeced; color: #8a1520; border: 1px solid #f3ccd0; }
+.cr-note-info { background: #f4f6f8; color: #4a5560; border: 1px solid #e0e5ea; }
+
+.cr-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.cr-table th, .cr-table td { padding: 12px 10px; border-bottom: 1px solid #eceef0;
+  font-size: 14px; text-align: left; }
+.cr-table th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: #6d767d; border-bottom-width: 2px; }
+.cr-empty { text-align: center; color: #6d767d; padding: 48px 20px; }
+.cr-empty i { font-size: 40px; display: block; margin-bottom: 14px; opacity: .35; }
+
+.cr-back { display: inline-block; margin-top: 22px; font-size: 14px; color: #6d767d; }
+
+@media (max-width: 600px) {
+  .cr-tile { flex: 1 1 100%; max-width: none; }
+  .cr-acc-title { font-size: 24px; }
+}
+</style>

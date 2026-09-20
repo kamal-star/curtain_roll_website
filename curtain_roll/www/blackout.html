@@ -849,7 +849,7 @@ display:none !important;
             </li>
 
                   <li class="menu-item top-menu-item top-menu-item-5">
-                  <a href="/cart" ><span class="links-text">Wishlist</span><span class="count-badge wishlist-badge count-zero">0</span></a>
+                  <a href="/account/wishlist" ><span class="links-text">Wishlist</span><span class="count-badge wishlist-badge count-zero">0</span></a>
             </li>
 
           </ul>
@@ -1014,7 +1014,7 @@ display:none !important;
     <div class="menu-trigger">
       <button><span>Menu</span></button>
     </div>
-        <a class="mobile-custom-menu mobile-custom-menu-1" href="/cart" >
+        <a class="mobile-custom-menu mobile-custom-menu-1" href="/account/wishlist" >
       <span class="links-text"></span><span class="count-badge count-zero wishlist-badge">0</span>
     </a>
         <div class="mobile-logo-wrapper">
@@ -3450,13 +3450,13 @@ $(window).scroll(function() {
       </li>
 
                   <li class="menu-item links-menu-item links-menu-item-5">
-          <a href="/me" >
+          <a href="/account" >
         <span class="links-text">My Acconut</span>
               </a>
       </li>
 
                   <li class="menu-item links-menu-item links-menu-item-6">
-          <a href="/me" >
+          <a href="/account/orders" >
         <span class="links-text">Order History</span>
               </a>
       </li>
@@ -3692,10 +3692,26 @@ $(window).scroll(function() {
       Array.prototype.forEach.call(links, function (a) {
         var span = a.querySelector(".links-text") || a;
         var href = a.getAttribute("href");
-        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/me"); }
-        else { span.textContent = "Logout"; a.setAttribute("href", "/?cmd=web_logout"); }
+        /* /account, not /me: /me is Frappe's own profile page, which arrives
+           with none of this theme. The storefront now has its own account area
+           that sits inside it.
+
+           /logout, not /?cmd=web_logout: that older form answers 403 on this
+           version, so Logout had been a dead link on every captured page. */
+        if (href === "/login") { span.textContent = "My Account"; a.setAttribute("href", "/account"); }
+        else { span.textContent = "Logout"; a.setAttribute("href", "/logout"); }
       });
     }
+
+    /* header wishlist badge - baked at 0 and "count-zero" in the snapshot, so
+       both the number and the class have to be corrected */
+    var wish = document.querySelectorAll(".wishlist-badge");
+    Array.prototype.forEach.call(wish, function (b) {
+      var n = s.wishlist_count || 0;
+      b.textContent = String(n);
+      if (n > 0) { b.classList.remove("count-zero"); }
+      else { b.classList.add("count-zero"); }
+    });
 
     // header cart counter (the snapshot is baked at 0)
     if (s.cart_text) {
