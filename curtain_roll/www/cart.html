@@ -68,15 +68,22 @@
 			{% endif %}
 
 			<div style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-				<button type="button" id="cr-place-order"
-					style="background:#f5c400;color:#14181d;font-weight:700;border:0;
-					padding:13px 26px;border-radius:8px;cursor:pointer;font-size:15px;">
+				{%- if pay_online %}
+				<button type="button" id="cr-pay-now" class="cr-btn">
+					{{ _("Pay now") }}
+				</button>
+				{%- else %}
+				{#- Only where the gateway is not configured. An order is placed by
+				    paying for it; this is the fallback so a site without keys is
+				    not left with no way to order at all. -#}
+				<button type="button" id="cr-place-order" class="cr-btn">
 					{{ _("Place Order") }}
 				</button>
+				{%- endif %}
 				<a href="/">{{ _("Continue shopping") }}</a>
 			</div>
 			<p style="font-size:13px;color:#6d767d;margin-top:12px;">
-				{{ _("Our team confirms sizes and final pricing before anything is charged.") }}
+				{%- if pay_online %}{{ _("Your order is confirmed once payment is received. Card details are entered on our payment provider's secure page, never here.") }}{%- else %}{{ _("Our team confirms sizes and final pricing before anything is charged.") }}{%- endif %}
 			</p>
 			<div id="cr-cart-msg" role="status" style="margin-top:14px;font-size:14px;"></div>
 		</div>
@@ -136,6 +143,30 @@
 		var rm = row.querySelector(".cr-remove");
 		if (rm) rm.addEventListener("click", function () { setQty(row, 0); });
 	});
+
+	var pay = document.getElementById("cr-pay-now");
+	if (pay) {
+		pay.addEventListener("click", function () {
+			pay.disabled = true;
+			say("Taking you to the payment page…", true);
+			post("curtain_roll.clickpay.checkout", {})
+				.then(function (j) {
+					var m = (j && j.message) || {};
+					if (m.ok && m.redirect_url) {
+						/* leave the site: the card form is ClickPay's, which is
+						   what keeps us out of scope for card data */
+						window.location = m.redirect_url;
+						return;
+					}
+					say("Could not start the payment. Please try again.", false);
+					pay.disabled = false;
+				})
+				.catch(function () {
+					say("Could not start the payment. Please try again.", false);
+					pay.disabled = false;
+				});
+		});
+	}
 
 	var order = document.getElementById("cr-place-order");
 	if (order) {

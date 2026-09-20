@@ -1,0 +1,63 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Payment") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Payment") }}</li>
+  </ul>
+
+  {% if state == "paid" %}
+    <h1 class="cr-acc-title">{{ _("Thank you — payment received") }}</h1>
+    <div class="cr-panel cr-empty">
+      <i class="fa-solid fa-circle-check" style="color:#1f6b2a;opacity:1;"></i>
+      <p style="max-width:460px;margin:0 auto;">
+        {{ _("Your payment has gone through and your order is confirmed. We will be in touch to arrange measuring and fitting.") }}
+      </p>
+      {% if total %}
+      <p style="margin-top:14px;font-weight:600;">
+        {{ frappe.utils.fmt_money(total.grand_total, currency=total.currency) }}
+        &nbsp;&middot;&nbsp; <span style="font-weight:400;">{{ order }}</span>
+      </p>
+      {% endif %}
+      <p style="margin-top:22px;">
+        <a class="cr-btn" href="/account/orders">{{ _("View your orders") }}</a>
+        <a class="cr-btn cr-btn-light" href="/" style="margin-left:8px;">{{ _("Keep shopping") }}</a>
+      </p>
+    </div>
+
+  {% elif state == "pending" %}
+    <h1 class="cr-acc-title">{{ _("Payment is being confirmed") }}</h1>
+    <div class="cr-panel cr-empty">
+      <i class="fa-regular fa-clock"></i>
+      <p style="max-width:480px;margin:0 auto;">
+        {{ _("Your bank has not given us a final answer yet. This usually takes a moment. You do not need to pay again — refresh this page shortly, or check your orders.") }}
+      </p>
+      <p style="margin-top:22px;">
+        <a class="cr-btn cr-btn-light" href="/account/orders">{{ _("View your orders") }}</a>
+      </p>
+    </div>
+
+  {% else %}
+    <h1 class="cr-acc-title">{{ _("Payment did not go through") }}</h1>
+    <div class="cr-panel cr-empty">
+      <i class="fa-solid fa-circle-exclamation" style="color:#8a1520;opacity:1;"></i>
+      <p style="max-width:480px;margin:0 auto;">
+        {{ _("Nothing has been charged. Your basket is still here, so you can try again — or contact us and we will take the order over the phone.") }}
+      </p>
+      <p style="margin-top:22px;">
+        <a class="cr-btn" href="/cart">{{ _("Back to your cart") }}</a>
+        <a class="cr-btn cr-btn-light" href="/contact-us" style="margin-left:8px;">{{ _("Contact us") }}</a>
+      </p>
+    </div>
+  {% endif %}
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+{% endblock %}

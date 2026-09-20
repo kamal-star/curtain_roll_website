@@ -25,6 +25,13 @@ jinja = {
 # this the theme alert()s Frappe's HTML 404 page at the visitor.
 page_renderer = ["curtain_roll.renderers.OpenCartStub"]
 
+# ClickPay redirects the customer's browser back to us with a POST. That POST
+# carries their session cookie but no CSRF token, because it originates on
+# ClickPay's page - so Frappe would answer 403 to someone who has just paid.
+# The hook exempts that one path; nothing trusts the POST anyway, since both
+# it and the callback are signature-checked against the server key.
+before_request = ["curtain_roll.clickpay.allow_gateway_post"]
+
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
 after_migrate = "curtain_roll.install.after_migrate"

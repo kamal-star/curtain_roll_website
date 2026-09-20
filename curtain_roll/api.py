@@ -42,9 +42,18 @@ def cart_set_qty(item_code=None, qty=0, row=None):
 
 @frappe.whitelist()
 def cart_place_order():
-	"""Submit the draft cart quotation. Login required."""
-	from curtain_roll import cart as cart_api
+	"""Submit the draft cart quotation. Login required.
 
+	Only where online payment is not available. Once ClickPay is configured an
+	order is placed by paying for it, and this route would be a way to get one
+	without paying - the button is hidden then, but a hidden button is not a
+	check, and this endpoint is callable by anyone who is signed in.
+	"""
+	from curtain_roll import cart as cart_api, clickpay
+
+	if clickpay.configured():
+		frappe.throw(
+			frappe._("Orders are placed by paying for them. Please use Pay now."))
 	return cart_api.place_order()
 
 

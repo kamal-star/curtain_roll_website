@@ -9,6 +9,7 @@ def after_install():
 	"""Make the storefront live the moment the app is installed."""
 	_ensure_billing_contact_field()
 	_ensure_config_field()
+	_ensure_payment_fields()
 	_enable_signup()
 	_point_website_at_storefront()
 	_ensure_item_group()
@@ -76,6 +77,44 @@ def _point_website_at_storefront():
 		ws.append("top_bar_items", {"label": p["heading"], "url": "/" + p["route"]})
 	ws.flags.ignore_mandatory = True
 	ws.save(ignore_permissions=True)
+
+
+def _ensure_payment_fields():
+	"""Where a cart's payment state lives.
+
+	On the Quotation rather than in a table of its own, because the whole point
+	is that the state can be read and written in the same row lock that decides
+	whether a callback is the first to arrive. A separate table would need its
+	own locking to answer the same question.
+	"""
+	fields = (
+		("clickpay_status", "Payment Status", "Data",
+		 "Started, Paid, Pending or Failed. Set by the gateway, not by hand."),
+		("clickpay_tran_ref", "ClickPay Reference", "Data",
+		 "The gateway's own reference for the transaction."),
+	)
+	after = "order_type"
+	for fieldname, label, fieldtype, description in fields:
+		name = "Quotation-%s" % fieldname
+		if frappe.db.exists("Custom Field", name):
+			after = fieldname
+			continue
+		try:
+			frappe.get_doc({
+				"doctype": "Custom Field",
+				"dt": "Quotation",
+				"fieldname": fieldname,
+				"label": label,
+				"fieldtype": fieldtype,
+				"read_only": 1,
+				"no_copy": 1,
+				"print_hide": 1,
+				"insert_after": after,
+				"description": description,
+			}).insert(ignore_permissions=True)
+		except Exception:
+			frappe.log_error(title="curtain_roll payment field %s" % fieldname)
+		after = fieldname
 
 
 def _ensure_config_field():
@@ -157,6 +196,7 @@ def after_migrate():
 	add it to a cart.
 	"""
 	_ensure_config_field()
+	_ensure_payment_fields()
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
