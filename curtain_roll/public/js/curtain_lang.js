@@ -102,9 +102,14 @@
 
       if (table[body]) {
         pending.push([node, text.replace(body, table[body])]);
-      } else if (/item\(s\)/.test(body)) {
-        // "1 item(s) - SR 380.00" is assembled in the page's own script
-        pending.push([node, text.replace(/item\(s\)/g, "منتج")]);
+      } else if (/item\(s\)|SR\s/.test(body)) {
+        // "1 item(s) - SR 380.00" is assembled in the page's own script,
+        // so the server pass never sees it. In Arabic the amount leads and
+        // the currency follows.
+        pending.push([node, text
+          .replace(/item\(s\)/g, "منتج")
+          .replace(/SR\s*([\d,]+(?:\.\d+)?)/g,
+                   "$1 ر.س")]);
       }
     }
     pending.forEach(function (pair) { pair[0].nodeValue = pair[1]; });
