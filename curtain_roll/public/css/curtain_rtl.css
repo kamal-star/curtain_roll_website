@@ -1,0 +1,53 @@
+/* Arabic layout. Loaded only when the page is in Arabic.
+ *
+ * dir="rtl" on <html> already mirrors every flex row, float and logical
+ * property by itself. What is left here is the handful of places the design
+ * hard-codes a side, plus type: the display face chosen for the English
+ * redesign has no Arabic glyphs, so Arabic has to be given faces that do or it
+ * renders in whatever the browser falls back to, inconsistently per machine.
+ */
+
+:root[dir="rtl"] body,
+[dir="rtl"] body {
+  font-family: "Tajawal", "Segoe UI", "Noto Naskh Arabic", Tahoma, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+/* Headings in the redesign use a tight display face; Arabic needs air, and
+   the tracking that flatters Latin capitals makes Arabic harder to read. */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
+[dir="rtl"] .cr-acc-title, [dir="rtl"] .section-title {
+  font-family: "Tajawal", "Segoe UI", "Noto Naskh Arabic", Tahoma, Arial, sans-serif;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+/* The back link. Its arrow is a literal character in the markup, so it cannot
+   be mirrored from here - the link is laid out right-to-left and the arrow is
+   left pointing the way it does. Worth replacing with an icon later. */
+[dir="rtl"] .cr-back { direction: rtl; }
+
+/* Tables: money stays on the far edge, which is now the left. */
+[dir="rtl"] .cr-table th[style*="right"],
+[dir="rtl"] .cr-table td[style*="right"] { text-align: left !important; }
+
+/* Anything the theme positions by hand. */
+[dir="rtl"] .cart-chip-counter { right: auto; left: -4px; }
+[dir="rtl"] .btn-header-pill i { margin-right: 0; margin-left: 6px; }
+[dir="rtl"] .drawer-nav-item i.chevron { transform: scaleX(-1); }
+
+/* Numbers, prices, phone numbers and the gateway reference stay left-to-right
+   even inside Arabic text - otherwise "SR 380.00" comes out reversed. */
+[dir="rtl"] .cr-money,
+[dir="rtl"] #cart-total,
+[dir="rtl"] .price-normal,
+[dir="rtl"] .price-new,
+[dir="rtl"] td[style*="monospace"] {
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: embed;
+}
+
+/* The language pill itself, in both directions. */
+.cr-lang-pill { cursor: pointer; }
+.cr-lang-pill span { margin-inline-start: 6px; }

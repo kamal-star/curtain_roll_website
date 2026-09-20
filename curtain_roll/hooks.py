@@ -30,7 +30,17 @@ page_renderer = ["curtain_roll.renderers.OpenCartStub"]
 # ClickPay's page - so Frappe would answer 403 to someone who has just paid.
 # The hook exempts that one path; nothing trusts the POST anyway, since both
 # it and the callback are signature-checked against the server key.
-before_request = ["curtain_roll.clickpay.allow_gateway_post"]
+before_request = [
+	"curtain_roll.clickpay.allow_gateway_post",
+	# the storefront's language comes from the visitor's own choice, not
+	# from a cached User record - see language.apply_language
+	"curtain_roll.language.apply_language",
+]
+
+# The ported pages keep their English inside {% raw %}, so Jinja - and with it
+# _() - never sees it. Arabic is swapped into the finished HTML instead, in one
+# place, so a page added later is covered without anyone wiring it up.
+after_request = ["curtain_roll.language.finish_page"]
 
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
