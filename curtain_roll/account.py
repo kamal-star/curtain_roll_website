@@ -197,6 +197,42 @@ def my_orders():
 	return rows
 
 
+def my_payments():
+	"""What the customer has actually paid, newest first.
+
+	Payment Entries rather than invoices: this page answers "what have I been
+	charged", so it lists money that moved. Only submitted entries count - a
+	draft is not a payment. The gateway's own reference is shown because that
+	is what the customer can quote to their bank, and what ClickPay support
+	will ask for.
+	"""
+	customer = _customer()
+	if not customer:
+		return []
+
+	rows = []
+	for p in frappe.get_all(
+			"Payment Entry",
+			filters={"party_type": "Customer", "party": customer, "docstatus": 1},
+			fields=["name", "posting_date", "paid_amount", "paid_to_account_currency",
+			        "mode_of_payment", "reference_no"],
+			order_by="posting_date desc, creation desc"):
+		against = frappe.get_all(
+			"Payment Entry Reference",
+			filters={"parent": p.name, "parenttype": "Payment Entry"},
+			fields=["reference_name"], order_by="idx")
+		rows.append({
+			"name": p.name,
+			"date": p.posting_date,
+			"amount": p.paid_amount,
+			"currency": p.paid_to_account_currency,
+			"method": p.mode_of_payment or _("Payment"),
+			"reference": p.reference_no or "",
+			"against": ", ".join(r.reference_name for r in against),
+		})
+	return rows
+
+
 def order_lines(name, doctype="Quotation"):
 	"""The items on one document, if it is the customer's own."""
 	customer = _customer()
