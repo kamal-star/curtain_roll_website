@@ -1117,6 +1117,11 @@
             <i class="fa-regular fa-user"></i>
             <span class="links-text">Login</span>
           </a>
+          <!-- shown only when signed in -->
+          <a href="/logout" class="btn-header-pill btn-auth cr-signed-in" style="display:none">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span class="links-text">Logout</span>
+          </a>
 
           <a href="/cart" id="cart" class="btn-header-pill btn-cart-main">
             <i class="fa-solid fa-bag-shopping"></i>
@@ -1184,6 +1189,12 @@
         <span class="drawer-section-label">Help & Orders</span>
         <ul class="drawer-links-box">
           <li><a href="/login" class="drawer-nav-item"><span><i class="fa-regular fa-user nav-icon"></i> Account / Login</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li class="cr-signed-in" style="display:none">
+            <a href="/logout" class="drawer-nav-item">
+              <span><i class="fa-solid fa-arrow-right-from-bracket nav-icon"></i> Logout</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
           <li><a href="/about_us.html" class="drawer-nav-item"><span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
           <li><a href="index.php__route_information_contact.html" class="drawer-nav-item"><span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
         </ul>
@@ -2088,6 +2099,26 @@
 })();
 </script>
 {% raw %}
+
+<script>
+/* Reveal the signed-in account links.
+
+   Hidden in the markup, shown only after the server answers, so a signed-out
+   visitor never sees a flash of "Logout". The existing session script already
+   turns the Login links into My Account; this only uncovers what it cannot -
+   there is one Login link in this header where the captured theme had two, so
+   nothing was left over to become Logout. */
+(function () {
+  fetch("/api/method/curtain_roll.api.session_info", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!((j && j.message) || {}).logged_in) { return; }
+      var els = document.querySelectorAll(".cr-signed-in");
+      Array.prototype.forEach.call(els, function (e) { e.style.display = ""; });
+    })
+    .catch(function () {});
+})();
+</script>
 </body>
 </html>
 {% endraw %}
