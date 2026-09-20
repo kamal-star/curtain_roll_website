@@ -348,6 +348,25 @@ def payment_return(**kwargs):
 	frappe.local.response["type"] = "redirect"
 	frappe.local.response["location"] = "/payment-result?state=%s&order=%s" % (
 		state, frappe.utils.quoted(result.get("cart_id") or ""))
+	_keep_the_browsers_session()
+
+
+def _keep_the_browsers_session():
+	"""Stop this response touching the visitor's login cookie.
+
+	ClickPay sends the customer back with a cross-site POST. A SameSite=Lax
+	cookie is not sent on one, so Frappe sees no session here, starts a Guest
+	one, and would answer with Set-Cookie: sid=Guest - silently logging the
+	customer out at the exact moment they finish paying, and then telling them
+	the payment failed because a guest owns no orders.
+
+	Nothing on this path needs to set a cookie, so the safest thing is to send
+	none at all and leave whatever the browser already holds alone.
+	"""
+	manager = getattr(frappe.local, "cookie_manager", None)
+	if manager:
+		manager.cookies.clear()
+		del manager.to_delete[:]
 
 
 def settle(result):
