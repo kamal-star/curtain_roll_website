@@ -15,6 +15,7 @@ def after_install():
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
+	_seed_translations()
 	frappe.db.commit()
 	print("\nCurtain Roll storefront installed.")
 	print("  home            /")
@@ -200,6 +201,50 @@ def after_migrate():
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
+	_seed_translations()
+
+
+def _seed_translations():
+	"""Fill Curtain Translation from the shipped file, without ever overwriting.
+
+	The file is the seed and the client's table is the truth. A row that
+	already exists is left exactly as it is - including one they have
+	deliberately blanked - so correcting a word here survives every future
+	deploy. Only genuinely new phrases are added.
+	"""
+	import io
+	import json
+	import os
+
+	from curtain_roll.curtain_roll.doctype.curtain_translation.curtain_translation 		import fingerprint, clear_phrase_cache
+
+	path = os.path.join(frappe.get_app_path("curtain_roll"),
+	                    "translations", "strings.json")
+	try:
+		data = json.load(io.open(path, encoding="utf-8"))
+	except Exception:
+		frappe.log_error(title="curtain_roll: could not seed translations",
+		                 message=frappe.get_traceback())
+		return
+
+	known = set(frappe.get_all("Curtain Translation", pluck="source_key",
+	                           limit_page_length=0))
+	added = 0
+	for english, arabic in (data.get("strings") or {}).items():
+		key = fingerprint(english)
+		if key in known:
+			continue
+		doc = frappe.new_doc("Curtain Translation")
+		doc.source_text = english
+		doc.arabic = (arabic or "").strip()
+		doc.source_key = key
+		doc.insert(ignore_permissions=True)
+		known.add(key)
+		added += 1
+
+	if added:
+		clear_phrase_cache()
+		print("  %d phrase(s) added to Curtain Translation" % added)
 
 
 def _seed_pricing():

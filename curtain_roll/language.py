@@ -26,6 +26,7 @@ from html.parser import HTMLParser
 import frappe
 
 COOKIE = "preferred_language"
+PHRASE_CACHE_KEY = "curtain_roll_phrases"
 SUPPORTED = ("en", "ar")
 RTL = ("ar",)
 
@@ -122,11 +123,12 @@ def apply_language():
 
 
 # ------------------------------------------------------------- the dictionary
-def phrases():
-	"""English -> Arabic, from the file the client reviews. Cached per request."""
-	if getattr(frappe.local, "_curtain_phrases", None) is not None:
-		return frappe.local._curtain_phrases
+def _from_file():
+	"""The shipped Arabic. Seed for a new site, and a floor under the table.
 
+	Keeping this as the base means a phrase added by a deploy works straight
+	away, before anyone has opened the Curtain Translation list.
+	"""
 	path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 	                    "translations", "strings.json")
 	table = {}
@@ -135,12 +137,55 @@ def phrases():
 		for english, arabic in (data.get("strings") or {}).items():
 			arabic = (arabic or "").strip()
 			if arabic:
-				table[english] = arabic
+				table[" ".join(english.split())] = arabic
 	except Exception:
 		# a broken or missing file must not take the storefront down; English
 		# is a perfectly good fallback and the error is worth seeing
 		frappe.log_error(title="curtain_roll: could not read strings.json",
 		                 message=frappe.get_traceback())
+	return table
+
+
+def _from_table(base):
+	"""What the client has actually decided, laid over the shipped Arabic.
+
+	An empty Arabic on a row is a decision too - it means show the English -
+	so it removes the shipped value rather than being ignored. Otherwise a
+	deliberate "leave this in English" would silently come back after a deploy.
+	"""
+	try:
+		rows = frappe.get_all("Curtain Translation",
+		                      fields=["source_text", "arabic"],
+		                      limit_page_length=0)
+	except Exception:
+		# before the first migrate the table does not exist yet
+		return base
+
+	for row in rows:
+		key = " ".join((row.get("source_text") or "").split())
+		if not key:
+			continue
+		arabic = (row.get("arabic") or "").strip()
+		if arabic:
+			base[key] = arabic
+		else:
+			base.pop(key, None)
+	return base
+
+
+def phrases():
+	"""English -> Arabic. The client's edits win over the shipped file.
+
+	Cached in Redis and again on the request, because this is read on every
+	page and the table is small enough to hold whole.
+	"""
+	if getattr(frappe.local, "_curtain_phrases", None) is not None:
+		return frappe.local._curtain_phrases
+
+	table = frappe.cache().get_value(PHRASE_CACHE_KEY)
+	if table is None:
+		table = _from_table(_from_file())
+		frappe.cache().set_value(PHRASE_CACHE_KEY, table)
 
 	frappe.local._curtain_phrases = table
 	return table

@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "hash",
+ "description": "One phrase on the storefront, in English and in Arabic. Edit the Arabic here - the website picks it up immediately.",
+ "doctype": "DocType",
+ "editable_grid": 0,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_text",
+  "arabic",
+  "section_break_admin",
+  "reviewed",
+  "where_used",
+  "source_key"
+ ],
+ "fields": [
+  {
+   "bold": 1,
+   "description": "The English exactly as it appears on the site. Do not change it - it is matched against the page word for word.",
+   "fieldname": "source_text",
+   "fieldtype": "Small Text",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "English",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "description": "Leave empty to show the English. Anything typed here appears on the website straight away.",
+   "fieldname": "arabic",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Arabic"
+  },
+  {
+   "fieldname": "section_break_admin",
+   "fieldtype": "Section Break",
+   "label": "Review"
+  },
+  {
+   "default": "0",
+   "description": "Tick once someone has read this and is happy with it.",
+   "fieldname": "reviewed",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Approved"
+  },
+  {
+   "description": "Which pages this phrase was found on.",
+   "fieldname": "where_used",
+   "fieldtype": "Small Text",
+   "label": "Where It Appears",
+   "read_only": 1
+  },
+  {
+   "description": "Fingerprint of the English, so the same phrase cannot be entered twice.",
+   "fieldname": "source_key",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Source Key",
+   "read_only": 1,
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-09-21 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Translation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "source_text",
+ "track_changes": 1
+}
