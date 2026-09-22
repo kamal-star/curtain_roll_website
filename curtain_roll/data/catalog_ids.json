@@ -70,5 +70,11 @@
   "name": "Shutters",
   "price": 0.0,
   "variant_of": "blackout"
+ },
+ "904": {
+  "key": "blackout-kayan",
+  "name": "BLACKOUT KAYAN",
+  "price": 150.0,
+  "variant_of": "blackout"
  }
 }

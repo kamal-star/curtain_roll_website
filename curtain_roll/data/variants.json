@@ -155,5 +155,24 @@
    ],
    "_trim_lift_note": "the ratio of a slat's LIT FACE to the texture's average (253/215), so the casing reads as bright as the slats facing you rather than as their average. Safe at this value only because the colour now goes through the panel's own tint first - before that it clipped."
   }
+ },
+ {
+  "key": "blackout-kayan",
+  "based_on": "blackout",
+  "product_id": "904",
+  "heading": "BLACKOUT KAYAN",
+  "title": "Blackout roller blind shown in a modern majlis",
+  "meta_description": "The same blackout roller blind, previewed in a contemporary majlis overlooking the city. Choose your fabric and size and see it in the room before you order.",
+  "scene_source": "scenes/room-majlis.jpg",
+  "price": 150.0,
+  "window": [
+   888,
+   377,
+   1100,
+   594
+  ],
+  "_note": "window = the white reveal, read off the panorama itself: the wall sits near 150 brightness and the reveal jumps past 190, which puts the edges at x 888/1100 and y 377/594.",
+  "scene_fit": "none",
+  "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
  }
 ]
