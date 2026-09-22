@@ -1776,6 +1776,52 @@
 
   setInterval(fitBlind, 400);
 })();
+
+/* Keep the room from eating the blind's top corners.
+
+   The panorama is a sphere centred on the camera and the blind is a flat
+   panel, so the panel's corners sit FARTHER from the camera than its middle.
+   Once a variant scales the blind up to suit its own window, those corners
+   can reach past the sphere's surface - and the room is then drawn in front
+   of them. It reads as a diagonal bite out of each top corner, and it comes
+   and goes with the blind's size, which is what made it look intermittent.
+
+   Pushing the sphere out cures it and costs nothing: an equirectangular
+   texture on a sphere centred on the camera looks exactly the same at any
+   radius, because every direction still maps to the same pixel. Only the
+   far plane has to keep up. */
+(function () {
+  var PUSH = 4;
+
+  function push() {
+    if (!window.scene || !window.camera) return false;
+    var room = null;
+    scene.children.forEach(function (o) { if (o.name === "mesh3d") room = o; });
+    if (!room || room.__crPushed) return false;
+
+    room.scale.multiplyScalar(PUSH);
+    room.updateMatrixWorld(true);
+    room.__crPushed = true;
+
+    if (room.geometry) {
+      room.geometry.computeBoundingSphere();
+      var reach = room.geometry.boundingSphere.radius * room.scale.x * 1.3;
+      if (camera.far < reach) {
+        camera.far = reach;
+        camera.updateProjectionMatrix();
+      }
+    }
+    if (window.renderer) renderer.render(scene, camera);
+    return true;
+  }
+
+  /* Kept running rather than done once. The bundle rebuilds its scene when
+     an option changes - a new room object arrives unpushed, and a one-shot
+     fix would have quietly stopped working the moment a customer picked a
+     different fabric. Same interval as fitBlind, for the same reason. */
+  push();
+  setInterval(push, 400);
+})();
 </script>
 <script src="/assets/curtain_roll/configurator/blackout.js"></script>
 
