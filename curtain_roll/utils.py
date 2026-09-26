@@ -55,12 +55,30 @@ def as_system_user():
 	someone who can, AFTER we have checked the record is actually theirs.
 
 	Switching the session user keeps every permission check in place and gives
-	it someone who passes, rather than turning checking off. Restore is in a
-	finally, so an exception cannot leave the request running as Administrator.
+	it someone who passes, rather than turning checking off.
+
+	frappe.set_user does more than change the user, though: it sets
+	session.sid to the USERNAME, empties session.data and throws away
+	form_dict. Restoring only the user therefore leaves the request carrying
+	sid="Administrator", which is not a real session - the browser is handed
+	that as its cookie and the customer is silently signed out, one click
+	after asking for their invoice. So put back everything it took, not just
+	the name.
 	"""
-	previous = frappe.session.user
+	session = frappe.local.session
+	previous = {
+		"user": session.user,
+		"sid": session.sid,
+		"data": session.data,
+		"form_dict": getattr(frappe.local, "form_dict", None),
+	}
+
 	frappe.set_user("Administrator")
 	try:
 		yield
 	finally:
-		frappe.set_user(previous)
+		frappe.set_user(previous["user"])
+		session.sid = previous["sid"]
+		session.data = previous["data"]
+		if previous["form_dict"] is not None:
+			frappe.local.form_dict = previous["form_dict"]

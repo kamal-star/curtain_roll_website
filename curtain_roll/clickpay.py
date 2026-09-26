@@ -22,7 +22,6 @@ Credentials are read from site_config.json and never from the repo:
     bench --site <site> set-config clickpay_server_key <key>
     bench --site <site> set-config clickpay_live 0
 """
-import contextlib
 import hashlib
 import hmac
 import json
@@ -405,7 +404,6 @@ def reconcile(quotation):
 	        "status": frappe.db.get_value("Quotation", quotation, STATUS_FIELD)}
 
 
-@contextlib.contextmanager
 def _as_system_user():
 	"""Run the settlement as a user allowed to read what ERPNext reads.
 
@@ -418,16 +416,14 @@ def _as_system_user():
 	honours the flag on the document it is checking, not one we set on the
 	quotation and not any global. Guest cannot read Item, so it raised.
 
-	Switching the session user leaves every permission check in place and gives
-	it someone who passes, which is the honest version of this: the system is
-	creating the invoice, so the system is who it runs as.
+	Shares utils.as_system_user with the account pages now. This used to keep
+	its own copy, which restored the user but not the session id that
+	frappe.set_user overwrites - harmless here only because the return path
+	throws its cookies away afterwards, which is not a thing to rely on.
 	"""
-	previous = frappe.session.user
-	frappe.set_user("Administrator")
-	try:
-		yield
-	finally:
-		frappe.set_user(previous)
+	from curtain_roll.utils import as_system_user
+
+	return as_system_user()
 
 
 def settle(result):
