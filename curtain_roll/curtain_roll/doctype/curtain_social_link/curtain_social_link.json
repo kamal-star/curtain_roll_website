@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-26 00:00:00.000000",
+ "description": "One social media link in the footer.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": [
+  "platform",
+  "icon",
+  "url",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "platform",
+   "fieldtype": "Data",
+   "label": "Platform",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Data",
+   "label": "Icon",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Font Awesome class, e.g. fa-brands fa-instagram"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "Link",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Show",
+   "default": "1",
+   "in_list_view": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-09-26 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Social Link",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "idx",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 0
+}

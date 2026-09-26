@@ -1,3 +1,5 @@
+{#- The page is a captured static file, so everything below is raw. The parts the team can edit break out of it; cr is their settings. -#}
+{% set cr = storefront_settings() %}
 {% raw %}
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="desktop win chrome webkit oc30 route-common-home store-0">
@@ -21,7 +23,7 @@
   <meta property="og:title" content="Kayan Andalus | More Than Curtain — Custom Architectural Blinds" />
   <meta property="og:description" content="Precision-crafted blackout, sunscreen, zebra, and ripple-fold motorized curtains delivered throughout Saudi Arabia." />
   <meta property="og:url" content="https://kayancurtain.com/" />
-  <meta property="og:image" content="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
+  <meta property="og:image" content="/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
   <meta property="og:image:width" content="600" />
   <meta property="og:image:height" content="315" />
 
@@ -30,13 +32,13 @@
   <meta name="twitter:site" content="@Curtain_roll" />
   <meta name="twitter:title" content="Kayan Andalus | More Than Curtain" />
   <meta name="twitter:description" content="Custom luxury curtains and automated blinds engineered for residences and commercial projects in Saudi Arabia." />
-  <meta name="twitter:image" content="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
+  <meta name="twitter:image" content="/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#09446c" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <link rel="icon" href="https://erp.atozksa.com/assets/curtain_roll/image/catalog/cart.png" />
+  {% endraw %}<link rel="icon" href="{{ cr.favicon }}" />{% raw %}
 
   <!-- Google Structured Data (Schema.org / JSON-LD) -->
   <script type="application/ld+json">
@@ -48,7 +50,7 @@
         "@id": "https://kayancurtain.com/#organization",
         "name": "Kayan Andalus - More Than Curtain",
         "url": "https://kayancurtain.com/",
-        "logo": "https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png",
+        "logo": "/assets/curtain_roll/image/cache/catalog/original-220x90.png",
         "description": "Leading digital manufacturing platform for custom architectural roller blinds, shades, and automated drapery in Saudi Arabia.",
         "telephone": "+9668001268000",
         "priceRange": "SAR",
@@ -1150,8 +1152,8 @@
   <aside class="top-strip">
     <div class="container top-strip-inner">
       <ul class="top-links">
-        <li><a href="about_us.html">About Us</a></li>
-        <li><a href="index.php__route_information_contact.html">Contact Us</a></li>
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
         <li>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="trust-chip">
             <i class="fa-solid fa-certificate"></i> Maroof Verified 🏅
@@ -1174,7 +1176,7 @@
 
           <!-- Brand Identity using official logo -->
           <a href="/" class="brand-identity" title="Kayan Andalus Curtains">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus - More Than Curtain" class="brand-logo-img" />
+            {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" class="brand-logo-img" />{% raw %}
           </a>
         </div>
 
@@ -1222,22 +1224,12 @@
 
       <!-- Horizontal Categories Snap-Scroll Bar -->
       <nav class="catalog-nav-strip" aria-label="Categories">
-        <ul class="catalog-nav-list">
-          <li><a href="/" class="catalog-nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
-          <li><a href="/blackout" class="catalog-nav-link">Blackout</a></li>
-          <li><a href="/blackout-kayan" class="catalog-nav-link">Blackout Kayan</a></li>
-            <li><a href="/shutters" class="catalog-nav-link">Shutters</a></li>
-          <li><a href="/sunscreen" class="catalog-nav-link">Sunscreen</a></li>
-          <li><a href="/zebra" class="catalog-nav-link">Zebra</a></li>
-          <li><a href="/wooden" class="catalog-nav-link">Wooden</a></li>
-            <li><a href="/wooden-premium" class="catalog-nav-link">Wooden Kayan</a></li>
-          <li><a href="/vertical" class="catalog-nav-link">Vertical</a></li>
-            <li><a href="/vertical-premium" class="catalog-nav-link">Vertical Kayan</a></li>
-          <li><a href="/metal" class="catalog-nav-link">Metal</a></li>
-          <li><a href="/roman" class="catalog-nav-link">Roman</a></li>
-          <li><a href="/wavy" class="catalog-nav-link">Wavy</a></li>
-          <li><a href="/printed" class="catalog-nav-link">Printed</a></li>
-        </ul>
+        {% endraw %}<ul class="catalog-nav-list">
+          {%- for item in cr.nav_items %}
+          <li><a href="{{ item.route }}" class="catalog-nav-link{% if item.route == '/' %} active{% endif %}">
+            {%- if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ _(item.label) }}</a></li>
+          {%- endfor %}
+        </ul>{% raw %}
       </nav>
     </div>
   </header>
@@ -1247,7 +1239,7 @@
   <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation Drawer">
     <div class="drawer-header">
       <a href="/" class="brand-identity">
-        <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 36px; width: auto;" />
+        <img src="/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 36px; width: auto;" />
       </a>
       <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Drawer"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -1359,13 +1351,13 @@
             </a>
           </li>
           <li>
-            <a href="/about_us.html" class="drawer-nav-item">
+            <a href="/about-us" class="drawer-nav-item">
               <span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span>
               <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
           </li>
           <li>
-            <a href="index.php__route_information_contact.html" class="drawer-nav-item">
+            <a href="/contact-us" class="drawer-nav-item">
               <span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span>
               <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
@@ -1388,17 +1380,18 @@
     <!-- Pure Image Slider (Zero text overlay) -->
     <section class="hero-gallery-wrap" aria-label="Featured Installations">
       <div class="clean-image-slider" id="image-hero-slider">
-        <div class="slider-stage">
-          <div class="slider-slide active">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-04-1400x600w.jpg" alt="Modern roller blinds" fetchpriority="high" width="1400" height="600" />
+        {% endraw %}<div class="slider-stage">
+          {%- for slide in cr.slides %}
+          <div class="slider-slide{% if loop.first %} active{% endif %}">
+            {%- if slide.link %}<a href="{{ slide.link }}">{% endif %}
+            <img src="{{ slide.image }}" alt="{{ _(slide.alt_text) }}"
+                 {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                 width="1400" height="600" />
+            {%- if slide.link %}</a>{% endif %}
           </div>
-          <div class="slider-slide">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-05-1400x600w.jpg" alt="Luxury hotel wavy curtains" loading="lazy" width="1400" height="600" />
-          </div>
-          <div class="slider-slide">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-06-1400x600w.jpg" alt="Blackout window shades" loading="lazy" width="1400" height="600" />
-          </div>
-        </div>
+          {%- endfor %}
+        </div>{% raw %}
+      </div>
 
         <button class="slider-arrow-btn slider-prev" id="slider-prev-btn" aria-label="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
         <button class="slider-arrow-btn slider-next" id="slider-next-btn" aria-label="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
@@ -1440,148 +1433,29 @@
 
     <!-- Product Collections Showcase -->
     <section aria-labelledby="collections-heading">
-      <div class="section-title-wrap">
-        <span class="section-eyebrow">Curated Collections</span>
-        <h2 class="section-heading" id="collections-heading">Architectural Blinds & Shades</h2>
-        <p class="section-description">Engineered to balance privacy, thermal protection, and contemporary design for upscale homes and workspaces.</p>
-      </div>
+      {% endraw %}<div class="section-title-wrap">
+        <span class="section-eyebrow">{{ _(cr.collections_eyebrow) }}</span>
+        <h2 class="section-heading" id="collections-heading">{{ _(cr.collections_heading) }}</h2>
+        <p class="section-description">{{ _(cr.collections_description) }}</p>
+      </div>{% raw %}
 
-      <div class="category-grid-layout">
-        <!-- 1: Blackout -->
-        <article class="category-card span-2">
+      {% endraw %}<div class="category-grid-layout">
+        {%- for card in cr.categories %}
+        <article class="category-card{% if card.wide %} span-2{% endif %}">
           <div class="card-photo-wrap">
-            <span class="floating-pill-badge">100% Blackout</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/blackout-940x550.jpg" alt="Blackout Curtains Custom Made" loading="lazy" width="940" height="550" />
+            {%- if card.badge %}<span class="floating-pill-badge">{{ _(card.badge) }}</span>{% endif %}
+            <img src="{{ card.image }}" alt="{{ _(card.title) }}" loading="lazy" width="940" height="550" />
           </div>
           <div class="card-content-area">
             <div class="card-title-row">
-              <h3>Blackout Roller Blinds</h3>
+              <h3>{{ _(card.title) }}</h3>
             </div>
-            <p class="card-description">Complete darkness and high thermal barrier. Ideal for bedrooms, home cinemas, and spaces requiring total light blockade.</p>
-            <a href="/blackout" class="card-action-link" title="View Blackout Blinds">Explore Collection <i class="fa-solid fa-arrow-right"></i></a>
+            <p class="card-description">{{ _(card.description) }}</p>
+            <a href="{{ card.route }}" class="card-action-link" title="{{ _(card.title) }}">{{ _("Explore Collection") }} <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </article>
-
-        <!-- 2: Sunscreen -->
-        <article class="category-card span-2">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">50% Light Filtering</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/sunscreen-940x550.jpg" alt="Sunscreen Roller Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Sunscreen Roller Blinds</h3>
-            </div>
-            <p class="card-description">Diffuses direct sunlight and blocks UV rays while preserving outside daytime panoramic vistas.</p>
-            <a href="/sunscreen" class="card-action-link" title="View Sunscreen Shades">Explore Collection <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 3: Wavy -->
-        <article class="category-card span-2">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Hotel Standard</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/wavy-images/one-layer-1400x600.png" alt="Wavy Ripple Fold Curtains" loading="lazy" width="1400" height="600" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Wavy Hotel-Style Drapes</h3>
-            </div>
-            <p class="card-description">Uniform ripple folds on concealed tracks, delivering tailored architectural elegance to lounges and master suites.</p>
-            <a href="/wavy" class="card-action-link" title="View Wavy Curtains">Explore Collection <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 4: Zebra -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Dual-Layer</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/zebra-940x550.jpg" alt="Dual Zebra Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Zebra Blinds</h3>
-            </div>
-            <p class="card-description">Alternating sheer and solid fabric bands for flexible, instantaneous light control.</p>
-            <a href="/zebra" class="card-action-link" title="View Zebra Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 5: Wooden -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Natural Timber</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/wooden-940x550.jpg" alt="Wooden Slat Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Wooden Blinds</h3>
-            </div>
-            <p class="card-description">Natural timber slats offering warmth, enduring texture, and classic elegance to offices and majlis.</p>
-            <a href="/wooden" class="card-action-link" title="View Wooden Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 6: Metal -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Moisture Proof</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/metal-940x550.jpg" alt="Aluminum Metal Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Metal Blinds</h3>
-            </div>
-            <p class="card-description">Lightweight, moisture-resistant aluminum slats engineered for kitchens, bathrooms, and studios.</p>
-            <a href="/metal" class="card-action-link" title="View Metal Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 7: Vertical -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Wide Glazing</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/vertical-940x550.jpg" alt="Vertical Louver Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Vertical Blinds</h3>
-            </div>
-            <p class="card-description">Versatile 180° rotatable louvers designed for wide floor-to-ceiling office windows.</p>
-            <a href="/vertical" class="card-action-link" title="View Vertical Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 8: Roman -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Fabric Pleats</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/roman-category-940x550.jpg" alt="Roman Fabric Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Roman Blinds</h3>
-            </div>
-            <p class="card-description">Crisp geometric fabric folds uniting traditional drapery appeal with compact mechanical ease.</p>
-            <a href="/roman" class="card-action-link" title="View Roman Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- 9: Printed -->
-        <article class="category-card">
-          <div class="card-photo-wrap">
-            <span class="floating-pill-badge">Custom Print</span>
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/category-banners/printed-940x550.jpg" alt="Custom Graphic Printed Blinds" loading="lazy" width="940" height="550" />
-          </div>
-          <div class="card-content-area">
-            <div class="card-title-row">
-              <h3>Printed Blinds</h3>
-            </div>
-            <p class="card-description">Bespoke high-definition imagery and company logo printing on solar-protective textiles.</p>
-            <a href="/printed" class="card-action-link" title="View Printed Blinds">Explore <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-      </div>
+        {%- endfor %}
+      </div>{% raw %}
     </section>
 
     <!-- B2B & Enterprise Projects Callout -->
@@ -1611,8 +1485,28 @@
           <h4>Kayan Andalus Curtains</h4>
           <p>The leading digital platform for bespoke architectural curtains and automated shading systems across the Kingdom of Saudi Arabia.</p>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="maroof-trust-badge">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/MAROOF7-200x99.png" alt="Maroof Verified Certification Badge" width="130" height="64" loading="lazy" />
+            <img src="/assets/curtain_roll/image/cache/catalog/MAROOF7-200x99.png" alt="Maroof Verified Certification Badge" width="130" height="64" loading="lazy" />
           </a>
+{% endraw %}
+          {%- if cr.social_links %}
+          <style>
+            .cr-social { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+            .cr-social a { display: inline-flex; align-items: center; justify-content: center;
+              width: 38px; height: 38px; border-radius: 50%; text-decoration: none;
+              background: rgba(255,255,255,.08); color: #fff; font-size: 17px;
+              transition: background .2s, transform .2s; }
+            .cr-social a:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
+          </style>
+          <div class="cr-social">
+            {%- for link in cr.social_links %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener"
+               aria-label="{{ link.platform }}" title="{{ link.platform }}">
+              <i class="{{ link.icon }}"></i>
+            </a>
+            {%- endfor %}
+          </div>
+          {%- endif %}
+{% raw %}
         </div>
 
         <div>
@@ -1629,10 +1523,10 @@
         <div>
           <h5 class="footer-col-heading">Customer Service</h5>
           <ul class="footer-links-list">
-            <li><a href="about_us.html">About Factory</a></li>
-            <li><a href="delivery.html">Shipping & Delivery</a></li>
-            <li><a href="terms.html">Terms & Return Policy</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="/about-us">About Factory</a></li>
+            <li><a href="/delivery-and-installation">Shipping & Delivery</a></li>
+            <li><a href="/terms-and-conditions">Terms & Return Policy</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
           </ul>
         </div>
 
@@ -1640,7 +1534,7 @@
           <h5 class="footer-col-heading">Contact</h5>
           <ul class="footer-links-list">
             <li><a href="https://wa.me/966114550783" target="_blank" rel="noopener">WhatsApp: +966114550783</a></li>
-            <li><a href="index.php__route_information_contact.html">Support Tickets</a></li>
+            <li><a href="/contact-us">Support Tickets</a></li>
             <li><a href="/me">Order Tracking</a></li>
           </ul>
         </div>
@@ -1649,12 +1543,12 @@
       <div class="footer-bottom-strip">
         <div>Copyright &copy; 2026 Kayan Andalus Curtain. All Rights Reserved.</div>
         <div class="payment-gateways-row">
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/mada-300x186.png" alt="Mada payment method" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/visa-300x186.png" alt="Visa card payment" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/master-300x186.png" alt="MasterCard payment" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/applepay-300x186.png" alt="Apple Pay checkout" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/tamara-300x186.png" alt="Tamara 4-split payments" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/tabby-300x186.png" alt="Tabby installments" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/mada-300x186.png" alt="Mada payment method" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/visa-300x186.png" alt="Visa card payment" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/master-300x186.png" alt="MasterCard payment" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/applepay-300x186.png" alt="Apple Pay checkout" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/tamara-300x186.png" alt="Tamara 4-split payments" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/tabby-300x186.png" alt="Tabby installments" width="38" height="24" loading="lazy" /></span>
         </div>
       </div>
     </div>

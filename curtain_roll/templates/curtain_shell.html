@@ -1,3 +1,6 @@
+{#- cr is the editable storefront content; cr_active marks which category link is the current page. -#}
+{% set cr = storefront_settings() %}
+{% set cr_active = "" %}
 {% raw %}
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="desktop win chrome webkit oc30 route-common-home store-0">
@@ -21,7 +24,7 @@
   <meta property="og:title" content="Kayan Andalus | More Than Curtain — Custom Architectural Blinds" />
   <meta property="og:description" content="Precision-crafted blackout, sunscreen, zebra, and ripple-fold motorized curtains delivered throughout Saudi Arabia." />
   <meta property="og:url" content="https://kayancurtain.com/" />
-  <meta property="og:image" content="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
+  <meta property="og:image" content="/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
   <meta property="og:image:width" content="600" />
   <meta property="og:image:height" content="315" />
 
@@ -30,13 +33,13 @@
   <meta name="twitter:site" content="@Curtain_roll" />
   <meta name="twitter:title" content="Kayan Andalus | More Than Curtain" />
   <meta name="twitter:description" content="Custom luxury curtains and automated blinds engineered for residences and commercial projects in Saudi Arabia." />
-  <meta name="twitter:image" content="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
+  <meta name="twitter:image" content="/assets/curtain_roll/image/cache/catalog/original-600x315h.png" />
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#09446c" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <link rel="icon" href="https://erp.atozksa.com/assets/curtain_roll/image/catalog/cart.png" />
+  <link rel="icon" href="/assets/curtain_roll/image/catalog/cart.png" />
 
   <!-- Google Structured Data (Schema.org / JSON-LD) -->
   <script type="application/ld+json">
@@ -48,7 +51,7 @@
         "@id": "https://kayancurtain.com/#organization",
         "name": "Kayan Andalus - More Than Curtain",
         "url": "https://kayancurtain.com/",
-        "logo": "https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png",
+        "logo": "/assets/curtain_roll/image/cache/catalog/original-220x90.png",
         "description": "Leading digital manufacturing platform for custom architectural roller blinds, shades, and automated drapery in Saudi Arabia.",
         "telephone": "+9668001268000",
         "priceRange": "SAR",
@@ -1150,8 +1153,8 @@
   <aside class="top-strip">
     <div class="container top-strip-inner">
       <ul class="top-links">
-        <li><a href="about_us.html">About Us</a></li>
-        <li><a href="index.php__route_information_contact.html">Contact Us</a></li>
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
         <li>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="trust-chip">
             <i class="fa-solid fa-certificate"></i> Maroof Verified 🏅
@@ -1174,7 +1177,7 @@
 
           <!-- Brand Identity using official logo -->
           <a href="/" class="brand-identity" title="Kayan Andalus Curtains">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus - More Than Curtain" class="brand-logo-img" />
+            {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" class="brand-logo-img" />{% raw %}
           </a>
         </div>
 
@@ -1230,22 +1233,12 @@
 
       <!-- Horizontal Categories Snap-Scroll Bar -->
       <nav class="catalog-nav-strip" aria-label="Categories">
-        <ul class="catalog-nav-list">
-          <li><a href="/" class="catalog-nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
-          <li><a href="/blackout" class="catalog-nav-link">Blackout</a></li>
-          <li><a href="/blackout-kayan" class="catalog-nav-link">Blackout Kayan</a></li>
-            <li><a href="/shutters" class="catalog-nav-link">Shutters</a></li>
-          <li><a href="/sunscreen" class="catalog-nav-link">Sunscreen</a></li>
-          <li><a href="/zebra" class="catalog-nav-link">Zebra</a></li>
-          <li><a href="/wooden" class="catalog-nav-link">Wooden</a></li>
-            <li><a href="/wooden-premium" class="catalog-nav-link">Wooden Kayan</a></li>
-          <li><a href="/vertical" class="catalog-nav-link">Vertical</a></li>
-            <li><a href="/vertical-premium" class="catalog-nav-link">Vertical Kayan</a></li>
-          <li><a href="/metal" class="catalog-nav-link">Metal</a></li>
-          <li><a href="/roman" class="catalog-nav-link">Roman</a></li>
-          <li><a href="/wavy" class="catalog-nav-link">Wavy</a></li>
-          <li><a href="/printed" class="catalog-nav-link">Printed</a></li>
-        </ul>
+        {% endraw %}<ul class="catalog-nav-list">
+          {%- for item in cr.nav_items %}
+          <li><a href="{{ item.route }}" class="catalog-nav-link{% if item.route == cr_active %} active{% endif %}">
+            {%- if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ _(item.label) }}</a></li>
+          {%- endfor %}
+        </ul>{% raw %}
       </nav>
     </div>
   </header>
@@ -1255,7 +1248,7 @@
   <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation Drawer">
     <div class="drawer-header">
       <a href="/" class="brand-identity">
-        <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 36px; width: auto;" />
+        <img src="/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 36px; width: auto;" />
       </a>
       <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Drawer"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -1378,13 +1371,13 @@
         {%- endif %}
 {% raw %}
           <li>
-            <a href="/about_us.html" class="drawer-nav-item">
+            <a href="/about-us" class="drawer-nav-item">
               <span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span>
               <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
           </li>
           <li>
-            <a href="index.php__route_information_contact.html" class="drawer-nav-item">
+            <a href="/contact-us" class="drawer-nav-item">
               <span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span>
               <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
@@ -1410,8 +1403,28 @@
           <h4>Kayan Andalus Curtains</h4>
           <p>The leading digital platform for bespoke architectural curtains and automated shading systems across the Kingdom of Saudi Arabia.</p>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="maroof-trust-badge">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/MAROOF7-200x99.png" alt="Maroof Verified Certification Badge" width="130" height="64" loading="lazy" />
+            <img src="/assets/curtain_roll/image/cache/catalog/MAROOF7-200x99.png" alt="Maroof Verified Certification Badge" width="130" height="64" loading="lazy" />
           </a>
+{% endraw %}
+          {%- if cr.social_links %}
+          <style>
+            .cr-social { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+            .cr-social a { display: inline-flex; align-items: center; justify-content: center;
+              width: 38px; height: 38px; border-radius: 50%; text-decoration: none;
+              background: rgba(255,255,255,.08); color: #fff; font-size: 17px;
+              transition: background .2s, transform .2s; }
+            .cr-social a:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
+          </style>
+          <div class="cr-social">
+            {%- for link in cr.social_links %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener"
+               aria-label="{{ link.platform }}" title="{{ link.platform }}">
+              <i class="{{ link.icon }}"></i>
+            </a>
+            {%- endfor %}
+          </div>
+          {%- endif %}
+{% raw %}
         </div>
 
         <div>
@@ -1428,10 +1441,10 @@
         <div>
           <h5 class="footer-col-heading">Customer Service</h5>
           <ul class="footer-links-list">
-            <li><a href="about_us.html">About Factory</a></li>
-            <li><a href="delivery.html">Shipping & Delivery</a></li>
-            <li><a href="terms.html">Terms & Return Policy</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="/about-us">About Factory</a></li>
+            <li><a href="/delivery-and-installation">Shipping & Delivery</a></li>
+            <li><a href="/terms-and-conditions">Terms & Return Policy</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
           </ul>
         </div>
 
@@ -1439,7 +1452,7 @@
           <h5 class="footer-col-heading">Contact</h5>
           <ul class="footer-links-list">
             <li><a href="https://wa.me/966114550783" target="_blank" rel="noopener">WhatsApp: +966114550783</a></li>
-            <li><a href="index.php__route_information_contact.html">Support Tickets</a></li>
+            <li><a href="/contact-us">Support Tickets</a></li>
             <li><a href="/me">Order Tracking</a></li>
           </ul>
         </div>
@@ -1448,12 +1461,12 @@
       <div class="footer-bottom-strip">
         <div>Copyright &copy; 2026 Kayan Andalus Curtain. All Rights Reserved.</div>
         <div class="payment-gateways-row">
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/mada-300x186.png" alt="Mada payment method" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/visa-300x186.png" alt="Visa card payment" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/master-300x186.png" alt="MasterCard payment" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/applepay-300x186.png" alt="Apple Pay checkout" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/tamara-300x186.png" alt="Tamara 4-split payments" width="38" height="24" loading="lazy" /></span>
-          <span class="payment-chip"><img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/tabby-300x186.png" alt="Tabby installments" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/mada-300x186.png" alt="Mada payment method" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/visa-300x186.png" alt="Visa card payment" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/master-300x186.png" alt="MasterCard payment" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/applepay-300x186.png" alt="Apple Pay checkout" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/tamara-300x186.png" alt="Tamara 4-split payments" width="38" height="24" loading="lazy" /></span>
+          <span class="payment-chip"><img src="/assets/curtain_roll/image/cache/catalog/tabby-300x186.png" alt="Tabby installments" width="38" height="24" loading="lazy" /></span>
         </div>
       </div>
     </div>

@@ -1,0 +1,167 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-26 00:00:00.000000",
+ "description": "Everything on the home page that the team can change without a developer: the logo, the category bar, the slider, the collection cards and the footer links.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "issingle": 1,
+ "field_order": [
+  "sb_brand",
+  "logo",
+  "logo_alt",
+  "cb_brand",
+  "favicon",
+  "brand_title",
+  "sb_nav",
+  "nav_items",
+  "sb_slider",
+  "slides",
+  "sb_collections",
+  "collections_eyebrow",
+  "collections_heading",
+  "cb_coll",
+  "collections_description",
+  "categories",
+  "sb_social",
+  "social_links"
+ ],
+ "fields": [
+  {
+   "fieldname": "sb_brand",
+   "fieldtype": "Section Break",
+   "label": "Branding"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo",
+   "description": "Shown in the header. About 220x90. Leave empty for the built-in logo."
+  },
+  {
+   "fieldname": "logo_alt",
+   "fieldtype": "Data",
+   "label": "Logo Description",
+   "description": "Read aloud by screen readers and used by search engines."
+  },
+  {
+   "fieldname": "cb_brand",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "favicon",
+   "fieldtype": "Attach Image",
+   "label": "Favicon",
+   "description": "The small icon in the browser tab. A square PNG, 32x32 or 64x64."
+  },
+  {
+   "fieldname": "brand_title",
+   "fieldtype": "Data",
+   "label": "Site Name",
+   "description": "Used in the tab title and link hints."
+  },
+  {
+   "fieldname": "sb_nav",
+   "fieldtype": "Section Break",
+   "label": "Category Bar"
+  },
+  {
+   "fieldname": "nav_items",
+   "fieldtype": "Table",
+   "label": "Links",
+   "options": "Curtain Nav Item",
+   "description": "The bar across the top of every page. Drag rows to reorder; untick Show to hide one without deleting it."
+  },
+  {
+   "fieldname": "sb_slider",
+   "fieldtype": "Section Break",
+   "label": "Home Page Slider"
+  },
+  {
+   "fieldname": "slides",
+   "fieldtype": "Table",
+   "label": "Slides",
+   "options": "Curtain Hero Slide",
+   "description": "Drag rows to reorder."
+  },
+  {
+   "fieldname": "sb_collections",
+   "fieldtype": "Section Break",
+   "label": "Collections Section"
+  },
+  {
+   "fieldname": "collections_eyebrow",
+   "fieldtype": "Data",
+   "label": "Small Heading"
+  },
+  {
+   "fieldname": "collections_heading",
+   "fieldtype": "Data",
+   "label": "Heading"
+  },
+  {
+   "fieldname": "cb_coll",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "collections_description",
+   "fieldtype": "Small Text",
+   "label": "Intro Text"
+  },
+  {
+   "fieldname": "categories",
+   "fieldtype": "Table",
+   "label": "Cards",
+   "options": "Curtain Category Card"
+  },
+  {
+   "fieldname": "sb_social",
+   "fieldtype": "Section Break",
+   "label": "Footer"
+  },
+  {
+   "fieldname": "social_links",
+   "fieldtype": "Table",
+   "label": "Social Media",
+   "options": "Curtain Social Link"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-09-26 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Storefront Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -16,6 +16,7 @@ def after_install():
 	_ensure_items()
 	_seed_pricing()
 	_seed_translations()
+	_seed_storefront()
 	frappe.db.commit()
 	print("\nCurtain Roll storefront installed.")
 	print("  home            /")
@@ -202,6 +203,54 @@ def after_migrate():
 	_ensure_items()
 	_seed_pricing()
 	_seed_translations()
+	_seed_storefront()
+
+
+def _seed_storefront():
+	"""Fill Curtain Storefront Settings from what the page already showed.
+
+	So the first migrate changes nothing on screen - the team opens the record
+	and finds today's logo, links, slides and cards already in it, ready to
+	edit, rather than an empty form and a blank home page.
+
+	Each table is filled only when it is empty, so their edits are never
+	overwritten by a later deploy. Deleting every row is a legitimate choice
+	too, and this would refill it - but an empty category bar is not something
+	anyone does on purpose, so refilling is the kinder mistake.
+	"""
+	from curtain_roll.storefront import DEFAULTS, DOCTYPE
+
+	doc = frappe.get_single(DOCTYPE)
+	filled = []
+
+	for plain in ("logo", "logo_alt", "favicon", "brand_title",
+	              "collections_eyebrow", "collections_heading",
+	              "collections_description"):
+		if not (doc.get(plain) or "").strip():
+			doc.set(plain, DEFAULTS.get(plain) or "")
+
+	tables = (("nav_items", "Curtain Nav Item", ("label", "route", "icon")),
+	          ("slides", "Curtain Hero Slide", ("image", "alt_text", "link")),
+	          ("categories", "Curtain Category Card",
+	           ("title", "route", "image", "badge", "description", "wide")),
+	          ("social_links", "Curtain Social Link",
+	           ("platform", "icon", "url")))
+
+	for field, child, keys in tables:
+		if doc.get(field):
+			continue
+		for entry in DEFAULTS.get(field) or []:
+			row = doc.append(field, {})
+			for k in keys:
+				row.set(k, entry.get(k) or "")
+			row.enabled = 1
+		if DEFAULTS.get(field):
+			filled.append("%s x%d" % (field, len(DEFAULTS[field])))
+
+	doc.flags.ignore_permissions = True
+	doc.save(ignore_permissions=True)
+	if filled:
+		print("  storefront settings seeded: %s" % ", ".join(filled))
 
 
 def _seed_translations():

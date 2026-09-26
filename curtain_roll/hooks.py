@@ -17,6 +17,8 @@ jinja = {
 		"curtain_roll.utils.get_product",
 		"curtain_roll.utils.get_products",
 		"curtain_roll.utils.asset",
+		# the home page's editable content - logo, category bar, slider, cards
+		"curtain_roll.storefront.storefront_settings",
 	]
 }
 

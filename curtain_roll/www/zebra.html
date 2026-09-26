@@ -1,3 +1,6 @@
+{#- cr is the editable storefront content; cr_active marks which category link is the current page. -#}
+{% set cr = storefront_settings() %}
+{% set cr_active = "/zebra" %}
 {% raw %}
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="desktop win chrome webkit oc30 route-product-product product-59 store-0">
@@ -12,9 +15,9 @@
   <meta property="og:type" content="product"/>
   <meta property="og:title" content="Blackout Curtains - Kayan Andalus"/>
   <meta property="og:url" content="/blackout"/>
-  <meta property="og:image" content="https://erp.atozksa.com/image/cache/catalog/curtains/blackout-g-600x315w.png"/>
+  <meta property="og:image" content="/image/cache/catalog/curtains/blackout-g-600x315w.png"/>
   <meta name="theme-color" content="#09446c" />
-  <link rel="icon" href="https://erp.atozksa.com/assets/curtain_roll/image/catalog/cart.png" />
+  <link rel="icon" href="/assets/curtain_roll/image/catalog/cart.png" />
 
   <!-- Typography & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1077,8 +1080,8 @@
   <aside class="top-strip">
     <div class="container top-strip-inner">
       <ul class="top-links">
-        <li><a href="about_us.html">About Us</a></li>
-        <li><a href="index.php__route_information_contact.html">Contact Us</a></li>
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
         <li>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="trust-chip">
             <i class="fa-solid fa-certificate"></i> Maroof Verified 🏅
@@ -1099,7 +1102,7 @@
           </button>
 
           <a href="/" class="brand-identity" title="Kayan Andalus Curtains">
-            <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus Logo" class="brand-logo-img" />
+            {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" class="brand-logo-img" />{% raw %}
           </a>
         </div>
 
@@ -1142,22 +1145,12 @@
 
       <!-- Sub-Nav Categories Horizontal Bar -->
       <nav class="catalog-nav-strip" aria-label="Categories">
-        <ul class="catalog-nav-list">
-          <li><a href="/" class="catalog-nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
-          <li><a href="/blackout" class="catalog-nav-link">Blackout</a></li>
-          <li><a href="/blackout-kayan" class="catalog-nav-link">Blackout Kayan</a></li>
-            <li><a href="/shutters" class="catalog-nav-link">Shutters</a></li>
-          <li><a href="/sunscreen" class="catalog-nav-link">Sunscreen</a></li>
-          <li><a href="/zebra" class="catalog-nav-link active">Zebra</a></li>
-          <li><a href="/wooden" class="catalog-nav-link">Wooden</a></li>
-            <li><a href="/wooden-premium" class="catalog-nav-link">Wooden Kayan</a></li>
-          <li><a href="/vertical" class="catalog-nav-link">Vertical</a></li>
-            <li><a href="/vertical-premium" class="catalog-nav-link">Vertical Kayan</a></li>
-          <li><a href="/metal" class="catalog-nav-link">Metal</a></li>
-          <li><a href="/roman" class="catalog-nav-link">Roman</a></li>
-          <li><a href="/wavy" class="catalog-nav-link">Wavy</a></li>
-          <li><a href="/printed" class="catalog-nav-link">Printed</a></li>
-        </ul>
+        {% endraw %}<ul class="catalog-nav-list">
+          {%- for item in cr.nav_items %}
+          <li><a href="{{ item.route }}" class="catalog-nav-link{% if item.route == cr_active %} active{% endif %}">
+            {%- if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ _(item.label) }}</a></li>
+          {%- endfor %}
+        </ul>{% raw %}
       </nav>
     </div>
   </header>
@@ -1167,7 +1160,7 @@
   <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation Drawer">
     <div class="drawer-header">
       <a href="/" class="brand-identity">
-        <img src="https://erp.atozksa.com/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 32px; width: auto;" />
+        <img src="/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 32px; width: auto;" />
       </a>
       <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Drawer"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -1218,8 +1211,8 @@
               <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
           </li>
-          <li><a href="/about_us.html" class="drawer-nav-item"><span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
-          <li><a href="index.php__route_information_contact.html" class="drawer-nav-item"><span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li><a href="/about-us" class="drawer-nav-item"><span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+          <li><a href="/contact-us" class="drawer-nav-item"><span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
         </ul>
       </div>
     </div>

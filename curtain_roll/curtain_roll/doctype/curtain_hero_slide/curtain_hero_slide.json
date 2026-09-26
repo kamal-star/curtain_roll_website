@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-26 00:00:00.000000",
+ "description": "One image in the homepage slider. Drag rows to reorder.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": [
+  "image",
+  "alt_text",
+  "link",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Image",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "1400x600 or wider. Shown full width at the top of the home page."
+  },
+  {
+   "fieldname": "alt_text",
+   "fieldtype": "Data",
+   "label": "Description",
+   "in_list_view": 1,
+   "description": "Describes the picture for search engines and screen readers."
+  },
+  {
+   "fieldname": "link",
+   "fieldtype": "Data",
+   "label": "Links To",
+   "description": "Optional. e.g. /blackout"
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Show",
+   "default": "1",
+   "in_list_view": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-09-26 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Hero Slide",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "idx",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 0
+}
