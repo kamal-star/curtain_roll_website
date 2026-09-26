@@ -20,7 +20,8 @@ from curtain_roll.curtain_roll.doctype.curtain_storefront_settings.curtain_store
 DOCTYPE = "Curtain Storefront Settings"
 
 DEFAULTS = {
- "logo": "/assets/curtain_roll/image/cache/catalog/original-220x90.png",
+ "logo": "/assets/curtain_roll/image/logo-kayan.png",
+ "logo_light": "/assets/curtain_roll/image/logo-kayan-light.png",
  "logo_alt": "Kayan Andalus - More Than Curtain",
  "favicon": "/assets/curtain_roll/image/favicon.png",
  "brand_title": "Kayan Andalus Curtains",
@@ -232,7 +233,7 @@ def storefront_settings():
 		frappe.cache().set_value(CACHE_KEY, data)
 		return data
 
-	for plain in ("logo", "logo_alt", "favicon", "brand_title",
+	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
 	              "collections_description"):
 		value = (doc.get(plain) or "").strip()

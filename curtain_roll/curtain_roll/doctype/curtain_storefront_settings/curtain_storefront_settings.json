@@ -11,6 +11,7 @@
   "sb_brand",
   "logo",
   "logo_alt",
+  "logo_light",
   "cb_brand",
   "favicon",
   "brand_title",
@@ -44,6 +45,12 @@
    "fieldtype": "Data",
    "label": "Logo Description",
    "description": "Read aloud by screen readers and used by search engines."
+  },
+  {
+   "fieldname": "logo_light",
+   "fieldtype": "Attach Image",
+   "label": "Logo for Dark Backgrounds",
+   "description": "The white version, used in the footer. Leave empty to show the site name as text instead."
   },
   {
    "fieldname": "cb_brand",

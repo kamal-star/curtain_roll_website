@@ -51,7 +51,7 @@
         "@id": "https://kayancurtain.com/#organization",
         "name": "Kayan Andalus - More Than Curtain",
         "url": "https://kayancurtain.com/",
-        "logo": "/assets/curtain_roll/image/cache/catalog/original-220x90.png",
+        {% endraw %}"logo": "{{ frappe.utils.get_url() }}{{ cr.logo }}",{% raw %}
         "description": "Leading digital manufacturing platform for custom architectural roller blinds, shades, and automated drapery in Saudi Arabia.",
         "telephone": "+9668001268000",
         "priceRange": "SAR",
@@ -1248,7 +1248,7 @@
   <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation Drawer">
     <div class="drawer-header">
       <a href="/" class="brand-identity">
-        <img src="/assets/curtain_roll/image/cache/catalog/original-220x90.png" alt="Kayan Andalus" style="height: 36px; width: auto;" />
+        {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" style="height: 36px; width: auto;" />{% raw %}
       </a>
       <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Drawer"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -1400,7 +1400,13 @@
     <div class="container">
       <div class="footer-grid-layout">
         <div class="footer-brand-summary">
-          <h4>Kayan Andalus Curtains</h4>
+          {% endraw %}{%- if cr.logo_light %}
+          <img src="{{ cr.logo_light }}" alt="{{ cr.brand_title }}"
+               class="footer-brand-logo" width="250" height="85" />
+          <style>.footer-brand-logo { max-width: 190px; height: auto; margin-bottom: 12px; display: block; }</style>
+          {%- else %}
+          <h4>{{ cr.brand_title }}</h4>
+          {%- endif %}{% raw %}
           <p>The leading digital platform for bespoke architectural curtains and automated shading systems across the Kingdom of Saudi Arabia.</p>
           <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="maroof-trust-badge">
             <img src="/assets/curtain_roll/image/cache/catalog/MAROOF7-200x99.png" alt="Maroof Verified Certification Badge" width="130" height="64" loading="lazy" />

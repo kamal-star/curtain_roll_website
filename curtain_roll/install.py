@@ -223,7 +223,7 @@ def _seed_storefront():
 	doc = frappe.get_single(DOCTYPE)
 	filled = []
 
-	for plain in ("logo", "logo_alt", "favicon", "brand_title",
+	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
 	              "collections_description"):
 		if not (doc.get(plain) or "").strip():
