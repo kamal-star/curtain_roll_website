@@ -17,11 +17,12 @@ def counts():
 	"""What to show on the tiles, so the hub reports rather than just links."""
 	from curtain_roll import account, cart
 
-	out = {"orders": 0, "wishlist": 0, "addresses": 0}
+	out = {"orders": 0, "wishlist": 0, "addresses": 0, "invoices": 0}
 	try:
 		out["orders"] = len(account.my_orders())
 		out["addresses"] = len(account.my_addresses())
 		out["wishlist"] = len(cart.wishlist_keys())
+		out["invoices"] = len(account.my_invoices())
 	except Exception:
 		# a brand new customer has no Customer record yet; an empty hub is the
 		# right answer, not a stack trace

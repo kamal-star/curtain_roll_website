@@ -42,6 +42,8 @@
     {{ tile("/account/orders", "fa-regular fa-rectangle-list", _("View your order history"),
             counts.orders) }}
     {{ tile("/account/returns", "fa-solid fa-reply", _("View your return requests")) }}
+    {{ tile("/account/invoices", "fa-regular fa-file-lines",
+             _("Invoices to print or download"), counts.invoices) }}
     {{ tile("/account/transactions", "fa-solid fa-right-left", _("Your Transactions")) }}
   </div>
 

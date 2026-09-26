@@ -1,6 +1,6 @@
 {% extends "curtain_roll/templates/curtain_shell.html" %}
 
-{% block title %}{{ _("Your Transactions") }}{% endblock %}
+{% block title %}{{ _("Your Invoices") }}{% endblock %}
 {% block body_class %}cr-page cr-account{% endblock %}
 
 {% block content %}
@@ -10,40 +10,45 @@
   <ul class="cr-crumbs">
     <li><a href="/">{{ _("Home") }}</a></li>
     <li><a href="/account">{{ _("My Account") }}</a></li>
-    <li>{{ _("Your Transactions") }}</li>
+    <li>{{ _("Your Invoices") }}</li>
   </ul>
 
-  <h1 class="cr-acc-title">{{ _("Your Transactions") }}</h1>
+  <h1 class="cr-acc-title">{{ _("Your Invoices") }}</h1>
 
-  {% if payments %}
+  {% if invoices %}
   <div class="cr-panel" style="padding:8px 18px 18px;">
     <table class="cr-table">
       <thead>
         <tr>
+          <th>{{ _("Invoice") }}</th>
           <th>{{ _("Date") }}</th>
-          <th>{{ _("Method") }}</th>
-          <th>{{ _("Reference") }}</th>
-          <th>{{ _("For") }}</th>
-          <th style="text-align:right;">{{ _("Amount") }}</th>
-          <th style="text-align:right;">{{ _("Receipt") }}</th>
+          <th>{{ _("Status") }}</th>
+          <th style="text-align:right;">{{ _("Total") }}</th>
+          <th style="text-align:right;">{{ _("Document") }}</th>
         </tr>
       </thead>
       <tbody>
-        {% for p in payments %}
+        {% for inv in invoices %}
         <tr>
-          <td>{{ frappe.format(p.date, {"fieldtype": "Date"}) if p.date else "" }}</td>
-          <td>{{ p.method }}</td>
-          <td style="font-family:monospace;font-size:13px;">{{ p.reference }}</td>
-          <td>{{ p.against }}</td>
-          <td style="text-align:right;"><b>
-            {{ frappe.utils.fmt_money(p.amount, currency=p.currency) }}</b></td>
+          <td><b>{{ inv.name }}</b></td>
+          <td>{{ frappe.format(inv.date, {"fieldtype": "Date"}) if inv.date else "" }}</td>
+          <td>
+            {%- if inv.paid %}
+              <span style="color:#1f6b2a;font-weight:600;">{{ _("Paid") }}</span>
+            {%- else %}
+              {{ _("Due") }}:
+              {{ frappe.utils.fmt_money(inv.outstanding, currency=inv.currency) }}
+            {%- endif %}
+          </td>
+          <td style="text-align:right;">
+            {{ frappe.utils.fmt_money(inv.total, currency=inv.currency) }}</td>
           <td style="text-align:right;white-space:nowrap;">
             <a class="cr-doc-link"
-               href="/account/print?doctype=Payment Entry&name={{ p.name | urlencode }}"
+               href="/account/print?doctype=Sales Invoice&name={{ inv.name | urlencode }}"
                target="_blank" rel="noopener">
               <i class="fa-solid fa-print"></i> {{ _("Print") }}</a>
             <a class="cr-doc-link"
-               href="/api/method/curtain_roll.account.document_pdf?doctype=Payment Entry&name={{ p.name | urlencode }}">
+               href="/api/method/curtain_roll.account.document_pdf?doctype=Sales Invoice&name={{ inv.name | urlencode }}">
               <i class="fa-solid fa-file-pdf"></i> {{ _("PDF") }}</a>
           </td>
         </tr>
@@ -52,12 +57,12 @@
     </table>
   </div>
   <p style="font-size:13px;color:#6d767d;margin-top:14px;">
-    {{ _("The reference is the payment provider's own number for the transaction. Quote it if you ever need to ask us or your bank about a charge.") }}
+    {{ _("These are your tax invoices. Print one for your records, or download it as a PDF to keep or forward.") }}
   </p>
   {% else %}
   <div class="cr-panel cr-empty">
-    <i class="fa-solid fa-right-left"></i>
-    <p>{{ _("You have not made a payment yet.") }}</p>
+    <i class="fa-regular fa-file-lines"></i>
+    <p>{{ _("You have no invoices yet.") }}</p>
     <p style="margin-top:16px;"><a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
   </div>
   {% endif %}

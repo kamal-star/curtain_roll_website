@@ -243,3 +243,110 @@ def order_lines(name, doctype="Quotation"):
 		doctype + " Item", filters={"parent": name},
 		fields=["item_name", "description", "qty", "rate", "amount"],
 		order_by="idx")
+
+
+# ------------------------------------------------------------ paperwork
+# What a customer may ask us to print. Anything not listed here is refused
+# outright, so a guessed doctype cannot be used to read someone else's records
+# through the print system.
+PRINTABLE = {
+	"Sales Invoice": "customer",
+	"Payment Entry": "party",
+	"Sales Order": "customer",
+	"Quotation": "party_name",
+}
+
+
+def my_invoices():
+	"""Submitted invoices for this customer, newest first.
+
+	Drafts are left out on purpose: an invoice the team has not issued yet is
+	not something a customer should be able to print and hold us to.
+	"""
+	customer = _customer()
+	if not customer:
+		return []
+
+	rows = []
+	for inv in frappe.get_all(
+			"Sales Invoice",
+			filters={"customer": customer, "docstatus": 1},
+			fields=["name", "posting_date", "grand_total", "currency",
+			        "outstanding_amount", "status"],
+			order_by="posting_date desc, creation desc",
+			limit_page_length=0):
+		rows.append({
+			"name": inv.name,
+			"date": inv.posting_date,
+			"total": inv.grand_total,
+			"currency": inv.currency,
+			"outstanding": inv.outstanding_amount,
+			"paid": (inv.outstanding_amount or 0) <= 0,
+			"status": inv.status,
+		})
+	return rows
+
+
+def _mine(doctype, name):
+	"""The document, if it really belongs to the signed-in customer.
+
+	Checked here rather than trusted from the request: the name comes from a
+	link the browser sends, so without this any customer could read any
+	invoice by changing a number in the URL.
+	"""
+	_user()
+	if doctype not in PRINTABLE:
+		frappe.throw(_("That document cannot be printed here."),
+		             frappe.PermissionError)
+
+	customer = _customer()
+	if not customer or not name:
+		frappe.throw(_("That document is not yours."), frappe.PermissionError)
+
+	field = PRINTABLE[doctype]
+	owner = frappe.db.get_value(doctype, name, field)
+	docstatus = frappe.db.get_value(doctype, name, "docstatus")
+	if owner != customer:
+		frappe.throw(_("That document is not yours."), frappe.PermissionError)
+	if doctype in ("Sales Invoice", "Sales Order") and docstatus != 1:
+		frappe.throw(_("That document is not ready yet."), frappe.PermissionError)
+	return name
+
+
+def _rendered(doctype, name):
+	"""The print format's HTML, rendered as someone allowed to read it."""
+	from curtain_roll.utils import as_system_user
+
+	with as_system_user():
+		return frappe.get_print(doctype, name, no_letterhead=0)
+
+
+@frappe.whitelist()
+def document_pdf(doctype=None, name=None):
+	"""Download one of the customer's own documents as a PDF."""
+	from frappe.utils.pdf import get_pdf
+
+	name = _mine(doctype, name)
+
+	# The print format pulls its logo and stylesheet over HTTP, and
+	# wkhtmltopdf treats a failed fetch as fatal - so an unreachable asset
+	# host means the customer gets an error instead of their invoice. The
+	# document itself does not depend on those files; ignoring a load failure
+	# gives them the invoice, slightly plainer, rather than nothing.
+	pdf = get_pdf(_rendered(doctype, name),
+	              options={"load-error-handling": "ignore",
+	                       "load-media-error-handling": "ignore",
+	                       "enable-local-file-access": None})
+
+	frappe.local.response.filename = "%s.pdf" % name.replace(" ", "-")
+	frappe.local.response.filecontent = pdf
+	frappe.local.response.type = "pdf"
+
+
+def printable_html(doctype, name):
+	"""The customer's own document, rendered for a print page.
+
+	Used by /account/print. Ownership is checked first, then the render runs
+	as a user allowed to read the document - the customer deliberately is not.
+	"""
+	return _rendered(doctype, _mine(doctype, name))

@@ -1,3 +1,4 @@
+import contextlib
 import json
 import os
 
@@ -42,3 +43,24 @@ def asset(path):
 	if path.startswith(("http://", "https://", "/")):
 		return path
 	return "/assets/curtain_roll/" + path.lstrip("/")
+
+
+@contextlib.contextmanager
+def as_system_user():
+	"""Run a block as a user allowed to read what ERPNext reads.
+
+	A storefront customer is a Website User with no read permission on Item,
+	Sales Invoice or Payment Entry - by design. So anything that renders one
+	of those for them, or validates a document that reads them, has to run as
+	someone who can, AFTER we have checked the record is actually theirs.
+
+	Switching the session user keeps every permission check in place and gives
+	it someone who passes, rather than turning checking off. Restore is in a
+	finally, so an exception cannot leave the request running as Administrator.
+	"""
+	previous = frappe.session.user
+	frappe.set_user("Administrator")
+	try:
+		yield
+	finally:
+		frappe.set_user(previous)
