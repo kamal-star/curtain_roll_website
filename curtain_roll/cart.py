@@ -123,14 +123,19 @@ def describe_options(product_key, form, labels=None):
 	return lines, captured
 
 
-def attach_render(quotation_name, file_url):
-	"""Link the configurator render (saved by script.php) to the quotation."""
+def attach_render(quotation_name, file_url, doctype="Quotation"):
+	"""Link the configurator render (saved by script.php) to the cart.
+
+	``doctype`` because a cart is not always a Quotation: someone shopping
+	without an account has a Curtain Guest Cart, and their render has to hang
+	off that until they check out and it moves across with the lines.
+	"""
 	if not file_url or not quotation_name:
 		return None
 	try:
 		existing = frappe.db.get_value(
 			"File",
-			{"file_url": file_url, "attached_to_doctype": "Quotation",
+			{"file_url": file_url, "attached_to_doctype": doctype,
 			 "attached_to_name": quotation_name},
 			"name",
 		)
@@ -145,7 +150,7 @@ def attach_render(quotation_name, file_url):
 		)
 		if src:
 			doc = frappe.get_doc("File", src)
-			doc.attached_to_doctype = "Quotation"
+			doc.attached_to_doctype = doctype
 			doc.attached_to_name = quotation_name
 			doc.flags.ignore_permissions = True
 			doc.save(ignore_permissions=True)
@@ -162,7 +167,7 @@ def attach_render(quotation_name, file_url):
 			"doctype": "File",
 			"file_url": file_url,
 			"file_name": file_url.split("/")[-1],
-			"attached_to_doctype": "Quotation",
+			"attached_to_doctype": doctype,
 			"attached_to_name": quotation_name,
 			"is_private": 0,
 		})
@@ -218,17 +223,21 @@ def line_description(product_key, options, priced):
 
 def curtain_qty_in_cart():
 	"""How many curtains are already on this visitor's draft order."""
-	if is_guest():
+	basket = get_basket()
+	if not basket:
 		return 0
-	quotation = get_cart_quotation()
-	if not quotation:
-		return 0
-	return sum(int(float(row.qty or 0)) for row in quotation.get("items", [])
+	return sum(int(float(row.qty or 0)) for row in basket.get("items", [])
 	           if read_config(row))
 
 
 def reprice(quotation):
-	"""Re-price every curtain line against the whole order's curtain count."""
+	"""Re-price every curtain line against the whole order's curtain count.
+
+	Takes a Quotation or a Curtain Guest Cart without caring which. The guest
+	cart's child table carries the same fieldnames on purpose, so the pricing
+	rules written for one apply unchanged to the other - a customer's total must
+	not depend on whether they had signed in when they built the basket.
+	"""
 	configs = [read_config(row) for row in quotation.get("items", [])]
 	total = sum(int(float(row.qty or 0))
 	            for row, cfg in zip(quotation.get("items", []), configs) if cfg)
@@ -252,7 +261,11 @@ def is_guest():
 
 
 def login_redirect(args=None):
-	"""Send the visitor to Frappe's login, returning to the page they were on."""
+	"""Send the visitor to Frappe's login, returning to the page they were on.
+
+	Still used by the wishlist, which genuinely needs an account - a list saved
+	for later has to belong to someone. The cart does not, and no longer asks.
+	"""
 	back = "/"
 	try:
 		ref = frappe.local.request.headers.get("Referer") or ""
@@ -266,6 +279,76 @@ def login_redirect(args=None):
 		"redirect": "/login?redirect-to=%s" % quote(back, safe="/"),
 		"success": "Please sign in to continue.",
 	}
+
+
+# ------------------------------------------------------------- guest basket
+GUEST_DOCTYPE = "Curtain Guest Cart"
+CART_COOKIE = "cr_cart"
+COOKIE_AGE = 30 * 24 * 60 * 60
+
+
+def _cart_token():
+	"""The cart token this browser is carrying, if any."""
+	try:
+		return (frappe.request.cookies.get(CART_COOKIE) or "").strip()
+	except Exception:
+		return ""
+
+
+def _remember_cart(token):
+	"""Hand the browser its cart token.
+
+	httponly because no script on the page has any use for it, and it is the
+	only thing standing between a stranger and someone else's basket. SameSite
+	Lax so the cookie survives the return trip from the payment gateway, which
+	arrives as a cross-site POST.
+	"""
+	manager = getattr(frappe.local, "cookie_manager", None)
+	if not manager:
+		return
+	manager.set_cookie(CART_COOKIE, token, max_age=COOKIE_AGE,
+	                   httponly=True, samesite="Lax")
+
+
+def _forget_cart():
+	manager = getattr(frappe.local, "cookie_manager", None)
+	if manager:
+		manager.set_cookie(CART_COOKIE, "", expires="Thu, 01 Jan 1970 00:00:00 GMT")
+
+
+def guest_cart(create=False):
+	"""This browser's cart, made on first use.
+
+	A row is only created when something is actually added, so merely reading
+	the site leaves nothing behind.
+	"""
+	token = _cart_token()
+	if token and frappe.db.exists(GUEST_DOCTYPE, token):
+		return frappe.get_doc(GUEST_DOCTYPE, token)
+	if not create:
+		return None
+
+	doc = frappe.new_doc(GUEST_DOCTYPE)
+	doc.flags.ignore_permissions = True
+	doc.insert(ignore_permissions=True)
+	frappe.db.commit()
+	_remember_cart(doc.name)
+	return doc
+
+
+def get_basket(create=False):
+	"""The visitor's cart, whoever they are.
+
+	A Quotation when there is an account behind it, a Curtain Guest Cart when
+	there is not. Everything downstream - pricing, totals, the cart page - works
+	on whichever it is handed, because the two carry the same fieldnames.
+
+	This is the whole of what "shop without signing in" means in this codebase:
+	one function that stops asking who you are before letting you buy something.
+	"""
+	if is_guest():
+		return guest_cart(create=create)
+	return get_cart_quotation(create=create)
 
 
 # -------------------------------------------------------------------- party
@@ -351,27 +434,56 @@ def get_cart_quotation(create=False):
 	return quotation
 
 
+def summary(basket):
+	"""Subtotal, discount, VAT and total for a basket of either kind."""
+	from curtain_roll import totals
+
+	if not basket or not basket.get("items"):
+		return totals.summarise([], None)
+	return totals.summarise(basket.get("items"), basket.get("coupon_code"))
+
+
 def _total_text(quotation):
+	"""The header counter's line.
+
+	Shows what the customer would pay, tax and discount included, rather than
+	the sum of the lines - a header that says one number and a checkout that
+	says another is how people decide a shop is not to be trusted.
+	"""
 	symbol = pricing.currency_symbol()
 	if not quotation or not quotation.get("items"):
 		return "0 item(s) - %s 0.00" % symbol
-	count = int(sum(float(i.qty or 0) for i in quotation.items))
-	amount = float(quotation.get("total") or 0)
+	count = int(sum(float(i.qty or 0) for i in quotation.get("items")))
+	amount = summary(quotation)["total"]
 	return "%d item(s) - %s %s" % (count, symbol, "{:,.2f}".format(amount))
 
 
 def _save(quotation):
+	"""Write the cart, as someone allowed to read a catalogue.
+
+	Saving a Quotation makes ERPNext fetch details for every line, and that
+	fetch calls Item.check_permission() - which ignores our ignore_permissions
+	flag, because it is a check on the Item, not on the document being saved. A
+	storefront customer is a Website User with no read permission on Item, by
+	design, so the save fails with a bare PermissionError and the page says
+	"Could not add to cart" with nothing to explain it.
+
+	Nothing is trusted to the customer by doing this. Every rate on every line
+	was computed by pricing.calculate from the team's own records before we got
+	here; the elevated user is only so that ERPNext is allowed to look up the
+	item it is being told about.
+	"""
+	from curtain_roll.utils import as_system_user
+
 	quotation.flags.ignore_permissions = True
 	quotation.flags.ignore_mandatory = True
-	quotation.save(ignore_permissions=True)
+	with as_system_user():
+		quotation.save(ignore_permissions=True)
 	frappe.db.commit()
 
 
 # ------------------------------------------------------------------ handlers
 def add(args, form):
-	if is_guest():
-		return login_redirect(args)
-
 	pid = str(form.get("product_id") or args.get("product_id") or "").strip()
 	try:
 		qty = max(1, int(float(form.get("quantity") or args.get("quantity") or 1)))
@@ -403,7 +515,7 @@ def add(args, form):
 
 	spec = "\n".join(lines)
 
-	quotation = get_cart_quotation(create=True)
+	quotation = get_basket(create=True)
 	# Merge only when the SAME item was configured the SAME way - otherwise a
 	# white blind and a brown one would collapse into a single line.
 	for row in quotation.get("items", []):
@@ -417,6 +529,11 @@ def add(args, form):
 			"rate": rate,
 			"description": spec or entry["name"],
 		})
+		# A Quotation Item fetches its name from the linked Item; a guest cart
+		# row has no link to fetch through, so it is given one. Setting it on
+		# both would quietly override whatever the team named the Item.
+		if quotation.doctype == GUEST_DOCTYPE:
+			row.set("item_name", entry.get("name") or code)
 		row.set(CONFIG_FIELD, capture_config(entry, form))
 
 	# installation is banded by the order total, so adding this curtain can
@@ -430,7 +547,7 @@ def add(args, form):
 		return {"error": {"warning": "Could not add to cart."}}
 
 	if captured:
-		attach_render(quotation.name, captured)
+		attach_render(quotation.name, captured, quotation.doctype)
 
 	return {
 		"success": "Added <b>%s</b> to your cart." % frappe.utils.escape_html(entry["name"]),
@@ -439,9 +556,7 @@ def add(args, form):
 
 
 def edit(args, form):
-	if is_guest():
-		return login_redirect(args)
-	quotation = get_cart_quotation()
+	quotation = get_basket()
 	if not quotation:
 		return {"total": _total_text(None)}
 	pid = str(form.get("key") or form.get("product_id") or "")
@@ -461,9 +576,7 @@ def edit(args, form):
 
 
 def remove(args, form):
-	if is_guest():
-		return login_redirect(args)
-	quotation = get_cart_quotation()
+	quotation = get_basket()
 	if not quotation:
 		return {"total": _total_text(None)}
 	pid = str(form.get("key") or form.get("product_id") or "")
@@ -543,9 +656,7 @@ def set_qty(item_code, qty, row_name=None):
 	lines sharing one item code, and matching on the code changed both at once.
 	``item_code`` is still accepted so an older page keeps working.
 	"""
-	if is_guest():
-		return {"error": "login"}
-	quotation = get_cart_quotation()
+	quotation = get_basket()
 	if not quotation:
 		return {"ok": True, "total": _total_text(None)}
 	try:
@@ -565,14 +676,90 @@ def set_qty(item_code, qty, row_name=None):
 	reprice(quotation)
 
 	if not quotation.items:
-		# an empty quotation cannot be saved; drop it entirely
+		# an empty quotation cannot be saved; drop it entirely. A guest cart
+		# can hold no lines quite happily, but keeping an empty one only leaves
+		# a row nobody will ever look at.
 		name = quotation.get("name")
 		if name:
-			frappe.delete_doc("Quotation", name, force=True, ignore_permissions=True)
+			frappe.delete_doc(quotation.doctype, name, force=True,
+			                  ignore_permissions=True)
 			frappe.db.commit()
+		if quotation.doctype == GUEST_DOCTYPE:
+			_forget_cart()
 		return {"ok": True, "total": _total_text(None), "empty": True}
 	_save(quotation)
 	return {"ok": True, "total": _total_text(quotation)}
+
+
+def claim_guest_cart():
+	"""on_session_creation: adopt a basket that was filled before signing in.
+
+	Someone fills a basket, reaches the checkout, signs in to use a saved
+	address - and without this, arrives at an empty cart and has to build it
+	again. The lines are appended to whatever the account already had rather
+	than replacing it: both baskets were put together deliberately, and quietly
+	discarding one of them is the same bug in the other direction.
+
+	Anything that goes wrong here is logged and swallowed. This runs inside
+	login, and a cart that failed to move is a bad afternoon; a login that
+	failed because of a cart is a bad week.
+	"""
+	try:
+		if is_guest():
+			return
+		token = _cart_token()
+		if not token or not frappe.db.exists(GUEST_DOCTYPE, token):
+			return
+
+		guest = frappe.get_doc(GUEST_DOCTYPE, token)
+		lines = guest.get("items") or []
+		if not lines:
+			frappe.delete_doc(GUEST_DOCTYPE, token, force=True,
+			                  ignore_permissions=True)
+			frappe.db.commit()
+			_forget_cart()
+			return
+
+		# resolved while we are still the customer, because it is their Contact
+		# that says which Customer this is
+		quotation = get_cart_quotation(create=True)
+		for row in lines:
+			for mine in quotation.get("items", []):
+				same = (mine.item_code == row.item_code
+				        and (mine.get("description") or "")
+				            == (row.get("description") or ""))
+				if same:
+					mine.qty = float(mine.qty or 0) + float(row.qty or 0)
+					break
+			else:
+				added = quotation.append("items", {
+					"item_code": row.item_code,
+					"qty": row.qty,
+					"rate": row.rate,
+					"description": row.get("description"),
+				})
+				added.set(CONFIG_FIELD, row.get(CONFIG_FIELD))
+
+		reprice(quotation)
+		_save(quotation)
+
+		# the configurator renders were hanging off the guest cart; they belong
+		# to the quotation now, or they vanish with the row below
+		for attached in frappe.get_all(
+				"File", filters={"attached_to_doctype": GUEST_DOCTYPE,
+				                 "attached_to_name": token}, pluck="file_url"):
+			attach_render(quotation.name, attached)
+
+		if guest.get("coupon_code") and not quotation.get("coupon_code"):
+			frappe.db.set_value("Quotation", quotation.name, "coupon_code",
+			                    guest.coupon_code, update_modified=False)
+
+		frappe.delete_doc(GUEST_DOCTYPE, token, force=True, ignore_permissions=True)
+		frappe.db.commit()
+		_forget_cart()
+	except Exception:
+		frappe.log_error(title="curtain_roll: could not adopt guest cart",
+		                 message=frappe.get_traceback())
 
 
 def place_order():
@@ -593,28 +780,40 @@ def place_order():
 
 
 def info():
-	"""Cart summary for the header / cart page."""
-	if is_guest():
-		return {"count": 0, "text": _total_text(None), "items": [], "guest": True}
-	quotation = get_cart_quotation()
+	"""Cart summary for the header, the cart page and the checkout summary.
+
+	`guest` still says whether there is an account behind this basket, because
+	the checkout page asks for a name and an email when there is not. It no
+	longer means "you cannot see your cart" - a guest has a cart like anyone
+	else, and it is returned here in full.
+	"""
+	from curtain_roll import totals
+
+	basket = get_basket()
 	items = []
-	if quotation:
-		for row in quotation.items:
+	if basket:
+		for row in basket.get("items"):
 			items.append({
 				"row": row.name,
 				"item_code": row.item_code,
-				"name": row.item_name,
+				"name": row.item_name or row.item_code,
 				"qty": row.qty,
 				"rate": row.rate,
-				"amount": row.amount,
+				"amount": frappe.utils.flt(row.qty) * frappe.utils.flt(row.rate),
 				"spec": (row.get("description") or "").strip(),
 			})
+
+	money = summary(basket)
 	return {
 		"count": len(items),
-		"text": _total_text(quotation),
-		"quotation": quotation.name if quotation and quotation.get("name") else None,
+		"text": _total_text(basket),
+		"quotation": basket.name if basket and basket.get("name")
+		             and basket.doctype == "Quotation" else None,
+		"cart": basket.name if basket and basket.get("name") else None,
 		"items": items,
-		"guest": False,
+		"guest": is_guest(),
+		"totals": money,
+		"shown": totals.as_text(money),
 	}
 
 

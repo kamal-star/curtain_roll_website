@@ -5,89 +5,94 @@
 
 {% block content %}
 {% include "curtain_roll/templates/includes/account_style.html" %}
+{% include "curtain_roll/templates/includes/checkout_style.html" %}
 <div class="cr-acc cr-cart-page">
+	<ul class="cr-crumbs">
+		<li><a href="/">{{ _("Home") }}</a></li>
+		<li>{{ _("Your Cart") }}</li>
+	</ul>
+
 	<h1 class="cr-acc-title">{{ _("Your Cart") }}</h1>
 
-	{% if guest %}
-		<p style="color:#6d767d;">{{ _("Please sign in to see your cart.") }}</p>
-		<p>
-			<a href="{{ login_url }}" class="cr-btn">{{ _("Sign in") }}</a>
-			<a href="/login#signup" class="cr-btn cr-btn-light" style="margin-left:10px;">{{ _("Create an account") }}</a>
+	<div id="cr-cart-empty" style="{% if items %}display:none;{% endif %}">
+		<div class="cr-panel cr-empty">
+			<i class="fa-solid fa-bag-shopping"></i>
+			<p>{{ _("Your cart is empty.") }}</p>
+			<p style="margin-top:16px;">
+				<a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+		</div>
+	</div>
+
+	<div id="cr-cart-body" style="{% if not items %}display:none;{% endif %}">
+		<div style="overflow-x:auto;">
+		<table class="cr-table">
+			<thead>
+				<tr>
+					<th>{{ _("Product") }}</th>
+					<th style="width:150px;">{{ _("Qty") }}</th>
+					<th style="text-align:right;">{{ _("Rate") }}</th>
+					<th style="text-align:right;">{{ _("Amount") }}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in items %}
+				<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}">
+					<td>
+						<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
+						{% if i.spec %}
+						<div style="font-size:12px;color:var(--text-muted,#54667a);margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
+						{% endif %}
+					</td>
+					<td>
+						<input type="number" min="1" step="1" value="{{ i.qty | int }}"
+							class="cr-qty-input"
+							style="width:80px;padding:7px 9px;border:1px solid #e6e8eb;border-radius:7px;">
+					</td>
+					<td style="text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
+					<td style="padding:12px 8px;text-align:right;" class="cr-amount">{{ "%.2f"|format(i.amount) }}</td>
+					<td style="text-align:right;">
+						<button type="button" class="cr-remove"
+							style="background:none;border:0;color:#c0392b;cursor:pointer;">{{ _("Remove") }}</button>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</div>
+
+		<div class="cr-cart-foot">
+			{#- The coupon box lives here rather than on the checkout, because
+			    this is where people look for it, and a discount they cannot
+			    see until the last screen is a discount they assume failed. -#}
+			<form class="cr-panel cr-coupon" id="cr-coupon-form">
+				<label for="cr-coupon">{{ _("Coupon code") }}</label>
+				<div class="cr-coupon-row">
+					<input type="text" id="cr-coupon" name="coupon"
+						   value="{{ coupon }}" autocomplete="off"
+						   placeholder="{{ _('Enter a code') }}">
+					<button type="submit" class="cr-btn cr-btn-light"
+							id="cr-coupon-go">{{ _("Apply") }}</button>
+				</div>
+				<p class="cr-coupon-note" id="cr-coupon-msg" role="status"></p>
+			</form>
+
+			{% include "curtain_roll/templates/includes/totals.html" %}
+		</div>
+
+		{% if quotation %}
+		<p style="font-size:13px;color:#6d767d;">
+			{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
 		</p>
+		{% endif %}
 
-	{% else %}
-		<div id="cr-cart-empty" style="{% if items %}display:none;{% endif %}">
-			<p style="color:#6d767d;">{{ _("Your cart is empty.") }}</p>
-			<p><a href="/">{{ _("Browse curtains") }}</a></p>
+		<div style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+			<a href="/checkout" class="cr-btn" id="cr-checkout">
+				{{ _("Checkout") }}</a>
+			<a href="/">{{ _("Continue shopping") }}</a>
 		</div>
-
-		<div id="cr-cart-body" style="{% if not items %}display:none;{% endif %}">
-			<div style="overflow-x:auto;">
-			<table class="cr-table">
-				<thead>
-					<tr>
-						<th>{{ _("Product") }}</th>
-						<th style="width:150px;">{{ _("Qty") }}</th>
-						<th style="text-align:right;">{{ _("Rate") }}</th>
-						<th style="text-align:right;">{{ _("Amount") }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for i in items %}
-					<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}">
-						<td>
-							<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
-							{% if i.spec %}
-							<div style="font-size:12px;color:var(--text-muted,#54667a);margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
-							{% endif %}
-						</td>
-						<td>
-							<input type="number" min="1" step="1" value="{{ i.qty | int }}"
-								class="cr-qty-input"
-								style="width:80px;padding:7px 9px;border:1px solid #e6e8eb;border-radius:7px;">
-						</td>
-						<td style="text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
-						<td style="padding:12px 8px;text-align:right;" class="cr-amount">{{ "%.2f"|format(i.amount) }}</td>
-						<td style="text-align:right;">
-							<button type="button" class="cr-remove"
-								style="background:none;border:0;color:#c0392b;cursor:pointer;">{{ _("Remove") }}</button>
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			</div>
-
-			<p id="cr-cart-total" style="font-size:19px;font-weight:700;">{{ total_text }}</p>
-
-			{% if quotation %}
-			<p style="font-size:13px;color:#6d767d;">
-				{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
-			</p>
-			{% endif %}
-
-			<div style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-				{%- if pay_online %}
-				<button type="button" id="cr-pay-now" class="cr-btn">
-					{{ _("Pay now") }}
-				</button>
-				{%- else %}
-				{#- Only where the gateway is not configured. An order is placed by
-				    paying for it; this is the fallback so a site without keys is
-				    not left with no way to order at all. -#}
-				<button type="button" id="cr-place-order" class="cr-btn">
-					{{ _("Place Order") }}
-				</button>
-				{%- endif %}
-				<a href="/">{{ _("Continue shopping") }}</a>
-			</div>
-			<p style="font-size:13px;color:#6d767d;margin-top:12px;">
-				{%- if pay_online %}{{ _("Your order is confirmed once payment is received. Card details are entered on our payment provider's secure page, never here.") }}{%- else %}{{ _("Our team confirms sizes and final pricing before anything is charged.") }}{%- endif %}
-			</p>
-			<div id="cr-cart-msg" role="status" style="margin-top:14px;font-size:14px;"></div>
-		</div>
-	{% endif %}
+		<div id="cr-cart-msg" role="status" style="margin-top:14px;font-size:14px;"></div>
+	</div>
 </div>
 
 <script>
@@ -127,6 +132,24 @@
 			return r.json();
 		});
 	}
+	window.crCartPost = post;
+
+	/* Redraw the money without reloading: the totals move on every quantity
+	   change and on every coupon, and a subtotal that lags behind the lines
+	   above it is the one thing on this page nobody would forgive. */
+	function paint(shown) {
+		if (!shown) return;
+		Object.keys(shown).forEach(function (key) {
+			document.querySelectorAll("[data-total=" + key + "]")
+				.forEach(function (node) { node.textContent = shown[key]; });
+		});
+		var discount = document.getElementById("cr-discount-row");
+		if (discount) {
+			var value = (shown.discount || "").replace(/[^\d.]/g, "");
+			discount.style.display = parseFloat(value) > 0 ? "" : "none";
+		}
+	}
+	window.crPaintTotals = paint;
 
 	function setQty(row, qty) {
 		// the LINE, not the item: one blind configured two ways is two lines
@@ -136,11 +159,11 @@
 		post("curtain_roll.api.cart_set_qty", payload)
 			.then(function (j) {
 				var m = (j && j.message) || {};
-				if (m.error === "login") { window.location = "/login?redirect-to=/cart"; return; }
 				if (!m.ok) { say("Could not update the cart.", false); return; }
 				if (qty <= 0) row.remove();
 				var total = document.getElementById("cr-cart-total");
 				if (total && m.total) total.textContent = m.total;
+				if (m.shown) paint(m.shown);
 				if (m.empty || !document.querySelector("tr[data-item]")) {
 					document.getElementById("cr-cart-body").style.display = "none";
 					document.getElementById("cr-cart-empty").style.display = "";
@@ -161,48 +184,44 @@
 		if (rm) rm.addEventListener("click", function () { setQty(row, 0); });
 	});
 
-	var pay = document.getElementById("cr-pay-now");
-	if (pay) {
-		pay.addEventListener("click", function () {
-			pay.disabled = true;
-			say("Taking you to the payment page…", true);
-			post("curtain_roll.clickpay.checkout", {})
+	var form = document.getElementById("cr-coupon-form");
+	if (form) {
+		form.addEventListener("submit", function (e) {
+			e.preventDefault();
+			var box = document.getElementById("cr-coupon");
+			var note = document.getElementById("cr-coupon-msg");
+			var go = document.getElementById("cr-coupon-go");
+			go.disabled = true;
+			post("curtain_roll.checkout.apply_coupon", { code: box.value })
 				.then(function (j) {
+					go.disabled = false;
 					var m = (j && j.message) || {};
-					if (m.ok && m.redirect_url) {
-						/* leave the site: the card form is ClickPay's, which is
-						   what keeps us out of scope for card data */
-						window.location = m.redirect_url;
+					if (m.ok) {
+						note.textContent = m.message;
+						note.className = "cr-coupon-note cr-ok";
+						paint(m.shown);
+						/* the header counter shows the payable total, and the
+						   theme only refreshes it on load */
+						var badge = document.getElementById("cart-total");
+						if (badge && m.total_text) badge.textContent = m.total_text;
 						return;
 					}
-					say("Could not start the payment. Please try again.", false);
-					pay.disabled = false;
+					/* Frappe answers a throw with _server_messages: a JSON
+					   string holding a list of JSON objects. Reading it is the
+					   difference between telling someone their coupon expired
+					   and telling them something went wrong. */
+					var why = "";
+					try {
+						why = JSON.parse(JSON.parse(j._server_messages)[0]).message;
+					} catch (err) { why = ""; }
+					note.textContent = why || "That coupon could not be applied.";
+					note.className = "cr-coupon-note cr-bad";
 				})
 				.catch(function () {
-					say("Could not start the payment. Please try again.", false);
-					pay.disabled = false;
+					go.disabled = false;
+					note.textContent = "Network error.";
+					note.className = "cr-coupon-note cr-bad";
 				});
-		});
-	}
-
-	var order = document.getElementById("cr-place-order");
-	if (order) {
-		order.addEventListener("click", function () {
-			order.disabled = true;
-			say("Placing your order…", true);
-			post("curtain_roll.api.cart_place_order", {})
-				.then(function (j) {
-					var m = (j && j.message) || {};
-					if (m.error === "login") { window.location = "/login?redirect-to=/cart"; return; }
-					if (m.error === "empty") { say("Your cart is empty.", false); order.disabled = false; return; }
-					if (!m.ok) { say("Could not place the order. Please try again.", false); order.disabled = false; return; }
-					document.getElementById("cr-cart-body").innerHTML =
-						'<p style="font-size:17px;font-weight:700;color:#0a8a3c;">Thank you — your order is placed.</p>' +
-						'<p style="color:#6d767d;">Quotation <b>' + m.quotation + '</b> has been submitted. ' +
-						'Our team will contact you to confirm sizes and final pricing.</p>' +
-						'<p><a href="/">Continue shopping</a></p>';
-				})
-				.catch(function () { say("Network error.", false); order.disabled = false; });
 		});
 	}
 })();

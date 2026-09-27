@@ -1,0 +1,47 @@
+{#- The money, in one place.
+
+    Rendered on the cart and again in the checkout summary. Both read the same
+    numbers from curtain_roll.totals, and the data-total attributes let the page
+    script repaint them after a quantity change or a coupon without a reload -
+    so there is exactly one description of what the customer owes, whichever
+    screen they are looking at and however they got there.
+
+    Expects `shown` (formatted strings) and `totals` (the numbers). -#}
+<div class="cr-panel cr-totals">
+  <div class="cr-total-row">
+    <span>{{ _("Subtotal") }}</span>
+    <b data-total="subtotal">{{ shown.subtotal }}</b>
+  </div>
+
+  <div class="cr-total-row" id="cr-discount-row"
+       {% if not totals.discount %}style="display:none;"{% endif %}>
+    <span>{{ _("Discount") }}</span>
+    <b class="cr-off" data-total="discount">{{ shown.discount }}</b>
+  </div>
+
+  {% if totals.vat_rate %}
+    {% if totals.vat_included %}
+    {#- Inclusive VAT is shown as a note, not as a line to be added: printing
+        it as a row above the total reads as "and another 15% on top", which is
+        the opposite of what it means. -#}
+    <div class="cr-total-row cr-total-muted">
+      <span>{{ _("Includes") }} {{ shown.vat_label }}</span>
+      <span data-total="vat">{{ shown.vat }}</span>
+    </div>
+    {% else %}
+    <div class="cr-total-row">
+      <span>{{ _("Net") }}</span>
+      <span data-total="net">{{ shown.net }}</span>
+    </div>
+    <div class="cr-total-row">
+      <span>{{ shown.vat_label }}</span>
+      <span data-total="vat">{{ shown.vat }}</span>
+    </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="cr-total-row cr-total-grand">
+    <span>{{ _("Total") }}</span>
+    <b data-total="total">{{ shown.total }}</b>
+  </div>
+</div>

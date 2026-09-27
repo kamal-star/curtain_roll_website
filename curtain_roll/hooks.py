@@ -44,6 +44,19 @@ before_request = [
 # place, so a page added later is covered without anyone wiring it up.
 after_request = ["curtain_roll.language.finish_page"]
 
+# A basket filled before signing in belongs to the person who filled it. Without
+# this, signing in at the checkout - to use a saved address, say - empties the
+# cart they were about to pay for.
+on_session_creation = ["curtain_roll.cart.claim_guest_cart"]
+
+# Anonymous carts nobody came back to. Keeping them for ever would be collecting
+# data about visitors for no purpose at all.
+scheduler_events = {
+	"daily": [
+		"curtain_roll.curtain_roll.doctype.curtain_guest_cart.curtain_guest_cart.clear_stale",
+	],
+}
+
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
 after_migrate = "curtain_roll.install.after_migrate"

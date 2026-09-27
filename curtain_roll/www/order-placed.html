@@ -1,0 +1,88 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+{% include "curtain_roll/templates/includes/checkout_style.html" %}
+
+<div class="cr-acc">
+{% if not found %}
+  <div class="cr-panel cr-empty">
+    <i class="fa-regular fa-circle-question"></i>
+    <p>{{ _("We could not find that order.") }}</p>
+    <p style="margin-top:6px;font-size:13.5px;">
+      {{ _("Please use the link from your confirmation email, or sign in to see your orders.") }}</p>
+    <p style="margin-top:16px;">
+      <a class="cr-btn" href="/account/orders">{{ _("My orders") }}</a></p>
+  </div>
+
+{% else %}
+  <div class="cr-panel" style="text-align:center;padding:38px 24px 30px;">
+    <i class="fa-solid fa-circle-check cr-done-mark"></i>
+    <h1 class="cr-acc-title" style="margin-top:14px;">{{ _("Thank you") }}</h1>
+    {% if by_bank %}
+    <p class="cr-acc-sub" style="margin-bottom:0;">
+      {{ _("Your order is placed. It is confirmed once your transfer reaches us.") }}</p>
+    {% else %}
+    <p class="cr-acc-sub" style="margin-bottom:0;">
+      {{ _("Your order is placed and your payment has gone through.") }}</p>
+    {% endif %}
+    <p style="margin:14px 0 0;font-size:14px;color:var(--text-muted,#54667a);">
+      <span>{{ _("Order") }}</span> <b>{{ order.name }}</b>
+      {% if invoice %}&nbsp;·&nbsp;<span>{{ _("Invoice") }}</span> <b>{{ invoice }}</b>{% endif %}
+    </p>
+  </div>
+
+  {% if by_bank %}
+  <div class="cr-panel">
+    <p class="cr-step">{{ _("Where to send the transfer") }}</p>
+    <dl class="cr-bank">
+      {% if bank.bank %}
+      <dt>{{ _("Bank") }}</dt><dd>{{ bank.bank }}</dd>
+      {% endif %}
+      {% if bank.account %}
+      <dt>{{ _("Account name") }}</dt><dd>{{ bank.account }}</dd>
+      {% endif %}
+      <dt>{{ _("IBAN") }}</dt><dd>{{ bank.iban }}</dd>
+      <dt>{{ _("Amount") }}</dt><dd>{{ shown.total }}</dd>
+      <dt>{{ _("Reference") }}</dt><dd>{{ order.name }}</dd>
+    </dl>
+    <p style="margin:18px 0 0;font-size:13.5px;color:var(--text-muted,#54667a);">
+      {{ _("Please put the order number in the transfer reference so we can match it to your order.") }}</p>
+    {% if bank.instructions %}
+    <p style="margin:10px 0 0;font-size:13.5px;white-space:pre-line;">{{ bank.instructions }}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="cr-panel">
+    <p class="cr-step">{{ _("What you ordered") }}</p>
+    <ul class="cr-mini">
+      {% for i in items %}
+      <li>
+        <span>
+          <span class="cr-mini-name">{{ i.item_name or i.item_code }}</span>
+          <span class="cr-mini-qty">{{ _("Qty") }} {{ i.qty | int }}</span>
+        </span>
+        <span class="cr-mini-amount">{{ "%.2f"|format(i.amount) }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div style="max-width:420px;margin-inline-start:auto;">
+    {% include "curtain_roll/templates/includes/totals.html" %}
+  </div>
+
+  <p style="margin-top:26px;">
+    <a class="cr-btn cr-btn-light" href="/">{{ _("Continue shopping") }}</a>
+    <a class="cr-btn cr-btn-light" href="/account/orders"
+       style="margin-inline-start:10px;">{{ _("My orders") }}</a>
+  </p>
+  <p style="margin-top:14px;font-size:13px;color:var(--text-muted,#54667a);">
+    {{ _("Keep this page bookmarked - the link works without signing in.") }}</p>
+{% endif %}
+</div>
+{% endblock %}

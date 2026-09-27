@@ -238,6 +238,25 @@ def say(text, table=None):
 	return text
 
 
+def text(english):
+	"""One string in the visitor's language, from the storefront's dictionary.
+
+	For text that never passes through the page-wide Arabic swap. A message
+	thrown back to a fetch() call arrives as JSON, and finish_page only rewrites
+	HTML - so a validation message would be the one English sentence on an
+	otherwise Arabic checkout, at the exact moment the customer needs to
+	understand it.
+
+	Frappe's own _() cannot do this either: these phrases are not in its
+	catalogue, they are in the file the client edits. Keeping them in the one
+	dictionary is the point - the client corrects a word once and it changes
+	everywhere, whether it reached the page as markup or as an error.
+	"""
+	if current() != "ar":
+		return english
+	return phrases().get(" ".join((english or "").split()), english)
+
+
 def _label(label, table):
 	"""Translate a label, including the "Option (Group)" form.
 

@@ -1,0 +1,96 @@
+{#- Styling for the cart, the checkout and the order confirmation.
+
+    Written against the redesign's own custom properties, like account_style,
+    so these pages follow the palette rather than freezing a copy of it. Every
+    horizontal direction is logical (inset-inline, margin-inline, text-align
+    start/end) because the whole site flips to RTL in Arabic and a checkout
+    that half-flips is worse than one that does not flip at all. -#}
+<style>
+.cr-cart-foot { display:flex; gap:18px; align-items:flex-start;
+  flex-wrap:wrap; margin-top:22px; }
+.cr-cart-foot .cr-panel { margin-top:0; }
+.cr-coupon { flex:1 1 300px; max-width:420px; padding:18px 20px; }
+.cr-coupon label { display:block; font-size:13px; font-weight:600;
+  margin-bottom:8px; color:var(--text,#0f172a); }
+.cr-coupon-row { display:flex; gap:8px; }
+.cr-coupon-row input { flex:1 1 auto; min-width:0; padding:10px 13px;
+  font-size:14.5px; border:1px solid var(--border,#e1ebf2);
+  border-radius:var(--radius-sm,8px); background:var(--surface,#fff);
+  color:var(--text,#0f172a); text-transform:uppercase; }
+.cr-coupon-row input:focus { outline:none; border-color:var(--brand,#09446c);
+  box-shadow:0 0 0 3px var(--brand-soft,rgba(9,68,108,.08)); }
+.cr-coupon-note { margin:10px 0 0; font-size:13px; min-height:18px; }
+.cr-coupon-note.cr-ok { color:#0a8a3c; }
+.cr-coupon-note.cr-bad { color:#c0392b; }
+
+.cr-totals { flex:1 1 300px; max-width:420px; margin-inline-start:auto;
+  padding:18px 20px; }
+.cr-total-row { display:flex; justify-content:space-between; gap:18px;
+  padding:7px 0; font-size:14.5px; color:var(--text,#0f172a); }
+.cr-total-muted, .cr-total-muted span { color:var(--text-muted,#54667a);
+  font-size:13px; }
+.cr-total-row .cr-off { color:#0a8a3c; }
+.cr-total-grand { border-top:1px solid var(--border,#e1ebf2); margin-top:6px;
+  padding-top:13px; font-size:18px; }
+.cr-total-grand b { font-size:20px; color:var(--brand,#09446c); }
+
+/* ------------------------------------------------------------- checkout */
+.cr-check { display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; }
+.cr-check-main { flex:1 1 460px; min-width:0; }
+.cr-check-side { flex:0 1 380px; min-width:280px; position:sticky; top:16px; }
+.cr-check-side .cr-panel:first-child { margin-top:0; }
+
+.cr-step { font-size:13px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--brand,#09446c); margin:0 0 4px; }
+.cr-step-note { margin:0 0 16px; font-size:13.5px;
+  color:var(--text-muted,#54667a); }
+
+.cr-grid { display:flex; flex-wrap:wrap; gap:0 16px; }
+.cr-grid .cr-field { flex:1 1 220px; min-width:0; }
+.cr-field input, .cr-field select { max-width:none; }
+.cr-field .cr-hint { display:block; margin-top:5px; font-size:12px;
+  color:var(--text-muted,#54667a); }
+.cr-req { color:#c0392b; margin-inline-start:2px; }
+
+.cr-choice { display:flex; flex-direction:column; gap:10px; }
+.cr-choice label { display:flex; gap:12px; align-items:flex-start;
+  padding:14px 16px; border:1px solid var(--border,#e1ebf2);
+  border-radius:var(--radius-md,14px); cursor:pointer;
+  background:var(--surface,#fff); transition:var(--transition,all .25s ease); }
+.cr-choice label:hover { border-color:var(--brand,#09446c); }
+.cr-choice input:checked + .cr-choice-body { color:var(--text,#0f172a); }
+.cr-choice label:has(input:checked) { border-color:var(--brand,#09446c);
+  box-shadow:0 0 0 3px var(--brand-soft,rgba(9,68,108,.08)); }
+.cr-choice-body { flex:1 1 auto; }
+.cr-choice-name { display:block; font-weight:600; font-size:15px; }
+.cr-choice-note { display:block; margin-top:4px; font-size:13px;
+  line-height:1.5; color:var(--text-muted,#54667a); }
+.cr-choice i { color:var(--brand,#09446c); font-size:17px; margin-top:2px; }
+
+.cr-same { display:flex; gap:9px; align-items:center; margin:2px 0 4px;
+  font-size:14px; }
+.cr-same input { width:auto; }
+
+.cr-mini { list-style:none; margin:0 0 4px; padding:0; }
+.cr-mini li { display:flex; justify-content:space-between; gap:14px;
+  padding:9px 0; border-bottom:1px solid var(--border,#eef4f8);
+  font-size:14px; }
+.cr-mini li:last-child { border-bottom:0; }
+.cr-mini .cr-mini-name { font-weight:600; }
+.cr-mini .cr-mini-qty { display:block; font-size:12px; font-weight:400;
+  color:var(--text-muted,#54667a); margin-top:2px; }
+.cr-mini .cr-mini-amount { white-space:nowrap; }
+
+.cr-bank { margin:0; }
+.cr-bank dt { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-muted,#54667a); margin-top:12px; }
+.cr-bank dd { margin:3px 0 0; font-size:15.5px; font-weight:600;
+  font-variant-numeric:tabular-nums; word-break:break-all; }
+
+.cr-done-mark { font-size:34px; color:#0a8a3c; }
+
+@media (max-width:820px) {
+  .cr-check-side { position:static; flex:1 1 100%; }
+  .cr-totals, .cr-coupon { max-width:none; }
+}
+</style>

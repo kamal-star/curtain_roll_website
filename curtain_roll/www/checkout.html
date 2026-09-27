@@ -1,0 +1,355 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+{% include "curtain_roll/templates/includes/checkout_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/cart">{{ _("Your Cart") }}</a></li>
+    <li>{{ _("Checkout") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Checkout") }}</h1>
+
+{% if empty %}
+  <div class="cr-panel cr-empty">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <p>{{ _("Your cart is empty.") }}</p>
+    <p style="margin-top:16px;">
+      <a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+  </div>
+
+{% elif must_sign_in %}
+  <div class="cr-panel cr-empty">
+    <i class="fa-regular fa-user"></i>
+    <p>{{ _("Please sign in to place your order.") }}</p>
+    <p style="margin-top:6px;font-size:13.5px;">
+      {{ _("Your cart is saved and will still be here.") }}</p>
+    <p style="margin-top:16px;">
+      <a class="cr-btn" href="{{ login_url }}">{{ _("Sign in") }}</a>
+      <a class="cr-btn cr-btn-light" href="/login#signup"
+         style="margin-inline-start:10px;">{{ _("Create an account") }}</a></p>
+  </div>
+
+{% elif not methods %}
+  {#- No way to pay is a configuration problem, not a customer problem, so it
+      says what it is rather than showing a button that cannot work. -#}
+  <div class="cr-panel cr-empty">
+    <i class="fa-regular fa-credit-card"></i>
+    <p>{{ _("Online ordering is not available right now.") }}</p>
+    <p style="margin-top:6px;font-size:13.5px;">
+      {{ _("Please call us and we will take your order over the phone.") }}</p>
+  </div>
+
+{% else %}
+  {% if guest %}
+  <p class="cr-acc-sub">
+    <span>{{ _("Checking out as a guest.") }}</span>
+    <a href="{{ login_url }}">{{ _("Sign in instead") }}</a>
+    <span>{{ _("to use a saved address.") }}</span>
+  </p>
+  {% endif %}
+
+  <form id="cr-checkout-form" class="cr-check" autocomplete="on">
+    <div class="cr-check-main">
+
+      <div class="cr-panel">
+        <p class="cr-step">{{ _("1. Who the order is for") }}</p>
+        <p class="cr-step-note">
+          {{ _("We use this to send your invoice and to arrange fitting.") }}</p>
+
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="first_name">{{ _("First name") }}<span class="cr-req">*</span></label>
+            <input id="first_name" name="first_name" autocomplete="given-name"
+                   value="{{ known.first_name or '' }}" required>
+          </div>
+          <div class="cr-field">
+            <label for="last_name">{{ _("Last name") }}</label>
+            <input id="last_name" name="last_name" autocomplete="family-name"
+                   value="{{ known.last_name or '' }}">
+          </div>
+        </div>
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="email">{{ _("Email") }}<span class="cr-req">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email"
+                   value="{{ known.email or '' }}" required>
+          </div>
+          <div class="cr-field">
+            <label for="phone">{{ _("Phone") }}<span class="cr-req">*</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel"
+                   value="{{ known.phone or '' }}" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="cr-panel">
+        <p class="cr-step">{{ _("2. Billing details") }}</p>
+        <p class="cr-step-note">
+          {{ _("These go on your tax invoice. Leave the company fields empty if you are ordering as an individual.") }}</p>
+
+        <div class="cr-field">
+          <label for="company_name">{{ _("Company name") }}</label>
+          <input id="company_name" name="company_name" autocomplete="organization"
+                 value="{{ known.company_name or '' }}">
+        </div>
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="cr_number">{{ _("CR number") }}</label>
+            <input id="cr_number" name="cr_number" value="{{ known.cr_number or '' }}">
+            <span class="cr-hint">{{ _("Commercial Registration") }}</span>
+          </div>
+          <div class="cr-field">
+            <label for="tax_id">{{ _("VAT number") }}</label>
+            <input id="tax_id" name="tax_id" value="{{ known.tax_id or '' }}">
+            <span class="cr-hint">{{ _("15 digits") }}</span>
+          </div>
+        </div>
+
+        <div class="cr-field">
+          <label for="billing_address_line1">{{ _("Street address") }}<span class="cr-req">*</span></label>
+          <input id="billing_address_line1" name="billing_address_line1"
+                 autocomplete="address-line1"
+                 value="{{ known.billing.address_line1 if known.billing else '' }}" required>
+        </div>
+        <div class="cr-field">
+          <label for="billing_address_line2">{{ _("Building, floor, apartment") }}</label>
+          <input id="billing_address_line2" name="billing_address_line2"
+                 autocomplete="address-line2"
+                 value="{{ known.billing.address_line2 if known.billing else '' }}">
+        </div>
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="billing_city">{{ _("City") }}<span class="cr-req">*</span></label>
+            <input id="billing_city" name="billing_city" autocomplete="address-level2"
+                   value="{{ known.billing.city if known.billing else '' }}" required>
+          </div>
+          <div class="cr-field">
+            <label for="billing_state">{{ _("District / region") }}</label>
+            <input id="billing_state" name="billing_state"
+                   value="{{ known.billing.state if known.billing else '' }}">
+          </div>
+        </div>
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="billing_pincode">{{ _("Postal code") }}</label>
+            <input id="billing_pincode" name="billing_pincode" autocomplete="postal-code"
+                   value="{{ known.billing.pincode if known.billing else '' }}">
+          </div>
+          <div class="cr-field">
+            <label for="billing_national_address">
+              {{ _("National Address") }}
+              {% if national_address_required %}<span class="cr-req">*</span>{% endif %}
+            </label>
+            <input id="billing_national_address" name="billing_national_address"
+                   maxlength="9" placeholder="RRRD2929"
+                   style="text-transform:uppercase;"
+                   {% if national_address_required %}required{% endif %}>
+            <span class="cr-hint">{{ _("Four letters and four digits, from your National Address card.") }}</span>
+          </div>
+        </div>
+        <div class="cr-field">
+          <label for="billing_country">{{ _("Country") }}</label>
+          <select id="billing_country" name="billing_country">
+            {% for c in countries %}
+            <option value="{{ c }}"
+              {% if (known.billing and known.billing.country == c) or (not known.billing and c == 'Saudi Arabia') %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="cr-panel">
+        <p class="cr-step">{{ _("3. Where we deliver and fit") }}</p>
+
+        <label class="cr-same">
+          <input type="checkbox" id="ship_to_billing" name="ship_to_billing" checked>
+          <span>{{ _("Same as the billing address") }}</span>
+        </label>
+
+        <div id="cr-shipping" style="display:none;padding-top:8px;">
+          <div class="cr-field">
+            <label for="shipping_address_line1">{{ _("Street address") }}</label>
+            <input id="shipping_address_line1" name="shipping_address_line1"
+                   value="{{ known.shipping.address_line1 if known.shipping else '' }}">
+          </div>
+          <div class="cr-field">
+            <label for="shipping_address_line2">{{ _("Building, floor, apartment") }}</label>
+            <input id="shipping_address_line2" name="shipping_address_line2"
+                   value="{{ known.shipping.address_line2 if known.shipping else '' }}">
+          </div>
+          <div class="cr-grid">
+            <div class="cr-field">
+              <label for="shipping_city">{{ _("City") }}</label>
+              <input id="shipping_city" name="shipping_city"
+                     value="{{ known.shipping.city if known.shipping else '' }}">
+            </div>
+            <div class="cr-field">
+              <label for="shipping_state">{{ _("District / region") }}</label>
+              <input id="shipping_state" name="shipping_state"
+                     value="{{ known.shipping.state if known.shipping else '' }}">
+            </div>
+          </div>
+          <div class="cr-grid">
+            <div class="cr-field">
+              <label for="shipping_pincode">{{ _("Postal code") }}</label>
+              <input id="shipping_pincode" name="shipping_pincode"
+                     value="{{ known.shipping.pincode if known.shipping else '' }}">
+            </div>
+            <div class="cr-field">
+              <label for="shipping_national_address">{{ _("National Address") }}</label>
+              <input id="shipping_national_address" name="shipping_national_address"
+                     maxlength="9" placeholder="RRRD2929"
+                     style="text-transform:uppercase;">
+            </div>
+          </div>
+          <div class="cr-field">
+            <label for="shipping_country">{{ _("Country") }}</label>
+            <select id="shipping_country" name="shipping_country">
+              {% for c in countries %}
+              <option value="{{ c }}"
+                {% if (known.shipping and known.shipping.country == c) or (not known.shipping and c == 'Saudi Arabia') %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="cr-panel">
+        <p class="cr-step">{{ _("4. How you would like to pay") }}</p>
+        <div class="cr-choice">
+          {% for m in methods %}
+          <label>
+            <input type="radio" name="payment_method" value="{{ m.key }}"
+                   {% if loop.first %}checked{% endif %}>
+            <span class="cr-choice-body">
+              <span class="cr-choice-name">
+                <i class="{{ m.icon }}"></i> {{ m.label }}</span>
+              <span class="cr-choice-note">{{ m.note }}</span>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <aside class="cr-check-side">
+      <div class="cr-panel">
+        <p class="cr-step">{{ _("Your order") }}</p>
+        <ul class="cr-mini">
+          {% for i in items %}
+          <li>
+            <span>
+              <span class="cr-mini-name">{{ i.name or i.item_code }}</span>
+              <span class="cr-mini-qty">{{ _("Qty") }} {{ i.qty | int }}</span>
+            </span>
+            <span class="cr-mini-amount">{{ "%.2f"|format(i.amount) }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <p style="margin:6px 0 0;font-size:13px;">
+          <a href="/cart">{{ _("Edit cart") }}</a></p>
+      </div>
+
+      {% include "curtain_roll/templates/includes/totals.html" %}
+
+      <div class="cr-panel" style="padding:18px 20px;">
+        <button type="submit" class="cr-btn" id="cr-place"
+                style="width:100%;font-size:16px;padding:14px;">
+          {{ _("Place order") }}</button>
+        <p id="cr-place-msg" role="status"
+           style="margin:12px 0 0;font-size:13.5px;min-height:18px;"></p>
+      </div>
+    </aside>
+  </form>
+{% endif %}
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById("cr-checkout-form");
+  if (!form) { return; }
+
+  var note = document.getElementById("cr-place-msg");
+  var button = document.getElementById("cr-place");
+
+  function say(text, ok) {
+    note.textContent = text;
+    note.style.color = ok ? "#0a8a3c" : "#c0392b";
+  }
+
+  /* The delivery block is hidden, not removed, so a customer who ticks and
+     unticks the box does not lose what they typed. It is also not `required`
+     while hidden - the browser refuses to submit a form with an invalid field
+     it cannot scroll to, and does it without saying why. */
+  var same = document.getElementById("ship_to_billing");
+  var shipping = document.getElementById("cr-shipping");
+  function toggle() { shipping.style.display = same.checked ? "none" : ""; }
+  same.addEventListener("change", toggle);
+  toggle();
+
+  function post(method, body, retried) {
+    return fetch("/api/method/" + method, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Frappe-CSRF-Token": (window.frappe && window.frappe.csrf_token) || ""
+      },
+      body: JSON.stringify(body || {})
+    }).then(function (r) {
+      if (r.status === 400 && !retried) {
+        return fetch("/api/method/curtain_roll.api.csrf_token",
+                     { credentials: "same-origin" })
+          .then(function (t) { return t.json(); })
+          .then(function (t) {
+            window.frappe = window.frappe || {};
+            window.frappe.csrf_token = ((t && t.message) || {}).token || "";
+            return post(method, body, true);
+          });
+      }
+      return r.json().then(function (body) { return { ok: r.ok, body: body }; });
+    });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!form.reportValidity()) { return; }
+
+    var data = {};
+    new FormData(form).forEach(function (value, key) { data[key] = value; });
+    data.ship_to_billing = same.checked ? 1 : 0;
+
+    button.disabled = true;
+    say("{{ _('Placing your order…') }}", true);
+
+    post("curtain_roll.checkout.place", data)
+      .then(function (out) {
+        var msg = (out.body && out.body.message) || {};
+        if (out.ok && msg.ok && msg.redirect) {
+          /* Card orders leave the site here: the card form is ClickPay's,
+             which is what keeps this shop out of scope for card data. */
+          window.location = msg.redirect;
+          return;
+        }
+        button.disabled = false;
+        var why = "";
+        try {
+          why = JSON.parse(JSON.parse(out.body._server_messages)[0]).message;
+        } catch (err) { why = ""; }
+        say(why || "{{ _('Could not place the order. Please try again.') }}", false);
+      })
+      .catch(function () {
+        button.disabled = false;
+        say("{{ _('Network error. Please try again.') }}", false);
+      });
+  });
+})();
+</script>
+{% endblock %}

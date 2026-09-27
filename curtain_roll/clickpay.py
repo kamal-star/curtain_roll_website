@@ -117,10 +117,17 @@ def _post(path, payload):
 
 
 def create_payment(cart_id, amount, description, return_url, callback_url,
-                   currency="SAR", email=None, name=None, phone=None):
+                   currency="SAR", email=None, name=None, phone=None,
+                   billing=None):
 	"""Ask ClickPay for a payment page. Returns (tran_ref, redirect_url).
 
 	`amount` must come from the server's own pricing, never from the browser.
+
+	`billing` is the real billing address when there is one. Until the checkout
+	collected one there was nothing to send and the placeholders below went up
+	instead; a card issuer that checks the address against the card is more
+	likely to approve a payment that carries the customer's actual street than
+	one that carries a hyphen.
 	"""
 	cfg = settings()
 	payload = {
@@ -135,12 +142,17 @@ def create_payment(cart_id, amount, description, return_url, callback_url,
 		"callback": callback_url,
 	}
 	if email or name or phone:
+		where = billing or {}
 		payload["customer_details"] = {
 			"name": (name or "")[:60] or "Customer",
 			"email": email or "",
 			"phone": phone or "",
-			"street1": "-", "city": "-", "state": "-",
-			"country": "SA", "zip": "-",
+			# the gateway rejects an empty field, so an unknown one stays "-"
+			"street1": (where.get("street") or "-")[:100],
+			"city": (where.get("city") or "-")[:50],
+			"state": (where.get("state") or where.get("city") or "-")[:50],
+			"country": where.get("country") or "SA",
+			"zip": (where.get("zip") or "-")[:20],
 		}
 
 	status, body = _post(PAY_REQUEST, payload)
@@ -244,18 +256,33 @@ def _cart_quotation():
 
 @frappe.whitelist(methods=["POST"])
 def checkout():
-	"""Start a payment for the signed-in customer's cart."""
-	from curtain_roll import cart
+	"""Start a payment for the signed-in customer's cart.
 
+	The older path, still here for a customer who had already built a cart with
+	an account. Everything it does is in start_payment; checkout only decides
+	which quotation that is.
+	"""
 	if frappe.session.user == "Guest":
 		frappe.throw(_("Please sign in to pay."), frappe.PermissionError)
+	return start_payment(_cart_quotation())
 
-	quotation = _cart_quotation()
+
+def start_payment(quotation):
+	"""Ask ClickPay for a payment page for this quotation.
+
+	Takes the document rather than finding it, because by the time a guest
+	reaches this the order already exists and belongs to a Customer who has no
+	login to look it up by.
+	"""
+	from curtain_roll import cart
 
 	# Re-price before quoting an amount. The total comes from the document the
 	# server has just computed and never from anything the browser sent - the
 	# whole point being that the customer cannot choose what to be charged.
 	cart.reprice(quotation)
+	# through cart._save, which elevates for the write: saving reads the Item
+	# behind every line, and the customer standing here cannot read Items
+	cart._save(quotation)
 	quotation.reload()
 
 	amount = float(quotation.grand_total or 0)
@@ -280,14 +307,61 @@ def checkout():
 		return_url="%s/api/method/curtain_roll.clickpay.payment_return" % base,
 		callback_url="%s/api/method/curtain_roll.clickpay.callback" % base,
 		currency="SAR",
-		email=frappe.session.user if "@" in frappe.session.user else None,
-		name=frappe.db.get_value("User", frappe.session.user, "full_name"))
+		email=_payer_email(quotation),
+		name=_payer_name(quotation),
+		phone=(quotation.get("contact_mobile") or "").strip() or None,
+		billing=_billing_for(quotation))
 
 	frappe.db.set_value("Quotation", quotation.name,
 	                    {REF_FIELD: tran_ref, STATUS_FIELD: STARTED},
 	                    update_modified=False)
 	frappe.db.commit()
 	return {"ok": 1, "redirect_url": redirect_url, "tran_ref": tran_ref}
+
+
+def _billing_for(quotation):
+	"""The order's billing address in the shape ClickPay wants, or None.
+
+	Two letters for the country, because the gateway wants ISO and ERPNext
+	stores the name.
+	"""
+	name = quotation.get("customer_address")
+	if not name:
+		return None
+	row = frappe.db.get_value(
+		"Address", name,
+		["address_line1", "city", "state", "pincode", "country"], as_dict=True)
+	if not row:
+		return None
+	code = frappe.db.get_value("Country", row.country, "code") or "sa"
+	return {
+		"street": row.address_line1 or "",
+		"city": row.city or "",
+		"state": row.state or "",
+		"zip": row.pincode or "",
+		"country": code.upper(),
+	}
+
+
+def _payer_email(quotation):
+	"""Who the gateway should email the receipt to.
+
+	The email on the order, not the session's: a guest checkout has no session
+	user to read, and even for a signed-in customer the address they typed at
+	the checkout is the one they expect to hear on.
+	"""
+	email = (quotation.get("contact_email") or "").strip()
+	if email:
+		return email
+	user = frappe.session.user
+	return user if user and "@" in user else None
+
+
+def _payer_name(quotation):
+	return (quotation.get("customer_name")
+	        or frappe.db.get_value("Customer", quotation.party_name,
+	                               "customer_name")
+	        or None)
 
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
@@ -487,6 +561,11 @@ def _raise_invoice(quotation):
 	invoice.set_missing_values()
 	invoice.insert(ignore_permissions=True)
 	invoice.submit()
+
+	# Write the connection down now, because in a moment it is gone: ERPNext 16
+	# leaves nothing on the invoice pointing back at the quotation it came from.
+	frappe.db.set_value("Quotation", quotation.name, "cr_invoice", invoice.name,
+	                    update_modified=False)
 	return invoice
 
 

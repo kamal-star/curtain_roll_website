@@ -26,12 +26,17 @@ def csrf_token():
 	return {"token": (frappe.session.data.get("csrf_token") or "") if frappe.session else ""}
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def cart_set_qty(item_code=None, qty=0, row=None):
-	"""Change a cart line's quantity (0 removes it). Login required.
+	"""Change a cart line's quantity (0 removes it).
 
 	``row`` identifies the line. The same blind configured two ways shares an
 	item code, so ``item_code`` alone would change both lines.
+
+	Open to guests, because the cart itself is. What stops one visitor editing
+	another's basket is not a login but the cart cookie: cart.get_basket only
+	ever returns the cart this browser is carrying the token for, so a row name
+	belonging to somebody else's cart simply is not found.
 	"""
 	from curtain_roll import cart as cart_api
 

@@ -4,12 +4,18 @@ from curtain_roll.utils import get_products
 
 HOME_ROUTE = "home"
 
+# Set once, the first time the checkout settings are filled in. After that the
+# team owns those values and no deploy touches them again - see _seed_storefront.
+SEEDED_FLAG = "curtain_roll_checkout_seeded"
+
 
 def after_install():
 	"""Make the storefront live the moment the app is installed."""
 	_ensure_billing_contact_field()
 	_ensure_config_field()
 	_ensure_payment_fields()
+	_ensure_checkout_fields()
+	_ensure_vat_account()
 	_enable_signup()
 	_point_website_at_storefront()
 	_ensure_item_group()
@@ -119,6 +125,139 @@ def _ensure_payment_fields():
 		after = fieldname
 
 
+def _custom_field(doctype, fieldname, **spec):
+	"""One Custom Field, created once. Existing ones are left exactly as they are.
+
+	Never updated on a later migrate: a field the team has relabelled or moved
+	is theirs, and a deploy that silently puts it back is a deploy nobody can
+	work around.
+	"""
+	name = "%s-%s" % (doctype, fieldname)
+	if frappe.db.exists("Custom Field", name):
+		return name
+	if frappe.get_meta(doctype).has_field(fieldname):
+		return None  # a newer ERPNext already provides it
+	try:
+		doc = frappe.get_doc(dict(doctype="Custom Field", dt=doctype,
+		                          fieldname=fieldname, **spec))
+		doc.insert(ignore_permissions=True)
+		return doc.name
+	except Exception:
+		frappe.log_error(title="curtain_roll: custom field %s" % name)
+		return None
+
+
+def _ensure_checkout_fields():
+	"""What the checkout needs to record that ERPNext has no field for.
+
+	A Saudi invoice carries the buyer's National Address and, for a business,
+	its Commercial Registration number. ERPNext has the VAT number already
+	(Customer.tax_id) but neither of the other two, so they are added here
+	rather than crammed into a field meant for something else.
+	"""
+	_custom_field(
+		"Address", "national_address",
+		label="National Address", fieldtype="Data", length=16,
+		insert_after="pincode",
+		description="The Saudi short address, four letters and four digits, "
+		            "e.g. RRRD2929.")
+
+	# The second half of the ERPNext 16.35 / Frappe 16.34 mismatch that
+	# _ensure_billing_contact_field works around for Contact. ERPNext's
+	# accounts/party.py selects tax_category from the Address when it resolves
+	# a party's taxes, and Frappe 16.34's Address does not define it - so every
+	# checkout that sets a billing address dies on
+	# "Unknown column 'tax_category' in 'SELECT'", after the customer has typed
+	# everything in. Same fix, same reason: create the column without patching
+	# core, and delete the Custom Field once Frappe ships the field.
+	_custom_field(
+		"Address", "tax_category",
+		label="Tax Category", fieldtype="Link", options="Tax Category",
+		insert_after="country",
+		description="Added by curtain_roll for ERPNext 16.35 on Frappe 16.34.")
+
+	_custom_field(
+		"Customer", "cr_number",
+		label="CR Number", fieldtype="Data", length=40,
+		insert_after="tax_id",
+		description="Commercial Registration number, printed on the invoice for "
+		            "business customers.")
+
+	_custom_field(
+		"Quotation", "cr_payment_method",
+		label="Paid By", fieldtype="Data", read_only=1, no_copy=1, print_hide=1,
+		insert_after="clickpay_tran_ref",
+		description="card or bank, as chosen at the checkout.")
+
+	# ERPNext 16 makes a Sales Invoice from a Quotation and keeps no reference
+	# back: there is no prevdoc_docname on Sales Invoice Item any more, and no
+	# link field to a Quotation at all. So the only moment the connection is
+	# known is the moment the invoice is made, and if it is not written down
+	# then it cannot be recovered - not by the confirmation page, not by the
+	# team looking at an order and asking what it was billed as.
+	_custom_field(
+		"Quotation", "cr_invoice",
+		label="Invoice", fieldtype="Link", options="Sales Invoice",
+		read_only=1, no_copy=1, insert_after="cr_payment_method",
+		description="The tax invoice raised for this order.")
+
+	_custom_field(
+		"Quotation", "cr_access_key",
+		label="Order Access Key", fieldtype="Data", read_only=1, no_copy=1,
+		print_hide=1, hidden=1, insert_after="cr_payment_method",
+		description="Lets the person who placed this order reopen its "
+		            "confirmation page without an account.")
+
+
+def vat_account_for(company):
+	"""The account VAT is posted to for this company, created once if absent.
+
+	Returns None rather than throwing when the chart of accounts has nowhere
+	sensible to put it: a site with no tax set up should sell curtains without
+	a tax line, not fail at the checkout.
+	"""
+	if not company:
+		return None
+
+	existing = frappe.db.get_value("Account", {
+		"company": company, "account_type": "Tax", "is_group": 0,
+		"account_name": ["like", "%VAT%"]}, "name")
+	if existing:
+		return existing
+
+	parent = frappe.db.get_value("Account", {
+		"company": company, "is_group": 1,
+		"account_name": ["in", ("Duties and Taxes", "Tax Assets",
+		                        "Current Liabilities")]}, "name")
+	if not parent:
+		return None
+
+	try:
+		account = frappe.get_doc({
+			"doctype": "Account",
+			"account_name": "VAT",
+			"parent_account": parent,
+			"company": company,
+			"account_type": "Tax",
+			"root_type": "Liability",
+			"is_group": 0,
+		})
+		account.flags.ignore_permissions = True
+		account.insert(ignore_permissions=True)
+		return account.name
+	except Exception:
+		frappe.log_error(title="curtain_roll: VAT account for %s" % company)
+		return None
+
+
+def _ensure_vat_account():
+	"""Make the VAT account on install, so the first order does not have to."""
+	company = frappe.defaults.get_global_default("company") \
+		or frappe.db.get_value("Company", {}, "name")
+	if company:
+		vat_account_for(company)
+
+
 def _ensure_config_field():
 	"""Remember each cart line's configuration on the line itself.
 
@@ -199,6 +338,8 @@ def after_migrate():
 	"""
 	_ensure_config_field()
 	_ensure_payment_fields()
+	_ensure_checkout_fields()
+	_ensure_vat_account()
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
@@ -225,9 +366,31 @@ def _seed_storefront():
 
 	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
-	              "collections_description"):
+	              "collections_description",
+	              "bank_name", "bank_account_name", "bank_iban",
+	              "bank_instructions"):
 		if not (doc.get(plain) or "").strip():
 			doc.set(plain, DEFAULTS.get(plain) or "")
+
+	# Ticks and numbers cannot be seeded the way the text fields above are.
+	# An unticked box is 0 and a rate of 0% is 0, so "off" and "never chosen"
+	# read identically - and the DocType's own default does not help either: it
+	# applies when a document is created, and this Single was created long
+	# before these fields existed, so its first save after an update writes 0
+	# into every one of them.
+	#
+	# Which means there is no way to ask the record whether anyone has answered.
+	# So the answer is recorded outside it, once, and after that the settings
+	# belong entirely to the team - including a VAT rate they have deliberately
+	# set to 0. A flag is clumsier than reading the data, and it is the only
+	# version of this that cannot silently reset a client's tax rate.
+	if not frappe.db.get_default(SEEDED_FLAG):
+		for switch in ("vat_rate", "prices_include_vat", "card_enabled",
+		               "bank_transfer_enabled", "guest_checkout",
+		               "require_national_address"):
+			doc.set(switch, DEFAULTS.get(switch))
+			filled.append(switch)
+		frappe.db.set_default(SEEDED_FLAG, "1")
 
 	tables = (("nav_items", "Curtain Nav Item", ("label", "route", "icon")),
 	          ("slides", "Curtain Hero Slide", ("image", "alt_text", "link")),

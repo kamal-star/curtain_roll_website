@@ -28,6 +28,19 @@ DEFAULTS = {
  "collections_eyebrow": "Curated Collections",
  "collections_heading": "Architectural Blinds & Shades",
  "collections_description": "Engineered to balance privacy, thermal protection, and contemporary design for upscale homes and workspaces.",
+ # Checkout. The tax default matters: every price on this site was written with
+ # VAT already in it, so inclusive is the only default that leaves the totals
+ # where the customer last saw them.
+ "vat_rate": 15,
+ "prices_include_vat": 1,
+ "card_enabled": 1,
+ "bank_transfer_enabled": 0,
+ "bank_name": "",
+ "bank_account_name": "",
+ "bank_iban": "",
+ "bank_instructions": "",
+ "guest_checkout": 1,
+ "require_national_address": 0,
  "nav_items": [
   {
    "label": "Home",
@@ -235,10 +248,23 @@ def storefront_settings():
 
 	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
-	              "collections_description"):
+	              "collections_description",
+	              "bank_name", "bank_account_name", "bank_iban",
+	              "bank_instructions"):
 		value = (doc.get(plain) or "").strip()
 		if value:
 			data[plain] = value
+
+	# Ticks and numbers, which cannot go through the loop above: an unticked box
+	# is 0, and `0 or ""` is falsy, so "off" would read as "never set" and fall
+	# back to the default - leaving a setting the client has deliberately turned
+	# off still on. They are read as-is, and only a genuinely absent field keeps
+	# its default.
+	for switch in ("vat_rate", "prices_include_vat", "card_enabled",
+	               "bank_transfer_enabled", "guest_checkout",
+	               "require_national_address"):
+		if doc.get(switch) is not None:
+			data[switch] = doc.get(switch)
 
 	nav = _rows(doc, "nav_items", ("label", "route", "icon"))
 	if nav:
