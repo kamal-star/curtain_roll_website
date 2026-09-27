@@ -507,6 +507,11 @@ def _riyal_tag():
 	return '<script src="%s"></script>' % _asset("js/curtain_riyal.js")
 
 
+def _auth_tag():
+	"""Login links that bring the customer back to the page they were on."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_auth.js")
+
+
 def _options_tag():
 	"""The product page's size limits and section switches, same ride again."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
@@ -564,7 +569,8 @@ def _add_chrome(html):
 	if "curtain_lang.js" in html:
 		return html
 
-	tag = _switcher_tag() + _search_tag() + _options_tag() + _riyal_tag()
+	tag = (_switcher_tag() + _search_tag() + _options_tag() + _auth_tag()
+	       + _riyal_tag())
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")

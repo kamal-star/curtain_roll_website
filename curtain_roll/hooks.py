@@ -28,7 +28,13 @@ jinja = {
 # ---------------------------------------------------------------- renderers
 # The ported Journal3 pages still call OpenCart's /index.php endpoints. Without
 # this the theme alert()s Frappe's HTML 404 page at the visitor.
-page_renderer = ["curtain_roll.renderers.OpenCartStub"]
+page_renderer = [
+	"curtain_roll.renderers.OpenCartStub",
+	# /logout signs out and lands on the home page; /login passes a signed-in
+	# visitor on with a redirect browsers do not cache. See renderers.py.
+	"curtain_roll.renderers.SignOut",
+	"curtain_roll.renderers.SignedInLogin",
+]
 
 # ClickPay redirects the customer's browser back to us with a POST. That POST
 # carries their session cookie but no CSRF token, because it originates on

@@ -78,3 +78,81 @@ class OpenCartStub(BaseRenderer):
 			status=200,
 			mimetype="application/json",
 		)
+
+
+# --------------------------------------------------------- signing in and out
+def _safe_target(raw, fallback="/"):
+	"""Where to send the browser next, if it is somewhere on this site.
+
+	Only a path on this site is accepted: `/blackout` yes, `//evil.example`
+	and `https://evil.example` no. Otherwise a link to our own login page could
+	be used to bounce a customer, freshly signed in, to anybody's site.
+	"""
+	target = (raw or "").strip()
+	if not target.startswith("/") or target.startswith("//") or "\\" in target:
+		return fallback
+	# never back to the pages that caused the loop in the first place
+	if target.split("?")[0].rstrip("/") in ("/login", "/logout"):
+		return fallback
+	return target
+
+
+def _see_other(target):
+	"""A temporary redirect that no browser keeps.
+
+	302, never 301: a 301 is "moved permanently", and browsers remember it. Frappe
+	answered a signed-in visitor at /login with a 301 to the home page, so after
+	one visit the browser went on skipping the login form by itself - signed out
+	or not - and the customer clicked Login and found themselves where they were.
+	"""
+	response = Response(status=302)
+	response.headers["Location"] = target
+	response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+	return response
+
+
+class SignOut(BaseRenderer):
+	"""/logout: sign out and land on the home page, in one request.
+
+	Frappe's /logout is a page whose script signs out and then sends the browser
+	to /login. So a customer who logged out was left on a login form - and
+	pressing Back from there went to /logout again, which signed them out again
+	and sent them straight back to /login. Back did nothing, however many times
+	it was pressed.
+
+	Here the sign-out happens on the server and the answer is a redirect to the
+	home page. /logout never becomes a page, so it never enters the history,
+	and Back goes to wherever the customer really was.
+	"""
+
+	def can_render(self):
+		return self.path == "logout"
+
+	def render(self):
+		if frappe.session.user != "Guest":
+			try:
+				frappe.local.login_manager.logout()
+				frappe.db.commit()
+			except Exception:
+				frappe.log_error(title="curtain_roll: sign out",
+				                 message=frappe.get_traceback())
+		return _see_other("/")
+
+
+class SignedInLogin(BaseRenderer):
+	"""/login for someone already signed in: send them on, temporarily.
+
+	Frappe does the same, but with a 301 - see _see_other for what that did.
+	This is also what makes Back after logging in behave: it arrives here, and
+	is passed on to the page they came from rather than to the home page.
+	"""
+
+	def can_render(self):
+		return self.path == "login" and frappe.session.user != "Guest"
+
+	def render(self):
+		asked = frappe.form_dict.get("redirect-to")
+		if not asked:
+			req = getattr(frappe.local, "request", None)
+			asked = req.args.get("redirect-to") if req is not None else None
+		return _see_other(_safe_target(asked))
