@@ -569,7 +569,14 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "Width can be at most {0} cm.",
                    "Height can be at most {0} cm.",
                    # the choices under Manual / Motorized, when no motor fits
-                   "No {0} is available for this size. Please contact us.")
+                   "No {0} is available for this size. Please contact us.",
+                   # the Printed blind's upload step, drawn by the script
+                   "Your Picture", "Upload a picture", "Choose another",
+                   "JPG, PNG or PDF, up to 20 MB. It is printed across the whole blind.",
+                   "Please upload a JPG, PNG or PDF file.",
+                   "That file is too large. The limit is 20 MB.",
+                   "Preparing the preview…", "Uploaded",
+                   "The picture could not be uploaded. Please try again.")
 
 
 def _runtime_phrases():

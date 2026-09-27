@@ -15,6 +15,7 @@
   "enabled",
   "show_material",
   "show_motor",
+  "allow_upload",
   "item_code",
   "section_base",
   "pricing_mode",
@@ -264,6 +265,12 @@
    "fieldtype": "Table",
    "label": "Choices",
    "options": "Curtain Sub Option"
+  },
+  {
+   "fieldname": "allow_upload",
+   "fieldtype": "Check",
+   "label": "Customer Uploads a Picture to Print",
+   "description": "Adds an upload step - JPG, PNG or PDF - whose picture is shown on the blind in the 3D room and attached to the order for printing. The customer must upload one before adding to the cart."
   }
  ],
  "index_web_pages_for_search": 1,

@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 745,
-  "translated": 738,
+  "total": 759,
+  "translated": 752,
   "remaining": 7
  },
  "strings": {
@@ -750,6 +750,20 @@
   "Please choose the {0}.": "يرجى اختيار {0}.",
   "Handle Type": "نوع المقبض",
   "Motor Type": "نوع المحرك",
-  "Motor Position": "موضع المحرك"
+  "Motor Position": "موضع المحرك",
+  "Your Picture": "صورتك",
+  "Upload a picture": "ارفع صورة",
+  "Choose another": "اختر صورة أخرى",
+  "JPG, PNG or PDF, up to 20 MB. It is printed across the whole blind.": "بصيغة JPG أو PNG أو PDF، بحد أقصى 20 ميجابايت. تُطبع على كامل الستارة.",
+  "Please upload a JPG, PNG or PDF file.": "يرجى رفع ملف بصيغة JPG أو PNG أو PDF.",
+  "That file is too large. The limit is 20 MB.": "الملف كبير جدًا. الحد الأقصى 20 ميجابايت.",
+  "Preparing the preview…": "جارٍ تجهيز المعاينة…",
+  "Uploaded": "تم الرفع",
+  "The picture could not be uploaded. Please try again.": "تعذّر رفع الصورة. يرجى المحاولة مرة أخرى.",
+  "Please choose a picture to upload.": "يرجى اختيار صورة لرفعها.",
+  "Please upload the picture to print.": "يرجى رفع الصورة المراد طباعتها.",
+  "Please upload the picture again.": "يرجى رفع الصورة مرة أخرى.",
+  "Picture to print": "الصورة المطلوب طباعتها",
+  "That PDF could not be read. Please save it again, or send the picture as a JPG or PNG.": "تعذّرت قراءة ملف PDF. يرجى حفظه مرة أخرى، أو إرسال الصورة بصيغة JPG أو PNG."
  }
 }

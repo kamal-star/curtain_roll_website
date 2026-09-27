@@ -539,11 +539,8 @@ def build_quotation(customer, billing, shipping, person, method):
 
 
 def _retire_guest_cart(basket, quotation_name):
-	"""The guest cart has become an order; move its renders and let it go."""
-	for url in frappe.get_all(
-			"File", filters={"attached_to_doctype": cart.GUEST_DOCTYPE,
-			                 "attached_to_name": basket.name}, pluck="file_url"):
-		cart.attach_render(quotation_name, url)
+	"""The guest cart has become an order; move its files and let it go."""
+	cart.move_attachments(cart.GUEST_DOCTYPE, basket.name, quotation_name)
 	frappe.db.set_value(cart.GUEST_DOCTYPE, basket.name, "claimed_by",
 	                    quotation_name, update_modified=False)
 	frappe.delete_doc(cart.GUEST_DOCTYPE, basket.name, force=True,

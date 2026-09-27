@@ -300,6 +300,19 @@ def _seed_sub_options():
 	frappe.db.set_default(SUB_OPTIONS_FLAG, "1")
 
 
+PRINT_UPLOAD_FLAG = "curtain_roll_print_upload_seeded"
+
+
+def _seed_print_upload():
+	"""Turn the picture upload on for the Printed blind, once."""
+	if frappe.db.get_default(PRINT_UPLOAD_FLAG):
+		return
+	if frappe.db.exists("Curtain Product", "printed"):
+		frappe.db.set_value("Curtain Product", "printed", "allow_upload", 1)
+		print("  picture upload turned on for printed")
+	frappe.db.set_default(PRINT_UPLOAD_FLAG, "1")
+
+
 def _ensure_config_field():
 	"""Remember each cart line's configuration on the line itself.
 
@@ -386,6 +399,7 @@ def after_migrate():
 	_ensure_items()
 	_seed_pricing()
 	_seed_sub_options()
+	_seed_print_upload()
 	_seed_translations()
 	_seed_storefront()
 

@@ -131,6 +131,16 @@ def describe_options(product_key, form, labels=None):
 			if entry:
 				lines.append("%s: %s" % (entry["group"], entry["label"]))
 
+	# the customer's own picture, for a printed blind - named so the team can
+	# match the line to the file attached to the order
+	token = submitted("cr_print")
+	if token:
+		from curtain_roll import print_upload
+
+		shown = print_upload.original_name(token)
+		if shown:
+			lines.append("Picture to print: %s" % shown)
+
 	return lines, captured
 
 
@@ -191,6 +201,23 @@ def attach_render(quotation_name, file_url, doctype="Quotation"):
 		return None
 
 
+def move_attachments(from_doctype, from_name, quotation_name):
+	"""Re-hang every file from a guest cart on the quotation it became.
+
+	In place, on the same File row. attach_render - which this used to go
+	through - makes a NEW File row for a file that is already attached
+	elsewhere, and makes it public: harmless for a render of the configurator,
+	not for a customer's own photo sent in to be printed, which is private and
+	must stay so.
+	"""
+	for name in frappe.get_all("File", filters={"attached_to_doctype": from_doctype,
+	                                            "attached_to_name": from_name},
+	                           pluck="name"):
+		frappe.db.set_value("File", name, {"attached_to_doctype": "Quotation",
+		                                   "attached_to_name": quotation_name},
+		                    update_modified=False)
+
+
 # ------------------------------------------------- configuration on the line
 CONFIG_FIELD = "curtain_config"
 
@@ -209,7 +236,7 @@ def capture_config(entry, form):
 			# cr_sub[...] too: the handle, side and motor are priced like any
 			# option, and a line re-priced later without them would silently
 			# drop the motor from the bill
-			if str(key).startswith(("option[", "cr_sub[")):
+			if str(key).startswith(("option[", "cr_sub[", "cr_print")):
 				options[str(key)] = value
 	except Exception:
 		pass
@@ -563,6 +590,13 @@ def add(args, form):
 	if captured:
 		attach_render(quotation.name, captured, quotation.doctype)
 
+	print_token = form.get("cr_print") or args.get("cr_print")
+	if print_token:
+		from curtain_roll import print_upload
+
+		if print_upload.attach(print_token, quotation.doctype, quotation.name):
+			frappe.db.commit()
+
 	return {
 		"success": "Added <b>%s</b> to your cart." % frappe.utils.escape_html(entry["name"]),
 		"total": _total_text(quotation),
@@ -757,12 +791,9 @@ def claim_guest_cart():
 		reprice(quotation)
 		_save(quotation)
 
-		# the configurator renders were hanging off the guest cart; they belong
-		# to the quotation now, or they vanish with the row below
-		for attached in frappe.get_all(
-				"File", filters={"attached_to_doctype": GUEST_DOCTYPE,
-				                 "attached_to_name": token}, pluck="file_url"):
-			attach_render(quotation.name, attached)
+		# the renders and any picture to print were hanging off the guest cart;
+		# they belong to the quotation now, or they vanish with the row below
+		move_attachments(GUEST_DOCTYPE, token, quotation.name)
 
 		if guest.get("coupon_code") and not quotation.get("coupon_code"):
 			frappe.db.set_value("Quotation", quotation.name, "coupon_code",

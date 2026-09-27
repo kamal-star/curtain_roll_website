@@ -294,6 +294,265 @@
     refresh();
   }
 
+  // ------------------------------------------- the customer's own picture
+  /* For a printed blind: an upload step, the picture on the blind in the 3D
+     room, and the original file sent to the server for the team to print.
+
+     The captured 3D bundle has no way to take a picture - its modelchanger()
+     ignores one under every group name tried - so the picture is put on the
+     blind's fabric (the Valance_Front mesh) with three.js directly. Two things
+     measured on the model decide how:
+
+       * its texture runs upside down: a picture's top lands at the bottom, left
+         and right correct - so the texture is not flipped on upload.
+       * the 3D blind keeps the same shape whatever size is typed; it always
+         fills the room's window. So the picture is cropped to the blind as
+         SHOWN - cover, centred, never stretched - and the team prints the
+         original at the ordered size.
+
+     A PDF is drawn from its first page, with pdf.js, fetched only when a PDF
+     is actually chosen - no one else pays for it. */
+  var PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  var MAX_MB = 20;
+  var printed = null;           // { tex, aspect } once a picture is on the blind
+
+  function blindMesh() {
+    return window.scene && window.scene.getObjectByName &&
+      window.scene.getObjectByName("Valance_Front");
+  }
+
+  function fitPicture() {
+    var mesh = blindMesh();
+    if (!printed || !mesh || !window.THREE) return;
+    var g = mesh.geometry;
+    if (!g.boundingBox) g.computeBoundingBox();
+    var b = g.boundingBox, s = new window.THREE.Vector3();
+    mesh.getWorldScale(s);
+    var shown = ((b.max.x - b.min.x) * s.x) / ((b.max.z - b.min.z) * s.z || 1);
+    var t = printed.tex;
+    t.repeat.set(1, 1);
+    t.offset.set(0, 0);
+    if (printed.aspect > shown) {          // wider than the blind: crop the sides
+      t.repeat.x = shown / printed.aspect;
+      t.offset.x = (1 - t.repeat.x) / 2;
+    } else {                               // taller: crop top and bottom
+      t.repeat.y = printed.aspect / shown;
+      t.offset.y = (1 - t.repeat.y) / 2;
+    }
+  }
+
+  function paintPicture() {
+    var mesh = blindMesh();
+    if (!printed || !mesh) return;
+    var m = mesh.material;
+    if (m.map !== printed.tex) {
+      m.map = printed.tex;
+      if (m.color) m.color.set(0xffffff);
+      m.needsUpdate = true;
+    }
+    fitPicture();
+    if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+  }
+
+  function showOnBlind(canvas) {
+    var T = window.THREE;
+    if (!T || !blindMesh()) return false;
+    var tex = new T.CanvasTexture(canvas);
+    tex.flipY = false;                     // the model's fabric runs upside down
+    if (T.sRGBEncoding) tex.encoding = T.sRGBEncoding;
+    printed = { tex: tex, aspect: canvas.width / canvas.height };
+    paintPicture();
+    return true;
+  }
+
+  function loadScript(src) {
+    return new Promise(function (ok, bad) {
+      var s = document.createElement("script");
+      s.src = src; s.onload = ok; s.onerror = bad;
+      document.head.appendChild(s);
+    });
+  }
+
+  /* Draw the chosen file onto a canvas no larger than 2048px on its long side:
+     a phone photo is 12 megapixels, and a texture that size costs every
+     visitor's graphics memory for no visible gain. */
+  function toCanvas(file) {
+    var LIMIT = 2048;
+    function sized(w, h) {
+      var k = Math.min(1, LIMIT / Math.max(w, h));
+      var c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(w * k));
+      c.height = Math.max(1, Math.round(h * k));
+      return c;
+    }
+    if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) {
+      var ready = window.pdfjsLib ? Promise.resolve() :
+        loadScript(PDFJS + "pdf.min.js").then(function () {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js";
+        });
+      return ready
+        .then(function () { return file.arrayBuffer(); })
+        .then(function (data) { return window.pdfjsLib.getDocument({ data: data }).promise; })
+        .then(function (pdf) { return pdf.getPage(1); })
+        .then(function (page) {
+          var base = page.getViewport({ scale: 1 });
+          var scale = Math.min(4, LIMIT / Math.max(base.width, base.height));
+          var view = page.getViewport({ scale: scale });
+          var c = sized(view.width, view.height);
+          return page.render({ canvasContext: c.getContext("2d"), viewport: view })
+            .promise.then(function () { return c; });
+        });
+    }
+    return new Promise(function (ok, bad) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var c = sized(img.naturalWidth, img.naturalHeight);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        ok(c);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); bad(new Error("image")); };
+      img.src = url;
+    });
+  }
+
+  function sendFile(file, retried) {
+    var body = new FormData();
+    body.append("file", file, file.name);
+    return fetch("/api/method/curtain_roll.print_upload.upload", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "X-Frappe-CSRF-Token": (window.frappe && window.frappe.csrf_token) || "" },
+      body: body
+    }).then(function (r) {
+      // a stale token from a page left open: fetch a fresh one, try once more
+      if (r.status === 400 && !retried) {
+        return fetch("/api/method/curtain_roll.api.csrf_token", { credentials: "same-origin" })
+          .then(function (t) { return t.json(); })
+          .then(function (t) {
+            window.frappe = window.frappe || {};
+            window.frappe.csrf_token = ((t && t.message) || {}).token || "";
+            return sendFile(file, true);
+          });
+      }
+      return r.json().then(function (j) {
+        if (r.ok && j.message && j.message.token) return j.message;
+        var why = "";
+        try { why = JSON.parse(JSON.parse(j._server_messages)[0]).message; } catch (e) { why = ""; }
+        throw new Error(why || say("The picture could not be uploaded. Please try again."));
+      });
+    });
+  }
+
+  function printUpload(spec) {
+    if (!spec.allow_upload) return;
+    var sizeBox = document.querySelector('input[name^="option["][name$="[width]"]');
+    var sizeCard = cardOf(sizeBox);
+    if (!sizeCard) return;
+
+    var card = document.createElement("div");
+    card.className = "option-card cr-print-card";
+    card.innerHTML =
+      '<div class="option-header"><h4><span class="option-step-number">1</span> ' +
+      '<span class="cr-print-title"></span></h4></div>' +
+      '<div class="cr-print-body" id="input-optioncrprint">' +
+      '<input type="file" class="cr-print-file" hidden ' +
+      'accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf">' +
+      '<input type="hidden" name="cr_print" value="">' +
+      '<button type="button" class="cr-print-pick"><i class="fa-solid fa-cloud-arrow-up"></i> ' +
+      '<span></span></button>' +
+      '<div class="cr-print-chosen" hidden><img alt=""><div class="cr-print-meta">' +
+      '<b class="cr-print-name"></b><span class="cr-print-state"></span>' +
+      '<button type="button" class="cr-print-change"></button></div></div>' +
+      '<p class="cr-print-note"></p></div>';
+    card.querySelector(".cr-print-title").textContent = say("Your Picture");
+    card.querySelector(".cr-print-pick span").textContent = say("Upload a picture");
+    card.querySelector(".cr-print-change").textContent = say("Choose another");
+    card.querySelector(".cr-print-note").textContent =
+      say("JPG, PNG or PDF, up to 20 MB. It is printed across the whole blind.");
+    sizeCard.parentNode.insertBefore(card, sizeCard);
+
+    var fileInput = card.querySelector(".cr-print-file");
+    var token = card.querySelector('input[name="cr_print"]');
+    var pick = card.querySelector(".cr-print-pick");
+    var chosen = card.querySelector(".cr-print-chosen");
+    var thumb = chosen.querySelector("img");
+    var state = card.querySelector(".cr-print-state");
+
+    function status(text, bad) {
+      state.textContent = text;
+      state.className = "cr-print-state" + (bad ? " cr-print-bad" : "");
+    }
+    function open() { fileInput.value = ""; fileInput.click(); }
+    pick.addEventListener("click", open);
+    card.querySelector(".cr-print-change").addEventListener("click", open);
+
+    fileInput.addEventListener("change", function () {
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      if (!/\.(jpe?g|png|pdf)$/i.test(file.name)) {
+        pick.hidden = false; chosen.hidden = true;
+        card.querySelector(".cr-print-note").textContent = say("Please upload a JPG, PNG or PDF file.");
+        return;
+      }
+      if (file.size > MAX_MB * 1024 * 1024) {
+        card.querySelector(".cr-print-note").textContent =
+          say("That file is too large. The limit is 20 MB.");
+        return;
+      }
+      token.value = "";                    // the old picture no longer counts
+      pick.hidden = true;
+      chosen.hidden = false;
+      chosen.querySelector(".cr-print-name").textContent = file.name;
+      thumb.removeAttribute("src");
+      status(say("Preparing the preview…"));
+
+      var preview = toCanvas(file).then(function (canvas) {
+        thumb.src = canvas.toDataURL("image/jpeg", 0.7);
+        showOnBlind(canvas);
+      });
+      var upload = sendFile(file).then(function (answer) {
+        token.value = answer.token;
+      });
+      Promise.all([preview, upload]).then(function () {
+        status(say("Uploaded"));
+        if (window.jQuery) window.jQuery("#product").trigger("change");
+      }).catch(function (err) {
+        status((err && err.message) || say("The picture could not be uploaded. Please try again."), true);
+      });
+    });
+
+    // the bundle redraws the blind when options change; put the picture back
+    if (window.jQuery) window.jQuery("#product").on("change", function () { setTimeout(paintPicture, 300); });
+    setInterval(paintPicture, 1500);
+    printStyle();
+  }
+
+  function printStyle() {
+    if (document.getElementById("cr-print-style")) return;
+    var css = document.createElement("style");
+    css.id = "cr-print-style";
+    css.textContent =
+      ".cr-print-pick{display:flex;align-items:center;justify-content:center;gap:10px;" +
+      "width:100%;padding:18px;border:2px dashed var(--brand,#09446c);border-radius:14px;" +
+      "background:var(--brand-light,#eaf3f8);color:var(--brand,#09446c);font:inherit;" +
+      "font-weight:700;font-size:14.5px;cursor:pointer}" +
+      ".cr-print-pick:hover{background:#dcebf4}" +
+      ".cr-print-chosen{display:flex;gap:12px;align-items:center}" +
+      ".cr-print-chosen[hidden],.cr-print-pick[hidden]{display:none}" +
+      ".cr-print-chosen img{width:84px;height:60px;object-fit:cover;border-radius:8px;" +
+      "border:1px solid var(--border,#e1ebf2);background:#f2f5f8;flex:none}" +
+      ".cr-print-meta{display:flex;flex-direction:column;gap:3px;min-width:0}" +
+      ".cr-print-name{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +
+      ".cr-print-state{font-size:12.5px;color:#0a8a3c;font-weight:600}" +
+      ".cr-print-state.cr-print-bad{color:#c0392b}" +
+      ".cr-print-change{align-self:flex-start;border:0;background:none;padding:0;" +
+      "color:var(--brand,#09446c);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer}" +
+      ".cr-print-note{margin:10px 0 0;font-size:12px;color:var(--text-muted,#54667a)}";
+    document.head.appendChild(css);
+  }
+
   function subStyle() {
     if (document.getElementById("cr-sub-style")) return;
     var css = document.createElement("style");
@@ -338,6 +597,7 @@
       hideGroup(spec.material_group);
     }
     subOptions(spec);
+    printUpload(spec);
     renumber();
     // after the page's own script has had its turn at disabling rows
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 400);

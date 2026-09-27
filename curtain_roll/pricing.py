@@ -249,6 +249,7 @@ def get_spec(product_key):
 		"limits": limits,
 		"show_material": show_material,
 		"show_motor": show_motor,
+		"allow_upload": bool(cint(doc.get("allow_upload"))),
 		"min_billable_sqm": flt(doc.min_billable_sqm) or 0.0,
 		"rounding": cint(doc.rounding) or 2,
 		"pricing_mode": doc.pricing_mode or "Base Rate",
@@ -691,6 +692,21 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 			if extra:
 				lines.append(("%s (%s)" % (entry["label"], group), extra))
 
+	# ---- the customer's own picture, for a printed blind
+	if spec.get("allow_upload"):
+		from curtain_roll import print_upload
+		from curtain_roll.language import text as say
+
+		token = submitted("cr_print")
+		if not token:
+			if strict:
+				errors["crprint"] = say("Please upload the picture to print.")
+			else:
+				partial = True
+		elif not print_upload.verify(token):
+			# a token we did not issue - someone else's file, or a made-up one
+			errors["crprint"] = say("Please upload the picture again.")
+
 	precision = spec["rounding"]
 	unit = flt(sum(amount for _label, amount in lines), precision)
 
@@ -804,6 +820,7 @@ def get_pricing(product_key=None):
 		"material_group": spec.get("material_group"),
 		# the choices under Manual / Motorized, drawn by curtain_options.js
 		"control_group": spec.get("control_group"),
+		"allow_upload": spec.get("allow_upload", False),
 		"sub_options": _sub_options_for_page(spec),
 	}
 
