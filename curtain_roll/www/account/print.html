@@ -24,7 +24,9 @@
     }
   </style>
 </head>
-<body>
+{#- data-no-sar: this page is the invoice, and it keeps the currency
+    exactly as ERPNext prints it - the same as the PDF of it. -#}
+<body data-no-sar>
   {%- if body %}
   <div class="cr-print-bar">
     <span>{{ doc_name }}</span>

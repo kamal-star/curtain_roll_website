@@ -47,6 +47,12 @@ before_request = [
 # place, so a page added later is covered without anyone wiring it up.
 after_request = ["curtain_roll.language.finish_page"]
 
+# The storefront templates' `_()` asks the client's dictionary before ERPNext's.
+# Without it ERPNext's accounting vocabulary wins - "Total" read as "total
+# excluding tax" above a VAT-inclusive total - and the client's own corrections
+# in Curtain Translation lose to it. See language.storefront_translate.
+update_website_context = ["curtain_roll.language.website_context"]
+
 # A basket filled before signing in belongs to the person who filled it. Without
 # this, signing in at the checkout - to use a saved address, say - empties the
 # cart they were about to pay for.

@@ -257,6 +257,43 @@ def text(english):
 	return phrases().get(" ".join((english or "").split()), english)
 
 
+def storefront_translate(msg, lang=None, context=None):
+	"""`_()` for the storefront's own templates: the client's dictionary first.
+
+	The templates translate with `{{ _("...") }}`, and Frappe's `_()` looks in
+	the app catalogues - ERPNext's Arabic among them - before anything of ours
+	is consulted. Where ERPNext has a word, it wins, and ERPNext's words are
+	chosen for accounting screens: "Total" there is the pre-tax total, so it
+	comes out as "الاجمالي غير شامل الضريبة" - "total excluding tax" - printed
+	above a total that includes it. "Checkout" became "payment" and the coupon's
+	"Apply" became "submit". Worse, a correction the client typed into Curtain
+	Translation lost to ERPNext every time, for exactly those words.
+
+	So on the storefront their dictionary decides, and Frappe's catalogue is
+	only the fallback for words they have never had to think about.
+	"""
+	if current() == "ar":
+		found = phrases().get(" ".join(str(msg or "").split()))
+		if found:
+			return found
+	return frappe._(msg, lang=lang, context=context)
+
+
+def website_context(context):
+	"""update_website_context hook: give the storefront templates that `_`.
+
+	A name in the render context outranks the Jinja global of the same name,
+	and reaches included and extended templates too - so every `_()` on every
+	storefront page is covered without editing any of them, including the
+	product pages the generator rewrites.
+
+	ERPNext's print formats are not reached: they render in a context of their
+	own, which is right, because on an invoice "Total" really is the pre-tax
+	line and ERPNext's wording for it is the correct one.
+	"""
+	return {"_": storefront_translate}
+
+
 def _label(label, table):
 	"""Translate a label, including the "Option (Group)" form.
 
@@ -460,6 +497,16 @@ def _search_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_search.js")
 
 
+def _riyal_tag():
+	"""The Riyal sign, drawn over every price the page shows.
+
+	No `defer`, unlike the others: it goes in at the end of the body, where the
+	page above is already parsed, and running it straight away means the old
+	"SR" is replaced before the page is first painted rather than after.
+	"""
+	return '<script src="%s"></script>' % _asset("js/curtain_riyal.js")
+
+
 def _options_tag():
 	"""The product page's size limits and section switches, same ride again."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
@@ -517,7 +564,7 @@ def _add_chrome(html):
 	if "curtain_lang.js" in html:
 		return html
 
-	tag = _switcher_tag() + _search_tag() + _options_tag()
+	tag = _switcher_tag() + _search_tag() + _options_tag() + _riyal_tag()
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")
