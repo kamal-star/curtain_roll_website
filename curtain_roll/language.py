@@ -540,6 +540,11 @@ def _auth_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_auth.js")
 
 
+def _wishlist_tag():
+	"""The header heart and the product page's Add to Wishlist heart."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
+
+
 def _options_tag():
 	"""The product page's size limits and section switches, same ride again."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
@@ -576,7 +581,10 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "Please upload a JPG, PNG or PDF file.",
                    "That file is too large. The limit is 20 MB.",
                    "Preparing the preview…", "Uploaded",
-                   "The picture could not be uploaded. Please try again.")
+                   "The picture could not be uploaded. Please try again.",
+                   # the hearts drawn by curtain_wishlist.js
+                   "Add to Wishlist", "Saved to your wishlist.",
+                   "Removed from your wishlist.", "View Wishlist")
 
 
 def _runtime_phrases():
@@ -607,7 +615,7 @@ def _add_chrome(html):
 		return html
 
 	tag = (_switcher_tag() + _search_tag() + _options_tag() + _auth_tag()
-	       + _riyal_tag())
+	       + _wishlist_tag() + _riyal_tag())
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")

@@ -94,6 +94,44 @@ def session_info():
 	}
 
 
+@frappe.whitelist(allow_guest=True)
+def wishlist_state(product_id=None):
+	"""What the header heart and the product page's heart should show.
+
+	The redesigned pages carry neither heart - both are drawn by
+	curtain_wishlist.js, which asks here first.
+	"""
+	from curtain_roll import cart as cart_api
+
+	if cart_api.is_guest():
+		return {"logged_in": False, "count": 0, "saved": False}
+	keys = cart_api.wishlist_keys()
+	entry = cart_api.product(product_id) if product_id else None
+	return {"logged_in": True, "count": len(keys),
+	        "saved": bool(entry and entry.get("key") in keys)}
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+def wishlist_toggle(product_id):
+	"""Save the product, or take it off the list if it is already there.
+
+	A guest is sent to sign in and brought back to the page (the list has to
+	belong to someone); nothing is saved for them.
+	"""
+	from curtain_roll import cart as cart_api
+
+	if cart_api.is_guest():
+		return cart_api.login_redirect({})
+	entry = cart_api.product(product_id)
+	if not entry:
+		frappe.throw(frappe._("Product not available."))
+	if entry["key"] in cart_api.wishlist_keys():
+		count = cart_api.wishlist_remove(entry["key"])
+		return {"saved": False, "count": count}
+	cart_api.wishlist_add({}, {"product_id": product_id})
+	return {"saved": True, "count": len(cart_api.wishlist_keys())}
+
+
 def _clean(value, limit=140):
 	return (value or "").strip()[:limit]
 

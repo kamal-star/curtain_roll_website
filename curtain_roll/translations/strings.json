@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 759,
-  "translated": 752,
+  "total": 763,
+  "translated": 756,
   "remaining": 7
  },
  "strings": {
@@ -764,6 +764,10 @@
   "Please upload the picture to print.": "يرجى رفع الصورة المراد طباعتها.",
   "Please upload the picture again.": "يرجى رفع الصورة مرة أخرى.",
   "Picture to print": "الصورة المطلوب طباعتها",
-  "That PDF could not be read. Please save it again, or send the picture as a JPG or PNG.": "تعذّرت قراءة ملف PDF. يرجى حفظه مرة أخرى، أو إرسال الصورة بصيغة JPG أو PNG."
+  "That PDF could not be read. Please save it again, or send the picture as a JPG or PNG.": "تعذّرت قراءة ملف PDF. يرجى حفظه مرة أخرى، أو إرسال الصورة بصيغة JPG أو PNG.",
+  "Add to Wishlist": "أضف إلى قائمة الأمنيات",
+  "Saved to your wishlist.": "تمت الإضافة إلى قائمة الأمنيات.",
+  "Removed from your wishlist.": "تمت الإزالة من قائمة الأمنيات.",
+  "View Wishlist": "عرض قائمة الأمنيات"
  }
 }
