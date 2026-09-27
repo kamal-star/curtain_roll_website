@@ -258,6 +258,48 @@ def _ensure_vat_account():
 		vat_account_for(company)
 
 
+SUB_OPTIONS_FLAG = "curtain_roll_sub_options_seeded"
+
+# The client's list for Blackout, Sunscreen and Printed. Motor Type is left
+# empty on purpose: the motors are theirs to add, each with the sizes it is
+# rated for, and a group with no rows is simply not shown.
+SUB_OPTION_SEED = (
+	("Manual", "Handle Type", "نوع المقبض", "Plastic", "بلاستيك"),
+	("Manual", "Handle Type", "نوع المقبض", "Metal", "معدن"),
+	("Manual", "Manual Operating Side", "جهة التشغيل اليدوي", "Left", "يسار"),
+	("Manual", "Manual Operating Side", "جهة التشغيل اليدوي", "Right", "يمين"),
+	("Motorized", "Motor Position", "موضع المحرك", "Left", "يسار"),
+	("Motorized", "Motor Position", "موضع المحرك", "Right", "يمين"),
+)
+
+
+def _seed_sub_options():
+	"""Put the client's handle, side and motor-position choices on three products.
+
+	Once, and never again: a row the team deletes is a decision, and a migrate
+	that quietly puts it back is a migrate nobody can work with.
+	"""
+	if frappe.db.get_default(SUB_OPTIONS_FLAG):
+		return
+	for key in ("blackout", "sunscreen", "printed"):
+		if not frappe.db.exists("Curtain Product", key):
+			continue
+		doc = frappe.get_doc("Curtain Product", key)
+		if doc.get("sub_options"):
+			continue
+		for parent, group, group_ar, label, label_ar in SUB_OPTION_SEED:
+			doc.append("sub_options", {
+				"parent_choice": parent, "group_label": group,
+				"group_label_ar": group_ar, "option_label": label,
+				"option_label_ar": label_ar, "charge_type": "Fixed Amount",
+				"rate": 0, "enabled": 1,
+			})
+		doc.flags.ignore_permissions = True
+		doc.save(ignore_permissions=True)
+		print("  choices under Manual / Motorized seeded on %s" % key)
+	frappe.db.set_default(SUB_OPTIONS_FLAG, "1")
+
+
 def _ensure_config_field():
 	"""Remember each cart line's configuration on the line itself.
 
@@ -343,6 +385,7 @@ def after_migrate():
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
+	_seed_sub_options()
 	_seed_translations()
 	_seed_storefront()
 

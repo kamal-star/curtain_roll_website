@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 740,
-  "translated": 733,
+  "total": 745,
+  "translated": 738,
   "remaining": 7
  },
  "strings": {
@@ -745,6 +745,11 @@
   "Width must be at least {0} cm.": "يجب ألا يقل العرض عن {0} سم.",
   "Height must be at least {0} cm.": "يجب ألا يقل الارتفاع عن {0} سم.",
   "Width can be at most {0} cm.": "يجب ألا يزيد العرض عن {0} سم.",
-  "Height can be at most {0} cm.": "يجب ألا يزيد الارتفاع عن {0} سم."
+  "Height can be at most {0} cm.": "يجب ألا يزيد الارتفاع عن {0} سم.",
+  "No {0} is available for this size. Please contact us.": "لا يتوفر {0} لهذا المقاس. يرجى التواصل معنا.",
+  "Please choose the {0}.": "يرجى اختيار {0}.",
+  "Handle Type": "نوع المقبض",
+  "Motor Type": "نوع المحرك",
+  "Motor Position": "موضع المحرك"
  }
 }

@@ -151,6 +151,173 @@
       });
   }
 
+  // -------------------------------- the choices under Manual / Motorized
+  /* Handle type and operating side under Manual; motor and motor position
+     under Motorized. They are rows on the Curtain Product record, not part of
+     the captured page, so they are drawn here - inside the Control type card,
+     which is inside #product, so the page's own Add to Cart sends them.
+
+     Only the choices under the control that is picked exist in the page at
+     any moment. The others are not hidden, they are gone: a hidden radio is
+     still posted, and a Manual handle would ride along on a motorised blind.
+     The server ignores it either way, but the form should say what it means. */
+  var MOTOR = /motor|كهربائي/i;
+
+  function subOptions(spec) {
+    var gid = spec.control_group, rows = spec.sub_options || [];
+    if (!gid || !rows.length) return;
+    var card = cardOf(document.querySelector('input[name="option[' + gid + ']"]'));
+    if (!card) return;
+
+    var host = document.createElement("div");
+    host.className = "cr-sub";
+    var grid = card.querySelector(".segmented-grid");
+    if (grid) grid.parentNode.insertBefore(host, grid.nextSibling);
+    else card.appendChild(host);
+
+    var arabic = document.documentElement.getAttribute("dir") === "rtl";
+    var chosen = {};              // group key -> row id, kept across redraws
+
+    function parent() {
+      var picked = document.querySelector('input[name="option[' + gid + ']"]:checked');
+      if (!picked) return null;
+      var entry = (spec.options && spec.options[gid] || {})[picked.value];
+      if (!entry) return null;
+      return MOTOR.test(entry.label || "") ? "Motorized" : "Manual";
+    }
+
+    function size() {
+      var w = document.querySelector('input[name^="option["][name$="[width]"]');
+      var h = document.querySelector('input[name^="option["][name$="[height]"]');
+      return { w: w ? parseFloat(w.value) || 0 : 0, h: h ? parseFloat(h.value) || 0 : 0 };
+    }
+
+    function fits(r, s) {
+      if (!s.w || !s.h) return true;   // no size typed yet: offer everything
+      if (r.min_width && s.w < r.min_width) return false;
+      if (r.max_width && s.w > r.max_width) return false;
+      if (r.min_height && s.h < r.min_height) return false;
+      if (r.max_height && s.h > r.max_height) return false;
+      return true;
+    }
+
+    function build() {
+      var p = parent();
+      host.textContent = "";
+      if (!p) return;
+
+      var groups = {}, order = [];
+      rows.forEach(function (r) {
+        if (r.parent !== p) return;
+        if (!groups[r.key]) { groups[r.key] = []; order.push(r.key); }
+        groups[r.key].push(r);
+      });
+
+      var s = size();
+      order.forEach(function (key) {
+        var list = groups[key], first = list[0];
+        var title = (arabic && first.group_ar) || first.group;
+        var box = document.createElement("div");
+        box.className = "cr-sub-group";
+        // where the theme puts this group's error, if the server has one
+        box.id = "input-optioncrsub-" + key;
+
+        var head = document.createElement("div");
+        head.className = "cr-sub-title";
+        head.textContent = title;
+        box.appendChild(head);
+
+        var offered = list.filter(function (r) { return fits(r, s); });
+        if (!offered.length) {
+          var none = document.createElement("div");
+          none.className = "cr-sub-none";
+          none.textContent = fill("No {0} is available for this size. Please contact us.", title);
+          box.appendChild(none);
+          host.appendChild(box);
+          return;
+        }
+
+        var keep = offered.some(function (r) { return r.id === chosen[key]; })
+          ? chosen[key] : offered[0].id;
+        chosen[key] = keep;
+
+        var chips = document.createElement("div");
+        chips.className = "cr-sub-chips";
+        offered.forEach(function (r) {
+          var chip = document.createElement("label");
+          chip.className = "cr-chip";
+          var input = document.createElement("input");
+          input.type = "radio";
+          input.name = "cr_sub[" + key + "]";
+          input.value = r.id;
+          input.checked = r.id === keep;
+          input.addEventListener("change", function () {
+            chosen[key] = r.id;
+            refresh();
+          });
+          var name = document.createElement("span");
+          name.textContent = (arabic && r.label_ar) || r.label;
+          chip.appendChild(input);
+          chip.appendChild(name);
+          if (r.price_text) {
+            var cost = document.createElement("small");
+            cost.textContent = r.price_text;
+            chip.appendChild(cost);
+          }
+          chips.appendChild(chip);
+        });
+        box.appendChild(chips);
+        host.appendChild(box);
+      });
+    }
+
+    function refresh() {
+      if (window.jQuery) window.jQuery("#product").trigger("change");
+    }
+
+    document.querySelectorAll('input[name="option[' + gid + ']"]').forEach(function (r) {
+      r.addEventListener("change", function () { build(); refresh(); });
+    });
+    var timer = null;
+    document.querySelectorAll('input[name^="option["][name$="[width]"], ' +
+                              'input[name^="option["][name$="[height]"]')
+      .forEach(function (box) {
+        // the page itself re-prices on typing; this only re-offers the motors
+        box.addEventListener("input", function () {
+          clearTimeout(timer);
+          timer = setTimeout(build, 350);
+        });
+      });
+
+    subStyle();
+    build();
+    refresh();
+  }
+
+  function subStyle() {
+    if (document.getElementById("cr-sub-style")) return;
+    var css = document.createElement("style");
+    css.id = "cr-sub-style";
+    css.textContent =
+      ".cr-sub{margin-top:14px;display:flex;flex-direction:column;gap:12px}" +
+      ".cr-sub:empty{display:none}" +
+      ".cr-sub-group{border-top:1px dashed var(--border,#e1ebf2);padding-top:12px}" +
+      ".cr-sub-title{font-size:12.5px;font-weight:700;margin-bottom:8px;" +
+      "color:var(--text,#0f172a)}" +
+      ".cr-sub-chips{display:flex;flex-wrap:wrap;gap:8px}" +
+      ".cr-chip{position:relative;display:inline-flex;align-items:center;gap:6px;cursor:pointer;" +
+      "padding:8px 14px;border:1.5px solid var(--border,#e1ebf2);" +
+      "border-radius:999px;background:var(--surface,#fff);font-size:13px;" +
+      "font-weight:600;color:var(--text,#0f172a);transition:all .2s}" +
+      ".cr-chip input{position:absolute;opacity:0;pointer-events:none}" +
+      ".cr-chip small{font-weight:500;color:var(--text-muted,#54667a);font-size:11.5px}" +
+      ".cr-chip:has(input:checked){border-color:var(--brand,#09446c);" +
+      "background:var(--brand-light,#eaf3f8);color:var(--brand,#09446c)}" +
+      ".cr-chip:has(input:focus-visible){box-shadow:0 0 0 3px var(--brand-soft,rgba(9,68,108,.15))}" +
+      ".cr-sub-none{font-size:12.5px;color:#c0392b;font-weight:600}";
+    document.head.appendChild(css);
+  }
+
   /* The cards are numbered in the capture. Take one away and the page reads
      2, 3, 4 - which looks like a step has gone missing, because it has. */
   function renumber() {
@@ -170,6 +337,7 @@
     if (spec.show_material === false && spec.material_group) {
       hideGroup(spec.material_group);
     }
+    subOptions(spec);
     renumber();
     // after the page's own script has had its turn at disabling rows
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 400);

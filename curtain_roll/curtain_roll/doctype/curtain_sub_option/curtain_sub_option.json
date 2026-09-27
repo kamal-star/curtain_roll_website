@@ -1,0 +1,137 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-28 00:00:00.000000",
+ "description": "A choice that appears under Manual or Motorized once the customer picks it - a handle type, a side, a motor. Rows with the same Group are shown together, in the order of the grid.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": [
+  "parent_choice",
+  "group_label",
+  "option_label",
+  "charge_type",
+  "rate",
+  "enabled",
+  "column_break_ar",
+  "group_label_ar",
+  "option_label_ar",
+  "section_size",
+  "min_width",
+  "max_width",
+  "column_break_size",
+  "min_height",
+  "max_height"
+ ],
+ "fields": [
+  {
+   "fieldname": "parent_choice",
+   "fieldtype": "Select",
+   "label": "Shown Under",
+   "options": "Manual\nMotorized",
+   "default": "Manual",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "group_label",
+   "fieldtype": "Data",
+   "label": "Group",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2,
+   "description": "e.g. Handle Type, Motor Type, Motor Position. Rows with the same group are offered together."
+  },
+  {
+   "fieldname": "option_label",
+   "fieldtype": "Data",
+   "label": "Choice",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "charge_type",
+   "fieldtype": "Select",
+   "label": "Charge Type",
+   "options": "Fixed Amount\nPer Square Meter\nPer Metre of Width\nPer Metre of Height\nPercent of Base",
+   "default": "Fixed Amount",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "default": "0",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Show on site",
+   "default": "1",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "column_break_ar",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "group_label_ar",
+   "fieldtype": "Data",
+   "label": "Group (Arabic)"
+  },
+  {
+   "fieldname": "option_label_ar",
+   "fieldtype": "Data",
+   "label": "Choice (Arabic)"
+  },
+  {
+   "fieldname": "section_size",
+   "fieldtype": "Section Break",
+   "label": "Only For These Sizes",
+   "description": "For motors, which are rated for a size. Leave at 0 for any size. A choice outside the customer's size is not offered."
+  },
+  {
+   "fieldname": "min_width",
+   "fieldtype": "Float",
+   "label": "Minimum Width (cm)"
+  },
+  {
+   "fieldname": "max_width",
+   "fieldtype": "Float",
+   "label": "Maximum Width (cm)"
+  },
+  {
+   "fieldname": "column_break_size",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "min_height",
+   "fieldtype": "Float",
+   "label": "Minimum Height (cm)"
+  },
+  {
+   "fieldname": "max_height",
+   "fieldtype": "Float",
+   "label": "Maximum Height (cm)"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-09-28 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Sub Option",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "idx",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 0
+}

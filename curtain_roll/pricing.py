@@ -287,6 +287,37 @@ def get_spec(product_key):
 			"tiered": cint(o.get("tiered")),
 		}
 
+	# The control-type group - the one holding Manual and Motorized - is found
+	# by its choices rather than by an id, because every product numbers its
+	# groups differently.
+	spec["control_group"] = None
+	for gid, choices in spec["options"].items():
+		labels = [c["label"] or "" for c in choices.values()]
+		if any(_MOTOR.search(l) for l in labels) or "Manual" in labels:
+			spec["control_group"] = gid
+			break
+
+	spec["sub_options"] = [
+		{
+			"id": row.name,
+			"parent": row.parent_choice or "Manual",
+			"group": (row.group_label or "").strip(),
+			"key": _group_key(row.group_label),
+			"group_ar": (row.group_label_ar or "").strip(),
+			"label": (row.option_label or "").strip(),
+			"label_ar": (row.option_label_ar or "").strip(),
+			"charge_type": row.charge_type or "Fixed Amount",
+			"rate": flt(row.rate),
+			"min_width": flt(row.min_width), "max_width": flt(row.max_width),
+			"min_height": flt(row.min_height), "max_height": flt(row.max_height),
+		}
+		for row in (doc.get("sub_options") or [])
+		if cint(row.enabled) and (row.group_label or "").strip()
+		and (row.option_label or "").strip()
+		# no motor on offer means nothing to choose under Motorized either
+		and not (row.parent_choice == "Motorized" and not show_motor)
+	]
+
 	# kept even when hidden: the page needs to know WHICH card to take away
 	spec["material_group"] = color_group
 	if not show_material:
@@ -313,6 +344,52 @@ def _is_motor(row, show_motor):
 	if show_motor:
 		return False
 	return bool(_MOTOR.search(row.option_label or ""))
+
+
+# ------------------------------------------ choices under Manual / Motorized
+def _group_key(label):
+	"""A group's name as a key: "Motor Type" -> "motor-type".
+
+	Hyphens, not underscores, on purpose. The theme shows an option's error
+	under the element with id "input-option" + key.replace('_', '-') - a replace
+	that swaps only the FIRST underscore - so a key with two of them would point
+	at an element that does not exist and the message would never be shown.
+	"""
+	return re.sub(r"[^a-z0-9]+", "-", (label or "").strip().lower()).strip("-") or "choice"
+
+
+def _fits(entry, width, height):
+	"""Whether a choice is offered at this size. No size yet means yes."""
+	if not width or not height:
+		return True
+	for value, low, high in ((width, entry["min_width"], entry["max_width"]),
+	                         (height, entry["min_height"], entry["max_height"])):
+		if low and value < low:
+			return False
+		if high and value > high:
+			return False
+	return True
+
+
+def control_parent(spec, submitted):
+	""""Manual" or "Motorized" - whichever control the customer chose - or None."""
+	gid = spec.get("control_group")
+	if not gid:
+		return None
+	value = str(submitted("option[%s]" % gid) or "")
+	entry = (spec["options"].get(gid) or {}).get(value)
+	if not entry:
+		return None
+	return "Motorized" if _MOTOR.search(entry["label"] or "") else "Manual"
+
+
+def sub_groups(spec, parent):
+	"""The choices under one control, as {key: [rows]}, in the grid's order."""
+	groups = {}
+	for row in spec.get("sub_options") or []:
+		if row["parent"] == parent:
+			groups.setdefault(row["key"], []).append(row)
+	return groups
 
 
 def _color_entry(row, flat=False):
@@ -574,6 +651,46 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 		if extra:
 			lines.append((label, extra))
 
+	# ---- the choices under Manual / Motorized: handle, side, motor, position
+	parent = control_parent(spec, submitted)
+	if parent:
+		from curtain_roll.language import text as say
+
+		from curtain_roll.language import current, phrases
+
+		arabic = current() == "ar"
+		for key, rows in sub_groups(spec, parent).items():
+			group = rows[0]["group"]
+			# the name used in a message the customer will read
+			shown = group
+			if arabic:
+				shown = next((r["group_ar"] for r in rows if r["group_ar"]), "") \
+					or phrases().get(group, group)
+			err_key = "crsub-" + key
+			offered = [r for r in rows if _fits(r, width, height)]
+			if not offered:
+				# every choice is rated for other sizes - only motors are, in
+				# practice - so this blind cannot be made motorised as measured
+				errors[err_key] = say(
+					"No {0} is available for this size. Please contact us.").format(shown)
+				continue
+			chosen = str(submitted("cr_sub[%s]" % key) or "")
+			if not chosen:
+				if strict:
+					errors[err_key] = say("Please choose the {0}.").format(shown)
+				else:
+					partial = True
+				continue
+			entry = next((r for r in offered if r["id"] == chosen), None)
+			if not entry:
+				# a choice from the other control, a withdrawn one, or a motor
+				# that does not fit - never priced, whatever the page sent
+				errors[err_key] = _("That choice is not available.")
+				continue
+			extra = _charge(entry["charge_type"], entry["rate"], dims, base)
+			if extra:
+				lines.append(("%s (%s)" % (entry["label"], group), extra))
+
 	precision = spec["rounding"]
 	unit = flt(sum(amount for _label, amount in lines), precision)
 
@@ -685,7 +802,46 @@ def get_pricing(product_key=None):
 		"limits": spec.get("limits") or {},
 		"show_material": spec.get("show_material", True),
 		"material_group": spec.get("material_group"),
+		# the choices under Manual / Motorized, drawn by curtain_options.js
+		"control_group": spec.get("control_group"),
+		"sub_options": _sub_options_for_page(spec),
 	}
+
+
+def _sub_options_for_page(spec):
+	"""The choices, with their Arabic filled in wherever it can be found.
+
+	A group's Arabic name is typed on the row, and the client should not have
+	to retype "نوع المحرك" on every motor they add - so a row without it borrows
+	it from another row in the same group, and failing that from the phrase
+	dictionary. Done here, per request, rather than in the cached spec, so a
+	correction in Curtain Translation shows without re-saving the product.
+	"""
+	from curtain_roll.language import phrases
+
+	table = phrases()
+	rows = [dict(r) for r in spec.get("sub_options") or []]
+	group_ar = {}
+	for r in rows:
+		if r["group_ar"]:
+			group_ar.setdefault(r["key"], r["group_ar"])
+	for r in rows:
+		r["group_ar"] = r["group_ar"] or group_ar.get(r["key"]) or table.get(r["group"], "")
+		r["label_ar"] = r["label_ar"] or table.get(r["label"], "")
+		r["price_text"] = _sub_price_text(r, spec["currency"])
+	return rows
+
+
+def _sub_price_text(row, symbol):
+	"""What a choice adds, as the page shows it next to the name, or ""."""
+	rate = flt(row["rate"])
+	if not rate:
+		return ""
+	unit = {"Per Square Meter": " / m²", "Per Metre of Width": " / m",
+	        "Per Metre of Height": " / m", "Percent of Base": "%"}.get(row["charge_type"], "")
+	if row["charge_type"] == "Percent of Base":
+		return "+%g%%" % rate
+	return "+%s %s%s" % (symbol, "{:,.2f}".format(rate), unit)
 
 
 @frappe.whitelist()

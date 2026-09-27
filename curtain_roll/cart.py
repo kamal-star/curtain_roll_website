@@ -120,6 +120,17 @@ def describe_options(product_key, form, labels=None):
 	if not captured and spec.get("capture_option_id"):
 		captured = submitted("option[%s]" % spec["capture_option_id"]) or ""
 
+	# the choices under Manual / Motorized - "Handle Type: Metal" - which live
+	# in the Curtain Product record rather than in the captured page
+	priced = pricing.get_spec(product_key)
+	if priced:
+		parent = pricing.control_parent(priced, submitted)
+		for key, rows in (pricing.sub_groups(priced, parent).items() if parent else []):
+			chosen = str(submitted("cr_sub[%s]" % key) or "")
+			entry = next((r for r in rows if r["id"] == chosen), None)
+			if entry:
+				lines.append("%s: %s" % (entry["group"], entry["label"]))
+
 	return lines, captured
 
 
@@ -195,7 +206,10 @@ def capture_config(entry, form):
 	options = {}
 	try:
 		for key, value in form.items():
-			if str(key).startswith("option["):
+			# cr_sub[...] too: the handle, side and motor are priced like any
+			# option, and a line re-priced later without them would silently
+			# drop the motor from the bill
+			if str(key).startswith(("option[", "cr_sub[")):
 				options[str(key)] = value
 	except Exception:
 		pass

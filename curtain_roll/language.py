@@ -173,6 +173,34 @@ def _from_table(base):
 	return base
 
 
+def _with_sub_options(table):
+	"""Add the Arabic typed on each Manual / Motorized choice to the dictionary.
+
+	The configurator shows those rows' Arabic directly, but the cart line is
+	stored in English - "Handle Type: Metal" - and translated here, line by line,
+	on an Arabic page. Without this the choices the customer picked in Arabic
+	would come back to them in English in their own cart.
+
+	Only fills gaps: a word the client has set in Curtain Translation is theirs,
+	and wins.
+	"""
+	try:
+		rows = frappe.get_all(
+			"Curtain Sub Option",
+			fields=["group_label", "group_label_ar", "option_label", "option_label_ar"],
+			parent_doctype="Curtain Product")
+	except Exception:
+		return table
+	for row in rows:
+		for en, ar in ((row.group_label, row.group_label_ar),
+		               (row.option_label, row.option_label_ar)):
+			en = " ".join((en or "").split())
+			ar = (ar or "").strip()
+			if en and ar and en not in table:
+				table[en] = ar
+	return table
+
+
 def phrases():
 	"""English -> Arabic. The client's edits win over the shipped file.
 
@@ -184,7 +212,7 @@ def phrases():
 
 	table = frappe.cache().get_value(PHRASE_CACHE_KEY)
 	if table is None:
-		table = _from_table(_from_file())
+		table = _with_sub_options(_from_table(_from_file()))
 		frappe.cache().set_value(PHRASE_CACHE_KEY, table)
 
 	frappe.local._curtain_phrases = table
@@ -539,7 +567,9 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "Width must be at least {0} cm.",
                    "Height must be at least {0} cm.",
                    "Width can be at most {0} cm.",
-                   "Height can be at most {0} cm.")
+                   "Height can be at most {0} cm.",
+                   # the choices under Manual / Motorized, when no motor fits
+                   "No {0} is available for this size. Please contact us.")
 
 
 def _runtime_phrases():

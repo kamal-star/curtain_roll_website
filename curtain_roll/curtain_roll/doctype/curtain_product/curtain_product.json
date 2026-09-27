@@ -40,6 +40,9 @@
   "install_tiers",
   "section_colors",
   "colors",
+  "section_sub_options",
+  "sub_options_help",
+  "sub_options",
   "section_options",
   "options"
  ],
@@ -245,6 +248,22 @@
    "fieldname": "max_height",
    "fieldtype": "Float",
    "label": "Maximum Height (cm)"
+  },
+  {
+   "fieldname": "section_sub_options",
+   "fieldtype": "Section Break",
+   "label": "Choices Under Manual and Motorized"
+  },
+  {
+   "fieldname": "sub_options_help",
+   "fieldtype": "HTML",
+   "options": "<p class=\"text-muted small\">Shown below Control type once the customer picks Manual or Motorized - handle type, operating side, motor and motor position. A group appears only when it has at least one choice on, and the customer must pick one. For motors, set the sizes each one is rated for; the site offers only the motors that fit the size typed in, and refuses the size if none does.</p>"
+  },
+  {
+   "fieldname": "sub_options",
+   "fieldtype": "Table",
+   "label": "Choices",
+   "options": "Curtain Sub Option"
   }
  ],
  "index_web_pages_for_search": 1,

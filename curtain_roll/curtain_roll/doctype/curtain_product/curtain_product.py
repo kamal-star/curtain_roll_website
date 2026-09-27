@@ -122,8 +122,13 @@ class CurtainProduct(Document):
 	def on_update(self):
 		# the storefront reads a cached, flattened copy of this record
 		from curtain_roll.pricing import clear_cache
+		from curtain_roll.curtain_roll.doctype.curtain_translation.curtain_translation \
+			import clear_phrase_cache
 
 		clear_cache(self.product_key)
+		# the Arabic typed on the Manual / Motorized choices is part of the
+		# phrase dictionary, so a correction there must show without a restart
+		clear_phrase_cache()
 
 	def on_trash(self):
 		from curtain_roll.pricing import clear_cache
