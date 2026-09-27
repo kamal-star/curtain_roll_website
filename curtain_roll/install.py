@@ -394,6 +394,8 @@ def _seed_storefront():
 
 	tables = (("nav_items", "Curtain Nav Item", ("label", "route", "icon")),
 	          ("slides", "Curtain Hero Slide", ("image", "alt_text", "link")),
+	          ("features", "Curtain Feature Box",
+	           ("icon", "title", "text", "title_ar", "text_ar")),
 	          ("categories", "Curtain Category Card",
 	           ("title", "route", "image", "badge", "description", "wide")),
 	          ("social_links", "Curtain Social Link",

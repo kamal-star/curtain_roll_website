@@ -19,6 +19,9 @@
   "nav_items",
   "sb_slider",
   "slides",
+  "sb_features",
+  "hide_features",
+  "features",
   "sb_collections",
   "collections_eyebrow",
   "collections_heading",
@@ -240,6 +243,23 @@
    "label": "National Address Is Required",
    "default": "0",
    "description": "The Saudi short address, e.g. RRRD2929. Businesses need it on an invoice; most private customers do not have it to hand."
+  },
+  {
+   "fieldname": "sb_features",
+   "fieldtype": "Section Break",
+   "label": "Highlights Under the Slider"
+  },
+  {
+   "fieldname": "hide_features",
+   "fieldtype": "Check",
+   "label": "Hide This Section",
+   "description": "Removes the whole row of highlight boxes from the home page."
+  },
+  {
+   "fieldname": "features",
+   "fieldtype": "Table",
+   "label": "Highlight Boxes",
+   "options": "Curtain Feature Box"
   }
  ],
  "index_web_pages_for_search": 0,

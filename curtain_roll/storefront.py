@@ -130,6 +130,33 @@ DEFAULTS = {
    "link": ""
   }
  ],
+ # The highlight boxes under the slider, as the page showed them. The Arabic is
+ # carried on the row itself rather than left to the dictionary: the dictionary
+ # matches the English exactly, so the moment the client rewords a title the
+ # Arabic would silently stop following it. One row, both languages.
+ "features": [
+  {"icon": "fa-solid fa-ruler-combined",
+   "title": "Millimeter Precision",
+   "text": "Automated cutting tailored to your windows",
+   "title_ar": "دقة بالملّيمتر",
+   "text_ar": "قص آلي مضبوط على مقاس نوافذك"},
+  {"icon": "fa-solid fa-shield-halved",
+   "title": "5-Year Quality Warranty",
+   "text": "Premium motors, fabrics & hardware",
+   "title_ar": "ضمان جودة لمدة خمس سنوات",
+   "text_ar": "محركات وأقمشة وقطع فاخرة"},
+  {"icon": "fa-solid fa-truck-fast",
+   "title": "Secure Saudi Shipping",
+   "text": "Reinforced protective transit packaging",
+   "title_ar": "شحن آمن داخل المملكة",
+   "text_ar": "تغليف واقٍ ومدعّم للنقل"},
+  {"icon": "fa-solid fa-credit-card",
+   "title": "Interest-Free Installments",
+   "text": "Split payments via Tamara & Tabby",
+   "title_ar": "تقسيط بدون فوائد",
+   "text_ar": "تقسيط عبر تمارا وتابي"},
+ ],
+ "hide_features": 0,
  "categories": [
   {
    "title": "Blackout Roller Blinds",
@@ -262,7 +289,7 @@ def storefront_settings():
 	# its default.
 	for switch in ("vat_rate", "prices_include_vat", "card_enabled",
 	               "bank_transfer_enabled", "guest_checkout",
-	               "require_national_address"):
+	               "require_national_address", "hide_features"):
 		if doc.get(switch) is not None:
 			data[switch] = doc.get(switch)
 
@@ -272,6 +299,10 @@ def storefront_settings():
 	slides = _rows(doc, "slides", ("image", "alt_text", "link"))
 	if slides:
 		data["slides"] = slides
+	features = _rows(doc, "features",
+	                 ("icon", "title", "text", "title_ar", "text_ar"))
+	if features:
+		data["features"] = features
 	cards = _rows(doc, "categories",
 	              ("title", "route", "image", "badge", "description", "wide"))
 	if cards:
@@ -282,3 +313,18 @@ def storefront_settings():
 
 	frappe.cache().set_value(CACHE_KEY, data)
 	return data
+
+
+def storefront_lang():
+	"""The language this request is being rendered in, for the templates.
+
+	Not folded into storefront_settings: that is cached once for every visitor,
+	and the language is per request - baking it in would serve whichever
+	language happened to fill the cache to everybody after them.
+
+	Named for the storefront, like storefront_settings, because Jinja hooks from
+	every app share one namespace and a bare `current` or `lang` would collide.
+	"""
+	from curtain_roll.language import current
+
+	return current()

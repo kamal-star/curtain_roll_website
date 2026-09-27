@@ -19,6 +19,9 @@ jinja = {
 		"curtain_roll.utils.asset",
 		# the home page's editable content - logo, category bar, slider, cards
 		"curtain_roll.storefront.storefront_settings",
+		# which language a request is in, for text the client edits in two
+		# languages rather than leaving to the dictionary
+		"curtain_roll.storefront.storefront_lang",
 	]
 }
 

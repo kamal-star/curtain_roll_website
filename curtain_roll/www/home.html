@@ -673,7 +673,9 @@
     /* --- Value Proposition Grid --- */
     .features-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      /* however many boxes the settings hold - it was fixed at four, which
+         left a hole with three and stranded the fifth on a row of its own */
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
       margin: 24px 0 60px;
     }
@@ -1399,36 +1401,28 @@
     </section>
 
     <!-- Value Matrix Grid -->
+    {% endraw %}{#- The highlight boxes, from Curtain Storefront Settings. Each row
+        carries its own Arabic; an empty Arabic field falls back to the English,
+        which the site-wide dictionary may still translate. -#}
+    {%- set cr_ar = storefront_lang() == "ar" %}
+    {%- if cr.features and not cr.hide_features %}
     <section class="features-strip" aria-label="Highlights">
+      {%- for f in cr.features %}
       <div class="feature-box">
-        <div class="feature-icon-wrapper"><i class="fa-solid fa-ruler-combined"></i></div>
+        {%- if f.icon %}
+        <div class="feature-icon-wrapper"><i class="{{ f.icon }}"></i></div>
+        {%- endif %}
         <div class="feature-info">
-          <h4>Millimeter Precision</h4>
-          <p>Automated cutting tailored to your windows</p>
+          <h4>{{ (f.title_ar if cr_ar and f.title_ar else f.title) }}</h4>
+          {%- set body = f.text_ar if cr_ar and f.text_ar else f.text %}
+          {%- if body %}
+          <p>{{ body }}</p>
+          {%- endif %}
         </div>
       </div>
-      <div class="feature-box">
-        <div class="feature-icon-wrapper"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="feature-info">
-          <h4>5-Year Quality Warranty</h4>
-          <p>Premium motors, fabrics & hardware</p>
-        </div>
-      </div>
-      <div class="feature-box">
-        <div class="feature-icon-wrapper"><i class="fa-solid fa-truck-fast"></i></div>
-        <div class="feature-info">
-          <h4>Secure Saudi Shipping</h4>
-          <p>Reinforced protective transit packaging</p>
-        </div>
-      </div>
-      <div class="feature-box">
-        <div class="feature-icon-wrapper"><i class="fa-solid fa-credit-card"></i></div>
-        <div class="feature-info">
-          <h4>Interest-Free Installments</h4>
-          <p>Split payments via Tamara & Tabby</p>
-        </div>
-      </div>
+      {%- endfor %}
     </section>
+    {%- endif %}{% raw %}
 
     <!-- Product Collections Showcase -->
     <section aria-labelledby="collections-heading">
