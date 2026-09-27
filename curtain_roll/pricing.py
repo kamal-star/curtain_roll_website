@@ -221,12 +221,34 @@ def get_spec(product_key):
 		if "required" in ((group.get("wrap") or {}).get("class") or ""):
 			required[gid] = (group.get("label") or "").strip() or gid
 
+	# What this product can be made in. Zero means "no limit", so a record
+	# nobody has opened behaves exactly as it did before these existed.
+	limits = {
+		"min_width": flt(doc.get("min_width")),
+		"max_width": flt(doc.get("max_width")),
+		"min_height": flt(doc.get("min_height")),
+		"max_height": flt(doc.get("max_height")),
+	}
+
+	# Both default to 1, and Frappe writes a Check's default into the existing
+	# rows when it adds the column - measured on all thirteen products, which
+	# is worth knowing, because the alternative would have hidden every fabric
+	# swatch on the site the day this shipped. The `is None` arm is only for a
+	# record read before its column exists.
+	show_material = doc.get("show_material")
+	show_material = True if show_material is None else bool(cint(show_material))
+	show_motor = doc.get("show_motor")
+	show_motor = True if show_motor is None else bool(cint(show_motor))
+
 	spec = {
 		"product_key": product_key,
 		"title": doc.product_title or page.get("heading"),
 		"item_code": doc.item_code,
 		"rate_basis": doc.rate_basis,
 		"base_rate": flt(doc.base_rate),
+		"limits": limits,
+		"show_material": show_material,
+		"show_motor": show_motor,
 		"min_billable_sqm": flt(doc.min_billable_sqm) or 0.0,
 		"rounding": cint(doc.rounding) or 2,
 		"pricing_mode": doc.pricing_mode or "Base Rate",
@@ -259,14 +281,38 @@ def get_spec(product_key):
 		spec["options"].setdefault(str(o.group_id), {})[str(o.option_value)] = {
 			"label": o.option_label,
 			"group_label": o.group_label,
-			"enabled": cint(o.enabled),
+			"enabled": cint(o.enabled) and not _is_motor(o, show_motor),
 			"charge_type": o.charge_type,
 			"rate": flt(o.rate),
 			"tiered": cint(o.get("tiered")),
 		}
 
+	# kept even when hidden: the page needs to know WHICH card to take away
+	spec["material_group"] = color_group
+	if not show_material:
+		# The group stops being asked for rather than being emptied. calculate
+		# skips it entirely, so nothing is required, nothing is priced, and a
+		# colour posted by an old page or a curious customer changes no total.
+		spec["color_group"] = None
+
 	frappe.cache().set_value(CACHE_KEY % product_key, json.dumps(spec))
 	return spec
+
+
+# Which row in the control-type group is "the motor". There is no field saying
+# so - the captured catalogue only has labels - and every product that offers
+# one calls it Motorized, or كهربائي once the page is in Arabic. Matching the
+# label is therefore the only way to know, and it is why the per-row Show on
+# site tick still exists: a product whose motor is named something else can be
+# withdrawn by hand.
+_MOTOR = re.compile(r"motor|كهربائي", re.I)
+
+
+def _is_motor(row, show_motor):
+	"""True when this option is a motor and the product is not offering one."""
+	if show_motor:
+		return False
+	return bool(_MOTOR.search(row.option_label or ""))
 
 
 def _color_entry(row, flat=False):
@@ -335,6 +381,46 @@ def tier_rate(spec, order_qty):
 	return None, None
 
 
+def _outside_limits(spec, width, height):
+	"""Why this size cannot be made, in words, or None if it can.
+
+	The numbers go into the sentence AFTER it has been translated, not before:
+	the dictionary is keyed on the English template, so "Width must be between
+	{0} and {1} cm." is a phrase that exists and can be looked up, while
+	"Width must be between 40 and 300 cm." never will be. Formatting first is
+	how a message ends up permanently English.
+
+	Told as a range rather than as "too wide", because a customer who has just
+	been refused needs to know what to type instead.
+	"""
+	from curtain_roll.language import text as say
+
+	limits = spec.get("limits") or {}
+
+	def clean(value):
+		return ("%g" % flt(value))
+
+	for edge, value, low, high in (
+			("width", width, limits.get("min_width"), limits.get("max_width")),
+			("height", height, limits.get("min_height"), limits.get("max_height"))):
+		low, high = flt(low), flt(high)
+		if not low and not high:
+			continue
+		if low and high and (value < low or value > high):
+			template = "Width must be between {0} and {1} cm." if edge == "width" \
+				else "Height must be between {0} and {1} cm."
+			return say(template).format(clean(low), clean(high))
+		if low and value < low:
+			template = "Width must be at least {0} cm." if edge == "width" \
+				else "Height must be at least {0} cm."
+			return say(template).format(clean(low))
+		if high and value > high:
+			template = "Width can be at most {0} cm." if edge == "width" \
+				else "Height can be at most {0} cm."
+			return say(template).format(clean(high))
+	return None
+
+
 def _dimension(value):
 	try:
 		n = flt(str(value).strip().replace(",", "."))
@@ -396,7 +482,12 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 				partial = True
 			width = height = None
 		else:
-			area = (width * height) / 10000.0
+			outside = _outside_limits(spec, width, height)
+			if outside:
+				errors[gid] = outside
+				width = height = None
+			else:
+				area = (width * height) / 10000.0
 
 	per_sqm = spec["rate_basis"] == "Per Square Meter"
 	if per_sqm and spec["min_billable_sqm"]:
@@ -588,6 +679,12 @@ def get_pricing(product_key=None):
 		"starting_text": fmt(spec.get("display_from_price") or spec["base_rate"],
 		                     spec["currency"]),
 		"rate_basis": spec["rate_basis"],
+		# so the page can refuse an impossible size before the customer has
+		# configured a whole blind and pressed Add to cart
+		"size_group": spec["size_group"],
+		"limits": spec.get("limits") or {},
+		"show_material": spec.get("show_material", True),
+		"material_group": spec.get("material_group"),
 	}
 
 

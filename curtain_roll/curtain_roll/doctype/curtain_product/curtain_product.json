@@ -13,6 +13,8 @@
   "product_title",
   "column_break_head",
   "enabled",
+  "show_material",
+  "show_motor",
   "item_code",
   "section_base",
   "pricing_mode",
@@ -23,6 +25,13 @@
   "minimum_price",
   "rounding",
   "display_from_price",
+  "section_limits",
+  "limits_help",
+  "min_width",
+  "max_width",
+  "column_break_limits",
+  "min_height",
+  "max_height",
   "section_slabs",
   "slab_help",
   "size_slabs",
@@ -188,6 +197,54 @@
    "fieldtype": "Table",
    "label": "Options",
    "options": "Curtain Product Option"
+  },
+  {
+   "fieldname": "show_material",
+   "fieldtype": "Check",
+   "label": "Show Fabric / Material Choices",
+   "default": "1",
+   "description": "Unticked, the whole fabric swatch section disappears from the page and no colour is asked for or priced. Use the Colours table below to withdraw individual swatches."
+  },
+  {
+   "fieldname": "show_motor",
+   "fieldtype": "Check",
+   "label": "Offer the Motorised Option",
+   "default": "1",
+   "description": "Unticked, the motorised choice is removed from the control type and refused if anyone posts it anyway. Manual stays."
+  },
+  {
+   "fieldname": "section_limits",
+   "fieldtype": "Section Break",
+   "label": "Size Limits"
+  },
+  {
+   "fieldname": "limits_help",
+   "fieldtype": "HTML",
+   "options": "<p class=\"text-muted small\">What this product can actually be made in, in centimetres. Leave a box at 0 for no limit. A size outside the range is refused with the range in the message, so the customer knows what to type instead.</p>"
+  },
+  {
+   "fieldname": "min_width",
+   "fieldtype": "Float",
+   "label": "Minimum Width (cm)"
+  },
+  {
+   "fieldname": "max_width",
+   "fieldtype": "Float",
+   "label": "Maximum Width (cm)"
+  },
+  {
+   "fieldname": "column_break_limits",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "min_height",
+   "fieldtype": "Float",
+   "label": "Minimum Height (cm)"
+  },
+  {
+   "fieldname": "max_height",
+   "fieldtype": "Float",
+   "label": "Maximum Height (cm)"
   }
  ],
  "index_web_pages_for_search": 1,

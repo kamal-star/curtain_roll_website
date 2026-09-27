@@ -460,6 +460,11 @@ def _search_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_search.js")
 
 
+def _options_tag():
+	"""The product page's size limits and section switches, same ride again."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
+
+
 def _rtl_sheet_tag():
 	return '<link rel="stylesheet" href="%s">' % _asset("css/curtain_rtl.css")
 
@@ -474,7 +479,15 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    # the search suggestions are drawn in the browser; the names
                    # inside them come back from the server already translated,
                    # but the words around them are the script's own
-                   "See all results", "Closest matches", "Nothing matched.")
+                   "See all results", "Closest matches", "Nothing matched.",
+                   # the size limits are written under the width and height
+                   # boxes by a script, with the numbers dropped in afterwards
+                   "Width must be between {0} and {1} cm.",
+                   "Height must be between {0} and {1} cm.",
+                   "Width must be at least {0} cm.",
+                   "Height must be at least {0} cm.",
+                   "Width can be at most {0} cm.",
+                   "Height can be at most {0} cm.")
 
 
 def _runtime_phrases():
@@ -504,7 +517,7 @@ def _add_chrome(html):
 	if "curtain_lang.js" in html:
 		return html
 
-	tag = _switcher_tag() + _search_tag()
+	tag = _switcher_tag() + _search_tag() + _options_tag()
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")

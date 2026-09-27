@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 734,
-  "translated": 727,
+  "total": 740,
+  "translated": 733,
   "remaining": 7
  },
  "strings": {
@@ -739,6 +739,12 @@
   "Keep this page bookmarked - the link works without signing in.": "احفظ هذه الصفحة في المفضلة — يعمل الرابط دون تسجيل دخول.",
   "We could not find that order.": "لم نتمكن من العثور على هذا الطلب.",
   "Please use the link from your confirmation email, or sign in to see your orders.": "استخدم الرابط الموجود في رسالة التأكيد، أو سجّل الدخول لعرض طلباتك.",
-  "My orders": "طلباتي"
+  "My orders": "طلباتي",
+  "Width must be between {0} and {1} cm.": "يجب أن يكون العرض بين {0} و{1} سم.",
+  "Height must be between {0} and {1} cm.": "يجب أن يكون الارتفاع بين {0} و{1} سم.",
+  "Width must be at least {0} cm.": "يجب ألا يقل العرض عن {0} سم.",
+  "Height must be at least {0} cm.": "يجب ألا يقل الارتفاع عن {0} سم.",
+  "Width can be at most {0} cm.": "يجب ألا يزيد العرض عن {0} سم.",
+  "Height can be at most {0} cm.": "يجب ألا يزيد الارتفاع عن {0} سم."
  }
 }

@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import cint, flt
 
 from curtain_roll.utils import get_product, get_products
 
@@ -15,6 +16,8 @@ class CurtainProduct(Document):
 				)
 			)
 
+		self._check_limits()
+		self._check_material_switch()
 		self._adopt_new_colors()
 
 		seen = set()
@@ -46,6 +49,50 @@ class CurtainProduct(Document):
 			if not slab.rate:
 				frappe.throw(_("Size slab row {0}: enter a rate, or remove the row.")
 				             .format(slab.idx))
+
+	def _check_limits(self):
+		"""A range has to be a range, or nothing can be ordered at all.
+
+		Caught here rather than on the storefront, because a minimum above the
+		maximum refuses every size a customer types while looking exactly like
+		the site is broken.
+		"""
+		for low, high, what in (("min_width", "max_width", _("Width")),
+		                        ("min_height", "max_height", _("Height"))):
+			bottom, top = flt(self.get(low)), flt(self.get(high))
+			if bottom and top and bottom > top:
+				frappe.throw(
+					_("{0}: the minimum ({1} cm) is above the maximum ({2} cm), "
+					  "so no size could be ordered.")
+					.format(what, bottom, top))
+			if bottom < 0 or top < 0:
+				frappe.throw(_("{0}: a size limit cannot be negative.").format(what))
+
+	def _check_material_switch(self):
+		"""Refuse to hide the material on a product whose price IS the material.
+
+		With Price Driven By set to Material Rate, the chosen swatch carries the
+		rate per square metre. Hide the swatches and there is no rate to find,
+		so every order falls back to the minimum price - quietly, and in the
+		customer's favour. Better to say so here than to sell blinds at the
+		floor price for a fortnight.
+		"""
+		if cint(self.get("show_material")):
+			return
+		switch = frappe.bold(_("Show Fabric / Material Choices"))
+		if self.pricing_mode == "Material Rate":
+			frappe.throw(
+				_("This product is priced by its material, so the material "
+				  "choices cannot be hidden. Either set Price Driven By to Base "
+				  "Rate and give it a rate of its own, or leave {0} ticked.")
+				.format(switch))
+		# The same trap by another route: a base-rate product whose base rate
+		# is 0 and has no minimum would sell for nothing without a swatch.
+		if not flt(self.base_rate) and not flt(self.minimum_price):
+			frappe.throw(
+				_("Without the material choices this product has no price - its "
+				  "Base Rate is 0 and it has no Minimum Order Price. Set one of "
+				  "them, or leave {0} ticked.").format(switch))
 
 	def _adopt_new_colors(self):
 		"""Give a colour typed into the grid what it needs to reach the site.
