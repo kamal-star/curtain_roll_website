@@ -253,12 +253,12 @@
   {
    "fieldname": "section_sub_options",
    "fieldtype": "Section Break",
-   "label": "Choices Under Manual and Motorized"
+   "label": "Choices That Depend on Another Choice"
   },
   {
    "fieldname": "sub_options_help",
    "fieldtype": "HTML",
-   "options": "<p class=\"text-muted small\">Shown below Control type once the customer picks Manual or Motorized - handle type, operating side, motor and motor position. A group appears only when it has at least one choice on, and the customer must pick one. For motors, set the sizes each one is rated for; the site offers only the motors that fit the size typed in, and refuses the size if none does.</p>"
+   "options": "<p class=\"text-muted small\">Each row appears once the customer picks the choice named in <b>Shown Under</b> - handle type and operating side under Manual; motor and motor position under Motorized; a slat width's own colours under that width (e.g. 5 cm). A group appears only when it has a choice on, and the customer must pick one. Give colours a Swatch Photo: they show as swatches and colour the blind in the 3D view. For motors, set the sizes each is rated for; only motors that fit the size typed are offered.</p>"
   },
   {
    "fieldname": "sub_options",

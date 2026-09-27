@@ -151,40 +151,35 @@
       });
   }
 
-  // -------------------------------- the choices under Manual / Motorized
-  /* Handle type and operating side under Manual; motor and motor position
-     under Motorized. They are rows on the Curtain Product record, not part of
-     the captured page, so they are drawn here - inside the Control type card,
-     which is inside #product, so the page's own Add to Cart sends them.
+  // --------------------------- choices that depend on another choice
+  /* Handle type and side under Manual; motor and position under Motorized;
+     a slat width's own colours under that width. They are rows on the Curtain
+     Product record, each naming the choice it sits under, and they are drawn
+     here - inside that choice's card, which is inside #product, so the page's
+     own Add to Cart sends them.
 
-     Only the choices under the control that is picked exist in the page at
-     any moment. The others are not hidden, they are gone: a hidden radio is
-     still posted, and a Manual handle would ride along on a motorised blind.
-     The server ignores it either way, but the form should say what it means. */
-  var MOTOR = /motor|كهربائي/i;
+     Only the rows under the choice that is picked exist in the page at any
+     moment. The others are not hidden, they are gone: a hidden radio is still
+     posted, and a Manual handle would ride along on a motorised blind, or a
+     5 cm colour on a 2.5 cm blind. The server ignores them either way, but the
+     form should say what it means.
 
+     A row with a swatch photo is drawn as a swatch. Under the colour or
+     material step it also colours the blind: the photo replaces the texture on
+     every part that wears the product's own fabric texture. On the metal blind
+     that is both sets of slats, the head box and the bottom bar - the 3D
+     bundle ignores a colour sent through modelchanger(), so it is applied to
+     the model directly, as the printed blind's picture is. */
   function subOptions(spec) {
-    var gid = spec.control_group, rows = spec.sub_options || [];
-    if (!gid || !rows.length) return;
-    var card = cardOf(document.querySelector('input[name="option[' + gid + ']"]'));
-    if (!card) return;
-
-    var host = document.createElement("div");
-    host.className = "cr-sub";
-    var grid = card.querySelector(".segmented-grid");
-    if (grid) grid.parentNode.insertBefore(host, grid.nextSibling);
-    else card.appendChild(host);
+    var rows = spec.sub_options || [];
+    if (!rows.length) return;
 
     var arabic = document.documentElement.getAttribute("dir") === "rtl";
     var chosen = {};              // group key -> row id, kept across redraws
 
-    function parent() {
-      var picked = document.querySelector('input[name="option[' + gid + ']"]:checked');
-      if (!picked) return null;
-      var entry = (spec.options && spec.options[gid] || {})[picked.value];
-      if (!entry) return null;
-      return MOTOR.test(entry.label || "") ? "Motorized" : "Manual";
-    }
+    // one host per parent group, inside that group's card
+    var parents = {};
+    rows.forEach(function (r) { parents[r.parent_gid] = true; });
 
     function size() {
       var w = document.querySelector('input[name^="option["][name$="[width]"]');
@@ -201,97 +196,181 @@
       return true;
     }
 
-    function build() {
-      var p = parent();
-      host.textContent = "";
-      if (!p) return;
-
-      var groups = {}, order = [];
-      rows.forEach(function (r) {
-        if (r.parent !== p) return;
-        if (!groups[r.key]) { groups[r.key] = []; order.push(r.key); }
-        groups[r.key].push(r);
-      });
-
-      var s = size();
-      order.forEach(function (key) {
-        var list = groups[key], first = list[0];
-        var title = (arabic && first.group_ar) || first.group;
-        var box = document.createElement("div");
-        box.className = "cr-sub-group";
-        // where the theme puts this group's error, if the server has one
-        box.id = "input-optioncrsub-" + key;
-
-        var head = document.createElement("div");
-        head.className = "cr-sub-title";
-        head.textContent = title;
-        box.appendChild(head);
-
-        var offered = list.filter(function (r) { return fits(r, s); });
-        if (!offered.length) {
-          var none = document.createElement("div");
-          none.className = "cr-sub-none";
-          none.textContent = fill("No {0} is available for this size. Please contact us.", title);
-          box.appendChild(none);
-          host.appendChild(box);
-          return;
-        }
-
-        var keep = offered.some(function (r) { return r.id === chosen[key]; })
-          ? chosen[key] : offered[0].id;
-        chosen[key] = keep;
-
-        var chips = document.createElement("div");
-        chips.className = "cr-sub-chips";
-        offered.forEach(function (r) {
-          var chip = document.createElement("label");
-          chip.className = "cr-chip";
-          var input = document.createElement("input");
-          input.type = "radio";
-          input.name = "cr_sub[" + key + "]";
-          input.value = r.id;
-          input.checked = r.id === keep;
-          input.addEventListener("change", function () {
-            chosen[key] = r.id;
-            refresh();
-          });
-          var name = document.createElement("span");
-          name.textContent = (arabic && r.label_ar) || r.label;
-          chip.appendChild(input);
-          chip.appendChild(name);
-          if (r.price_text) {
-            var cost = document.createElement("small");
-            cost.textContent = r.price_text;
-            chip.appendChild(cost);
-          }
-          chips.appendChild(chip);
-        });
-        box.appendChild(chips);
-        host.appendChild(box);
-      });
-    }
-
     function refresh() {
       if (window.jQuery) window.jQuery("#product").trigger("change");
     }
 
-    document.querySelectorAll('input[name="option[' + gid + ']"]').forEach(function (r) {
-      r.addEventListener("change", function () { build(); refresh(); });
-    });
-    var timer = null;
-    document.querySelectorAll('input[name^="option["][name$="[width]"], ' +
-                              'input[name^="option["][name$="[height]"]')
-      .forEach(function (box) {
-        // the page itself re-prices on typing; this only re-offers the motors
-        box.addEventListener("input", function () {
-          clearTimeout(timer);
-          timer = setTimeout(build, 350);
+    Object.keys(parents).forEach(function (gid) {
+      var first = document.querySelector('input[name="option[' + gid + ']"]');
+      var card = cardOf(first);
+      if (!card) return;
+
+      var host = document.createElement("div");
+      host.className = "cr-sub";
+      var tray = first.closest(".segmented-grid, .swatches-scroll-tray");
+      if (tray && tray.parentNode) tray.parentNode.insertBefore(host, tray.nextSibling);
+      else card.appendChild(host);
+
+      var colours = String(gid) === String(spec.material_group);
+
+      function build() {
+        var picked = document.querySelector('input[name="option[' + gid + ']"]:checked');
+        var value = picked ? picked.value : null;
+        host.textContent = "";
+        if (!value) return;
+
+        var groups = {}, order = [];
+        rows.forEach(function (r) {
+          if (String(r.parent_gid) !== String(gid) || String(r.parent_value) !== String(value)) return;
+          if (!groups[r.key]) { groups[r.key] = []; order.push(r.key); }
+          groups[r.key].push(r);
         });
+
+        var s = size();
+        order.forEach(function (key) {
+          var list = groups[key], head0 = list[0];
+          var title = (arabic && head0.group_ar) || head0.group;
+          var box = document.createElement("div");
+          box.className = "cr-sub-group";
+          // where the theme puts this group's error, if the server has one
+          box.id = "input-optioncrsub-" + key;
+
+          var head = document.createElement("div");
+          head.className = "cr-sub-title";
+          head.textContent = title;
+          box.appendChild(head);
+
+          var offered = list.filter(function (r) { return fits(r, s); });
+          if (!offered.length) {
+            var none = document.createElement("div");
+            none.className = "cr-sub-none";
+            none.textContent = fill("No {0} is available for this size. Please contact us.", title);
+            box.appendChild(none);
+            host.appendChild(box);
+            return;
+          }
+
+          var keep = offered.some(function (r) { return r.id === chosen[key]; })
+            ? chosen[key] : offered[0].id;
+          chosen[key] = keep;
+
+          var swatches = offered.some(function (r) { return r.image; });
+          var tray = document.createElement("div");
+          tray.className = swatches ? "cr-sub-swatches" : "cr-sub-chips";
+
+          offered.forEach(function (r) {
+            var item = document.createElement("label");
+            item.className = swatches ? "cr-sub-swatch" : "cr-chip";
+            item.title = (arabic && r.label_ar) || r.label;
+            var input = document.createElement("input");
+            input.type = "radio";
+            input.name = "cr_sub[" + key + "]";
+            input.value = r.id;
+            input.checked = r.id === keep;
+            input.addEventListener("change", function () {
+              chosen[key] = r.id;
+              if (colours && r.image) recolour(r.image);
+              refresh();
+            });
+            item.appendChild(input);
+            if (swatches) {
+              var img = document.createElement("img");
+              img.alt = item.title;
+              img.loading = "lazy";
+              if (r.image) img.src = r.image;
+              item.appendChild(img);
+            }
+            var name = document.createElement("span");
+            name.textContent = (arabic && r.label_ar) || r.label;
+            item.appendChild(name);
+            if (r.price_text) {
+              var cost = document.createElement("small");
+              cost.textContent = r.price_text;
+              item.appendChild(cost);
+            }
+            tray.appendChild(item);
+          });
+          box.appendChild(tray);
+          host.appendChild(box);
+
+          // the colour already picked is the one the blind should wear
+          var current = offered.filter(function (r) { return r.id === keep; })[0];
+          if (colours && current && current.image) recolour(current.image);
+        });
+      }
+
+      document.querySelectorAll('input[name="option[' + gid + ']"]').forEach(function (r) {
+        r.addEventListener("change", function () { build(); refresh(); });
       });
+      var timer = null;
+      document.querySelectorAll('input[name^="option["][name$="[width]"], ' +
+                                'input[name^="option["][name$="[height]"]')
+        .forEach(function (box) {
+          // the page itself re-prices on typing; this only re-offers the motors
+          box.addEventListener("input", function () {
+            clearTimeout(timer);
+            timer = setTimeout(build, 350);
+          });
+        });
+      build();
+    });
 
     subStyle();
-    build();
     refresh();
+  }
+
+  /* Colour the blind with a swatch photo.
+
+     "The product's own fabric texture" is whichever texture most visible
+     parts of the blind wear - on the metal blind, the 19 slats of the width
+     on show, alongside the head box and bottom bar. Every part that wore it
+     when the page loaded is recoloured, visible or not, so switching width
+     afterwards keeps the colour. The room itself is left out. */
+  var fabricParts = null;
+
+  function fabric() {
+    if (fabricParts || !window.scene) return fabricParts;
+    var count = {}, byMap = {};
+    window.scene.traverse(function (o) {
+      if (!o.isMesh || o.name === "mesh3d") return;
+      var m = [].concat(o.material)[0];
+      var src = m && m.map && m.map.image && m.map.image.src;
+      if (!src) return;
+      (byMap[src] = byMap[src] || []).push(o);
+      if (o.visible) count[src] = (count[src] || 0) + 1;
+    });
+    var best = null;
+    Object.keys(count).forEach(function (src) {
+      if (!best || count[src] > count[best]) best = src;
+    });
+    fabricParts = best ? byMap[best] : [];
+    return fabricParts;
+  }
+
+  var colourTextures = {};
+
+  function recolour(url) {
+    var T = window.THREE;
+    var parts = fabric();
+    if (!T || !parts || !parts.length) return;
+    function apply(tex) {
+      parts.forEach(function (o) {
+        [].concat(o.material).forEach(function (m) {
+          if (m.map === tex) return;
+          m.map = tex;
+          if (m.color) m.color.set(0xffffff);
+          m.needsUpdate = true;
+        });
+      });
+      if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+    }
+    if (colourTextures[url]) return apply(colourTextures[url]);
+    new T.TextureLoader().load(url, function (tex) {
+      if (T.sRGBEncoding) tex.encoding = T.sRGBEncoding;
+      tex.wrapS = tex.wrapT = T.RepeatWrapping;
+      colourTextures[url] = tex;
+      apply(tex);
+    });
   }
 
   // ------------------------------------------- the customer's own picture
@@ -573,7 +652,19 @@
       ".cr-chip:has(input:checked){border-color:var(--brand,#09446c);" +
       "background:var(--brand-light,#eaf3f8);color:var(--brand,#09446c)}" +
       ".cr-chip:has(input:focus-visible){box-shadow:0 0 0 3px var(--brand-soft,rgba(9,68,108,.15))}" +
-      ".cr-sub-none{font-size:12.5px;color:#c0392b;font-weight:600}";
+      ".cr-sub-none{font-size:12.5px;color:#c0392b;font-weight:600}" +
+      // colour swatches: a photo tile with the name under it
+      ".cr-sub-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:8px}" +
+      ".cr-sub-swatch{position:relative;display:flex;flex-direction:column;align-items:center;" +
+      "gap:4px;cursor:pointer;padding:5px;border:1.5px solid var(--border,#e1ebf2);" +
+      "border-radius:12px;background:var(--surface,#fff);font-size:11.5px;font-weight:600;" +
+      "text-align:center;color:var(--text,#0f172a)}" +
+      ".cr-sub-swatch input{position:absolute;opacity:0;pointer-events:none}" +
+      ".cr-sub-swatch img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;" +
+      "background:#eef2f5}" +
+      ".cr-sub-swatch small{font-weight:500;color:var(--text-muted,#54667a);font-size:10.5px}" +
+      ".cr-sub-swatch:has(input:checked){border-color:var(--brand,#09446c);" +
+      "box-shadow:0 0 0 3px var(--brand-soft,rgba(9,68,108,.15))}";
     document.head.appendChild(css);
   }
 

@@ -273,15 +273,29 @@ SUB_OPTION_SEED = (
 )
 
 
-def _seed_sub_options():
-	"""Put the client's handle, side and motor-position choices on three products.
+# Each batch of products gets its own flag, so adding Zebra later still seeds
+# Zebra - one flag for all of them would have been set already and skipped it.
+SUB_OPTION_BATCHES = (
+	(SUB_OPTIONS_FLAG, ("blackout", "sunscreen", "printed")),
+	# "Zebra: same options as the roller blinds"
+	("curtain_roll_sub_options_seeded_zebra", ("zebra",)),
+)
 
-	Once, and never again: a row the team deletes is a decision, and a migrate
-	that quietly puts it back is a migrate nobody can work with.
+
+def _seed_sub_options():
+	"""Put the client's handle, side and motor-position choices on products.
+
+	Once per product, never again: a row the team deletes is a decision, and a
+	migrate that quietly puts it back is a migrate nobody can work with.
 	"""
-	if frappe.db.get_default(SUB_OPTIONS_FLAG):
-		return
-	for key in ("blackout", "sunscreen", "printed"):
+	for flag, keys in SUB_OPTION_BATCHES:
+		if not frappe.db.get_default(flag):
+			_seed_sub_option_rows(keys)
+			frappe.db.set_default(flag, "1")
+
+
+def _seed_sub_option_rows(keys):
+	for key in keys:
 		if not frappe.db.exists("Curtain Product", key):
 			continue
 		doc = frappe.get_doc("Curtain Product", key)
@@ -297,7 +311,6 @@ def _seed_sub_options():
 		doc.flags.ignore_permissions = True
 		doc.save(ignore_permissions=True)
 		print("  choices under Manual / Motorized seeded on %s" % key)
-	frappe.db.set_default(SUB_OPTIONS_FLAG, "1")
 
 
 PRINT_UPLOAD_FLAG = "curtain_roll_print_upload_seeded"

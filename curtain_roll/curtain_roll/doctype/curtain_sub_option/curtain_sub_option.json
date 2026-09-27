@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 0,
  "creation": "2026-09-28 00:00:00.000000",
- "description": "A choice that appears under Manual or Motorized once the customer picks it - a handle type, a side, a motor. Rows with the same Group are shown together, in the order of the grid.",
+ "description": "A choice that appears once the customer picks the choice it sits under - a handle type or motor under Manual or Motorized, or a colour under a slat width. Rows with the same Group are shown together, in the order of the grid.",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -14,6 +14,7 @@
   "charge_type",
   "rate",
   "enabled",
+  "image",
   "column_break_ar",
   "group_label_ar",
   "option_label_ar",
@@ -27,13 +28,13 @@
  "fields": [
   {
    "fieldname": "parent_choice",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Shown Under",
-   "options": "Manual\nMotorized",
    "default": "Manual",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 1
+   "columns": 2,
+   "description": "The choice this appears under: Manual, Motorized, or any other choice on this product - e.g. 5 cm for the colours of the 5 cm slat."
   },
   {
    "fieldname": "group_label",
@@ -120,6 +121,12 @@
    "fieldname": "max_height",
    "fieldtype": "Float",
    "label": "Maximum Height (cm)"
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Swatch Photo",
+   "description": "Optional. With a photo the choice is shown as a swatch; under a colour or material step, picking it also colours the blind in the 3D view."
   }
  ],
  "index_web_pages_for_search": 0,

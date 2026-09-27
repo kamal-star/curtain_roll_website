@@ -18,6 +18,7 @@ class CurtainProduct(Document):
 
 		self._check_limits()
 		self._check_material_switch()
+		self._check_sub_option_parents()
 		self._adopt_new_colors()
 
 		seen = set()
@@ -67,6 +68,32 @@ class CurtainProduct(Document):
 					.format(what, bottom, top))
 			if bottom < 0 or top < 0:
 				frappe.throw(_("{0}: a size limit cannot be negative.").format(what))
+
+	def _check_sub_option_parents(self):
+		"""Every dependent choice must sit under a choice this product has.
+
+		"Shown Under" is typed, and a typo - "5cm" for "5 cm" - would not fail
+		anywhere: the row would simply never appear on the site, and nobody
+		would know why the colours had gone. So it fails here, with the names
+		it could have meant.
+		"""
+		names = {(o.option_label or "").strip().lower()
+		         for o in self.get("options") or []}
+		names |= {(c.color_name or "").strip().lower()
+		          for c in self.get("colors") or []}
+		# Manual / Motorized also match a control spelled differently
+		names |= {"manual", "motorized", "motorised"}
+		names.discard("")
+		for row in self.get("sub_options") or []:
+			parent = (row.parent_choice or "").strip()
+			if not parent:
+				frappe.throw(_("Row {0} of Choices: fill in Shown Under.").format(row.idx))
+			if parent.lower() not in names:
+				known = sorted({(o.option_label or "").strip() for o in self.get("options") or []}
+				               | {(c.color_name or "").strip() for c in self.get("colors") or []})
+				frappe.throw(_("Row {0} of Choices: {1} is not a choice on this product. "
+				               "Use one of: {2}").format(
+					row.idx, frappe.bold(parent), ", ".join(k for k in known if k)))
 
 	def _check_material_switch(self):
 		"""Refuse to hide the material on a product whose price IS the material.

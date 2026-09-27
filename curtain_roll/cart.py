@@ -124,8 +124,7 @@ def describe_options(product_key, form, labels=None):
 	# in the Curtain Product record rather than in the captured page
 	priced = pricing.get_spec(product_key)
 	if priced:
-		parent = pricing.control_parent(priced, submitted)
-		for key, rows in (pricing.sub_groups(priced, parent).items() if parent else []):
+		for key, rows in pricing.active_sub_groups(priced, submitted).items():
 			chosen = str(submitted("cr_sub[%s]" % key) or "")
 			entry = next((r for r in rows if r["id"] == chosen), None)
 			if entry:

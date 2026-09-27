@@ -298,26 +298,45 @@ def get_spec(product_key):
 			spec["control_group"] = gid
 			break
 
-	spec["sub_options"] = [
-		{
+	# Which choice each dependent row sits under. "Shown Under" is typed by the
+	# team - Manual, Motorized, 5 cm - so it is matched to the product's real
+	# choices by their names, in any group, the colour group included.
+	choices = {}
+	for gid, group in spec["options"].items():
+		for value, entry in group.items():
+			choices.setdefault((entry["label"] or "").strip().lower(), (gid, value))
+	for value, entry in spec["colors"].items():
+		if color_group:
+			choices.setdefault((entry["label"] or "").strip().lower(), (color_group, value))
+
+	spec["sub_options"] = []
+	for row in (doc.get("sub_options") or []):
+		if not (cint(row.enabled) and (row.group_label or "").strip()
+		        and (row.option_label or "").strip()):
+			continue
+		parent = (row.parent_choice or "").strip()
+		# no motor on offer means nothing to choose under Motorized either
+		if _MOTOR.search(parent) and not show_motor:
+			continue
+		where = _parent_of(parent, choices, spec)
+		if not where:
+			continue            # names a choice this product does not have
+		spec["sub_options"].append({
 			"id": row.name,
-			"parent": row.parent_choice or "Manual",
+			"parent": parent,
+			"parent_gid": where[0],
+			"parent_value": where[1],
 			"group": (row.group_label or "").strip(),
 			"key": _group_key(row.group_label),
 			"group_ar": (row.group_label_ar or "").strip(),
 			"label": (row.option_label or "").strip(),
 			"label_ar": (row.option_label_ar or "").strip(),
+			"image": row.get("image") or "",
 			"charge_type": row.charge_type or "Fixed Amount",
 			"rate": flt(row.rate),
 			"min_width": flt(row.min_width), "max_width": flt(row.max_width),
 			"min_height": flt(row.min_height), "max_height": flt(row.max_height),
-		}
-		for row in (doc.get("sub_options") or [])
-		if cint(row.enabled) and (row.group_label or "").strip()
-		and (row.option_label or "").strip()
-		# no motor on offer means nothing to choose under Motorized either
-		and not (row.parent_choice == "Motorized" and not show_motor)
-	]
+		})
 
 	# kept even when hidden: the page needs to know WHICH card to take away
 	spec["material_group"] = color_group
@@ -372,23 +391,34 @@ def _fits(entry, width, height):
 	return True
 
 
-def control_parent(spec, submitted):
-	""""Manual" or "Motorized" - whichever control the customer chose - or None."""
+def _parent_of(parent, choices, spec):
+	"""(group id, value) of the choice a dependent row sits under, or None.
+
+	By name first. Manual and Motorized also match a control choice that is
+	spelled differently - Motorised, Motor - because that is how most rows are
+	typed and a product's own label is whatever the old site called it.
+	"""
+	found = choices.get(parent.lower())
+	if found:
+		return found
 	gid = spec.get("control_group")
-	if not gid:
-		return None
-	value = str(submitted("option[%s]" % gid) or "")
-	entry = (spec["options"].get(gid) or {}).get(value)
-	if not entry:
-		return None
-	return "Motorized" if _MOTOR.search(entry["label"] or "") else "Manual"
+	if gid and parent.lower() in ("manual", "motorized", "motorised"):
+		want_motor = parent.lower() != "manual"
+		for value, entry in (spec["options"].get(gid) or {}).items():
+			if bool(_MOTOR.search(entry["label"] or "")) == want_motor:
+				return gid, value
+	return None
 
 
-def sub_groups(spec, parent):
-	"""The choices under one control, as {key: [rows]}, in the grid's order."""
+def active_sub_groups(spec, submitted):
+	"""The dependent choices whose parent the customer has picked, {key: [rows]}.
+
+	In the grid's order. A row belongs only while its parent choice is the one
+	selected in its group - pick 2.5 cm and the 5 cm colours stop existing.
+	"""
 	groups = {}
 	for row in spec.get("sub_options") or []:
-		if row["parent"] == parent:
+		if str(submitted("option[%s]" % row["parent_gid"]) or "") == row["parent_value"]:
 			groups.setdefault(row["key"], []).append(row)
 	return groups
 
@@ -653,14 +683,14 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 			lines.append((label, extra))
 
 	# ---- the choices under Manual / Motorized: handle, side, motor, position
-	parent = control_parent(spec, submitted)
-	if parent:
+	active = active_sub_groups(spec, submitted)
+	if active:
 		from curtain_roll.language import text as say
 
 		from curtain_roll.language import current, phrases
 
 		arabic = current() == "ar"
-		for key, rows in sub_groups(spec, parent).items():
+		for key, rows in active.items():
 			group = rows[0]["group"]
 			# the name used in a message the customer will read
 			shown = group
@@ -819,7 +849,6 @@ def get_pricing(product_key=None):
 		"show_material": spec.get("show_material", True),
 		"material_group": spec.get("material_group"),
 		# the choices under Manual / Motorized, drawn by curtain_options.js
-		"control_group": spec.get("control_group"),
 		"allow_upload": spec.get("allow_upload", False),
 		"sub_options": _sub_options_for_page(spec),
 	}
