@@ -36,10 +36,31 @@
 [dir="rtl"] .btn-header-pill i { margin-right: 0; margin-left: 6px; }
 [dir="rtl"] .drawer-nav-item i.chevron { transform: scaleX(-1); }
 
+/* The phone menu slides in from the right in Arabic.
+
+   The captured theme parks it at left:-320px and slides it across with
+   translateX(320px). Off the left edge is invisible and inert in English, where
+   a page cannot scroll left of zero. In Arabic the page's origin is its right
+   edge, so 320px parked off the LEFT is 320px of page the browser has to make
+   room for: the phone widened the layout to fit the hidden menu, the whole
+   site slid sideways, and the logo and every card were cut off on the right.
+
+   Mirroring it puts the parked menu past the right edge instead - the side an
+   Arabic page cannot scroll towards - and it is the side a right-to-left
+   reader expects a menu to come from anyway. The theme's own rules carry
+   !important, so these have to as well. */
+[dir="rtl"] .mobile-drawer {
+  left: auto !important;
+  right: -320px !important;
+  box-shadow: -12px 0 35px rgba(9, 68, 108, 0.18) !important;
+}
+[dir="rtl"] .mobile-drawer.open {
+  transform: translateX(-320px) !important;
+}
+
 /* Numbers, prices, phone numbers and the gateway reference stay left-to-right
    even inside Arabic text - otherwise "SR 380.00" comes out reversed. */
 [dir="rtl"] .cr-money,
-[dir="rtl"] #cart-total,
 [dir="rtl"] .price-normal,
 [dir="rtl"] .price-new,
 [dir="rtl"] td[style*="monospace"] {
@@ -48,6 +69,22 @@
   unicode-bidi: embed;
 }
 
+/* The header's cart line is NOT in the group above, for two reasons.
+
+   It used to be, when it read "1 item(s) - SR 380.00". It is Arabic now -
+   "1 منتج - 702.50 ر.س" - and forcing an Arabic sentence left-to-right puts
+   its words in the wrong order.
+
+   And `display: inline-block` there beat the phone header's
+   `#cart-total { display: none }`, because [dir] plus an id outranks an id.
+   On a phone in Arabic the full line came back inside the cart button, which
+   grew to three lines and pushed the header wider than the screen - so the
+   whole page slid sideways and the logo was cut off. The phone header shows
+   only the count badge, in both languages, and this makes sure of it. */
+@media (max-width: 768px) {
+  [dir="rtl"] #cart-total { display: none; }
+}
+
 /* The language pill itself, in both directions. */
 .cr-lang-pill { cursor: pointer; }
-.cr-lang-pill span { margin-inline-start: 6px; }
+.cr-lang-pill .cr-lang-full { margin-inline-start: 6px; }

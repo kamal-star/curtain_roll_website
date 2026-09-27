@@ -11,6 +11,35 @@
 
   var LANGS = { en: "English", ar: "العربية" };
 
+  // What the button says on a phone. The full names made it 116px wide, and a
+  // phone header has 343px for the logo, search, this and the cart - so the
+  // cart was pushed off the right edge in English, and in Arabic, where the
+  // page grows leftwards, the whole site slid sideways to make room.
+  var SHORT = { en: "EN", ar: "ع" };
+
+  function phoneStyle() {
+    if (document.getElementById("cr-lang-style")) return;
+    var css = document.createElement("style");
+    css.id = "cr-lang-style";
+    css.textContent =
+      ".cr-lang-pill .cr-lang-short{display:none}" +
+      "@media (max-width:768px){" +
+      ".cr-lang-pill{padding:8px 11px}" +
+      ".cr-lang-pill .cr-lang-full{display:none}" +
+      ".cr-lang-pill .cr-lang-short{display:inline;font-weight:700}" +
+      "}" +
+      // On the narrowest phones even the short button leaves the header 36px
+      // over, so the spacing the theme set for a desktop gives it back. Tuned
+      // at 375px, the iPhone width, rather than guessed.
+      "@media (max-width:480px){" +
+      ".header-main{gap:8px !important}" +
+      ".header-actions{gap:6px !important}" +
+      ".nav-left-group{gap:10px !important}" +
+      ".cr-lang-pill{padding:8px 9px !important;gap:4px !important}" +
+      "}";
+    document.head.appendChild(css);
+  }
+
   function currentLang() {
     var m = document.cookie.match(/(?:^|;\s*)preferred_language=([^;]+)/);
     var fromCookie = m ? decodeURIComponent(m[1]).toLowerCase().split("-")[0] : "";
@@ -61,7 +90,10 @@
     pill.className = "btn-header-pill cr-lang-pill";
     pill.setAttribute("lang", other);
     pill.setAttribute("aria-label", "Switch language to " + LANGS[other]);
-    pill.innerHTML = '<i class="fa-solid fa-globe"></i><span>' + LANGS[other] + "</span>";
+    pill.innerHTML = '<i class="fa-solid fa-globe"></i>' +
+      '<span class="cr-lang-full">' + LANGS[other] + "</span>" +
+      '<span class="cr-lang-short">' + SHORT[other] + "</span>";
+    phoneStyle();
     pill.addEventListener("click", function (e) {
       e.preventDefault();
       choose(other);
