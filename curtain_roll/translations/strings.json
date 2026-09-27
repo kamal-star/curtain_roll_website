@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 642,
-  "translated": 635,
+  "total": 657,
+  "translated": 650,
   "remaining": 7
  },
  "strings": {
@@ -647,6 +647,21 @@
   "Your Rights & Data Governance Contact": "حقوقك وجهة التواصل بشأن حوكمة البيانات",
   "Your shopping cart is empty!": "سلة التسوق فارغة!",
   "Your Transactions": "عملياتك",
-  "Zebra blinds feature a modern design that combines two layers of fabric; a blackout piece and a sheer chiffon piece, giving you complete control over the amount of light entering and the level of privacy you want. Thanks to their smart rotating mechanism, you can adjust the position of the slats to block out light completely or let in just the right amount. These blinds are available in a variety": "تتميّز ستائر الزيبرا بتصميم عصري يجمع بين طبقتين من القماش؛ طبقة معتمة وأخرى شفافة من الشيفون، لتمنحك تحكمًا كاملًا في الإضاءة والخصوصية."
+  "Zebra blinds feature a modern design that combines two layers of fabric; a blackout piece and a sheer chiffon piece, giving you complete control over the amount of light entering and the level of privacy you want. Thanks to their smart rotating mechanism, you can adjust the position of the slats to block out light completely or let in just the right amount. These blinds are available in a variety": "تتميّز ستائر الزيبرا بتصميم عصري يجمع بين طبقتين من القماش؛ طبقة معتمة وأخرى شفافة من الشيفون، لتمنحك تحكمًا كاملًا في الإضاءة والخصوصية.",
+  "Search": "البحث",
+  "results": "نتيجة",
+  "See all results": "عرض كل النتائج",
+  "Closest matches": "أقرب النتائج",
+  "Nothing matched.": "لا توجد نتائج.",
+  "Nothing matched your search.": "لا توجد نتائج لبحثك.",
+  "Nothing matched that exactly. These are the closest.": "لا يوجد تطابق تام، وهذه أقرب النتائج.",
+  "Type what you are looking for - a curtain type, a colour, or a fabric code.": "اكتب ما تبحث عنه — نوع الستارة أو اللون أو رمز القماش.",
+  "Try a curtain type such as blackout or zebra, a colour, or a fabric code from your sample.": "جرب نوع ستارة مثل بلاك آوت أو زيبرا، أو لونًا، أو رمز القماش الموجود على عينتك.",
+  "Starts from": "يبدأ من",
+  "Search products": "البحث في المنتجات",
+  "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.": "نفس الستارة الخشبية، معروضة داخل شقة عصرية. اختر لون الشرائح والمقاس وشاهدها في الغرفة قبل الطلب.",
+  "The same vertical blind, previewed in a contemporary living room. Choose your fabric and size and see it in the room before you order.": "نفس الستارة الرأسية، معروضة في غرفة معيشة عصرية. اختر القماش والمقاس وشاهدها في الغرفة قبل الطلب.",
+  "Imported rolling shutters: weather resistant, sound and heat insulating, and secure. Choose your colour and size.": "شتر مستورد: مقاوم للعوامل الجوية، عازل للصوت والحرارة، وآمن. اختر اللون والمقاس.",
+  "The same blackout roller blind, previewed in a contemporary majlis overlooking the city. Choose your fabric and size and see it in the room before you order.": "نفس ستارة الرول المعتمة، معروضة في مجلس عصري مطل على المدينة. اختر القماش والمقاس وشاهدها في الغرفة قبل الطلب."
  }
 }

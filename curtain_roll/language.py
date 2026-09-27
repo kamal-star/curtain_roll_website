@@ -431,6 +431,16 @@ def _switcher_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_lang.js")
 
 
+def _search_tag():
+	"""The search box's script, carried on the same ride as the switcher.
+
+	It belongs here for exactly the reason the switcher does: every header on
+	the site is a frozen copy inside a captured page, so the only place to reach
+	all of them at once is the finished HTML.
+	"""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_search.js")
+
+
 def _rtl_sheet_tag():
 	return '<link rel="stylesheet" href="%s">' % _asset("css/curtain_rtl.css")
 
@@ -441,7 +451,11 @@ def _rtl_sheet_tag():
 # HTML, so these few strings have to reach the browser.
 RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "Wishlist", "Your cart is empty.", "Continue shopping",
-                   "Remove", "Your shopping cart is empty!")
+                   "Remove", "Your shopping cart is empty!",
+                   # the search suggestions are drawn in the browser; the names
+                   # inside them come back from the server already translated,
+                   # but the words around them are the script's own
+                   "See all results", "Closest matches", "Nothing matched.")
 
 
 def _runtime_phrases():
@@ -460,18 +474,18 @@ def _runtime_phrases():
 
 
 def _add_chrome(html):
-	"""Put the language switch, and Arabic layout, on the page.
+	"""Put the language switch, the search box's script, and Arabic layout on.
 
 	The 18 ported pages are standalone documents - they do not extend Frappe's
 	base template, so web_include_js never reaches them, and each carries its
-	own frozen copy of the header. Adding one script tag here covers all of
+	own frozen copy of the header. Adding the script tags here covers all of
 	them and every page written since, and survives the next regeneration of
 	the captures.
 	"""
 	if "curtain_lang.js" in html:
 		return html
 
-	tag = _switcher_tag()
+	tag = _switcher_tag() + _search_tag()
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")
