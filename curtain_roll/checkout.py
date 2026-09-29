@@ -28,7 +28,7 @@ import frappe
 from frappe import _
 from frappe.utils import cint, flt
 
-from curtain_roll import cart, totals
+from curtain_roll import cart, orders, totals
 from curtain_roll.language import text as say
 from curtain_roll.storefront import storefront_settings
 from curtain_roll.utils import as_system_user
@@ -84,6 +84,7 @@ def bank_details():
 	return {
 		"bank": settings.get("bank_name") or "",
 		"account": settings.get("bank_account_name") or "",
+		"number": settings.get("bank_account_number") or "",
 		"iban": settings.get("bank_iban") or "",
 		"instructions": settings.get("bank_instructions") or "",
 	}
@@ -266,8 +267,10 @@ def _address(details, prefix):
 		return _clean(details.get("%s_%s" % (prefix, name)), limit)
 
 	out = {
+		"building_no": field("building_no", 10),
 		"address_line1": field("address_line1"),
 		"address_line2": field("address_line2"),
+		"district": field("district", 80),
 		"city": field("city", 80),
 		"state": field("state", 80),
 		"pincode": field("pincode", 20),
@@ -285,10 +288,9 @@ def _address(details, prefix):
 	def refuse(message):
 		frappe.throw("%s: %s" % (label, say(message)))
 
-	if not out["address_line1"]:
-		refuse("please enter the street address.")
-	if not out["city"]:
-		refuse("please enter the city.")
+	problem = address_problem(out)
+	if problem:
+		refuse(problem)
 
 	code = out["national_address"]
 	if code and not NATIONAL_ADDRESS.match(code):
@@ -382,6 +384,40 @@ def _contact_for(customer, person):
 	return doc.name
 
 
+BUILDING_NO = re.compile(r"^\d{4}$")
+POSTAL_CODE = re.compile(r"^\d{5}$")
+
+
+def address_problem(values):
+	"""The first thing missing or wrong in an address, as a sentence, or None.
+
+	The five parts of a Saudi National Address - building number, street,
+	district, city, postal code - are what a fitter needs to find the door, and
+	what the invoice has to print. All five are required. The two numbers are
+	checked for shape only in Saudi Arabia, where a building number is always
+	four digits and a postal code five.
+
+	Shared by the checkout and the account's address book, so an address saved
+	in one is never refused by the other.
+	"""
+	if not values.get("building_no"):
+		return "please enter the building number."
+	if not values.get("address_line1"):
+		return "please enter the street name."
+	if not values.get("district"):
+		return "please enter the district."
+	if not values.get("city"):
+		return "please enter the city."
+	if not values.get("pincode"):
+		return "please enter the postal code."
+	if (values.get("country") or "Saudi Arabia") == "Saudi Arabia":
+		if not BUILDING_NO.match(values["building_no"]):
+			return "the building number is four digits."
+		if not POSTAL_CODE.match(values["pincode"]):
+			return "the postal code is five digits."
+	return None
+
+
 def _save_address(customer, person, values, kind):
 	"""Write one address, reusing an identical one rather than stacking copies."""
 	title = person["company_name"] or \
@@ -394,8 +430,10 @@ def _save_address(customer, person, values, kind):
 			         "link_name": customer}, pluck="parent"):
 		row = frappe.db.get_value(
 			"Address", name,
-			["address_line1", "city", "pincode", "address_type"], as_dict=True)
+			["address_line1", "city", "pincode", "address_type", "building_no"],
+			as_dict=True)
 		if row and row.address_type == kind \
+				and (row.building_no or "") == values["building_no"] \
 				and (row.address_line1 or "") == values["address_line1"] \
 				and (row.city or "") == values["city"] \
 				and (row.pincode or "") == values["pincode"]:
@@ -406,7 +444,9 @@ def _save_address(customer, person, values, kind):
 		"doctype": "Address",
 		"address_title": "%s (%s)" % (title, kind),
 		"address_type": kind,
+		"building_no": values["building_no"],
 		"address_line1": values["address_line1"],
+		"district": values["district"],
 		"address_line2": values["address_line2"] or None,
 		"city": values["city"],
 		"state": values["state"] or None,
@@ -513,6 +553,7 @@ def build_quotation(customer, billing, shipping, person, method):
 	quotation.contact_mobile = person["phone"]
 
 	apply_money(quotation)
+	orders.stamp_quotation(quotation)
 
 	quotation.flags.ignore_permissions = True
 	quotation.flags.ignore_mandatory = True
@@ -587,7 +628,7 @@ def confirmation_url(quotation):
 
 
 def bank_order(quotation):
-	"""Place a bank-transfer order: submit it, and raise the invoice unpaid.
+	"""Place a bank-transfer order, and raise its invoice as a draft.
 
 	Deliberately different from the card path. There the invoice is raised
 	because the money has arrived; here it is raised so there is something for
@@ -600,13 +641,11 @@ def bank_order(quotation):
 
 	invoice = None
 	try:
-		# Submitting re-validates every line, and validating a line reads its
-		# Item through check_permission - which a storefront customer fails.
-		# The submit belongs inside this block for the same reason the save did.
+		# Nothing is submitted (see orders.py) - the quotation stays a draft
+		# and the invoice is made as one. Making it still reads each line's
+		# Item through check_permission, which a storefront customer fails, so
+		# it runs elevated for the same reason the save did.
 		with as_system_user():
-			if quotation.docstatus == 0:
-				quotation.flags.ignore_permissions = True
-				quotation.submit()
 			invoice = clickpay._raise_invoice(quotation)
 	except Exception:
 		frappe.log_error(title="curtain_roll: bank transfer invoice",
@@ -616,4 +655,8 @@ def bank_order(quotation):
 	                    clickpay.STATUS_FIELD, AWAITING_TRANSFER,
 	                    update_modified=False)
 	frappe.db.commit()
+
+	from curtain_roll import notify
+
+	notify.order_placed(quotation, "bank")
 	return invoice

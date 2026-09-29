@@ -72,6 +72,15 @@ scheduler_events = {
 	],
 }
 
+# ------------------------------------------------------------ documents
+# A card payment is made as a draft Payment Entry before its invoice is
+# submitted; submitting the invoice is when the two can be tied together
+doc_events = {
+	"Sales Invoice": {
+		"on_submit": "curtain_roll.orders.link_payment",
+	},
+}
+
 # ---------------------------------------------------------------- install
 after_install = "curtain_roll.install.after_install"
 after_migrate = "curtain_roll.install.after_migrate"

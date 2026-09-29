@@ -45,6 +45,9 @@
       {% if bank.account %}
       <dt>{{ _("Account name") }}</dt><dd>{{ bank.account }}</dd>
       {% endif %}
+      {% if bank.number %}
+      <dt>{{ _("Account number") }}</dt><dd>{{ bank.number }}</dd>
+      {% endif %}
       <dt>{{ _("IBAN") }}</dt><dd>{{ bank.iban }}</dd>
       <dt>{{ _("Amount") }}</dt><dd>{{ shown.total }}</dd>
       <dt>{{ _("Reference") }}</dt><dd>{{ order.name }}</dd>

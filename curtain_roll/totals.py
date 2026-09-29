@@ -125,6 +125,11 @@ def summarise(lines, coupon=None):
 	after_discount = flt(subtotal - discount, PRECISION)
 
 	rate = vat_rate()
+	# what the customer reads: subtotal and discount before VAT, then the VAT,
+	# then the total - four lines that add up. With inclusive prices the
+	# subtotal of the line prices already holds the VAT, and printing that as
+	# "Subtotal" put the grand total on the line above the tax.
+	subtotal_ex, discount_ex = subtotal, discount
 	if not rate:
 		vat = 0.0
 		total = after_discount
@@ -134,6 +139,9 @@ def summarise(lines, coupon=None):
 		vat = flt(after_discount - net, PRECISION)
 		total = after_discount
 		after_discount = net
+		subtotal_ex = flt(subtotal / (1 + rate / 100.0), PRECISION)
+		# derived, not divided, so the rounding cannot open a halala gap
+		discount_ex = flt(subtotal_ex - net, PRECISION) if discount else 0.0
 	else:
 		vat = flt(after_discount * rate / 100.0, PRECISION)
 		total = flt(after_discount + vat, PRECISION)
@@ -141,6 +149,8 @@ def summarise(lines, coupon=None):
 	return {
 		"subtotal": subtotal,
 		"discount": discount,
+		"subtotal_ex": subtotal_ex,
+		"discount_ex": discount_ex,
 		"net": after_discount,
 		"vat_rate": rate,
 		"vat": vat,
@@ -160,7 +170,8 @@ def as_text(summary):
 		return "%s %s" % (symbol, "{:,.2f}".format(flt(value)))
 
 	shown = {k: money(summary[k])
-	         for k in ("subtotal", "discount", "net", "vat", "total")}
+	         for k in ("subtotal", "discount", "subtotal_ex", "discount_ex",
+	                   "net", "vat", "total")}
 	shown["vat_label"] = "%s %s%%" % (say("VAT"),
 	                                  ("{:g}".format(summary["vat_rate"])))
 	return shown

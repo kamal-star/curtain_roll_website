@@ -1,8 +1,8 @@
 {
  "_note": "Arabic goes on the right. Leave a value empty to keep the English. Do not change the English keys - they are matched against the page text exactly.",
  "_counts": {
-  "total": 763,
-  "translated": 756,
+  "total": 781,
+  "translated": 774,
   "remaining": 7
  },
  "strings": {
@@ -768,6 +768,24 @@
   "Add to Wishlist": "أضف إلى قائمة الأمنيات",
   "Saved to your wishlist.": "تمت الإضافة إلى قائمة الأمنيات.",
   "Removed from your wishlist.": "تمت الإزالة من قائمة الأمنيات.",
-  "View Wishlist": "عرض قائمة الأمنيات"
+  "View Wishlist": "عرض قائمة الأمنيات",
+  "excl. VAT": "غير شامل الضريبة",
+  "incl. VAT": "شامل الضريبة",
+  "Building No.": "رقم المبنى",
+  "Street Name": "اسم الشارع",
+  "District": "الحي",
+  "Postal Code": "الرمز البريدي",
+  "Floor, apartment (optional)": "الطابق، الشقة (اختياري)",
+  "Account number": "رقم الحساب",
+  "Address": "العنوان",
+  "please enter the building number.": "يرجى إدخال رقم المبنى.",
+  "please enter the street name.": "يرجى إدخال اسم الشارع.",
+  "please enter the district.": "يرجى إدخال الحي.",
+  "please enter the postal code.": "يرجى إدخال الرمز البريدي.",
+  "the building number is four digits.": "رقم المبنى مكوّن من أربعة أرقام.",
+  "the postal code is five digits.": "الرمز البريدي مكوّن من خمسة أرقام.",
+  "Paid": "مدفوع",
+  "Payment being confirmed": "جارٍ تأكيد الدفع",
+  "Awaiting Transfer": "بانتظار التحويل"
  }
 }

@@ -16,6 +16,7 @@ def after_install():
 	_ensure_payment_fields()
 	_ensure_checkout_fields()
 	_ensure_vat_account()
+	_ensure_order_paperwork()
 	_enable_signup()
 	_point_website_at_storefront()
 	_ensure_item_group()
@@ -176,6 +177,20 @@ def _ensure_checkout_fields():
 		insert_after="country",
 		description="Added by curtain_roll for ERPNext 16.35 on Frappe 16.34.")
 
+	# The Saudi National Address in parts. Street name stays address_line1 and
+	# the postal code stays pincode, so ERPNext's own reports and printouts
+	# keep working; the two parts it has no field for are added
+	_custom_field(
+		"Address", "building_no",
+		label="Building No.", fieldtype="Data", length=10,
+		insert_after="address_title",
+		description="Four digits, from the Saudi National Address.")
+	_custom_field(
+		"Address", "district",
+		label="District", fieldtype="Data", length=80,
+		insert_after="address_line2")
+	_saudi_address_template()
+
 	_custom_field(
 		"Customer", "cr_number",
 		label="CR Number", fieldtype="Data", length=40,
@@ -207,6 +222,47 @@ def _ensure_checkout_fields():
 		print_hide=1, hidden=1, insert_after="cr_payment_method",
 		description="Lets the person who placed this order reopen its "
 		            "confirmation page without an account.")
+
+
+SAUDI_ADDRESS_TEMPLATE = """{% if building_no %}{{ building_no }} {% endif %}{{ address_line1 }}<br>
+{% if address_line2 %}{{ address_line2 }}<br>{% endif -%}
+{% if district %}{{ district }}, {% endif %}{{ city }}{% if pincode %} {{ pincode }}{% endif %}<br>
+{{ country }}<br>
+{% if national_address %}National Address: {{ national_address }}<br>{% endif -%}
+{% if phone %}Phone: {{ phone }}<br>{% endif -%}
+{% if email_id %}Email: {{ email_id }}<br>{% endif -%}
+"""
+
+
+def _saudi_address_template():
+	"""Print building number and district, which the default template has not heard of.
+
+	Only for Saudi addresses, and only created when there is none: a template
+	the team has already written for Saudi Arabia is theirs.
+	"""
+	if frappe.db.exists("Address Template", "Saudi Arabia") \
+			or not frappe.db.exists("Country", "Saudi Arabia"):
+		return
+	try:
+		frappe.get_doc({"doctype": "Address Template", "country": "Saudi Arabia",
+		                "is_default": 0, "template": SAUDI_ADDRESS_TEMPLATE}
+		               ).insert(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="curtain_roll: Saudi address template")
+
+
+def _ensure_order_paperwork():
+	"""The Website Sales Person, and the fields that tie an order's drafts together."""
+	from curtain_roll import orders
+
+	try:
+		orders.ensure_fields()
+		orders.ensure_sales_person()
+		from curtain_roll import notify
+
+		notify.ensure_setup()
+	except Exception:
+		frappe.log_error(title="curtain_roll: order paperwork set-up")
 
 
 def vat_account_for(company):
@@ -408,6 +464,7 @@ def after_migrate():
 	_ensure_payment_fields()
 	_ensure_checkout_fields()
 	_ensure_vat_account()
+	_ensure_order_paperwork()
 	_ensure_item_group()
 	_ensure_items()
 	_seed_pricing()
@@ -437,7 +494,8 @@ def _seed_storefront():
 	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
 	              "collections_description",
-	              "bank_name", "bank_account_name", "bank_iban",
+	              "bank_name", "bank_account_name", "bank_account_number",
+	              "bank_iban",
 	              "bank_instructions"):
 		if not (doc.get(plain) or "").strip():
 			doc.set(plain, DEFAULTS.get(plain) or "")

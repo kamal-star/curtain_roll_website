@@ -26,7 +26,8 @@
           {{ _("Primary") }}</span>
       {%- endif %}
       <p style="color:#6d767d;font-size:14px;margin:10px 0 16px;line-height:1.6;">
-        {{ a.address_line1 }}{% if a.address_line2 %}<br>{{ a.address_line2 }}{% endif %}
+        {% if a.building_no %}{{ a.building_no }} {% endif %}{{ a.address_line1 }}{% if a.address_line2 %}<br>{{ a.address_line2 }}{% endif %}
+        {% if a.district %}<br>{{ a.district }}{% endif %}
         {% if a.city %}<br>{{ a.city }}{% endif %}{% if a.state %}, {{ a.state }}{% endif %}
         {% if a.pincode %} {{ a.pincode }}{% endif %}
         {% if a.country %}<br>{{ a.country }}{% endif %}
@@ -58,24 +59,28 @@
         <input id="cr-t" name="address_title" type="text" placeholder="{{ _('Home, Office…') }}">
       </div>
       <div class="cr-field">
-        <label for="cr-l1">{{ _("Street address") }}</label>
+        <label for="cr-bn">{{ _("Building No.") }}<span class="cr-req">*</span></label>
+        <input id="cr-bn" name="building_no" type="text" inputmode="numeric" placeholder="2929">
+      </div>
+      <div class="cr-field">
+        <label for="cr-l1">{{ _("Street Name") }}<span class="cr-req">*</span></label>
         <input id="cr-l1" name="address_line1" type="text">
       </div>
       <div class="cr-field">
-        <label for="cr-l2">{{ _("Building, flat, landmark") }}</label>
-        <input id="cr-l2" name="address_line2" type="text">
+        <label for="cr-dist">{{ _("District") }}<span class="cr-req">*</span></label>
+        <input id="cr-dist" name="district" type="text">
       </div>
       <div class="cr-field">
-        <label for="cr-city">{{ _("City") }}</label>
+        <label for="cr-city">{{ _("City") }}<span class="cr-req">*</span></label>
         <input id="cr-city" name="city" type="text">
       </div>
       <div class="cr-field">
-        <label for="cr-state">{{ _("Region") }}</label>
-        <input id="cr-state" name="state" type="text">
+        <label for="cr-pin">{{ _("Postal Code") }}<span class="cr-req">*</span></label>
+        <input id="cr-pin" name="pincode" type="text" inputmode="numeric" placeholder="12211">
       </div>
       <div class="cr-field">
-        <label for="cr-pin">{{ _("Postcode") }}</label>
-        <input id="cr-pin" name="pincode" type="text">
+        <label for="cr-l2">{{ _("Floor, apartment (optional)") }}</label>
+        <input id="cr-l2" name="address_line2" type="text">
       </div>
       <div class="cr-field">
         <label for="cr-country">{{ _("Country") }}</label>

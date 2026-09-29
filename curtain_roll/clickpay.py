@@ -246,9 +246,7 @@ def _cart_quotation():
 	customer = cart.get_party()
 	if not customer:
 		frappe.throw(_("No cart to pay for."))
-	name = frappe.db.get_value(
-		"Quotation", {"party_name": customer, "docstatus": 0},
-		"name", order_by="modified desc")
+	name = cart.open_basket_name({"party_name": customer})
 	if not name:
 		frappe.throw(_("Your cart is empty."))
 	return frappe.get_doc("Quotation", name)
@@ -330,14 +328,15 @@ def _billing_for(quotation):
 		return None
 	row = frappe.db.get_value(
 		"Address", name,
-		["address_line1", "city", "state", "pincode", "country"], as_dict=True)
+		["building_no", "address_line1", "district", "city", "state", "pincode",
+		 "country"], as_dict=True)
 	if not row:
 		return None
 	code = frappe.db.get_value("Country", row.country, "code") or "sa"
 	return {
-		"street": row.address_line1 or "",
+		"street": " ".join(p for p in (row.building_no, row.address_line1) if p),
 		"city": row.city or "",
-		"state": row.state or "",
+		"state": row.state or row.district or "",
 		"zip": row.pincode or "",
 		"country": code.upper(),
 	}
@@ -513,10 +512,16 @@ def settle(result):
 		return
 
 	if not result["paid"]:
-		frappe.db.set_value("Quotation", name, STATUS_FIELD,
-		                    PENDING_REVIEW if result["pending"] else FAILED,
+		before = frappe.db.get_value("Quotation", name, STATUS_FIELD)
+		now = PENDING_REVIEW if result["pending"] else FAILED
+		frappe.db.set_value("Quotation", name, STATUS_FIELD, now,
 		                    update_modified=False)
 		frappe.db.commit()
+		if now == PENDING_REVIEW and before != PENDING_REVIEW:
+			# money may be on its way: the team should look, once
+			from curtain_roll import notify
+
+			notify.order_placed(frappe.get_doc("Quotation", name), "pending")
 		return
 
 	# lock the row, so two arrivals cannot both decide they are the first
@@ -541,45 +546,39 @@ def settle(result):
 
 	with _as_system_user():
 		invoice = _raise_invoice(quotation)
-		_record_payment(invoice, result)
+		_record_payment(quotation, invoice, result)
 
 	frappe.db.set_value("Quotation", name,
 	                    {STATUS_FIELD: PAID, REF_FIELD: result.get("tran_ref")},
 	                    update_modified=False)
 	frappe.db.commit()
 
+	# once only: a second arrival returned above, at the PAID check
+	from curtain_roll import notify
+
+	notify.order_placed(quotation, "paid")
+
 
 def _raise_invoice(quotation):
-	from erpnext.selling.doctype.quotation.quotation import make_sales_invoice
+	"""The order's Sales Invoice, as a draft - the team submits it.
 
-	if quotation.docstatus == 0:
-		quotation.flags.ignore_permissions = True
-		quotation.submit()
+	Nothing the website makes is submitted (see orders.py): the Quotation stays
+	a draft too, and the invoice is mapped from it directly.
+	"""
+	from curtain_roll import orders
 
-	invoice = make_sales_invoice(quotation.name)
-	invoice.flags.ignore_permissions = True
-	invoice.set_missing_values()
-	invoice.insert(ignore_permissions=True)
-	invoice.submit()
-
-	# Write the connection down now, because in a moment it is gone: ERPNext 16
-	# leaves nothing on the invoice pointing back at the quotation it came from.
-	frappe.db.set_value("Quotation", quotation.name, "cr_invoice", invoice.name,
-	                    update_modified=False)
-	return invoice
+	return orders.draft_invoice(quotation)
 
 
-def _record_payment(invoice, result):
-	from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
+def _record_payment(quotation, invoice, result):
+	"""The money ClickPay took, as a draft Payment Entry for the team."""
+	from curtain_roll import orders
 
-	entry = get_payment_entry("Sales Invoice", invoice.name)
-	entry.reference_no = result.get("tran_ref") or invoice.name
-	entry.reference_date = frappe.utils.nowdate()
-	entry.mode_of_payment = _mode_of_payment()
-	entry.flags.ignore_permissions = True
-	entry.insert(ignore_permissions=True)
-	entry.submit()
-	return entry
+	return orders.draft_payment(
+		quotation, invoice,
+		amount=result.get("amount") or quotation.grand_total,
+		reference=result.get("tran_ref"),
+		mode_of_payment=_mode_of_payment())
 
 
 def _mode_of_payment():

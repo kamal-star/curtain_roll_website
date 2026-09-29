@@ -75,8 +75,8 @@ def change_password(old_password=None, new_password=None):
 
 
 # ----------------------------------------------------------------- addresses
-ADDRESS_FIELDS = ("address_title", "address_line1", "address_line2", "city",
-                  "state", "pincode", "country", "phone")
+ADDRESS_FIELDS = ("address_title", "building_no", "address_line1", "address_line2",
+                  "district", "city", "state", "pincode", "country", "phone")
 
 
 def my_addresses():
@@ -119,8 +119,12 @@ def save_address(name=None, **values):
 
 	if not doc.address_title:
 		doc.address_title = frappe.db.get_value("Customer", customer, "customer_name")
-	if not doc.address_line1:
-		frappe.throw(_("Please give at least a street address."))
+	from curtain_roll.checkout import address_problem
+	from curtain_roll.language import text as say
+
+	problem = address_problem(doc.as_dict())
+	if problem:
+		frappe.throw("%s: %s" % (say("Address"), say(problem)))
 	doc.address_type = doc.address_type or "Shipping"
 
 	if not name:
@@ -159,6 +163,8 @@ def my_orders():
 	listed, because from the customer's side they are one history: the quote is
 	the order they placed, the Sales Order is it being fulfilled.
 	"""
+	from curtain_roll import cart
+
 	customer = _customer()
 	if not customer:
 		return []
@@ -168,15 +174,26 @@ def my_orders():
 			"Quotation",
 			filters={"party_name": customer, "docstatus": ["!=", 2]},
 			fields=["name", "transaction_date", "grand_total", "currency",
-			        "docstatus", "status"],
+			        "docstatus", "status", "clickpay_status"],
 			order_by="transaction_date desc, creation desc"):
+		# placed orders stay drafts until the team submits them, so a draft is
+		# only the basket while it has no placed payment status
+		basket = q.docstatus == 0 and (q.clickpay_status or "") not in cart.PLACED_STATUSES
+		if basket:
+			stage = _("Basket")
+		elif q.docstatus == 0:
+			stage = {"Paid": _("Paid"), "Pending": _("Payment being confirmed"),
+			         "Awaiting Transfer": _("Awaiting Transfer")}.get(
+				q.clickpay_status, _("Placed"))
+		else:
+			stage = q.status or _("Placed")
 		rows.append({
 			"name": q.name,
 			"date": q.transaction_date,
 			"total": q.grand_total,
 			"currency": q.currency,
-			"stage": _("Basket") if q.docstatus == 0 else (q.status or _("Placed")),
-			"open": q.docstatus == 0,
+			"stage": stage,
+			"open": basket,
 		})
 
 	for so in frappe.get_all(

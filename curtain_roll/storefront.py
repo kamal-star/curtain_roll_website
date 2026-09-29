@@ -37,9 +37,13 @@ DEFAULTS = {
  "bank_transfer_enabled": 0,
  "bank_name": "",
  "bank_account_name": "",
+ "bank_account_number": "",
  "bank_iban": "",
  "bank_instructions": "",
  "guest_checkout": 1,
+ "alert_role": "Sales Manager",
+ "alert_emails": "",
+ "no_customer_emails": 0,
  "require_national_address": 0,
  "nav_items": [
   {
@@ -276,8 +280,9 @@ def storefront_settings():
 	for plain in ("logo", "logo_alt", "logo_light", "favicon", "brand_title",
 	              "collections_eyebrow", "collections_heading",
 	              "collections_description",
-	              "bank_name", "bank_account_name", "bank_iban",
-	              "bank_instructions"):
+	              "bank_name", "bank_account_name", "bank_account_number",
+	              "bank_iban",
+	              "bank_instructions", "alert_role", "alert_emails"):
 		value = (doc.get(plain) or "").strip()
 		if value:
 			data[plain] = value
@@ -289,7 +294,8 @@ def storefront_settings():
 	# its default.
 	for switch in ("vat_rate", "prices_include_vat", "card_enabled",
 	               "bank_transfer_enabled", "guest_checkout",
-	               "require_national_address", "hide_features"):
+	               "require_national_address", "hide_features",
+	               "no_customer_emails"):
 		if doc.get(switch) is not None:
 			data[switch] = doc.get(switch)
 

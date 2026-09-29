@@ -602,6 +602,37 @@ def _runtime_phrases():
 		wanted, ensure_ascii=False)
 
 
+_ICON_LINK = re.compile(
+	r'<link\b[^>]*\brel=["\'](?:shortcut icon|icon|apple-touch-icon(?:-precomposed)?)["\'][^>]*>',
+	re.I)
+
+
+def _set_favicon(html):
+	"""The favicon from Curtain Storefront Settings, on every page.
+
+	The pages were written at different times: the home page reads the setting,
+	the captured product pages still carry the old site's cart icon, and the
+	cart, checkout and account pages carry none - so the tab icon changed as
+	the customer clicked about. Whatever a page has is replaced here.
+	"""
+	try:
+		from curtain_roll.storefront import storefront_settings
+
+		icon = (storefront_settings().get("favicon") or "").strip()
+	except Exception:
+		icon = ""
+	if not icon:
+		return html
+	html = _ICON_LINK.sub("", html)
+	href = frappe.utils.escape_html(icon)
+	# the phone home-screen icon too: Wavy still carried nine of the old site's
+	link = '<link rel="icon" href="%s"><link rel="apple-touch-icon" href="%s">' % (href, href)
+	head = html.find("</head>")
+	if head == -1:
+		return html
+	return html[:head] + link + html[head:]
+
+
 def _add_chrome(html):
 	"""Put the language switch, the search box's script, and Arabic layout on.
 
@@ -614,6 +645,7 @@ def _add_chrome(html):
 	if "curtain_lang.js" in html:
 		return html
 
+	html = _set_favicon(html)
 	tag = (_switcher_tag() + _search_tag() + _options_tag() + _auth_tag()
 	       + _wishlist_tag() + _riyal_tag())
 	if is_rtl():

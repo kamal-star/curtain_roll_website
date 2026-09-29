@@ -112,35 +112,45 @@
           </div>
         </div>
 
-        <div class="cr-field">
-          <label for="billing_address_line1">{{ _("Street address") }}<span class="cr-req">*</span></label>
-          <input id="billing_address_line1" name="billing_address_line1"
-                 autocomplete="address-line1"
-                 value="{{ known.billing.address_line1 if known.billing else '' }}" required>
+        {#- the five parts of the Saudi National Address, all required -#}
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="billing_building_no">{{ _("Building No.") }}<span class="cr-req">*</span></label>
+            <input id="billing_building_no" name="billing_building_no"
+                   inputmode="numeric" maxlength="10" placeholder="2929"
+                   value="{{ known.billing.building_no or '' if known.billing else '' }}" required>
+          </div>
+          <div class="cr-field">
+            <label for="billing_address_line1">{{ _("Street Name") }}<span class="cr-req">*</span></label>
+            <input id="billing_address_line1" name="billing_address_line1"
+                   autocomplete="address-line1"
+                   value="{{ known.billing.address_line1 if known.billing else '' }}" required>
+          </div>
+        </div>
+        <div class="cr-grid">
+          <div class="cr-field">
+            <label for="billing_district">{{ _("District") }}<span class="cr-req">*</span></label>
+            <input id="billing_district" name="billing_district"
+                   value="{{ known.billing.district or '' if known.billing else '' }}" required>
+          </div>
+          <div class="cr-field">
+            <label for="billing_city">{{ _("City") }}<span class="cr-req">*</span></label>
+            <input id="billing_city" name="billing_city" autocomplete="address-level2"
+                   value="{{ known.billing.city if known.billing else '' }}" required>
+          </div>
         </div>
         <div class="cr-field">
-          <label for="billing_address_line2">{{ _("Building, floor, apartment") }}</label>
+          <label for="billing_address_line2">{{ _("Floor, apartment (optional)") }}</label>
           <input id="billing_address_line2" name="billing_address_line2"
                  autocomplete="address-line2"
                  value="{{ known.billing.address_line2 if known.billing else '' }}">
         </div>
         <div class="cr-grid">
           <div class="cr-field">
-            <label for="billing_city">{{ _("City") }}<span class="cr-req">*</span></label>
-            <input id="billing_city" name="billing_city" autocomplete="address-level2"
-                   value="{{ known.billing.city if known.billing else '' }}" required>
-          </div>
-          <div class="cr-field">
-            <label for="billing_state">{{ _("District / region") }}</label>
-            <input id="billing_state" name="billing_state"
-                   value="{{ known.billing.state if known.billing else '' }}">
-          </div>
-        </div>
-        <div class="cr-grid">
-          <div class="cr-field">
-            <label for="billing_pincode">{{ _("Postal code") }}</label>
+            <label for="billing_pincode">{{ _("Postal Code") }}<span class="cr-req">*</span></label>
             <input id="billing_pincode" name="billing_pincode" autocomplete="postal-code"
-                   value="{{ known.billing.pincode if known.billing else '' }}">
+                   inputmode="numeric" maxlength="10" placeholder="12211"
+                   value="{{ known.billing.pincode if known.billing else '' }}" required>
           </div>
           <div class="cr-field">
             <label for="billing_national_address">
@@ -174,32 +184,44 @@
         </label>
 
         <div id="cr-shipping" style="display:none;padding-top:8px;">
-          <div class="cr-field">
-            <label for="shipping_address_line1">{{ _("Street address") }}</label>
-            <input id="shipping_address_line1" name="shipping_address_line1"
-                   value="{{ known.shipping.address_line1 if known.shipping else '' }}">
+          {#- required too, but not marked required in HTML: while the box
+              above is ticked this block is hidden, and a hidden required
+              field would stop the form. The server checks it instead. -#}
+          <div class="cr-grid">
+            <div class="cr-field">
+              <label for="shipping_building_no">{{ _("Building No.") }}<span class="cr-req">*</span></label>
+              <input id="shipping_building_no" name="shipping_building_no"
+                     inputmode="numeric" maxlength="10" placeholder="2929"
+                     value="{{ known.shipping.building_no or '' if known.shipping else '' }}">
+            </div>
+            <div class="cr-field">
+              <label for="shipping_address_line1">{{ _("Street Name") }}<span class="cr-req">*</span></label>
+              <input id="shipping_address_line1" name="shipping_address_line1"
+                     value="{{ known.shipping.address_line1 if known.shipping else '' }}">
+            </div>
+          </div>
+          <div class="cr-grid">
+            <div class="cr-field">
+              <label for="shipping_district">{{ _("District") }}<span class="cr-req">*</span></label>
+              <input id="shipping_district" name="shipping_district"
+                     value="{{ known.shipping.district or '' if known.shipping else '' }}">
+            </div>
+            <div class="cr-field">
+              <label for="shipping_city">{{ _("City") }}<span class="cr-req">*</span></label>
+              <input id="shipping_city" name="shipping_city"
+                     value="{{ known.shipping.city if known.shipping else '' }}">
+            </div>
           </div>
           <div class="cr-field">
-            <label for="shipping_address_line2">{{ _("Building, floor, apartment") }}</label>
+            <label for="shipping_address_line2">{{ _("Floor, apartment (optional)") }}</label>
             <input id="shipping_address_line2" name="shipping_address_line2"
                    value="{{ known.shipping.address_line2 if known.shipping else '' }}">
           </div>
           <div class="cr-grid">
             <div class="cr-field">
-              <label for="shipping_city">{{ _("City") }}</label>
-              <input id="shipping_city" name="shipping_city"
-                     value="{{ known.shipping.city if known.shipping else '' }}">
-            </div>
-            <div class="cr-field">
-              <label for="shipping_state">{{ _("District / region") }}</label>
-              <input id="shipping_state" name="shipping_state"
-                     value="{{ known.shipping.state if known.shipping else '' }}">
-            </div>
-          </div>
-          <div class="cr-grid">
-            <div class="cr-field">
-              <label for="shipping_pincode">{{ _("Postal code") }}</label>
+              <label for="shipping_pincode">{{ _("Postal Code") }}<span class="cr-req">*</span></label>
               <input id="shipping_pincode" name="shipping_pincode"
+                     inputmode="numeric" maxlength="10" placeholder="12211"
                      value="{{ known.shipping.pincode if known.shipping else '' }}">
             </div>
             <div class="cr-field">

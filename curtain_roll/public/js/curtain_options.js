@@ -270,6 +270,7 @@
             input.addEventListener("change", function () {
               chosen[key] = r.id;
               if (colours && r.image) recolour(r.image);
+              chain3d(head0.group, r.label);
               refresh();
             });
             item.appendChild(input);
@@ -296,6 +297,7 @@
           // the colour already picked is the one the blind should wear
           var current = offered.filter(function (r) { return r.id === keep; })[0];
           if (colours && current && current.image) recolour(current.image);
+          if (current) chain3d(head0.group, current.label);
         });
       }
 
@@ -326,6 +328,65 @@
      on show, alongside the head box and bottom bar. Every part that wore it
      when the page loaded is recoloured, visible or not, so switching width
      afterwards keeps the colour. The room itself is left out. */
+  /* The chain, in the 3D view, following the Manual choices.
+
+     The bundles know "Manual Operating Side" and "Handle type" themselves,
+     but find the chain by its place in the scene's list of parts - and in
+     these scenes that place holds the bottom bar, so asking modelchanger()
+     moved and recoloured the bottom bar instead. The chain is found here by
+     name: RTL_Puller and its weights.
+
+     Side: the chain starts on the right. Left mirrors it across the centre of
+     the head box, measured in the blind's own coordinates, so it stays put
+     when the typed size rescales the model.
+     Type: the bundle's own two finishes - dark shiny steel, light plastic. */
+  var CHAIN = /^(RTL_Puller|Machine$)/;
+  var chainTex = null;
+
+  function chainParts() {
+    var parts = [];
+    if (window.scene) {
+      window.scene.traverse(function (o) { if (o.isMesh && CHAIN.test(o.name)) parts.push(o); });
+    }
+    return parts;
+  }
+
+  function chain3d(group, label) {
+    var T = window.THREE, parts = chainParts();
+    if (!T || !parts.length) return;
+    var g = String(group || "").toLowerCase(), v = String(label || "").toLowerCase();
+
+    if (/side|position/.test(g) && /left|right/.test(v)) {
+      var box = window.scene.getObjectByName("Box");
+      var middle = 0;
+      if (box && box.geometry) {
+        if (!box.geometry.boundingBox) box.geometry.computeBoundingBox();
+        middle = (box.geometry.boundingBox.min.x + box.geometry.boundingBox.max.x) / 2;
+      }
+      var left = /left/.test(v);
+      parts.forEach(function (o) {
+        o.scale.x = left ? -Math.abs(o.scale.x || 1) : Math.abs(o.scale.x || 1);
+        o.position.x = left ? 2 * middle : 0;
+        [].concat(o.material).forEach(function (m) { if (m) m.side = T.DoubleSide; });
+      });
+    } else if (/handle|chain/.test(g) && /metal|steel|plastic/.test(v)) {
+      var metal = /metal|steel/.test(v);
+      if (metal && !chainTex) {
+        chainTex = new T.TextureLoader().load("/maps/preload/zebra/RTL_Puller_texture.jpg");
+        chainTex.wrapS = chainTex.wrapT = T.RepeatWrapping;
+      }
+      parts.forEach(function (o) {
+        if (!/^RTL_Puller$/.test(o.name)) return;      // the chain, not its weights
+        o.material = new T.MeshPhongMaterial(metal
+          ? { color: 0x5a5a5a, shininess: 40, specular: 0xffffff, map: chainTex, side: T.DoubleSide }
+          : { color: 0xd2d2d2, shininess: 50, specular: 0x979797, side: T.DoubleSide });
+      });
+    } else {
+      return;
+    }
+    if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+  }
+
   var fabricParts = null;
 
   function fabric() {
@@ -695,11 +756,28 @@
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 1500);
   }
 
+  /* A colour priced per square metre carries its price inside the swatch's
+     name - "7200 (+SR 120.00 / m²)" - and the swatch name is one clipped line
+     about 60px wide, so the price ran out of the card and across the next one
+     (Blackout, Shutters). The price gets a line of its own under the code. */
+  function swatchPriceStyle() {
+    if (document.getElementById("cr-swatch-price")) return;
+    var css = document.createElement("style");
+    css.id = "cr-swatch-price";
+    css.textContent =
+      ".swatch-label .option-value{white-space:normal;overflow:visible;" +
+      "text-overflow:clip;line-height:1.2;overflow-wrap:anywhere}" +
+      ".swatch-label .option-price{display:block;margin-top:2px;font-size:9px;" +
+      "font-weight:700;color:var(--brand,#09446c);white-space:normal}";
+    document.head.appendChild(css);
+  }
+
   function load() {
     var key = productKey();
     if (!key) return;
     // no size boxes means this is not a product page, whatever the URL says
     if (!document.querySelector('input[name^="option["][name$="[width]"]')) return;
+    swatchPriceStyle();
 
     fetch("/api/method/curtain_roll.pricing.get_pricing?product_key=" +
           encodeURIComponent(key), { credentials: "same-origin" })

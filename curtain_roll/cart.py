@@ -323,6 +323,12 @@ def login_redirect(args=None):
 
 # ------------------------------------------------------------- guest basket
 GUEST_DOCTYPE = "Curtain Guest Cart"
+
+# A Quotation in one of these is an order, not a basket, though it is still a
+# draft: the website submits nothing (orders.py). Mirrors clickpay.PAID and
+# PENDING_REVIEW and checkout.AWAITING_TRANSFER, spelt out here because both
+# of those modules import this one.
+PLACED_STATUSES = ("Paid", "Pending", "Awaiting Transfer")
 CART_COOKIE = "cr_cart"
 COOKIE_AGE = 30 * 24 * 60 * 60
 
@@ -446,14 +452,33 @@ def _defaults():
 
 
 # ---------------------------------------------------------------- quotation
+def open_basket_name(filters):
+	"""The newest draft Quotation matching `filters` that is still a basket.
+
+	Placed orders stay drafts for the team to submit (orders.py), so "draft"
+	alone no longer means "still being filled"; the payment status says it.
+
+	Decided here in Python, not with a "not in" filter: a basket that was never
+	paid for has no status at all, and SQL's NOT IN is never true for NULL -
+	frappe.db.get_value passes it straight through, so every basket vanished
+	and each Add to Cart started a new one.
+	"""
+	rows = frappe.get_all(
+		"Quotation", filters=dict(filters, docstatus=0),
+		fields=["name", "clickpay_status"], order_by="modified desc")
+	for row in rows:
+		if (row.clickpay_status or "") not in PLACED_STATUSES:
+			return row.name
+	return None
+
+
 def get_cart_quotation(create=False):
 	party = get_party()
-	name = frappe.db.get_value("Quotation", {
+	name = open_basket_name({
 		"quotation_to": "Customer",
 		"party_name": party,
-		"docstatus": 0,
 		"order_type": "Shopping Cart",
-	}, "name")
+	})
 	if name:
 		return frappe.get_doc("Quotation", name)
 	if not create:
