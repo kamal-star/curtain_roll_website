@@ -132,6 +132,51 @@ def wishlist_toggle(product_id):
 	return {"saved": True, "count": len(cart_api.wishlist_keys())}
 
 
+from frappe.rate_limiter import rate_limit  # noqa: E402
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+@rate_limit(limit=10, seconds=60 * 60)
+def contact_submit(full_name=None, phone=None, email=None, inquiry_type=None,
+                   message=None, website=None):
+	"""The Contact Us form. Saved as a Curtain Inquiry, and the team is told.
+
+	The form used to answer "Request received" after a timer and send nothing
+	anywhere; every enquiry it ever took was lost.
+
+	`website` is a honeypot: a field people never see and robots fill in. A
+	filled one is thanked and dropped, so the robot learns nothing.
+	"""
+	from curtain_roll.language import current
+	from curtain_roll.language import text as say
+
+	if (website or "").strip():
+		return {"ok": 1}
+	full_name, phone = _clean(full_name, 140), _clean(phone, 40)
+	email, inquiry_type = _clean(email, 140), _clean(inquiry_type, 140)
+	message = (message or "").strip()[:4000]
+	if not full_name or not phone or not message:
+		frappe.throw(say("Please fill in your name, phone number and message."))
+	if email and not frappe.utils.validate_email_address(email):
+		frappe.throw(say("Please enter a valid email address."))
+
+	doc = frappe.get_doc({
+		"doctype": "Curtain Inquiry", "full_name": full_name, "phone": phone,
+		"email": email or None, "inquiry_type": inquiry_type, "message": message,
+		"language": current(),
+	}).insert(ignore_permissions=True)
+	frappe.db.commit()
+
+	try:
+		from curtain_roll import notify
+
+		notify.inquiry_received(doc)
+	except Exception:
+		frappe.log_error(title="curtain_roll: inquiry alert %s" % doc.name)
+	return {"ok": 1, "message": say(
+		"Thank you! Your message has reached our team. We will contact you shortly.")}
+
+
 def _clean(value, limit=140):
 	return (value or "").strip()[:limit]
 

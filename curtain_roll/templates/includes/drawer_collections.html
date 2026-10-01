@@ -1,0 +1,14 @@
+{#- The phone menu's category list, from Curtain Storefront Settings.
+
+    The same rows as the category bar (Category Bar section), so a category
+    added, hidden or reordered there moves on phones as well. Every page used
+    to carry its own hard-coded copy - which the settings could not reach, and
+    which on the Zebra page marked Blackout as the page you were on. -#}
+{%- set crd = storefront_settings() -%}
+<ul class="drawer-links-box">
+  {%- for item in crd.nav_items %}
+  {%- if item.route %}
+  <li><a href="{{ item.route }}" class="drawer-nav-item{% if cr_active is defined and item.route == cr_active %} active{% endif %}"><span>{% if item.icon %}<i class="{{ item.icon }} nav-icon"></i> {% endif %}{{ item.label }}</span><i class="fa-solid fa-chevron-right chevron"></i></a></li>
+  {%- endif %}
+  {%- endfor %}
+</ul>

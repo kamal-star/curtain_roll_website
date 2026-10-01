@@ -1,0 +1,45 @@
+{% extends "curtain_roll/templates/curtain_shell.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{% include "curtain_roll/templates/includes/account_style.html" %}
+{% include "curtain_roll/templates/includes/blog_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li>{{ _("Blog") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Blog") }}</h1>
+  <p class="cr-acc-sub">{{ _("Ideas, guides and news about curtains and blinds.") }}</p>
+
+  {% if posts %}
+  <div class="cr-blog-grid">
+    {% for p in posts %}
+    <a class="cr-blog-card" href="{{ p.url }}">
+      <div class="cr-blog-cover">
+        {% if p.cover_image %}
+        <img src="{{ p.cover_image }}" alt="{{ p.shown_title }}" loading="lazy">
+        {% else %}
+        <i class="fa-regular fa-newspaper"></i>
+        {% endif %}
+      </div>
+      <div class="cr-blog-body">
+        {% if p.published_on %}<span class="cr-blog-date">{{ frappe.format(p.published_on, {"fieldtype": "Date"}) }}</span>{% endif %}
+        <h2>{{ p.shown_title }}</h2>
+        {% if p.shown_summary %}<p>{{ p.shown_summary }}</p>{% endif %}
+        <span class="cr-blog-more">{{ _("Read more") }} <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="cr-panel cr-empty">
+    <i class="fa-regular fa-newspaper"></i>
+    <p>{{ _("No articles yet. Please check back soon.") }}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

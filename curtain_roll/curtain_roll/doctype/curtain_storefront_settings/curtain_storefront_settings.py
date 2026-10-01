@@ -19,3 +19,7 @@ class CurtainStorefrontSettings(Document):
 		# the pages themselves are cached HTML, so the copy on disk has to go
 		# too or an edit would not show until something else cleared it
 		frappe.clear_cache()
+		# and once more after the commit: on_update runs before it, so a page
+		# loaded in between reads the old row and caches it again - the edit
+		# then never shows until something else clears the cache
+		frappe.db.after_commit.add(lambda: frappe.cache().delete_value(CACHE_KEY))

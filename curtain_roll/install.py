@@ -261,6 +261,9 @@ def _ensure_order_paperwork():
 		from curtain_roll import notify
 
 		notify.ensure_setup()
+		from curtain_roll import info_pages
+
+		info_pages.seed()
 	except Exception:
 		frappe.log_error(title="curtain_roll: order paperwork set-up")
 
@@ -335,6 +338,9 @@ SUB_OPTION_BATCHES = (
 	(SUB_OPTIONS_FLAG, ("blackout", "sunscreen", "printed")),
 	# "Zebra: same options as the roller blinds"
 	("curtain_roll_sub_options_seeded_zebra", ("zebra",)),
+	# "chain type and position not changing in any curtain": the rest of the
+	# blinds that are sold Manual / Motorized
+	("curtain_roll_sub_options_seeded_more", ("blackout-kayan", "shutters", "roman")),
 )
 
 
@@ -357,6 +363,13 @@ def _seed_sub_option_rows(keys):
 		doc = frappe.get_doc("Curtain Product", key)
 		if doc.get("sub_options"):
 			continue
+		# only where Manual / Motorized are real choices on this product: the
+		# product refuses a row whose "Shown Under" it does not have, and that
+		# refusal must not stop a migrate
+		labels = {(o.option_label or "").strip().lower() for o in doc.get("options") or []}
+		if not {"manual", "motorized"} & labels:
+			print("  %s has no Manual / Motorized choice; no chain choices added" % key)
+			continue
 		for parent, group, group_ar, label, label_ar in SUB_OPTION_SEED:
 			doc.append("sub_options", {
 				"parent_choice": parent, "group_label": group,
@@ -365,7 +378,11 @@ def _seed_sub_option_rows(keys):
 				"rate": 0, "enabled": 1,
 			})
 		doc.flags.ignore_permissions = True
-		doc.save(ignore_permissions=True)
+		try:
+			doc.save(ignore_permissions=True)
+		except Exception:
+			frappe.log_error(title="curtain_roll: chain choices on %s" % key)
+			continue
 		print("  choices under Manual / Motorized seeded on %s" % key)
 
 

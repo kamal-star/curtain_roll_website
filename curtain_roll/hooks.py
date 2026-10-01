@@ -22,6 +22,8 @@ jinja = {
 		# which language a request is in, for text the client edits in two
 		# languages rather than leaving to the dictionary
 		"curtain_roll.storefront.storefront_lang",
+		# About Us, Terms, Privacy, Delivery, Contact Us - Curtain Info Page
+		"curtain_roll.info_pages.info_page",
 	]
 }
 
@@ -58,6 +60,11 @@ after_request = ["curtain_roll.language.finish_page"]
 # excluding tax" above a VAT-inclusive total - and the client's own corrections
 # in Curtain Translation lose to it. See language.storefront_translate.
 update_website_context = ["curtain_roll.language.website_context"]
+
+# one blog article per address: /blogs/<link name> is served by blog-post.html
+website_route_rules = [
+	{"from_route": "/blogs/<post>", "to_route": "blog-post"},
+]
 
 # A basket filled before signing in belongs to the person who filled it. Without
 # this, signing in at the checkout - to use a saved address, say - empties the

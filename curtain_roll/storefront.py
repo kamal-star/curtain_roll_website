@@ -41,6 +41,11 @@ DEFAULTS = {
  "bank_iban": "",
  "bank_instructions": "",
  "guest_checkout": 1,
+ "aramex_enabled": 0,
+ "aramex_origin_city": "Riyadh",
+ "aramex_product_type": "CDS",
+ "aramex_weight_per_sqm": 1.5,
+ "aramex_min_weight": 1,
  "alert_role": "Sales Manager",
  "alert_emails": "",
  "no_customer_emails": 0,
@@ -282,7 +287,8 @@ def storefront_settings():
 	              "collections_description",
 	              "bank_name", "bank_account_name", "bank_account_number",
 	              "bank_iban",
-	              "bank_instructions", "alert_role", "alert_emails"):
+	              "bank_instructions", "alert_role", "alert_emails",
+	              "aramex_origin_city", "aramex_product_type"):
 		value = (doc.get(plain) or "").strip()
 		if value:
 			data[plain] = value
@@ -295,7 +301,8 @@ def storefront_settings():
 	for switch in ("vat_rate", "prices_include_vat", "card_enabled",
 	               "bank_transfer_enabled", "guest_checkout",
 	               "require_national_address", "hide_features",
-	               "no_customer_emails"):
+	               "no_customer_emails", "aramex_enabled",
+	               "aramex_weight_per_sqm", "aramex_min_weight"):
 		if doc.get(switch) is not None:
 			data[switch] = doc.get(switch)
 

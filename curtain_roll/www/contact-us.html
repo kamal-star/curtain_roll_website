@@ -1024,18 +1024,7 @@
     <div class="drawer-content">
       <div>
         <span class="drawer-section-label" style="font-size:11px; font-weight:700; color:var(--brand); text-transform:uppercase; margin-bottom:8px; display:block;">Collections</span>
-        <ul class="drawer-links-box">
-          <li><a href="/" class="drawer-nav-item"><span><i class="fa-solid fa-house" style="color:var(--brand); width:20px;"></i> Home</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/blackout" class="drawer-nav-item"><span><i class="fa-solid fa-moon" style="color:var(--brand); width:20px;"></i> Blackout Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/sunscreen" class="drawer-nav-item"><span><i class="fa-solid fa-sun" style="color:var(--brand); width:20px;"></i> Sunscreen Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/zebra" class="drawer-nav-item"><span><i class="fa-solid fa-bars" style="color:var(--brand); width:20px;"></i> Zebra Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/wooden" class="drawer-nav-item"><span><i class="fa-solid fa-tree" style="color:var(--brand); width:20px;"></i> Wooden Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/vertical" class="drawer-nav-item"><span><i class="fa-solid fa-arrows-left-right" style="color:var(--brand); width:20px;"></i> Vertical Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/metal" class="drawer-nav-item"><span><i class="fa-solid fa-shield-halved" style="color:var(--brand); width:20px;"></i> Metal Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/roman" class="drawer-nav-item"><span><i class="fa-solid fa-scroll" style="color:var(--brand); width:20px;"></i> Roman Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/wavy" class="drawer-nav-item"><span><i class="fa-solid fa-water" style="color:var(--brand); width:20px;"></i> Wavy Drapes</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/printed" class="drawer-nav-item"><span><i class="fa-solid fa-palette" style="color:var(--brand); width:20px;"></i> Printed Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-        </ul>
+        {% endraw %}{% include "curtain_roll/templates/includes/drawer_collections.html" %}{% raw %}
       </div>
 
       <div>
@@ -1057,14 +1046,14 @@
   </aside>
 
   <!-- Main Content Container -->
-  <main class="container">
+  <main class="container">{% endraw %}{% set pg = info_page("contact-us") %}{% raw %}
     
     <!-- Hero Header -->
     <section class="contact-hero">
-      <span class="hero-eyebrow">Direct Assistance</span>
-      <h1 class="hero-title">We’re Here to Perfect Your Space</h1>
-      <p class="hero-subtitle">Whether you need help measuring window recesses, choosing fabrics, or requesting on-site project furnishing across Saudi Arabia, our specialists are ready to help.</p>
-    </section>
+      <span class="hero-eyebrow">{% endraw %}{% if pg.eyebrow %}{{ pg.eyebrow }}{% else %}{% raw %}Direct Assistance{% endraw %}{% endif %}{% raw %}</span>
+      <h1 class="hero-title">{% endraw %}{% if pg.title %}{{ pg.title }}{% else %}{% raw %}We’re Here to Perfect Your Space{% endraw %}{% endif %}{% raw %}</h1>
+      <p class="hero-subtitle">{% endraw %}{% if pg.subtitle %}{{ pg.subtitle }}{% else %}{% raw %}Whether you need help measuring window recesses, choosing fabrics, or requesting on-site project furnishing across Saudi Arabia, our specialists are ready to help.{% endraw %}{% endif %}{% raw %}</p>
+    </section>{% endraw %}{% if pg.body %}{% include "curtain_roll/templates/includes/info_page_style.html" %}<section class="cr-info-body">{{ pg.body }}</section>{% endif %}{% raw %}
 
     <!-- Channels Matrix -->
     <section class="channels-grid">
@@ -1137,6 +1126,10 @@
             <label for="contact-message">Message or Window Details *</label>
             <textarea id="contact-message" class="form-control-custom" placeholder="Provide any details about window sizes, room types, or fabric preferences..." required></textarea>
           </div>
+
+          <!-- left empty by people, filled by robots -->
+          <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off"
+                 aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
 
           <button type="submit" id="btn-submit" class="btn-submit-inquiry">
             <i class="fa-regular fa-paper-plane"></i>
@@ -1288,22 +1281,51 @@
       }
     })();
 
-    // Simple Form Handler (with WhatsApp bridge option)
+    // The form posts to curtain_roll.api.contact_submit, which saves a
+    // Curtain Inquiry in ERPNext and alerts the team. (It used to show
+    // "Request Received" after a timer and send nothing at all.)
     function handleContactSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-submit');
       const feedback = document.getElementById('form-feedback');
-      
+      const label = btn.innerHTML;
+      const val = (id) => (document.getElementById(id) || {}).value || '';
+
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+      feedback.style.display = 'none';
 
-      setTimeout(() => {
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Request Received';
-        btn.style.background = '#25d366';
-        feedback.style.display = 'block';
-        feedback.style.color = '#15803d';
-        feedback.textContent = 'Thank you! Your inquiry has been forwarded to our team in Riyadh. We will contact you shortly.';
-      }, 800);
+      const body = new URLSearchParams({
+        full_name: val('contact-name'), phone: val('contact-phone'),
+        email: val('contact-email'), inquiry_type: val('contact-interest'),
+        message: val('contact-message'), website: val('contact-website')
+      });
+      fetch('/api/method/curtain_roll.api.contact_submit', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+                   'X-Frappe-CSRF-Token': (window.frappe && window.frappe.csrf_token) || '' },
+        body: body.toString()
+      }).then(r => r.json().then(j => ({ ok: r.ok, j: j })))
+        .then(({ ok, j }) => {
+          if (!ok || !j.message || !j.message.ok) {
+            let why = 'Sorry, the message could not be sent. Please try again or contact us on WhatsApp.';
+            try { why = JSON.parse(JSON.parse(j._server_messages)[0]).message || why; } catch (x) {}
+            throw new Error(why);
+          }
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Request Received';
+          btn.style.background = '#25d366';
+          feedback.style.display = 'block';
+          feedback.style.color = '#15803d';
+          feedback.textContent = j.message.message;
+          document.getElementById('contact-form').reset();
+        })
+        .catch(err => {
+          btn.disabled = false;
+          btn.innerHTML = label;
+          feedback.style.display = 'block';
+          feedback.style.color = '#b91c1c';
+          feedback.textContent = err.message;
+        });
     }
   </script>
 {% endraw %}

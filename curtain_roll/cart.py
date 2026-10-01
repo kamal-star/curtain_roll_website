@@ -130,6 +130,17 @@ def describe_options(product_key, form, labels=None):
 			if entry:
 				lines.append("%s: %s" % (entry["group"], entry["label"]))
 
+	# where the fitters are going, when installation was chosen
+	city = str(submitted("cr_city") or "").strip()
+	ship_city = str(submitted("cr_ship_city") or "").strip()
+	if priced and pricing._install_choice(priced):
+		gid, value = pricing._install_choice(priced)
+		installing = str(submitted("option[%s]" % gid) or "") == value
+		if city and installing:
+			lines.append("Installation city: %s" % city)
+		elif ship_city and not installing:
+			lines.append("Delivery by Aramex to: %s" % ship_city)
+
 	# the customer's own picture, for a printed blind - named so the team can
 	# match the line to the file attached to the order
 	token = submitted("cr_print")
@@ -235,7 +246,8 @@ def capture_config(entry, form):
 			# cr_sub[...] too: the handle, side and motor are priced like any
 			# option, and a line re-priced later without them would silently
 			# drop the motor from the bill
-			if str(key).startswith(("option[", "cr_sub[", "cr_print")):
+			if str(key).startswith(("option[", "cr_sub[", "cr_print", "cr_city",
+			                        "cr_ship_city")):
 				options[str(key)] = value
 	except Exception:
 		pass

@@ -89,6 +89,35 @@ def _alert_team(quotation, event):
 			reference_doctype="Quotation", reference_name=quotation.name)
 
 
+def inquiry_received(inquiry):
+	"""A Contact Us message: the same people who hear about orders hear this."""
+	settings = storefront_settings()
+	subject = "Website enquiry from %s (%s)%s" % (
+		inquiry.full_name, inquiry.phone,
+		" - %s" % inquiry.inquiry_type if inquiry.inquiry_type else "")
+	role = settings.get("alert_role")
+	users = _users_with(role) if role else []
+	if users:
+		from frappe.desk.doctype.notification_log.notification_log import \
+			enqueue_create_notification
+
+		enqueue_create_notification(users, {
+			"type": "Alert", "document_type": "Curtain Inquiry",
+			"document_name": inquiry.name, "subject": frappe.utils.escape_html(subject),
+		})
+	emails = [e.strip() for e in (settings.get("alert_emails") or "").replace(";", ",").split(",")
+	          if e.strip()]
+	if emails:
+		link = frappe.utils.get_url("/app/curtain-inquiry/%s" % inquiry.name)
+		frappe.sendmail(
+			recipients=emails, subject=subject,
+			message="<p><b>%s</b><br>%s<br>%s</p><p>%s</p><p><a href=\"%s\">Open in ERPNext</a></p>" % (
+				frappe.utils.escape_html(inquiry.full_name), frappe.utils.escape_html(inquiry.phone),
+				frappe.utils.escape_html(inquiry.email or ""),
+				frappe.utils.escape_html(inquiry.message).replace("\n", "<br>"), link),
+			reference_doctype="Curtain Inquiry", reference_name=inquiry.name)
+
+
 def _users_with(role):
 	users = frappe.get_all("Has Role", filters={"role": role, "parenttype": "User"},
 	                       pluck="parent")

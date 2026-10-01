@@ -43,6 +43,13 @@
   "bank_account_number",
   "bank_iban",
   "bank_instructions",
+  "sb_aramex",
+  "aramex_enabled",
+  "aramex_origin_city",
+  "aramex_product_type",
+  "cb_aramex",
+  "aramex_weight_per_sqm",
+  "aramex_min_weight",
   "sb_notify",
   "alert_role",
   "alert_emails",
@@ -232,6 +239,49 @@
    "description": "Shown on the order confirmation, under the bank details."
   },
   {
+   "fieldname": "sb_aramex",
+   "fieldtype": "Section Break",
+   "label": "Aramex Delivery (Without Installation)",
+   "description": "When ticked, a customer who picks Without installation chooses their city from Aramex's list, and Aramex's delivery price is added to each curtain. The Aramex account itself is set on the server (site_config.json), not here."
+  },
+  {
+   "fieldname": "aramex_enabled",
+   "fieldtype": "Check",
+   "label": "Offer Aramex Delivery",
+   "default": "0"
+  },
+  {
+   "fieldname": "aramex_origin_city",
+   "fieldtype": "Data",
+   "label": "Ship From City",
+   "default": "Riyadh",
+   "description": "As Aramex spells it."
+  },
+  {
+   "fieldname": "aramex_product_type",
+   "fieldtype": "Data",
+   "label": "Aramex Product Type",
+   "default": "CDS",
+   "description": "The domestic service on Kayan's Aramex account; ask Aramex if unsure."
+  },
+  {
+   "fieldname": "cb_aramex",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "aramex_weight_per_sqm",
+   "fieldtype": "Float",
+   "label": "Parcel Weight per m² (kg)",
+   "default": "1.5",
+   "description": "A curtain's parcel weight is its area times this, packaging included."
+  },
+  {
+   "fieldname": "aramex_min_weight",
+   "fieldtype": "Float",
+   "label": "Minimum Parcel Weight (kg)",
+   "default": "1"
+  },
+  {
    "fieldname": "sb_notify",
    "fieldtype": "Section Break",
    "label": "Order Notifications",
@@ -301,7 +351,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-09-29 13:00:00.000000",
+ "modified": "2026-10-02 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Curtain Roll",
  "name": "Curtain Storefront Settings",

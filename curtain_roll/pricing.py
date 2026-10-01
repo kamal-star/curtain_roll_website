@@ -537,6 +537,71 @@ def _dimension(value):
 	return n if n > 0 else None
 
 
+def install_cities():
+	"""The enabled Curtain Install City records, in the team's order.
+
+	Read straight from the table, not cached: it is a handful of rows, and a
+	city enabled or re-priced in the desk must show on the next price refresh.
+	"""
+	if not frappe.db.table_exists("Curtain Install City"):
+		return []
+	return frappe.get_all(
+		"Curtain Install City", filters={"enabled": 1},
+		fields=["city", "city_ar", "price"],
+		order_by="sort_order asc, city asc")
+
+
+def _install_city(submitted, strict, lines):
+	"""Add the chosen city's installation price to `lines`.
+
+	Returns None when all is well, "partial" when the live price is still
+	waiting for a city, or the sentence to show the customer.
+	"""
+	cities = install_cities()
+	if not cities:
+		return None                      # no list set up: nothing to ask
+	from curtain_roll.language import text as say
+
+	chosen = str(submitted("cr_city") or "").strip()
+	if not chosen:
+		return say("Please choose your city.") if strict else "partial"
+	city = next((c for c in cities if c["city"] == chosen), None)
+	if not city:
+		return say("We do not install in that city yet. Please contact us.")
+	price = flt(city.get("price"))
+	if price:
+		lines.append(("%s: %s" % (say("Installation city"), city["city"]), price))
+	return None
+
+
+def _aramex_delivery(submitted, strict, lines, area):
+	"""Add Aramex's price to the customer's city to `lines` (see aramex.py).
+
+	Returns None when all is well or delivery is not offered, "partial" while
+	the live price waits for a city, or the sentence to show the customer.
+	"""
+	from curtain_roll import aramex
+	from curtain_roll.language import text as say
+
+	if not aramex.enabled():
+		return None
+	city = str(submitted("cr_ship_city") or "").strip()
+	if not city:
+		return say("Please choose your city for delivery.") if strict else "partial"
+	try:
+		if city not in aramex.cities():
+			return say("Aramex does not deliver to that city. Please contact us.")
+		amount = aramex.rate(city, aramex.parcel_weight(area))
+	except Exception:
+		frappe.log_error(title="curtain_roll: Aramex rate for %s" % city)
+		if not strict:
+			return "partial"
+		return say("The delivery price could not be calculated right now. "
+		           "Please try again in a moment, or contact us.")
+	lines.append(("%s: %s" % (say("Delivery by Aramex to"), city), amount))
+	return None
+
+
 def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 	"""Price one configured blind.
 
@@ -669,7 +734,21 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 			continue
 
 		label = "%s (%s)" % (entry["label"], entry["group_label"])
+		install = _install_choice(spec)
+		if install and gid == install[0] and value != install[1]:
+			# Without installation: delivered by Aramex, priced by city and weight
+			problem = _aramex_delivery(submitted, strict, lines, area)
+			if problem == "partial":
+				partial = True
+			elif problem:
+				errors["crship"] = problem
 		if entry.get("tiered"):
+			# the installation choice: the customer's city, and its price
+			city_problem = _install_city(submitted, strict, lines)
+			if city_problem == "partial":
+				partial = True
+			elif city_problem:
+				errors["crcity"] = city_problem
 			banded, tier = tier_rate(spec, order_qty)
 			if banded is None:
 				continue                      # no band set up; charge nothing
@@ -817,10 +896,12 @@ def price_preview(args, form):
 		return {"error": {"warning": result.get("message") or _("Not priced yet.")}}
 
 	total = fmt(result["total"], result["currency"])
-	if result.get("partial"):
-		# still mid-configuration, so do not present this as the final figure
-		total = "%s %s" % (_("From"), total)
-	return {"total": total, "total_extax": total}
+	# No "From" in front of a partial figure any more: the page's own label
+	# already says "Starts from:", and the two together read "Starts from:
+	# From 150.00". `partial` lets the page switch that label to "Total:"
+	# once the blind is fully configured (curtain_options.js).
+	return {"total": total, "total_extax": total,
+	        "partial": 1 if result.get("partial") else 0}
 
 
 @frappe.whitelist(allow_guest=True)
@@ -851,7 +932,49 @@ def get_pricing(product_key=None):
 		# the choices under Manual / Motorized, drawn by curtain_options.js
 		"allow_upload": spec.get("allow_upload", False),
 		"sub_options": _sub_options_for_page(spec),
+		# the city list shown under the installation choice, and that choice
+		"install_cities": _cities_for_page(spec),
+		"install_choice": _install_choice(spec),
+		# Without installation: Aramex's city list is fetched by the page only
+		# when that choice is picked (curtain_roll.aramex.city_list)
+		"aramex_delivery": _aramex_on(),
 	}
+
+
+def _aramex_on():
+	try:
+		from curtain_roll import aramex
+
+		return aramex.enabled()
+	except Exception:
+		return False
+
+
+def _install_choice(spec):
+	"""[group id, value] of the With Installation choice - the banded one."""
+	for gid, choices in (spec.get("options") or {}).items():
+		for value, entry in choices.items():
+			if entry.get("tiered") and entry.get("enabled"):
+				return [gid, value]
+	return None
+
+
+def _cities_for_page(spec):
+	from curtain_roll.language import current
+
+	ar = current() == "ar"
+	symbol = currency_symbol()
+	out = []
+	for c in install_cities():
+		price = flt(c.get("price"))
+		out.append({
+			"city": c["city"],
+			"label": (c.get("city_ar") if ar and c.get("city_ar") else c["city"]),
+			# both names, so the search finds "جدة" on the English site too
+			"city_ar": c.get("city_ar") or "",
+			"price_text": ("+%s" % fmt(price, symbol)) if price else "",
+		})
+	return out
 
 
 def _sub_options_for_page(spec):

@@ -492,6 +492,8 @@ def translate_html(html):
 # be rewritten - the desk in particular is a JavaScript app whose HTML shell
 # carries no prose worth touching.
 NOT_OURS = ("/app", "/api/", "/assets/", "/files/", "/private/", "/socket.io")
+# the 3D bundles' textures and font, served from www/ (see finish_page)
+STATIC_3D = ("/maps/", "/three/")
 
 
 def _asset(relative):
@@ -584,7 +586,13 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "The picture could not be uploaded. Please try again.",
                    # the hearts drawn by curtain_wishlist.js
                    "Add to Wishlist", "Saved to your wishlist.",
-                   "Removed from your wishlist.", "View Wishlist")
+                   "Removed from your wishlist.", "View Wishlist",
+                   # the product page's price label, switched by curtain_options.js
+                   "Starts from:", "Total:",
+                   # the installation city select
+                   "Your city", "Choose your city", "Search your city",
+                   "No city found. Please contact us.",
+                   "Delivery city (Aramex)", "Type to see more cities")
 
 
 def _runtime_phrases():
@@ -668,6 +676,15 @@ def finish_page(response=None, request=None):
 		return
 
 	path = (getattr(request, "path", "") or "")
+	if path.startswith(STATIC_3D):
+		# The 3D scenes' textures and font are files in www/, and Frappe serves
+		# those "no-store" like a page - so every visit downloaded the whole
+		# room and fabric again (several MB a page). They are plain files that
+		# change only with a deploy: let the browser keep them for a week.
+		response.headers["Cache-Control"] = "public, max-age=604800"
+		response.headers.pop("Pragma", None)
+		response.headers.pop("Expires", None)
+		return
 	if any(path.startswith(p) for p in NOT_OURS):
 		return
 	if "text/html" not in (response.headers.get("Content-Type") or ""):

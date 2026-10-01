@@ -341,6 +341,11 @@
      when the typed size rescales the model.
      Type: the bundle's own two finishes - dark shiny steel, light plastic. */
   var CHAIN = /^(RTL_Puller|Machine$)/;
+  // models built with a control on each side: Wooden (Left_/Right_Puller),
+  // Roman (LTR_/RTL_Puller, Left_/Right_Machine), Metal (LTR_/RTL_Puller)
+  var CONTROL = /puller|machine/i;
+  var LEFT_PART = /(^|_)(left|ltr)(_|$)/i;
+  var RIGHT_PART = /(^|_)(right|rtl)(_|$)/i;
   var chainTex = null;
 
   function chainParts() {
@@ -351,10 +356,39 @@
     return parts;
   }
 
+  function pairedParts() {
+    var left = [], right = [];
+    if (window.scene) {
+      window.scene.traverse(function (o) {
+        if (!o.isMesh || !CONTROL.test(o.name)) return;
+        if (LEFT_PART.test(o.name)) left.push(o);
+        else if (RIGHT_PART.test(o.name)) right.push(o);
+      });
+    }
+    return left.length && right.length ? { left: left, right: right } : null;
+  }
+
   function chain3d(group, label) {
-    var T = window.THREE, parts = chainParts();
-    if (!T || !parts.length) return;
+    var T = window.THREE;
+    if (!T || !window.scene) return;
     var g = String(group || "").toLowerCase(), v = String(label || "").toLowerCase();
+    var pair = pairedParts();
+
+    // a model with a control on each side: show the chosen side's only
+    if (pair && /side|position/.test(g) && /left|right/.test(v)) {
+      var useLeft = /left/.test(v);
+      pair.left.forEach(function (o) { o.visible = useLeft; });
+      pair.right.forEach(function (o) { o.visible = !useLeft; });
+      if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+      return;
+    }
+
+    var parts = chainParts();
+    if (pair && /handle|chain/.test(g)) {
+      // recolour the cords on both sides; whichever is shown wears it
+      parts = pair.left.concat(pair.right).filter(function (o) { return /puller$/i.test(o.name); });
+    }
+    if (!parts.length) return;
 
     if (/side|position/.test(g) && /left|right/.test(v)) {
       var box = window.scene.getObjectByName("Box");
@@ -376,7 +410,7 @@
         chainTex.wrapS = chainTex.wrapT = T.RepeatWrapping;
       }
       parts.forEach(function (o) {
-        if (!/^RTL_Puller$/.test(o.name)) return;      // the chain, not its weights
+        if (!/puller$/i.test(o.name)) return;      // the chain, not its weights
         o.material = new T.MeshPhongMaterial(metal
           ? { color: 0x5a5a5a, shininess: 40, specular: 0xffffff, map: chainTex, side: T.DoubleSide }
           : { color: 0xd2d2d2, shininess: 50, specular: 0x979797, side: T.DoubleSide });
@@ -385,6 +419,258 @@
       return;
     }
     if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+  }
+
+  /* A searchable city box under one choice of the installation group.
+
+     Used twice: the Curtain Install City list under "With Installation"
+     (cr_city), and Aramex's own city list under "Without installation"
+     (cr_ship_city). The box exists only while its choice is picked -
+     removed, not hidden, so the other choice never posts a city - and it
+     sits inside #product, so the page's own Add to Cart sends it.
+
+     The value travels in a hidden input: the theme's live price sends only
+     text, hidden and checked radio fields. The search box itself has no
+     name, so what is typed is never sent - only the city actually picked.
+
+     opts: { gid, when(value) -> bool, name, id, label, load(callback) }
+     where load hands back [{city, label, city_ar, price_text}]. */
+  function cityPicker(opts) {
+    var radios = document.querySelectorAll('input[name="option[' + opts.gid + ']"]');
+    if (!radios.length) return;
+    var card = cardOf(radios[0]);
+    if (!card) return;
+    var cities = null, kept = "";
+
+    function refresh() { if (window.jQuery) window.jQuery("#product").trigger("change"); }
+
+    function draw() {
+      var old = document.getElementById(opts.id);
+      if (old) { kept = (old.querySelector('input[name="' + opts.name + '"]') || {}).value || kept; old.remove(); }
+      var picked = document.querySelector('input[name="option[' + opts.gid + ']"]:checked');
+      if (!picked || !opts.when(String(picked.value))) return;
+      if (cities === null) {
+        // fetched once, the first time the choice is picked
+        opts.load(function (list) { cities = list || []; draw(); });
+        return;
+      }
+      if (!cities.length) return;
+
+      var box = document.createElement("div");
+      box.className = "cr-city";
+      box.id = opts.id;                     // where the theme puts the server's error
+      var label = document.createElement("label");
+      label.textContent = opts.label;
+      label.setAttribute("for", opts.id + "-search");
+      var carrier = document.createElement("input");
+      carrier.type = "hidden";
+      carrier.name = opts.name;
+      carrier.value = kept;
+      var wrap = document.createElement("div");
+      wrap.className = "cr-city-combo";
+      var input = document.createElement("input");
+      input.type = "text";
+      input.id = opts.id + "-search";
+      input.className = "form-control";
+      input.autocomplete = "off";
+      input.placeholder = say("Search your city");
+      input.setAttribute("role", "combobox");
+      input.setAttribute("aria-expanded", "false");
+      input.setAttribute("aria-controls", opts.id + "-list");
+      var list = document.createElement("ul");
+      list.id = opts.id + "-list";
+      list.className = "cr-city-list";
+      list.setAttribute("role", "listbox");
+      list.hidden = true;
+      var active = -1, shown = [];
+      var LIMIT = 80;                       // Aramex lists hundreds; nobody scrolls them
+
+      function nameOf(c) { return c.label + (c.price_text ? "  (" + c.price_text + ")" : ""); }
+      function norm(t) {
+        // Arabic letter forms and case, so "jed", "Jed" and "جده" all find جدة
+        return String(t || "").toLowerCase().replace(/[أإآ]/g, "ا").replace(/ة/g, "ه")
+          .replace(/ى/g, "ي").replace(/[ً-ْ]/g, "").trim();
+      }
+      function current() {
+        for (var i = 0; i < cities.length; i++) if (cities[i].city === carrier.value) return cities[i];
+        return null;
+      }
+      function choose(c) {
+        carrier.value = kept = c ? c.city : "";
+        input.value = c ? nameOf(c) : "";
+        close();
+        refresh();
+      }
+      function close() {
+        list.hidden = true;
+        input.setAttribute("aria-expanded", "false");
+        active = -1;
+      }
+      function open() {
+        var q = norm(input.value), now = current();
+        // the box shows the picked city's name; that is not a search
+        if (now && input.value === nameOf(now)) q = "";
+        var all = cities.filter(function (c) {
+          return !q || [c.city, c.label, c.city_ar].some(function (n) {
+            return n && norm(n).indexOf(q) !== -1;
+          });
+        });
+        // names starting with what was typed come first
+        if (q) all.sort(function (a, b) {
+          return (norm(a.label).indexOf(q) === 0 ? 0 : 1) - (norm(b.label).indexOf(q) === 0 ? 0 : 1);
+        });
+        shown = all.slice(0, LIMIT);
+        list.textContent = "";
+        if (!shown.length) {
+          var none = document.createElement("li");
+          none.className = "cr-city-none";
+          none.textContent = say("No city found. Please contact us.");
+          list.appendChild(none);
+        }
+        shown.forEach(function (c, i) {
+          var li = document.createElement("li");
+          li.setAttribute("role", "option");
+          li.textContent = nameOf(c);
+          if (now && c.city === now.city) li.classList.add("picked");
+          if (i === active) li.classList.add("active");
+          // mousedown, not click: click comes after the input's blur has closed the list
+          li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(c); });
+          list.appendChild(li);
+        });
+        if (all.length > LIMIT) {
+          var more = document.createElement("li");
+          more.className = "cr-city-none";
+          more.textContent = say("Type to see more cities");
+          list.appendChild(more);
+        }
+        list.hidden = false;
+        input.setAttribute("aria-expanded", "true");
+      }
+      function move(step) {
+        if (list.hidden) { open(); return; }
+        if (!shown.length) return;
+        active = (active + step + shown.length) % shown.length;
+        open();
+        var el = list.children[active];
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+      }
+
+      input.addEventListener("focus", function () { input.select(); open(); });
+      // typing highlights the first match, so Enter takes it
+      input.addEventListener("input", function () { active = 0; open(); });
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+        else if (e.key === "Enter") {
+          // never let Enter submit or add to cart from here
+          e.preventDefault();
+          if (!list.hidden && shown[active >= 0 ? active : 0]) choose(shown[active >= 0 ? active : 0]);
+        } else if (e.key === "Escape") { close(); }
+      });
+      input.addEventListener("blur", function () {
+        // typed something that is not a city: put back the one actually picked
+        var now = current();
+        input.value = now ? nameOf(now) : "";
+        close();
+      });
+      // the theme reprices on any change inside #product; this box's own
+      // keystrokes are not a choice, so they stop here
+      input.addEventListener("change", function (e) { e.stopPropagation(); });
+
+      var now = current();
+      if (now) input.value = nameOf(now);
+      wrap.appendChild(input);
+      wrap.appendChild(list);
+      box.appendChild(label);
+      box.appendChild(wrap);
+      box.appendChild(carrier);
+      card.appendChild(box);
+    }
+
+    cityStyle();
+    Array.prototype.forEach.call(radios, function (r) {
+      r.addEventListener("change", function () { draw(); refresh(); });
+    });
+    draw();
+  }
+
+  function cityStyle() {
+    if (document.getElementById("cr-city-style")) return;
+    var css = document.createElement("style");
+    css.id = "cr-city-style";
+    css.textContent =
+      ".cr-city{margin-top:14px;display:flex;flex-direction:column;gap:6px}" +
+      ".cr-city label{font-size:13px;font-weight:700;color:var(--text,#0f172a)}" +
+      ".cr-city-combo{position:relative;max-width:360px}" +
+      ".cr-city-combo input{width:100%;height:42px;border:1.5px solid var(--border,#dfe3e8);" +
+      "border-radius:10px;padding:0 12px;font-size:14px;background:#fff}" +
+      ".cr-city-combo input:focus{outline:none;border-color:var(--brand,#09446c)}" +
+      ".cr-city-list{position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;margin:0;" +
+      "padding:4px;list-style:none;background:#fff;border:1px solid var(--border,#dfe3e8);" +
+      "border-radius:10px;box-shadow:0 10px 26px rgba(15,23,42,.12);max-height:240px;overflow-y:auto}" +
+      ".cr-city-list li{padding:9px 12px;border-radius:7px;cursor:pointer;font-size:14px}" +
+      ".cr-city-list li:hover,.cr-city-list li.active{background:var(--brand-light,#eef4f8)}" +
+      ".cr-city-list li.picked{font-weight:700;color:var(--brand,#09446c)}" +
+      ".cr-city-list li.cr-city-none{cursor:default;color:#7a8a99}" +
+      ".cr-city-list li.cr-city-none:hover{background:none}";
+    document.head.appendChild(css);
+  }
+
+  /* "With Installation": the Curtain Install City list in ERPNext, priced. */
+  function installCity(spec) {
+    var choice = spec.install_choice;
+    if (!choice || !(spec.install_cities || []).length) return;
+    cityPicker({
+      gid: choice[0], name: "cr_city", id: "input-optioncrcity", label: say("Your city"),
+      when: function (v) { return v === String(choice[1]); },
+      load: function (cb) { cb(spec.install_cities); }
+    });
+  }
+
+  /* "Without installation": delivered by Aramex. The city list is Aramex's
+     own (curtain_roll.aramex.city_list), fetched the first time the choice
+     is picked; the price for the chosen city arrives with the live total. */
+  function deliveryCity(spec) {
+    var choice = spec.install_choice;
+    if (!choice || !spec.aramex_delivery) return;
+    cityPicker({
+      gid: choice[0], name: "cr_ship_city", id: "input-optioncrship",
+      label: say("Delivery city (Aramex)"),
+      when: function (v) { return v !== String(choice[1]); },
+      load: function (cb) {
+        fetch("/api/method/curtain_roll.aramex.city_list", { credentials: "same-origin" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) {
+            cb(((j && j.message) || []).map(function (name) {
+              return { city: name, label: name };
+            }));
+          })
+          .catch(function () { cb([]); });
+      }
+    });
+  }
+
+  /* The page's own "Manual Operating Side" choice (Wooden, Metal), which goes
+     to the bundle's modelchanger(). Wooden's bundle has an empty branch for
+     it - both cords always showed, whichever side was picked - so the choice
+     is followed here as well. */
+  function ownSideChoice() {
+    var inputs = document.querySelectorAll('input[type="radio"][onclick*="Manual Operating Side"]');
+    function follow(input) {
+      var m = (input.getAttribute("onclick") || "").match(/modelchanger\('[^']*','[^']*','([^']*)'/);
+      if (m) chain3d("Manual Operating Side", m[1]);
+    }
+    Array.prototype.forEach.call(inputs, function (input) {
+      input.addEventListener("change", function () { follow(input); });
+    });
+    // the one already picked, once the model has loaded
+    var tries = 0;
+    (function first() {
+      var picked = Array.prototype.filter.call(inputs, function (i) { return i.checked; })[0];
+      if (!picked) return;
+      if (window.scene && pairedParts()) { follow(picked); return; }
+      if (++tries < 40) setTimeout(first, 500);
+    })();
   }
 
   var fabricParts = null;
@@ -750,26 +1036,41 @@
     }
     subOptions(spec);
     printUpload(spec);
+    installCity(spec);
+    deliveryCity(spec);
     renumber();
     // after the page's own script has had its turn at disabling rows
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 400);
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 1500);
   }
 
-  /* A colour priced per square metre carries its price inside the swatch's
-     name - "7200 (+SR 120.00 / m²)" - and the swatch name is one clipped line
-     about 60px wide, so the price ran out of the card and across the next one
-     (Blackout, Shutters). The price gets a line of its own under the code. */
+  /* No price on the material swatches. A colour priced per square metre
+     carried "(+SR 120.00 / m²)" inside its name; the client wants the
+     materials shown by name only (the price is still charged, and the total
+     shows it). Every other option keeps its price. */
   function swatchPriceStyle() {
     if (document.getElementById("cr-swatch-price")) return;
     var css = document.createElement("style");
     css.id = "cr-swatch-price";
-    css.textContent =
-      ".swatch-label .option-value{white-space:normal;overflow:visible;" +
-      "text-overflow:clip;line-height:1.2;overflow-wrap:anywhere}" +
-      ".swatch-label .option-price{display:block;margin-top:2px;font-size:9px;" +
-      "font-weight:700;color:var(--brand,#09446c);white-space:normal}";
+    css.textContent = ".swatch-label .option-price{display:none!important}";
     document.head.appendChild(css);
+  }
+
+  /* "Starts from:" while the blind is not fully chosen, "Total:" once it is.
+     The theme's own price refresh writes the figure; this only follows it,
+     using the `partial` flag the server now sends instead of a "From" prefix
+     that doubled the label. */
+  function priceLabel() {
+    if (!window.jQuery) return;
+    var label = document.querySelector(".price-strip .starts-label");
+    if (!label) return;
+    window.jQuery(document).ajaxSuccess(function (event, xhr, settings) {
+      if (!settings || !/route=product\/product/.test(settings.url || "")) return;
+      var json = xhr.responseJSON;
+      if (!json) { try { json = JSON.parse(xhr.responseText); } catch (e) { return; } }
+      if (!json || !json.total || json.partial === undefined) return;
+      label.textContent = say(json.partial ? "Starts from:" : "Total:");
+    });
   }
 
   function load() {
@@ -778,6 +1079,8 @@
     // no size boxes means this is not a product page, whatever the URL says
     if (!document.querySelector('input[name^="option["][name$="[width]"]')) return;
     swatchPriceStyle();
+    priceLabel();
+    ownSideChoice();
 
     fetch("/api/method/curtain_roll.pricing.get_pricing?product_key=" +
           encodeURIComponent(key), { credentials: "same-origin" })

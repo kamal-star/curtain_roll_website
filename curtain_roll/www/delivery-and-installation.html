@@ -953,18 +953,7 @@
     <div class="drawer-content">
       <div>
         <span class="drawer-section-label" style="font-size:11px; font-weight:700; color:var(--brand); text-transform:uppercase; margin-bottom:8px; display:block;">Collections</span>
-        <ul class="drawer-links-box">
-          <li><a href="/" class="drawer-nav-item"><span><i class="fa-solid fa-house" style="color:var(--brand); width:20px;"></i> Home</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/blackout" class="drawer-nav-item"><span><i class="fa-solid fa-moon" style="color:var(--brand); width:20px;"></i> Blackout Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/sunscreen" class="drawer-nav-item"><span><i class="fa-solid fa-sun" style="color:var(--brand); width:20px;"></i> Sunscreen Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/zebra" class="drawer-nav-item"><span><i class="fa-solid fa-bars" style="color:var(--brand); width:20px;"></i> Zebra Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/wooden" class="drawer-nav-item"><span><i class="fa-solid fa-tree" style="color:var(--brand); width:20px;"></i> Wooden Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/vertical" class="drawer-nav-item"><span><i class="fa-solid fa-arrows-left-right" style="color:var(--brand); width:20px;"></i> Vertical Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/metal" class="drawer-nav-item"><span><i class="fa-solid fa-shield-halved" style="color:var(--brand); width:20px;"></i> Metal Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/roman" class="drawer-nav-item"><span><i class="fa-solid fa-scroll" style="color:var(--brand); width:20px;"></i> Roman Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/wavy" class="drawer-nav-item"><span><i class="fa-solid fa-water" style="color:var(--brand); width:20px;"></i> Wavy Drapes</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-          <li><a href="/printed" class="drawer-nav-item"><span><i class="fa-solid fa-palette" style="color:var(--brand); width:20px;"></i> Printed Blinds</span><i class="fa-solid fa-chevron-right" style="font-size:11px; color:#94a3b8;"></i></a></li>
-        </ul>
+        {% endraw %}{% include "curtain_roll/templates/includes/drawer_collections.html" %}{% raw %}
       </div>
 
       <div>
@@ -987,14 +976,14 @@
   </aside>
 
   <!-- Main Content Container -->
-  <main class="container">
+  <main class="container">{% endraw %}{% set pg = info_page("delivery-and-installation") %}{% raw %}
     
     <!-- Hero Header -->
     <section class="delivery-hero">
-      <span class="hero-eyebrow">Kingdom-Wide Logistics & Service</span>
-      <h1 class="hero-title">Delivery & Installation Policy</h1>
-      <p class="hero-subtitle">Bespoke manufacturing standards, secure reinforced shipping, and certified on-site technicians servicing all provinces of Saudi Arabia.</p>
-    </section>
+      <span class="hero-eyebrow">{% endraw %}{% if pg.eyebrow %}{{ pg.eyebrow }}{% else %}{% raw %}Kingdom-Wide Logistics & Service{% endraw %}{% endif %}{% raw %}</span>
+      <h1 class="hero-title">{% endraw %}{% if pg.title %}{{ pg.title }}{% else %}{% raw %}Delivery & Installation Policy{% endraw %}{% endif %}{% raw %}</h1>
+      <p class="hero-subtitle">{% endraw %}{% if pg.subtitle %}{{ pg.subtitle }}{% else %}{% raw %}Bespoke manufacturing standards, secure reinforced shipping, and certified on-site technicians servicing all provinces of Saudi Arabia.{% endraw %}{% endif %}{% raw %}</p>
+    </section>{% endraw %}{% if pg.body %}{% include "curtain_roll/templates/includes/info_page_style.html" %}<section class="cr-info-body">{{ pg.body }}</section>{% else %}{% raw %}
 
     <!-- 4-Step Process Timeline Overview -->
     <section class="process-timeline-grid">
@@ -1117,7 +1106,7 @@
 
     </div>
 
-  </main>
+  {% endraw %}{% endif %}{% raw %}</main>
 
   <!-- Floating WhatsApp Action Button -->
   <a href="https://wa.me/966114550783" class="floating-whatsapp" target="_blank" rel="noopener" aria-label="Chat with logistics team on WhatsApp">
