@@ -1630,6 +1630,27 @@
   var BLIND_SCALE = [0.6606, 0.6575];          // [width, height]
   var WINDOW_TOP_DEG = 8.6161;        // window top, above the horizon
   var WINDOW_CX_DEG = 3.24;          // window centre, off dead ahead
+  var VIEW_TILT_DEG = 0;          // look up this much, for a high window
+  var ANCHOR_Z = -425;          // the depth BLIND_SCALE was fitted at: the page's default mounting
+  var OUTSIDE_GROW = [1.10, 1.08];          // Outside this much bigger than Inside
+
+  /* Look up a little, for a room whose window sits high.
+
+     The camera looks dead level. When a room's window starts well above
+     the horizon the top arrow lands at the very edge of the view and its
+     "180 cm" falls off the top. Raising the orbit target tilts the view
+     without moving the camera, so the blind stays where fitBlind aimed it
+     (that is worked out from the camera's position, not where it looks).
+     Set once; set again only if the bundle's reset puts the target back. */
+  function tiltView() {
+    if (!VIEW_TILT_DEG || typeof controls === "undefined" || !controls
+        || !controls.target || !controls.object) return;
+    var t = controls.target, c = controls.object.position;
+    if (t.__crTilt !== undefined && !(t.y === 0 && t.__crTilt !== 0)) return;
+    t.y = c.y + Math.hypot(c.x - t.x, c.z - t.z) * Math.tan(VIEW_TILT_DEG * Math.PI / 180);
+    t.__crTilt = t.y;
+    controls.update();
+  }
 
   /* Set the scale from the bundle's own base every time, never from our own
      previous output.
@@ -1654,6 +1675,9 @@
     var found = false;
     root.traverse(function (o) {
       if (!o.isMesh || !o.visible) return;
+      // the size arrows only appear once a size is typed; measuring them
+      // too dropped the whole blind by the arrow's height at that moment
+      if (/^Arrow_/.test(o.name)) return;
       var p = o;
       while (p && p !== root) { if (!p.visible) return; p = p.parent; }
       box.expandByObject(o);
@@ -1664,6 +1688,7 @@
 
   function fitBlind() {
     if (!window.scene || !window.camera || !window.THREE) return;
+    tiltView();
     if (BLIND_SCALE[0] === 1 && BLIND_SCALE[1] === 1) return;
     var g = null;
     scene.children.forEach(function (o) { if (o.name === "mesh_group") g = o; });
@@ -1684,6 +1709,27 @@
       g.__crBase = g.scale.x;
     }
     var wantX = (g.__crBase || g.scale.y) * BLIND_SCALE[0];
+
+    /* Inside / Outside mounting. Every bundle moves the blind forward for
+       Outside - off the recess, onto the wall: 45 to 75 units nearer the
+       camera - and the wooden one widens it 17% as well. In its own room
+       that reads as "on the wall". In a fitted room it made Outside ~40%
+       bigger on screen than Inside, hanging over the window and out past
+       both sides.
+
+       So the depth no longer changes the size: at the depth this page's
+       blind was fitted at (its default mounting) it looks exactly as fitted,
+       and the other mounting is just a little bigger (Outside, over the
+       window) or a little smaller (Inside, within it). */
+    var mount = 0;                      // 0 as fitted, +1 nearer, -1 deeper
+    if (g.position.z > ANCHOR_Z + 1) mount = 1;
+    else if (g.position.z < ANCHOR_Z - 1) mount = -1;
+    if (mount) {
+      var near = Math.abs(camera.position.z - g.position.z)
+                 / Math.abs(camera.position.z - ANCHOR_Z);
+      wantX = g.scale.y * BLIND_SCALE[0] * near * Math.pow(OUTSIDE_GROW[0], mount);
+      wantZ = wantZ * near * Math.pow(OUTSIDE_GROW[1], mount);
+    }
 
     var changed = false;
     if (Math.abs(g.scale.x - wantX) > 1e-9 || Math.abs(g.scale.z - wantZ) > 1e-9) {
@@ -1722,7 +1768,15 @@
 
        The dead zone is there so a blind that is already on target does not
        force a redraw four times every two seconds. */
-    var dy = (camera.position.y + dz * Math.tan(WINDOW_TOP_DEG * rad)) - box.max.y;
+    // keep the bigger or smaller blind centred on where the fitted one hung:
+    // Outside rises by half its extra height, Inside drops by half the loss
+    var topDeg = WINDOW_TOP_DEG;
+    if (mount) {
+      var h = Math.atan2(box.max.y - box.min.y, dz) / rad;
+      topDeg += mount > 0 ? h * (OUTSIDE_GROW[1] - 1) / (2 * OUTSIDE_GROW[1])
+                          : -h * (OUTSIDE_GROW[1] - 1) / 2;
+    }
+    var dy = (camera.position.y + dz * Math.tan(topDeg * rad)) - box.max.y;
     var dx = (camera.position.x + dz * Math.tan(WINDOW_CX_DEG * rad))
              - (box.min.x + box.max.x) / 2;
     if (Math.abs(dy) > 0.2 || Math.abs(dx) > 0.2) {
@@ -1734,7 +1788,52 @@
 
     g.__crOut = g.scale.x;
     g.__crSeen = g.scale.x;
+    if (placeLabels(g)) changed = true;
     if (changed && window.renderer) renderer.render(scene, camera);
+  }
+
+  /* Keep the size labels on their arrows.
+
+     The bundle adds "158 cm" and "350 cm" straight to the scene, at fixed
+     points worked out for its own unscaled, unmoved blind. The arrows are
+     inside the blind's group, so they follow fitBlind's scale and aim; the
+     text did not, and landed on the headrail and across the left arrow.
+     Anchor each label to its arrow instead: the width just above the top
+     arrow, centred on it, and the height just left of the side arrow,
+     centred on it. */
+  function placeLabels(g) {
+    var moved = false;
+    function arrow(name) {
+      var a = null;
+      g.traverse(function (o) { if (!a && o.name === name && o.visible) a = o; });
+      return a ? new THREE.Box3().setFromObject(a) : null;
+    }
+    function shift(name, at, tx, ty) {
+      var t = null;
+      scene.children.forEach(function (o) { if (o.name === name) t = o; });
+      if (!t || !t.visible) return;
+      var b = new THREE.Box3().setFromObject(t);
+      if (!isFinite(b.min.x)) return;
+      // depth too: the bundle puts the text well behind the arrows (75
+      // units on the vertical model), and seen from below the window that
+      // alone draws it under the line instead of above it
+      var dx = tx(b), dy = ty(b), dz = (at.max.z + 0.5) - b.min.z;
+      if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05 || Math.abs(dz) > 0.05) {
+        t.position.x += dx;
+        t.position.y += dy;
+        t.position.z += dz;
+        t.updateMatrixWorld(true);
+        moved = true;
+      }
+    }
+    var top = arrow("Arrow_Top"), left = arrow("Arrow_Left");
+    if (top) shift("horizontal_text_Mesh", top,
+      function (b) { return (top.min.x + top.max.x) / 2 - (b.min.x + b.max.x) / 2; },
+      function (b) { return top.max.y + 2 - b.min.y; });
+    if (left) shift("vertical_text_Mesh", left,
+      function (b) { return left.min.x - 2 - b.max.x; },
+      function (b) { return (left.min.y + left.max.y) / 2 - (b.min.y + b.max.y) / 2; });
+    return moved;
   }
 
   setInterval(fitBlind, 400);

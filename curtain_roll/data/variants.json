@@ -6,13 +6,13 @@
   "heading": "WOODEN KAYAN",
   "title": "Wooden slat blinds shown in a modern apartment",
   "meta_description": "The same wooden slat blind, previewed in a contemporary apartment interior. Choose your slat colour and size and see it in the room before you order.",
-  "scene_source": "scenes/room-wooden.jpg",
+  "scene_source": "scenes/room-wooden-kayan.jpg",
   "price": 300.0,
   "window": [
-   948,
-   477,
-   1088,
-   610
+   1942,
+   926,
+   2228,
+   1184
   ],
   "_note": "window = the window's outer frame in scene_source's own pixels [left, top, right, bottom]. Everything else is derived from it and from the blind's own geometry - see BLINDS in make_variants.py.",
   "scene_fit": "none",
@@ -21,7 +21,8 @@
    0.99,
    0.95
   ],
-  "_fill_note": "cover the window opening, as the client's reference does, rather than sitting inside it with frame showing all round"
+  "_fill_note": "cover the window opening, as the client's reference does, rather than sitting inside it with frame showing all round",
+  "_scene_note": "room-wooden.jpg (2000x1055) AI-upscaled with Real-ESRGAN x4, seam wrapped, to 4096x2048; window scaled from [948, 477, 1088, 610] to match"
  },
  {
   "key": "vertical-premium",
@@ -30,16 +31,24 @@
   "heading": "VERTICAL KAYAN",
   "title": "Vertical blinds shown in a modern living room",
   "meta_description": "The same vertical blind, previewed in a contemporary living room. Choose your fabric and size and see it in the room before you order.",
-  "scene_source": "scenes/room-living.jpg",
+  "scene_source": "scenes/room-vertical-kayan.jpg",
   "price": 128.0,
   "window": [
-   857,
-   357,
-   1122,
-   640
+   1726,
+   735,
+   2347,
+   1315
   ],
+  "view_tilt": 0,
+  "_view_tilt_note": "degrees the preview looks up: this window starts 32 deg above the horizon, so level the top arrow and its width label fall off the top of the view",
+  "_window_note": "the window's outer casing, read off the 2000px source at the centre line (x 843-1146, y 359-642) and scaled x2.048 to the 4096 upscale. NOT y 322: that is the ceiling meeting the wall, and it hung the headrail at the ceiling",
   "scene_fit": "none",
-  "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
+  "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead.",
+  "fill": [
+   1.0,
+   1.0
+  ],
+  "_fill_note": "fill the window edge to edge and stop at the sill, as the plain Vertical page's blind does in its own room (client's reference)"
  },
  {
   "key": "shutters",
