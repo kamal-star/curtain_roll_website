@@ -680,8 +680,17 @@ def finish_page(response=None, request=None):
 		# The 3D scenes' textures and font are files in www/, and Frappe serves
 		# those "no-store" like a page - so every visit downloaded the whole
 		# room and fabric again (several MB a page). They are plain files that
-		# change only with a deploy: let the browser keep them for a week.
-		response.headers["Cache-Control"] = "public, max-age=604800"
+		# change only with a deploy, so let the browser keep them.
+		#
+		# A versioned address (?v=<hash of the file>, as the fitted rooms
+		# use) never changes content, so it is kept for a year. Anything
+		# else is kept a day, not a week: the bundles load their textures by
+		# fixed paths, and a week meant a replaced room - sharper, or a new
+		# one - went on showing the old picture for days after the deploy.
+		if (getattr(request, "args", None) or {}).get("v"):
+			response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+		else:
+			response.headers["Cache-Control"] = "public, max-age=86400"
 		response.headers.pop("Pragma", None)
 		response.headers.pop("Expires", None)
 		return
