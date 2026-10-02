@@ -43,7 +43,7 @@ DEFAULTS = {
  "guest_checkout": 1,
  "aramex_enabled": 0,
  "aramex_origin_city": "Riyadh",
- "aramex_product_type": "CDS",
+ "aramex_product_type": "ONP",
  "aramex_weight_per_sqm": 1.5,
  "aramex_min_weight": 1,
  "alert_role": "Sales Manager",

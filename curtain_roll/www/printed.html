@@ -1502,7 +1502,32 @@
     });
   </script>
 
-  <!-- 3D Blackout Model Script -->
+  <!-- The print the 3D blind wears. Printed.js takes its valance texture from
+       this canvas by id; the redesign had dropped it, so the texture had no
+       picture and three.js threw on every frame - the blind never redrew,
+       and the page's own scripts stopped with it. It starts with the default
+       print fabric; an uploaded picture replaces it (curtain_options.js). -->
+  <canvas id="fabriccanvas" width="1024" height="1024" style="display:none"></canvas>
+  <script>
+    (function () {
+      var c = document.getElementById("fabriccanvas"), ctx = c.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, c.width, c.height);
+      var img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        // the 3D textures made from this canvas must be told it changed
+        if (window.scene) window.scene.traverse(function (o) {
+          [].concat(o.material || []).forEach(function (m) {
+            if (m && m.map && m.map.image === c) m.map.needsUpdate = true;
+          });
+        });
+      };
+      img.src = "/maps/preload/printed/Valance_Front_texture.jpg";
+    })();
+  </script>
+
+  <!-- 3D Printed Model Script -->
   <script src="/assets/curtain_roll/configurator/Printed.js"></script>
 
   <!-- ==========================================================================

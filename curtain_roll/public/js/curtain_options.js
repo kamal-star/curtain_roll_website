@@ -328,6 +328,15 @@
      on show, alongside the head box and bottom bar. Every part that wore it
      when the page loaded is recoloured, visible or not, so switching width
      afterwards keeps the colour. The room itself is left out. */
+  /* Draw the 3D view now rather than on the next animation frame. Never
+     throws: the bundle's own loop redraws anyway, and a scene that cannot be
+     drawn this moment must not stop the step that asked. */
+  function redraw() {
+    try {
+      if (window.renderer && window.camera && window.scene) window.renderer.render(window.scene, window.camera);
+    } catch (e) { /* the animation loop will try again */ }
+  }
+
   /* The chain, in the 3D view, following the Manual choices.
 
      The bundles know "Manual Operating Side" and "Handle type" themselves,
@@ -379,7 +388,7 @@
       var useLeft = /left/.test(v);
       pair.left.forEach(function (o) { o.visible = useLeft; });
       pair.right.forEach(function (o) { o.visible = !useLeft; });
-      if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+      redraw();
       return;
     }
 
@@ -418,7 +427,7 @@
     } else {
       return;
     }
-    if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+    redraw();
   }
 
   /* A searchable city box under one choice of the installation group.
@@ -709,7 +718,7 @@
           m.needsUpdate = true;
         });
       });
-      if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+      redraw();
     }
     if (colourTextures[url]) return apply(colourTextures[url]);
     new T.TextureLoader().load(url, function (tex) {
@@ -777,7 +786,7 @@
       m.needsUpdate = true;
     }
     fitPicture();
-    if (window.renderer && window.camera) window.renderer.render(window.scene, window.camera);
+    redraw();
   }
 
   function showOnBlind(canvas) {
@@ -1026,19 +1035,30 @@
     });
   }
 
+  /* Each step on its own: one that throws - a 3D bundle that cannot draw,
+     say - must not take the rest of the page down with it. On the Printed
+     page a redraw failing inside the chain step once stopped the picture
+     upload and both city boxes from ever appearing. */
+  function step(name, fn) {
+    try { fn(); }
+    catch (e) { if (window.console) console.error("curtain_options: " + name, e); }
+  }
+
   function apply(spec) {
     if (!spec) return;
-    if (spec.size_group && spec.limits) applyLimits(spec.size_group, spec.limits);
+    step("limits", function () {
+      if (spec.size_group && spec.limits) applyLimits(spec.size_group, spec.limits);
+    });
     // material_group, not color_group: the server blanks color_group when the
     // material is off, precisely so nothing asks for a colour any more
-    if (spec.show_material === false && spec.material_group) {
-      hideGroup(spec.material_group);
-    }
-    subOptions(spec);
-    printUpload(spec);
-    installCity(spec);
-    deliveryCity(spec);
-    renumber();
+    step("material", function () {
+      if (spec.show_material === false && spec.material_group) hideGroup(spec.material_group);
+    });
+    step("sub options", function () { subOptions(spec); });
+    step("print upload", function () { printUpload(spec); });
+    step("install city", function () { installCity(spec); });
+    step("delivery city", function () { deliveryCity(spec); });
+    step("renumber", renumber);
     // after the page's own script has had its turn at disabling rows
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 400);
     setTimeout(function () { hideEmptyGroups(); renumber(); }, 1500);

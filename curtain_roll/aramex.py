@@ -43,10 +43,19 @@ RATE_KEY = "curtain_roll_aramex_rate:%s:%s"
 
 
 # ------------------------------------------------------------------ set-up
+AUTH_FAILED_KEY = "curtain_roll_aramex_auth_failed"
+# Aramex's answers that mean the account itself is refused, not this request.
+# ERR75 bad login, ERR82 account/PIN/entity mismatch, ERR03 account blocked.
+AUTH_CODES = ("ERR75", "ERR82", "ERR03")
+AUTH_PAUSE = 6 * 60 * 60
+
+
 def enabled():
-	"""Delivery is offered: switched on in the settings, and an account to use."""
+	"""Delivery is offered: switched on in the settings, an account to use, and
+	that account not refused by Aramex in the last few hours."""
 	settings = storefront_settings()
-	return bool(cint(settings.get("aramex_enabled"))) and configured()
+	return bool(cint(settings.get("aramex_enabled"))) and configured() \
+		and not frappe.cache().get_value(AUTH_FAILED_KEY)
 
 
 def configured():
@@ -91,14 +100,34 @@ def _post(path, payload):
 	except ValueError:
 		raise AramexError("Aramex answered %s with no data" % response.status_code)
 	if data.get("HasErrors"):
+		codes = [str(n.get("Code") or "") for n in data.get("Notifications") or []]
 		notes = "; ".join("%s %s" % (n.get("Code") or "", n.get("Message") or "")
 		                  for n in data.get("Notifications") or [])
+		if any(c in AUTH_CODES for c in codes):
+			# The account is refused. Asking again with the same details only
+			# counts more wrong attempts - Aramex blocks the account after a
+			# few (ERR03) - so stop asking for a while: the delivery box hides
+			# itself (enabled() is False) and the team sees this once.
+			frappe.cache().set_value(AUTH_FAILED_KEY, notes, expires_in_sec=AUTH_PAUSE)
+			frappe.log_error(title="curtain_roll: Aramex refused the account - paused 6 hours",
+			                 message=notes + "\n\nFix the aramex_* values in site_config.json, then "
+			                 "end the pause at once with: bench --site <site> execute "
+			                 "curtain_roll.aramex.clear_pause  (or wait 6 hours).")
 		raise AramexError(notes.strip() or "Aramex reported an error")
 	return data
 
 
 class AramexError(Exception):
 	pass
+
+
+def clear_pause():
+	"""End the pause after an account refusal, once the details are fixed.
+
+	bench --site <site> execute curtain_roll.aramex.clear_pause
+	"""
+	frappe.cache().delete_value(AUTH_FAILED_KEY)
+	return "Aramex pause cleared"
 
 
 def _address(city):
@@ -172,7 +201,7 @@ def rate(city, weight_kg):
 				"GoodsOriginCountry": _country(),
 				"NumberOfPieces": 1,
 				"ProductGroup": "DOM",
-				"ProductType": settings.get("aramex_product_type") or "CDS",
+				"ProductType": settings.get("aramex_product_type") or "ONP",
 				"PaymentType": "P",
 				"PaymentOptions": "",
 				"Services": "",

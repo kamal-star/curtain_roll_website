@@ -735,20 +735,18 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 
 		label = "%s (%s)" % (entry["label"], entry["group_label"])
 		install = _install_choice(spec)
-		if install and gid == install[0] and value != install[1]:
-			# Without installation: delivered by Aramex, priced by city and weight
-			problem = _aramex_delivery(submitted, strict, lines, area)
+		if install and gid == install[0]:
+			if value == install[1]:
+				# With Installation: the customer's city, and its price
+				problem, key = _install_city(submitted, strict, lines), "crcity"
+			else:
+				# Without installation: delivered by Aramex, by city and weight
+				problem, key = _aramex_delivery(submitted, strict, lines, area), "crship"
 			if problem == "partial":
 				partial = True
 			elif problem:
-				errors["crship"] = problem
+				errors[key] = problem
 		if entry.get("tiered"):
-			# the installation choice: the customer's city, and its price
-			city_problem = _install_city(submitted, strict, lines)
-			if city_problem == "partial":
-				partial = True
-			elif city_problem:
-				errors["crcity"] = city_problem
 			banded, tier = tier_rate(spec, order_qty)
 			if banded is None:
 				continue                      # no band set up; charge nothing
@@ -950,11 +948,25 @@ def _aramex_on():
 		return False
 
 
+_WITH_INSTALL = re.compile(r"^\s*with\s+install", re.I)
+
+
 def _install_choice(spec):
-	"""[group id, value] of the With Installation choice - the banded one."""
-	for gid, choices in (spec.get("options") or {}).items():
+	"""[group id, value] of the With Installation choice, or None.
+
+	The one priced by the installation bands when there is one (Blackout).
+	Every other product sells installation as a plain priced choice, so it is
+	found by its name - "With Installation", never "Without installation" -
+	and its group is the one whose other choice means delivery instead.
+	"""
+	options = spec.get("options") or {}
+	for gid, choices in options.items():
 		for value, entry in choices.items():
 			if entry.get("tiered") and entry.get("enabled"):
+				return [gid, value]
+	for gid, choices in options.items():
+		for value, entry in choices.items():
+			if entry.get("enabled") and _WITH_INSTALL.match(entry.get("label") or ""):
 				return [gid, value]
 	return None
 

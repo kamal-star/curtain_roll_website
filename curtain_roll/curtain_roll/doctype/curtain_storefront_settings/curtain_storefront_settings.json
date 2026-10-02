@@ -261,8 +261,8 @@
    "fieldname": "aramex_product_type",
    "fieldtype": "Data",
    "label": "Aramex Product Type",
-   "default": "CDS",
-   "description": "The domestic service on Kayan's Aramex account; ask Aramex if unsure."
+   "default": "ONP",
+   "description": "The domestic service on Kayan's Aramex account. ONP is the one in Aramex's own samples; ask Aramex if unsure."
   },
   {
    "fieldname": "cb_aramex",

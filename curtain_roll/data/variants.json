@@ -163,13 +163,13 @@
   "heading": "BLACKOUT KAYAN",
   "title": "Blackout roller blind shown in a modern majlis",
   "meta_description": "The same blackout roller blind, previewed in a contemporary majlis overlooking the city. Choose your fabric and size and see it in the room before you order.",
-  "scene_source": "scenes/room-majlis.jpg",
+  "scene_source": "scenes/room-blackout-kayan.jpg",
   "price": 150.0,
   "window": [
-   888,
-   377,
-   1100,
-   594
+   1803,
+   729,
+   2292,
+   1238
   ],
   "_note": "window = the white reveal, read off the panorama itself: the wall sits near 150 brightness and the reveal jumps past 190, which puts the edges at x 888/1100 and y 377/594.",
   "scene_fit": "none",
