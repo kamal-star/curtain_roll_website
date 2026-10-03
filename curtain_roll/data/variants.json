@@ -34,21 +34,21 @@
   "scene_source": "scenes/room-vertical-kayan.jpg",
   "price": 128.0,
   "window": [
-   1726,
-   735,
-   2347,
-   1315
+   1728,
+   758,
+   2342,
+   1300
   ],
   "view_tilt": 0,
   "_view_tilt_note": "degrees the preview looks up: this window starts 32 deg above the horizon, so level the top arrow and its width label fall off the top of the view",
-  "_window_note": "the window's outer casing, read off the 2000px source at the centre line (x 843-1146, y 359-642) and scaled x2.048 to the 4096 upscale. NOT y 322: that is the ceiling meeting the wall, and it hung the headrail at the ceiling",
+  "_window_note": "client's reference is the plain Vertical page: slats cover the whole window - the gold frame included (x1746-1765 left, 2308-2329 right, bottom frame to the floor at y1300) - and stop at the white inner face of the moulding, which stays visible with the tan moulding outside it; the headrail sits just under the top moulding (y749). `window` and `fill` are tuned so the rendered SLATS (not the blind's whole box - that includes the headrail and the chain) land there, checked by raycasting them onto the room: slats x1739-2337, bottom y1296-1306, headrail top y752 (fit_vk.py). 4096 upscale pixels.",
   "scene_fit": "none",
   "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead.",
   "fill": [
-   1.0,
-   1.0
+   1.0452,
+   0.9988
   ],
-  "_fill_note": "fill the window edge to edge and stop at the sill, as the plain Vertical page's blind does in its own room (client's reference)"
+  "_fill_note": "not 1.0: the blind's measured angular size (BLINDS) is taken at another depth, so fill is whatever lands the edges above"
  },
  {
   "key": "shutters",
@@ -183,5 +183,101 @@
   "_note": "window = the white reveal, read off the panorama itself: the wall sits near 150 brightness and the reveal jumps past 190, which puts the edges at x 888/1100 and y 377/594.",
   "scene_fit": "none",
   "_fit_note": "rotation only. Scaling an equirectangular is not a camera move - it stretches longitude and latitude linearly and bows every straight line in the room. The room must be RENDERED with the window at the right angular size instead."
+ },
+ {
+  "key": "zebra-kayan",
+  "based_on": "zebra",
+  "product_id": "905",
+  "heading": "ZEBRA KAYAN",
+  "title": "Zebra roller blind shown in a modern majlis",
+  "meta_description": "The same zebra roller blind, previewed in a contemporary majlis overlooking the city. Choose your fabric and size and see it in the room before you order.",
+  "scene_source": "scenes/room-zebra-kayan.jpg",
+  "_scene_note": "client's 2000x1000 render, AI-upscaled with Real-ESRGAN x4 (seam wrapped) to 4096x2048; the original is room-zebra-kayan-source.jpg",
+  "price": 300.0,
+  "window": [
+   1846,
+   781,
+   2236,
+   1192
+  ],
+  "_window_note": "placed as the plain Zebra page places its blind in its own room (client's reference), measured as shares of the window's white moulding (x1824-2259, y761-1218): box from 1.7% in on the left to 1.3% in on the right, its top 2.9% down, the bottom bar 79% of the way down. 4096 pixels",
+  "fill": [
+   1.0486,
+   0.992
+  ],
+  "scene_fit": "none",
+  "_fill_note": "tuned so the rendered parts land there, by raycasting them onto the room: box x1830-2253, top y773; bottom bar y1128 (fit_variant.py)"
+ },
+ {
+  "key": "roman-kayan",
+  "based_on": "roman",
+  "product_id": "906",
+  "heading": "ROMAN KAYAN",
+  "title": "Roman blind shown in a modern majlis",
+  "meta_description": "The same Roman blind, previewed in a contemporary majlis overlooking Riyadh. Choose your fabric and size and see it in the room before you order.",
+  "scene_source": "scenes/room-roman-kayan.jpg",
+  "_scene_note": "client's 2000x1000 render, AI-upscaled with Real-ESRGAN x4 (seam wrapped) to 4096x2048; the original is room-roman-kayan-source.jpg",
+  "price": 393.0,
+  "window": [
+   1828,
+   780,
+   2256,
+   1134
+  ],
+  "_window_note": "placed as the plain Roman page places its blind in its own room (client's reference), as shares of the window's white frame (x1824-2259, y770-1222 here): fabric edge to edge across the frame (~1% in), its top at the frame's top, hanging 81% of the way down. 4096 pixels",
+  "fill": [
+   0.964,
+   1.384
+  ],
+  "scene_fit": "none",
+  "_fill_note": "tuned so the rendered fabric lands on the target, by raycasting it onto the room: fabric x1827-2255, top y773, bottom y1142. Taller than 1.0 because the fit measures the whole blind, the hanging strings included (fit_variant.py)"
+ },
+ {
+  "key": "metal-kayan",
+  "based_on": "metal",
+  "product_id": "907",
+  "heading": "METAL KAYAN",
+  "title": "Aluminium blind shown in a modern majlis",
+  "meta_description": "The same aluminium slat blind, previewed in a contemporary majlis overlooking Riyadh. Choose your slat width, colour and size and see it in the room before you order.",
+  "scene_source": "scenes/room-metal-kayan.jpg",
+  "_scene_note": "client's 2000x1000 render, AI-upscaled with Real-ESRGAN x4 (seam wrapped) to 4096x2048; the original is room-metal-kayan-source.jpg",
+  "price": 120.0,
+  "window": [
+   1829,
+   784,
+   2251,
+   1154
+  ],
+  "_window_note": "placed as the plain Metal page places its blind in its own room (client's reference), as shares of the window's white frame (x1824-2259, y771-1222 here): the blind just inside the frame (1.2% in left, 1.9% right, its top 1.4% down), hanging 85% of the way down. 4096 pixels",
+  "fill": [
+   0.97,
+   0.979
+  ],
+  "scene_fit": "none",
+  "_fill_note": "tuned so the rendered blind lands on the target, by raycasting it onto the room: x1830-2251, top y777, bottom y1147 (fit_variant.py)"
+ },
+ {
+  "key": "sunscreen-kayan",
+  "based_on": "sunscreen",
+  "product_id": "908",
+  "heading": "SUNSCREEN KAYAN",
+  "title": "Sunscreen roller blind shown in a modern majlis",
+  "meta_description": "The same sunscreen roller blind, previewed in a bright contemporary majlis overlooking Riyadh. Choose your fabric and size and see it in the room before you order.",
+  "scene_source": "scenes/room-sunscreen-kayan.jpg",
+  "_scene_note": "client's 2000x1000 render, AI-upscaled with Real-ESRGAN x4 (seam wrapped) to 4096x2048; the original is room-sunscreen-kayan-source.jpg",
+  "price": 150.0,
+  "window": [
+   1820,
+   766,
+   2262,
+   1180
+  ],
+  "_window_note": "placed as the plain Sunscreen page places its blind in its own room (client's reference), as shares of the window's frame (x1824-2259, y770-1222 here): the blind a little over the frame (1% past each side, its top 2.6% above), hanging 91% of the way down. 4096 pixels",
+  "fill": [
+   0.967,
+   0.977
+  ],
+  "scene_fit": "none",
+  "_fill_note": "tuned so the rendered blind lands on the target, by raycasting it onto the room: x1821-2262, top y758, bottom y1172 (fit_variant.py)"
  }
 ]

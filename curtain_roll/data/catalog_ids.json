@@ -76,5 +76,29 @@
   "name": "BLACKOUT KAYAN",
   "price": 150.0,
   "variant_of": "blackout"
+ },
+ "905": {
+  "key": "zebra-kayan",
+  "name": "ZEBRA KAYAN",
+  "price": 300.0,
+  "variant_of": "zebra"
+ },
+ "906": {
+  "key": "roman-kayan",
+  "name": "ROMAN KAYAN",
+  "price": 393.0,
+  "variant_of": "roman"
+ },
+ "907": {
+  "key": "metal-kayan",
+  "name": "METAL KAYAN",
+  "price": 120.0,
+  "variant_of": "metal"
+ },
+ "908": {
+  "key": "sunscreen-kayan",
+  "name": "SUNSCREEN KAYAN",
+  "price": 150.0,
+  "variant_of": "sunscreen"
  }
 }

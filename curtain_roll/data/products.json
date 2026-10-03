@@ -5377,12 +5377,12 @@
   "room": null,
   "scene": "/maps/scenes/vertical-premium.jpg",
   "blind_scale": [
-   1.003,
-   0.9608
+   1.0425,
+   0.8885
   ],
   "window_angles": [
-   25.4004,
-   -1.0107
+   23.3789,
+   -1.1426
   ]
  },
  {
@@ -7185,6 +7185,1927 @@
   "window_angles": [
    25.9277,
    -0.0439
+  ]
+ },
+ {
+  "key": "zebra-kayan",
+  "route": "zebra-kayan",
+  "bundle": "Zebra.js",
+  "title": "Zebra roller blind shown in a modern majlis",
+  "meta_description": "The same zebra roller blind, previewed in a contemporary majlis overlooking the city. Choose your fabric and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "ZEBRA KAYAN",
+  "price": 300.0,
+  "price_text": "SR 300.00",
+  "description": "Zebra blinds feature a modern design that combines two layers of fabric; a blackout piece and a sheer chiffon piece, giving you complete control over the amount of light entering and the level of privacy you want. Thanks to their smart rotating mechanism, you can adjust the position of the slats to block out light completely or let in just the right amount. These blinds are available in a variety of shapes and colors, adding a unique touch of elegance and distinction to any room, whether at home or in the office",
+  "capture_option_id": "385",
+  "option_groups": [
+   {
+    "id": "260",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "103",
+      "id": "260",
+      "mp_optionvalue": "342",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6001s-150x150.jpg",
+      "code": "Z6001"
+     },
+     {
+      "value": "470",
+      "id": "260",
+      "mp_optionvalue": "343",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6002s-150x150.jpg",
+      "code": "Z6002"
+     },
+     {
+      "value": "471",
+      "id": "260",
+      "mp_optionvalue": "344",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6003s-150x150.jpg",
+      "code": "Z6003"
+     },
+     {
+      "value": "472",
+      "id": "260",
+      "mp_optionvalue": "345",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6004s-150x150.jpg",
+      "code": "Z6004"
+     },
+     {
+      "value": "473",
+      "id": "260",
+      "mp_optionvalue": "346",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6005s-150x150.jpg",
+      "code": "Z6005"
+     },
+     {
+      "value": "474",
+      "id": "260",
+      "mp_optionvalue": "347",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6006s-150x150.jpg",
+      "code": "Z6006"
+     },
+     {
+      "value": "475",
+      "id": "260",
+      "mp_optionvalue": "348",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6007s-150x150.jpg",
+      "code": "Z6007"
+     },
+     {
+      "value": "476",
+      "id": "260",
+      "mp_optionvalue": "349",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6008s-150x150.jpg",
+      "code": "Z6008"
+     },
+     {
+      "value": "477",
+      "id": "260",
+      "mp_optionvalue": "350",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6009s-150x150.jpg",
+      "code": "Z6009"
+     },
+     {
+      "value": "478",
+      "id": "260",
+      "mp_optionvalue": "351",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6010s-150x150.jpg",
+      "code": "Z6010"
+     },
+     {
+      "value": "483",
+      "id": "260",
+      "mp_optionvalue": "356",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6015s-150x150.jpg",
+      "code": "Z6015"
+     },
+     {
+      "value": "484",
+      "id": "260",
+      "mp_optionvalue": "357",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6016s-150x150.jpg",
+      "code": "Z6016"
+     },
+     {
+      "value": "485",
+      "id": "260",
+      "mp_optionvalue": "358",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6017s-150x150.jpg",
+      "code": "Z6017"
+     },
+     {
+      "value": "486",
+      "id": "260",
+      "mp_optionvalue": "359",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6018s-150x150.jpg",
+      "code": "Z6018"
+     },
+     {
+      "value": "487",
+      "id": "260",
+      "mp_optionvalue": "360",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6019s-150x150.jpg",
+      "code": "Z6019"
+     },
+     {
+      "value": "488",
+      "id": "260",
+      "mp_optionvalue": "361",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6021s-150x150.jpg",
+      "code": "Z6021"
+     },
+     {
+      "value": "489",
+      "id": "260",
+      "mp_optionvalue": "362",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6070s-150x150.jpg",
+      "code": "Z6070"
+     },
+     {
+      "value": "490",
+      "id": "260",
+      "mp_optionvalue": "363",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/zebra-materials/6071s-150x150.jpg",
+      "code": "Z6071"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "256",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "262",
+    "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "108",
+      "id": "262",
+      "mp_optionvalue": "103",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/zebra/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "107",
+      "id": "262",
+      "mp_optionvalue": "102",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/zebra/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "266",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "115",
+      "id": "266",
+      "mp_optionvalue": "100",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/zebra/outside-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "116",
+      "id": "266",
+      "mp_optionvalue": "101",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/zebra/inside-150x150.png",
+      "code": "Inside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "392",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "777",
+      "id": "392",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "778",
+      "id": "392",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "385",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/zebra/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/zebra/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/zebra-g-200x200.png",
+   "image/cache/catalog/curtains/zebra-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png",
+   "image/cache/catalog/zebra-materials/6001s-150x150.jpg",
+   "image/cache/catalog/zebra-materials/6002s-150x150.jpg",
+   "image/cache/catalog/zebra-materials/6003s-150x150.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "zebra",
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/zebra-kayan.jpg",
+  "blind_scale": [
+   1.0278,
+   1.0374
+  ],
+  "window_angles": [
+   21.3574,
+   -0.6152
+  ]
+ },
+ {
+  "key": "roman-kayan",
+  "route": "roman-kayan",
+  "bundle": "Roman.js",
+  "title": "Roman blind shown in a modern majlis",
+  "meta_description": "The same Roman blind, previewed in a contemporary majlis overlooking Riyadh. Choose your fabric and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "ROMAN KAYAN",
+  "price": 393.0,
+  "price_text": "SR 393.00",
+  "description": "Roman blinds add a touch of warmth and comfort to any interior space, combining practicality and modern design. They are an ideal choice for window decoration, as they look simple in appearance yet very elegant, creating a unique and distinctive atmosphere in the room. Whether used at home or in the office, Roman blinds enhance the decor of the place and add a special charm to it",
+  "capture_option_id": null,
+  "option_groups": [
+   {
+    "id": "422",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "425",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "877",
+      "id": "425",
+      "mp_optionvalue": "559",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-01-150x150w.jpg",
+      "code": "1155-01"
+     },
+     {
+      "value": "878",
+      "id": "425",
+      "mp_optionvalue": "560",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-02-150x150w.jpg",
+      "code": "1155-02"
+     },
+     {
+      "value": "880",
+      "id": "425",
+      "mp_optionvalue": "562",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-04-150x150w.jpg",
+      "code": "1155-04"
+     },
+     {
+      "value": "881",
+      "id": "425",
+      "mp_optionvalue": "563",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-05-150x150w.jpg",
+      "code": "1155-05"
+     },
+     {
+      "value": "882",
+      "id": "425",
+      "mp_optionvalue": "564",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-06-150x150w.jpg",
+      "code": "1155-06"
+     },
+     {
+      "value": "883",
+      "id": "425",
+      "mp_optionvalue": "565",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-07-150x150w.jpg",
+      "code": "1155-07"
+     },
+     {
+      "value": "884",
+      "id": "425",
+      "mp_optionvalue": "566",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-08-150x150w.jpg",
+      "code": "1155-08"
+     },
+     {
+      "value": "885",
+      "id": "425",
+      "mp_optionvalue": "567",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-09-150x150w.jpg",
+      "code": "1155-09"
+     },
+     {
+      "value": "886",
+      "id": "425",
+      "mp_optionvalue": "568",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-10-150x150w.jpg",
+      "code": "1155-10"
+     },
+     {
+      "value": "887",
+      "id": "425",
+      "mp_optionvalue": "569",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-11-150x150w.jpg",
+      "code": "1155-11"
+     },
+     {
+      "value": "888",
+      "id": "425",
+      "mp_optionvalue": "570",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-12-150x150w.jpg",
+      "code": "1155-12"
+     },
+     {
+      "value": "879",
+      "id": "425",
+      "mp_optionvalue": "571",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
+      "code": "1155-13"
+     },
+     {
+      "value": "889",
+      "id": "425",
+      "mp_optionvalue": "571",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-13-150x150w.jpg",
+      "code": "1155-13"
+     },
+     {
+      "value": "890",
+      "id": "425",
+      "mp_optionvalue": "572",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-14-150x150w.jpg",
+      "code": "1155-14"
+     },
+     {
+      "value": "891",
+      "id": "425",
+      "mp_optionvalue": "573",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-15-150x150w.jpg",
+      "code": "1155-15"
+     },
+     {
+      "value": "892",
+      "id": "425",
+      "mp_optionvalue": "574",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-16-150x150w.jpg",
+      "code": "1155-16"
+     },
+     {
+      "value": "893",
+      "id": "425",
+      "mp_optionvalue": "575",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-17-150x150w.jpg",
+      "code": "1155-17"
+     },
+     {
+      "value": "894",
+      "id": "425",
+      "mp_optionvalue": "576",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-18-150x150w.jpg",
+      "code": "1155-18"
+     },
+     {
+      "value": "895",
+      "id": "425",
+      "mp_optionvalue": "577",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-19-150x150w.jpg",
+      "code": "1155-19"
+     },
+     {
+      "value": "896",
+      "id": "425",
+      "mp_optionvalue": "578",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-20-150x150w.jpg",
+      "code": "1155-20"
+     },
+     {
+      "value": "897",
+      "id": "425",
+      "mp_optionvalue": "579",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-21-150x150w.jpg",
+      "code": "1155-21"
+     },
+     {
+      "value": "898",
+      "id": "425",
+      "mp_optionvalue": "580",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1155-22-150x150w.jpg",
+      "code": "1155-22"
+     },
+     {
+      "value": "899",
+      "id": "425",
+      "mp_optionvalue": "581",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-01-150x150w.jpg",
+      "code": "1165-01"
+     },
+     {
+      "value": "900",
+      "id": "425",
+      "mp_optionvalue": "582",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-02-150x150w.jpg",
+      "code": "1165-02"
+     },
+     {
+      "value": "901",
+      "id": "425",
+      "mp_optionvalue": "583",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-03-150x150w.jpg",
+      "code": "1165-03"
+     },
+     {
+      "value": "902",
+      "id": "425",
+      "mp_optionvalue": "584",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-04-150x150w.jpg",
+      "code": "1165-04"
+     },
+     {
+      "value": "903",
+      "id": "425",
+      "mp_optionvalue": "585",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-05-150x150w.jpg",
+      "code": "1165-05"
+     },
+     {
+      "value": "904",
+      "id": "425",
+      "mp_optionvalue": "586",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-06-150x150w.jpg",
+      "code": "1165-06"
+     },
+     {
+      "value": "905",
+      "id": "425",
+      "mp_optionvalue": "587",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-07-150x150w.jpg",
+      "code": "1165-07"
+     },
+     {
+      "value": "906",
+      "id": "425",
+      "mp_optionvalue": "588",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-08-150x150w.jpg",
+      "code": "1165-08"
+     },
+     {
+      "value": "907",
+      "id": "425",
+      "mp_optionvalue": "589",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-09-150x150w.jpg",
+      "code": "1165-09"
+     },
+     {
+      "value": "908",
+      "id": "425",
+      "mp_optionvalue": "590",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-10-150x150w.jpg",
+      "code": "1165-10"
+     },
+     {
+      "value": "909",
+      "id": "425",
+      "mp_optionvalue": "591",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-11-150x150w.jpg",
+      "code": "1165-11"
+     },
+     {
+      "value": "910",
+      "id": "425",
+      "mp_optionvalue": "592",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-12-150x150w.jpg",
+      "code": "1165-12"
+     },
+     {
+      "value": "911",
+      "id": "425",
+      "mp_optionvalue": "593",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-13-150x150w.jpg",
+      "code": "1165-13"
+     },
+     {
+      "value": "912",
+      "id": "425",
+      "mp_optionvalue": "594",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-14-150x150w.jpg",
+      "code": "1165-14"
+     },
+     {
+      "value": "913",
+      "id": "425",
+      "mp_optionvalue": "595",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-15-150x150w.jpg",
+      "code": "1165-15"
+     },
+     {
+      "value": "914",
+      "id": "425",
+      "mp_optionvalue": "596",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-16-150x150w.jpg",
+      "code": "1165-16"
+     },
+     {
+      "value": "915",
+      "id": "425",
+      "mp_optionvalue": "597",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-17-150x150w.jpg",
+      "code": "1165-17"
+     },
+     {
+      "value": "916",
+      "id": "425",
+      "mp_optionvalue": "598",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-18-150x150w.jpg",
+      "code": "1165-18"
+     },
+     {
+      "value": "917",
+      "id": "425",
+      "mp_optionvalue": "599",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-19-150x150w.jpg",
+      "code": "1165-19"
+     },
+     {
+      "value": "918",
+      "id": "425",
+      "mp_optionvalue": "600",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-20-150x150w.jpg",
+      "code": "1165-20"
+     },
+     {
+      "value": "919",
+      "id": "425",
+      "mp_optionvalue": "601",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-21-150x150w.jpg",
+      "code": "1165-21"
+     },
+     {
+      "value": "920",
+      "id": "425",
+      "mp_optionvalue": "602",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-22-150x150w.jpg",
+      "code": "1165-22"
+     },
+     {
+      "value": "921",
+      "id": "425",
+      "mp_optionvalue": "603",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-23-150x150w.jpg",
+      "code": "1165-23"
+     },
+     {
+      "value": "922",
+      "id": "425",
+      "mp_optionvalue": "604",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-24-150x150w.jpg",
+      "code": "1165-24"
+     },
+     {
+      "value": "923",
+      "id": "425",
+      "mp_optionvalue": "605",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-25-150x150w.jpg",
+      "code": "1165-25"
+     },
+     {
+      "value": "924",
+      "id": "425",
+      "mp_optionvalue": "606",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-26-150x150w.jpg",
+      "code": "1165-26"
+     },
+     {
+      "value": "925",
+      "id": "425",
+      "mp_optionvalue": "607",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-27-150x150w.jpg",
+      "code": "1165-27"
+     },
+     {
+      "value": "926",
+      "id": "425",
+      "mp_optionvalue": "608",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-28-150x150w.jpg",
+      "code": "1165-28"
+     },
+     {
+      "value": "927",
+      "id": "425",
+      "mp_optionvalue": "609",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-29-150x150w.jpg",
+      "code": "1165-29"
+     },
+     {
+      "value": "928",
+      "id": "425",
+      "mp_optionvalue": "610",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/roman-materials/1165-30-150x150w.jpg",
+      "code": "1165-30"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "423",
+    "label": "خيارات البطانة",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "40",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "876",
+      "id": "423",
+      "mp_optionvalue": "158",
+      "mp_parentoption_value": "0",
+      "price": "SR 0.00",
+      "group": "خيارات البطانة",
+      "image": "",
+      "code": "بطانة (معتمة)"
+     },
+     {
+      "value": "875",
+      "id": "423",
+      "mp_optionvalue": "157",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "خيارات البطانة",
+      "image": "",
+      "code": "بدون بطانة"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "411",
+    "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "835",
+      "id": "411",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "SR 2.70",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "834",
+      "id": "411",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "SR 4.20",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "415",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "856",
+      "id": "415",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "855",
+      "id": "415",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "441",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "1021",
+      "id": "441",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "1022",
+      "id": "441",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-200x200.png",
+   "image/cache/catalog/curtains/roman-g-600x315w.png",
+   "image/cache/catalog/curtains/sunscreen-g-120x120.png",
+   "image/cache/catalog/curtains/sunscreen-g-60x60.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/roman-materials/1155-01-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-02-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-04-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-05-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-06-150x150w.jpg",
+   "image/cache/catalog/roman-materials/1155-07-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "roman",
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/roman-kayan.jpg",
+  "blind_scale": [
+   0.607,
+   0.7863
+  ],
+  "window_angles": [
+   21.4453,
+   -0.5273
+  ]
+ },
+ {
+  "key": "metal-kayan",
+  "route": "metal-kayan",
+  "bundle": "Metal.js",
+  "title": "Aluminium blind shown in a modern majlis",
+  "meta_description": "The same aluminium slat blind, previewed in a contemporary majlis overlooking Riyadh. Choose your slat width, colour and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "METAL KAYAN",
+  "price": 120.0,
+  "price_text": "SR 120.00",
+  "description": "",
+  "capture_option_id": "381",
+  "option_groups": [
+   {
+    "id": "309",
+    "label": "slice width and color",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "33",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "206",
+      "id": "309",
+      "mp_optionvalue": "117",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "slice width and color",
+      "image": "image/cache/catalog/icons/5mm-icon-150x150.png",
+      "code": "5 cm"
+     },
+     {
+      "value": "205",
+      "id": "309",
+      "mp_optionvalue": "116",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "slice width and color",
+      "image": "image/cache/catalog/icons/2-5mm-icon-150x150.png",
+      "code": "2.5 cm"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "278",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "277",
+    "label": "Manual Operating Side",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "17",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "139",
+      "id": "277",
+      "mp_optionvalue": "104",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Left"
+     },
+     {
+      "value": "140",
+      "id": "277",
+      "mp_optionvalue": "105",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Manual Operating Side",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+      "code": "Right"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "275",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "133",
+      "id": "275",
+      "mp_optionvalue": "107",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+      "code": "Inside"
+     },
+     {
+      "value": "134",
+      "id": "275",
+      "mp_optionvalue": "106",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+      "code": "Outside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "387",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "767",
+      "id": "387",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "768",
+      "id": "387",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "381",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/outside-left-150x150.png",
+   "image/cache/catalog/curtain-icons/wooden-metal/right-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-200x200.png",
+   "image/cache/catalog/curtains/metal-g-600x315w.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/sunscreen-g-120x120.png",
+   "image/cache/catalog/curtains/sunscreen-g-60x60.png",
+   "image/cache/catalog/icons/2-5mm-icon-150x150.png",
+   "image/cache/catalog/icons/5mm-icon-150x150.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/visa-300x186.png"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "metal",
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/metal-kayan.jpg",
+  "blind_scale": [
+   1.0727,
+   1.0411
+  ],
+  "window_angles": [
+   21.0938,
+   -0.7031
+  ]
+ },
+ {
+  "key": "sunscreen-kayan",
+  "route": "sunscreen-kayan",
+  "bundle": "Sunscreen.js",
+  "title": "Sunscreen roller blind shown in a modern majlis",
+  "meta_description": "The same sunscreen roller blind, previewed in a bright contemporary majlis overlooking Riyadh. Choose your fabric and size and see it in the room before you order.",
+  "meta_keywords": "",
+  "heading": "SUNSCREEN KAYAN",
+  "price": 150.0,
+  "price_text": "SR 150.00",
+  "description": "Sunscreen offers 50% blackout technology, allowing natural light to enter while maintaining privacy. The piece is available in multiple options; metal slats are ideal for kitchens due to their resistance to rust, and wooden slats add a luxurious and classic touch to interior spaces. The innovative design ensures a balanced distribution of light and maintains the beauty and elegance of the place.",
+  "capture_option_id": "382",
+  "option_groups": [
+   {
+    "id": "250",
+    "label": "Material",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "83",
+      "id": "250",
+      "mp_optionvalue": "523",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7003-150x150w.jpg",
+      "code": "ss7003"
+     },
+     {
+      "value": "84",
+      "id": "250",
+      "mp_optionvalue": "524",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7195-150x150w.jpg",
+      "code": "ss7195"
+     },
+     {
+      "value": "81",
+      "id": "250",
+      "mp_optionvalue": "525",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7196-150x150w.jpg",
+      "code": "ss7196"
+     },
+     {
+      "value": "82",
+      "id": "250",
+      "mp_optionvalue": "526",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7197-150x150w.jpg",
+      "code": "ss7197"
+     },
+     {
+      "value": "640",
+      "id": "250",
+      "mp_optionvalue": "527",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7216-150x150w.jpg",
+      "code": "ss7216"
+     },
+     {
+      "value": "641",
+      "id": "250",
+      "mp_optionvalue": "528",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7221-150x150w.jpg",
+      "code": "ss7221"
+     },
+     {
+      "value": "642",
+      "id": "250",
+      "mp_optionvalue": "529",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7235-150x150w.jpg",
+      "code": "ss7235"
+     },
+     {
+      "value": "643",
+      "id": "250",
+      "mp_optionvalue": "530",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7236-150x150w.jpg",
+      "code": "ss7236"
+     },
+     {
+      "value": "644",
+      "id": "250",
+      "mp_optionvalue": "531",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7237-150x150w.jpg",
+      "code": "ss7237"
+     },
+     {
+      "value": "645",
+      "id": "250",
+      "mp_optionvalue": "532",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7238-150x150w.jpg",
+      "code": "ss7238"
+     },
+     {
+      "value": "646",
+      "id": "250",
+      "mp_optionvalue": "533",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7239-150x150w.jpg",
+      "code": "ss7239"
+     },
+     {
+      "value": "647",
+      "id": "250",
+      "mp_optionvalue": "534",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7242-150x150w.jpg",
+      "code": "ss7242"
+     },
+     {
+      "value": "648",
+      "id": "250",
+      "mp_optionvalue": "535",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7243-150x150w.jpg",
+      "code": "ss7243"
+     },
+     {
+      "value": "649",
+      "id": "250",
+      "mp_optionvalue": "536",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7244-150x150w.jpg",
+      "code": "ss7244"
+     },
+     {
+      "value": "650",
+      "id": "250",
+      "mp_optionvalue": "537",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7245-150x150w.jpg",
+      "code": "ss7245"
+     },
+     {
+      "value": "651",
+      "id": "250",
+      "mp_optionvalue": "538",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7246-150x150w.jpg",
+      "code": "ss7246"
+     },
+     {
+      "value": "749",
+      "id": "250",
+      "mp_optionvalue": "541",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7218-150x150w.jpg",
+      "code": "ss7218"
+     },
+     {
+      "value": "750",
+      "id": "250",
+      "mp_optionvalue": "542",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7240-150x150w.jpg",
+      "code": "ss7240"
+     },
+     {
+      "value": "751",
+      "id": "250",
+      "mp_optionvalue": "543",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7241-150x150w.jpg",
+      "code": "ss7241"
+     },
+     {
+      "value": "754",
+      "id": "250",
+      "mp_optionvalue": "546",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7251-150x150w.jpg",
+      "code": "ss7251"
+     },
+     {
+      "value": "756",
+      "id": "250",
+      "mp_optionvalue": "548",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7253-150x150w.jpg",
+      "code": "ss7253"
+     },
+     {
+      "value": "757",
+      "id": "250",
+      "mp_optionvalue": "549",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7254-150x150w.jpg",
+      "code": "ss7254"
+     },
+     {
+      "value": "758",
+      "id": "250",
+      "mp_optionvalue": "550",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7300-150x150w.jpg",
+      "code": "ss7300"
+     },
+     {
+      "value": "759",
+      "id": "250",
+      "mp_optionvalue": "551",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7301-150x150w.jpg",
+      "code": "ss7301"
+     },
+     {
+      "value": "760",
+      "id": "250",
+      "mp_optionvalue": "552",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7302-150x150w.jpg",
+      "code": "ss7302"
+     },
+     {
+      "value": "762",
+      "id": "250",
+      "mp_optionvalue": "554",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7331-150x150w.jpg",
+      "code": "ss7331"
+     },
+     {
+      "value": "763",
+      "id": "250",
+      "mp_optionvalue": "555",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7332-150x150w.jpg",
+      "code": "ss7332"
+     },
+     {
+      "value": "764",
+      "id": "250",
+      "mp_optionvalue": "556",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Material",
+      "image": "image/cache/catalog/sunscreen-materials/7333-150x150w.jpg",
+      "code": "ss7333"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "246",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "252",
+    "label": "Control type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "16",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "88",
+      "id": "252",
+      "mp_optionvalue": "62",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+      "code": "Manual"
+     },
+     {
+      "value": "87",
+      "id": "252",
+      "mp_optionvalue": "61",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control type",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+      "code": "Motorized"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "249",
+    "label": "Mounting Option",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "80",
+      "id": "249",
+      "mp_optionvalue": "57",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Outside"
+     },
+     {
+      "value": "79",
+      "id": "249",
+      "mp_optionvalue": "58",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Mounting Option",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+      "code": "Inside"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "394",
+    "label": "Valance Option Box",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "23",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "781",
+      "id": "394",
+      "mp_optionvalue": "76",
+      "mp_parentoption_value": "0",
+      "price": "SR 1.60",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+      "code": "With Valance Box"
+     },
+     {
+      "value": "782",
+      "id": "394",
+      "mp_optionvalue": "77",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Valance Option Box",
+      "image": "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+      "code": "Without Valance Box"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "389",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "771",
+      "id": "389",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "772",
+      "id": "389",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "382",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/auto-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/manual-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/blackout-sunscreen/upperbox-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/sunscreen-g-200x200.png",
+   "image/cache/catalog/curtains/sunscreen-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/sunscreen-materials/7003-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7195-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7196-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7197-150x150w.jpg",
+   "image/cache/catalog/sunscreen-materials/7216-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": "sunscreen",
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/sunscreen-kayan.jpg",
+  "blind_scale": [
+   0.9118,
+   0.9121
+  ],
+  "window_angles": [
+   22.6758,
+   -0.6152
   ]
  }
 ]

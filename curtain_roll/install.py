@@ -8,6 +8,14 @@ HOME_ROUTE = "home"
 # team owns those values and no deploy touches them again - see _seed_storefront.
 SEEDED_FLAG = "curtain_roll_checkout_seeded"
 
+# Pages added after a site's menu was first seeded: (label, route, after route).
+NEW_NAV_ITEMS = (
+	("Zebra Kayan", "/zebra-kayan", "/zebra"),
+	("Roman Kayan", "/roman-kayan", "/roman"),
+	("Metal Kayan", "/metal-kayan", "/metal"),
+	("Sunscreen Kayan", "/sunscreen-kayan", "/sunscreen"),
+)
+
 
 def after_install():
 	"""Make the storefront live the moment the app is installed."""
@@ -556,6 +564,28 @@ def _seed_storefront():
 			row.enabled = 1
 		if DEFAULTS.get(field):
 			filled.append("%s x%d" % (field, len(DEFAULTS[field])))
+
+	# A product added after the menu was first seeded. The table above is only
+	# filled while empty, so on a running site a new page would never reach the
+	# menu. Each is added once - after the entry it belongs beside - and then
+	# the menu is the team's again: deleting it is not undone by a later deploy.
+	for label, route, after in NEW_NAV_ITEMS:
+		flag = "curtain_roll_nav_added:%s" % route
+		if frappe.db.get_default(flag):
+			continue
+		rows = doc.get("nav_items") or []
+		if not any((r.route or "").rstrip("/") == route for r in rows):
+			at = next((i + 1 for i, r in enumerate(rows)
+			           if (r.route or "").rstrip("/") == after), len(rows))
+			row = doc.append("nav_items", {"label": label, "route": route,
+			                               "icon": "", "enabled": 1})
+			rows = doc.get("nav_items")
+			rows.remove(row)
+			rows.insert(at, row)
+			for i, r in enumerate(rows, 1):
+				r.idx = i
+			filled.append("menu: %s" % label)
+		frappe.db.set_default(flag, "1")
 
 	doc.flags.ignore_permissions = True
 	doc.save(ignore_permissions=True)

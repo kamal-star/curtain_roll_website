@@ -547,6 +547,11 @@ def _wishlist_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
 
 
+def _nav_tag():
+	"""Arrows and wheel scrolling for the category bar once it overflows."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_nav.js")
+
+
 def _options_tag():
 	"""The product page's size limits and section switches, same ride again."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
@@ -655,7 +660,7 @@ def _add_chrome(html):
 
 	html = _set_favicon(html)
 	tag = (_switcher_tag() + _search_tag() + _options_tag() + _auth_tag()
-	       + _wishlist_tag() + _riyal_tag())
+	       + _wishlist_tag() + _riyal_tag() + _nav_tag())
 	if is_rtl():
 		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
 	end = html.rfind("</body>")

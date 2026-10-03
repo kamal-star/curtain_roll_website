@@ -67,8 +67,20 @@ def swatch_url(name, rgb, seed):
     return doc.file_url
 
 
+# Metal and every product that is the same blind in another room. A variant's
+# Curtain Product is made from the capture, which has no colours, so it needs
+# them put on just like Metal itself.
+PRODUCTS = ("metal", "metal-kayan")
+
+
 def add():
-    doc = frappe.get_doc("Curtain Product", "metal")
+    for key in PRODUCTS:
+        if frappe.db.exists("Curtain Product", key):
+            _add_to(key)
+
+
+def _add_to(key):
+    doc = frappe.get_doc("Curtain Product", key)
     have = {(r.parent_choice, r.option_label) for r in doc.sub_options
             if r.group_label == "Colour"}
     added = 0
@@ -84,8 +96,6 @@ def add():
             added += 1
     doc.save(ignore_permissions=True)
     frappe.db.commit()
-    pricing.clear_cache("metal")
-    spec = pricing.get_spec("metal")
-    print("added", added, "| colour choices now:",
-          sorted({(r["parent"], r["label"]) for r in spec["sub_options"]}))
-
+    pricing.clear_cache(key)
+    spec = pricing.get_spec(key)
+    print("%s: added %d | colour choices now: %d" % (key, added, len(spec["sub_options"])))

@@ -77,8 +77,18 @@ DEFAULTS = {
    "icon": ""
   },
   {
+   "label": "Sunscreen Kayan",
+   "route": "/sunscreen-kayan",
+   "icon": ""
+  },
+  {
    "label": "Zebra",
    "route": "/zebra",
+   "icon": ""
+  },
+  {
+   "label": "Zebra Kayan",
+   "route": "/zebra-kayan",
    "icon": ""
   },
   {
@@ -107,8 +117,18 @@ DEFAULTS = {
    "icon": ""
   },
   {
+   "label": "Metal Kayan",
+   "route": "/metal-kayan",
+   "icon": ""
+  },
+  {
    "label": "Roman",
    "route": "/roman",
+   "icon": ""
+  },
+  {
+   "label": "Roman Kayan",
+   "route": "/roman-kayan",
    "icon": ""
   },
   {
