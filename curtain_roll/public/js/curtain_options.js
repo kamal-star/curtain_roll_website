@@ -705,12 +705,72 @@
 
   var colourTextures = {};
 
+  /* How many times a picture must repeat along each texture axis of a part
+     for it to keep its own shape.
+
+     A part's texture coordinates run 0..1 whatever its size. A metal slat is
+     about 28 times longer than it is deep, so one picture laid across it is
+     stretched 28 times sideways. A brushed finish hides that - its grain runs
+     the same way - but a patterned fabric does not: a team-uploaded
+     perforated swatch came out as long smeared streaks. So find which way
+     each texture axis runs on the part (the axis its position follows most
+     closely), compare the part's length along the two, and repeat along the
+     longer one. A square-ish part comes out at about 1, as before. */
+  function tiling(mesh) {
+    var geo = mesh.geometry;
+    if (!geo || !geo.attributes || !geo.attributes.uv || !geo.attributes.position) return [1, 1];
+    if (geo.__crTiling) return geo.__crTiling;
+    var uv = geo.attributes.uv, pos = geo.attributes.position;
+    var n = Math.min(uv.count, pos.count), step = Math.max(1, Math.floor(n / 400));
+    var su = [0, 0, 0], sv = [0, 0, 0];               // |covariance| of u, v with x, y, z
+    var mu = 0, mv = 0, mp = [0, 0, 0], k = 0, i, a;
+    for (i = 0; i < n; i += step) {
+      mu += uv.getX(i); mv += uv.getY(i);
+      mp[0] += pos.getX(i); mp[1] += pos.getY(i); mp[2] += pos.getZ(i); k++;
+    }
+    mu /= k; mv /= k; mp = mp.map(function (x) { return x / k; });
+    var lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+    for (i = 0; i < n; i += step) {
+      var p = [pos.getX(i), pos.getY(i), pos.getZ(i)];
+      for (a = 0; a < 3; a++) {
+        su[a] += (uv.getX(i) - mu) * (p[a] - mp[a]);
+        sv[a] += (uv.getY(i) - mv) * (p[a] - mp[a]);
+        lo[a] = Math.min(lo[a], p[a]); hi[a] = Math.max(hi[a], p[a]);
+      }
+    }
+    function axis(s) {
+      var best = 0;
+      for (a = 1; a < 3; a++) if (Math.abs(s[a]) > Math.abs(s[best])) best = a;
+      return best;
+    }
+    var au = axis(su), av = axis(sv);
+    var lu = hi[au] - lo[au], lv = hi[av] - lo[av];
+    var out = [1, 1];
+    if (au !== av && lu > 0 && lv > 0) {
+      var r = lu / lv;
+      if (r > 1.5) out = [Math.round(r), 1];
+      else if (r < 1 / 1.5) out = [1, Math.round(1 / r)];
+    }
+    geo.__crTiling = out;
+    return out;
+  }
+
   function recolour(url) {
     var T = window.THREE;
     var parts = fabric();
     if (!T || !parts || !parts.length) return;
-    function apply(tex) {
+    function apply(base) {
+      // one texture per repeat count: parts of different shapes need their own
+      var byRepeat = {};
       parts.forEach(function (o) {
+        var rep = tiling(o), key = rep.join("x");
+        var tex = byRepeat[key];
+        if (!tex) {
+          tex = key === "1x1" ? base : base.clone();
+          tex.repeat.set(rep[0], rep[1]);
+          tex.needsUpdate = true;
+          byRepeat[key] = tex;
+        }
         [].concat(o.material).forEach(function (m) {
           if (m.map === tex) return;
           m.map = tex;
