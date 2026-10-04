@@ -603,7 +603,9 @@ bench get-app <repo-url> --branch <branch>        # lands in apps/kayan_curtain
 
 # 2. point the database at the new name: installed apps, Module Def,
 #    scheduled jobs, and every stored /assets/curtain_roll/... link
-bench --site <site> execute kayan_curtain.rename_app.run
+#    (not `bench execute` - newer Frappe refuses an app the site has not installed yet)
+cd sites && ../env/bin/python -c "import frappe; frappe.init(site='<site>', sites_path='.'); frappe.connect(); from kayan_curtain.rename_app import run; run(); frappe.destroy()"
+cd ..
 
 # 3. drop the old app from the bench
 bench remove-app curtain_roll

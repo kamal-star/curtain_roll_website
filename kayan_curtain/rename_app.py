@@ -4,7 +4,10 @@
 Run it ONCE per site, while both apps are still in the bench - see
 "Renaming from curtain_roll" in README.md for the full order:
 
-	bench --site <site> execute kayan_curtain.rename_app.run
+	cd sites && ../env/bin/python -c "import frappe; frappe.init(site='<site>', sites_path='.'); frappe.connect(); from kayan_curtain.rename_app import run; run(); frappe.destroy()"
+
+Not `bench execute`: newer Frappe refuses to run code from an app the site
+does not list as installed yet, and listing it is what this does.
 
 It only rewrites the old name where the database stores it, so it is safe to
 run again. Nothing here is a patch: a migrate cannot run it, because until the

@@ -80,7 +80,9 @@ done
 in_c "$BACKEND" "grep -qx kayan_curtain sites/apps.txt || { [ -z \"\$(tail -c1 sites/apps.txt)\" ] || echo >> sites/apps.txt; echo kayan_curtain >> sites/apps.txt; }"
 
 say "3/5 Database: curtain_roll -> kayan_curtain"
-in_c "$BACKEND" "bench --site '$SITE' execute kayan_curtain.rename_app.run"
+# Not `bench execute`: newer Frappe refuses code from an app the site does
+# not list as installed yet - and listing it is exactly what this step does.
+in_c "$BACKEND" "cd sites && ../env/bin/python -c \"import frappe; frappe.init(site='$SITE', sites_path='.'); frappe.connect(); from kayan_curtain.rename_app import run; run(); frappe.destroy()\""
 
 say "4/5 curtain_roll out of the bench"
 in_c "$BACKEND" "sed -i '/^curtain_roll\$/d' sites/apps.txt"
