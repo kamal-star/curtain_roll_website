@@ -547,6 +547,33 @@ def _wishlist_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
 
 
+BUNDLE_MARK = '<script src="/assets/curtain_roll/configurator/'
+
+
+def _add_room(html, path):
+	"""The team's room picture for this product, ahead of its 3D bundle.
+
+	Only when one is set in Curtain Product -> 3D Room. It has to come before
+	the bundle: the bundle asks for its room as it starts, and the request is
+	redirected only if the redirect is already in place.
+	"""
+	key = (path or "").strip("/").split("/")[0]
+	if not key or BUNDLE_MARK not in html or "window.CR_ROOM = " in html:
+		return html
+	try:
+		from curtain_roll.room import room_config
+		cfg = room_config(key)
+	except Exception:
+		return html
+	if not cfg:
+		return html
+	import json
+	tag = ('<script>window.CR_ROOM = %s;</script>'
+	       '<script src="%s"></script>' % (json.dumps(cfg), _asset("js/curtain_room.js")))
+	at = html.find(BUNDLE_MARK)
+	return html[:at] + tag + html[at:]
+
+
 def _nav_tag():
 	"""Arrows and wheel scrolling for the category bar once it overflows."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_nav.js")
@@ -714,5 +741,6 @@ def finish_page(response=None, request=None):
 		return
 
 	out = _add_chrome(translate_html(html) if current() == "ar" else html)
+	out = _add_room(out, path)
 	if out != html:
 		response.set_data(out)

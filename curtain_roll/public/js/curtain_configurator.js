@@ -49,7 +49,7 @@
 						window.jQuery(el)
 					);
 				} catch (e) {
-					if (window.console) console.warn("[curtain-roll] modelchanger failed", e);
+					if (window.console) console.warn("[kayan] modelchanger failed", e);
 				}
 			});
 		});
@@ -194,7 +194,7 @@
 		bindSize();
 		waitForDeps(function (err) {
 			if (err) {
-				if (window.console) console.warn("[curtain-roll] " + err.message);
+				if (window.console) console.warn("[kayan] " + err.message);
 				var loader = document.querySelector(".model-loader");
 				if (loader) loader.classList.add("is-failed");
 				return;

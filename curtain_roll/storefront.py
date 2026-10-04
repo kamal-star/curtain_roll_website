@@ -144,18 +144,18 @@ DEFAULTS = {
  ],
  "slides": [
   {
-   "image": "/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-04-1400x600w.jpg",
-   "alt_text": "Modern roller blinds",
+   "image": "/assets/curtain_roll/image/slides/kayan-slide-1.jpg",
+   "alt_text": "Installation, free delivery and speed - Kayan Andalus",
    "link": ""
   },
   {
-   "image": "/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-05-1400x600w.jpg",
-   "alt_text": "Luxury hotel wavy curtains",
+   "image": "/assets/curtain_roll/image/slides/kayan-slide-2.jpg",
+   "alt_text": "Kayan Andalus curtains overlooking Riyadh",
    "link": ""
   },
   {
-   "image": "/assets/curtain_roll/image/cache/catalog/SND-curtain%20roll-06-1400x600w.jpg",
-   "alt_text": "Blackout window shades",
+   "image": "/assets/curtain_roll/image/slides/kayan-slide-3.jpg",
+   "alt_text": "Kayan Andalus roller blinds in a living room",
    "link": ""
   }
  ],
@@ -264,7 +264,7 @@ DEFAULTS = {
   {
    "platform": "WhatsApp",
    "icon": "fa-brands fa-whatsapp",
-   "url": "https://wa.me/966114550783"
+   "url": "https://wa.me/966555465718"
   }
  ]
 }

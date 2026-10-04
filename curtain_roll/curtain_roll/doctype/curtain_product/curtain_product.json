@@ -45,7 +45,13 @@
   "sub_options_help",
   "sub_options",
   "section_options",
-  "options"
+  "options",
+  "section_room",
+  "room_help",
+  "room_image",
+  "room_editor",
+  "room_window",
+  "room_scene"
  ],
  "fields": [
   {
@@ -271,11 +277,47 @@
    "fieldtype": "Check",
    "label": "Customer Uploads a Picture to Print",
    "description": "Adds an upload step - JPG, PNG or PDF - whose picture is shown on the blind in the 3D room and attached to the order for printing. The customer must upload one before adding to the cart."
+  },
+  {
+   "fieldname": "section_room",
+   "fieldtype": "Section Break",
+   "label": "3D Room",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "room_help",
+   "fieldtype": "HTML",
+   "label": "Room Help",
+   "options": "<p class=\"text-muted small\">Show this product in your own room. Upload a 360&deg; room picture (twice as wide as it is tall, ideally 4096 &times; 2048), save, then drag the box over the window where the blind should hang and save again. Remove the picture to go back to the page's own room.</p>"
+  },
+  {
+   "fieldname": "room_image",
+   "fieldtype": "Attach Image",
+   "label": "Room Picture (360°)"
+  },
+  {
+   "fieldname": "room_editor",
+   "fieldtype": "HTML",
+   "label": "Window"
+  },
+  {
+   "fieldname": "room_window",
+   "fieldtype": "Data",
+   "label": "Window Box",
+   "hidden": 1,
+   "description": "left, top, right, bottom as fractions of the picture - set by dragging the box"
+  },
+  {
+   "fieldname": "room_scene",
+   "fieldtype": "Data",
+   "label": "Room Picture Used",
+   "read_only": 1,
+   "hidden": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-19 10:00:00.000000",
+ "modified": "2026-10-04 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Curtain Roll",
  "name": "Curtain Product",

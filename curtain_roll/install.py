@@ -33,7 +33,7 @@ def after_install():
 	_seed_translations()
 	_seed_storefront()
 	frappe.db.commit()
-	print("\nCurtain Roll storefront installed.")
+	print("\nKayan Andalus storefront installed.")
 	print("  home            /")
 	for p in get_products():
 		print("  %-14s /%s" % (p["heading"][:14], p["route"]))
@@ -497,6 +497,17 @@ def after_migrate():
 	_seed_print_upload()
 	_seed_translations()
 	_seed_storefront()
+	_rebrand()
+
+
+def _rebrand():
+	"""Swap the copied Curtain Roll details for Kayan's in what this site keeps
+	in its database (info pages, storefront settings, translations). Once."""
+	try:
+		from curtain_roll import rebrand
+		rebrand.apply()
+	except Exception:
+		frappe.log_error(title="curtain_roll: rebrand", message=frappe.get_traceback())
 
 
 def _seed_storefront():

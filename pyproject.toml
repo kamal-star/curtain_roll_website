@@ -1,7 +1,7 @@
 [project]
 name = "curtain_roll"
-authors = [{ name = "Curtain Roll", email = "info@curtain-roll.com" }]
-description = "Curtain Roll storefront for ERPNext — 10 pages with the 3D curtain configurator"
+authors = [{ name = "Kayan Andalus" }]
+description = "Kayan Andalus storefront for ERPNext with the 3D curtain configurator"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]

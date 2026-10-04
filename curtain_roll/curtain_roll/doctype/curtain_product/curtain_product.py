@@ -20,6 +20,7 @@ class CurtainProduct(Document):
 		self._check_material_switch()
 		self._check_sub_option_parents()
 		self._adopt_new_colors()
+		self._prepare_room()
 
 		seen = set()
 		for row in self.get("colors") or []:
@@ -146,13 +147,33 @@ class CurtainProduct(Document):
 				row.texture_code = row.color_name
 			row.image = row.fabric_image
 
+	def _prepare_room(self):
+		"""3D Room: size a newly uploaded picture for the sphere, and check the box."""
+		from curtain_roll import room
+
+		before = self.get_doc_before_save()
+		if self.room_image != (before.room_image if before else None) or \
+				(self.room_image and not self.room_scene):
+			room.prepare_scene(self)
+		if not self.room_image:
+			self.room_window = ""
+			return
+		if not room.parse_box(self.room_window):
+			# the page keeps its own room until the box is placed on the window
+			self.room_window = ""
+			frappe.msgprint(_("Room picture saved. Now drag the box over the window where the "
+			                  "blind should hang, then save again. Until then the page keeps "
+			                  "its own room."), indicator="blue")
+
 	def on_update(self):
 		# the storefront reads a cached, flattened copy of this record
 		from curtain_roll.pricing import clear_cache
+		from curtain_roll.room import clear as clear_room
 		from curtain_roll.curtain_roll.doctype.curtain_translation.curtain_translation \
 			import clear_phrase_cache
 
 		clear_cache(self.product_key)
+		clear_room(self.product_key)
 		# the Arabic typed on the Manual / Motorized choices is part of the
 		# phrase dictionary, so a correction there must show without a restart
 		clear_phrase_cache()

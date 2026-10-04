@@ -1,8 +1,8 @@
 app_name = "curtain_roll"
-app_title = "Curtain Roll"
-app_publisher = "Curtain Roll"
-app_description = "Curtain Roll storefront — 10 pages with the 3D curtain configurator"
-app_email = "info@curtain-roll.com"
+app_title = "Kayan Andalus"
+app_publisher = "Kayan Andalus"
+app_description = "Kayan Andalus storefront with the 3D curtain configurator"
+app_email = ""
 app_license = "mit"
 
 # ---------------------------------------------------------------- assets

@@ -1686,6 +1686,9 @@
 
   function fitBlind() {
     if (!window.scene || !window.camera || !window.THREE) return;
+    // a room the team chose in Curtain Product -> 3D Room fits the blind
+    // itself (curtain_room.js); this page's own numbers are for its own room
+    if (window.CR_ROOM) return;
     tiltView();
     if (BLIND_SCALE[0] === 1 && BLIND_SCALE[1] === 1) return;
     var g = null;

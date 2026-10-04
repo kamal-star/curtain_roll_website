@@ -1,6 +1,6 @@
-# Curtain Roll
+# Kayan Andalus storefront (app: curtain_roll)
 
-The Curtain Roll storefront as an installable Frappe/ERPNext app: a home page,
+The Kayan Andalus storefront as an installable Frappe/ERPNext app: a home page,
 9 curtain product pages, and the 3D curtain configurator.
 
 ```bash
