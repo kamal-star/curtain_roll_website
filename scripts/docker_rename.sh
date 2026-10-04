@@ -22,8 +22,10 @@ SITE="${SITE:-frontend}"
 BRANCH="${BRANCH:-claude/great-davinci-qyhovm}"
 BENCH="${BENCH:-/home/frappe/frappe-bench}"
 # Name prefix of this stack's containers; workers and the scheduler run our
-# hooks too, so each one that has curtain_roll gets the new app as well.
-PREFIX="${PREFIX:-${BACKEND%%_*}_}"
+# hooks too, and the frontend serves our assets, so each one that has
+# curtain_roll gets the new app as well. Only up to the first "-": the live
+# frontend is called dwherp-erpnextf_rontend-1.
+PREFIX="${PREFIX:-${BACKEND%%-*}-}"
 # Only needed when apps/curtain_roll in the container is not a git checkout:
 # a checkout of this repo on the host, copied in with `docker cp`.
 SRC="${SRC:-}"
@@ -95,15 +97,21 @@ done
 
 say "5/5 Assets, migrate, caches, restart"
 PUBLIC="$BENCH/apps/kayan_curtain/kayan_curtain/public"
-if docker exec "$BACKEND" test -d "$BENCH/sites/assets/curtain_roll" \
-	&& ! docker exec "$BACKEND" test -L "$BENCH/sites/assets/curtain_roll"; then
-	# assets were real files in the shared volume, not a link - copy the same way
-	in_c "$BACKEND" "rm -rf sites/assets/kayan_curtain && cp -r '$PUBLIC' sites/assets/kayan_curtain"
-else
-	in_c "$BACKEND" "ln -sfn '$PUBLIC' sites/assets/kayan_curtain"
-	# old /assets/curtain_roll/... links (Google Images, shared URLs) keep working
-	in_c "$BACKEND" "rm -f sites/assets/curtain_roll && ln -sfn '$PUBLIC' sites/assets/curtain_roll"
-fi
+# sites/assets is NOT shared: in each container it points at that container's
+# own /home/frappe/frappe-bench/assets. Every container gets its own link -
+# above all the frontend, which is the one nginx serves /assets from.
+for c in "${CODE_CONTAINERS[@]}"; do
+	echo "-- $c"
+	if docker exec "$c" test -d "$BENCH/sites/assets/curtain_roll" \
+		&& ! docker exec "$c" test -L "$BENCH/sites/assets/curtain_roll"; then
+		# assets were real files, not a link - copy the same way
+		in_c "$c" "rm -rf sites/assets/kayan_curtain && cp -r '$PUBLIC' sites/assets/kayan_curtain"
+	else
+		in_c "$c" "ln -sfn '$PUBLIC' sites/assets/kayan_curtain"
+		# old /assets/curtain_roll/... links (Google Images, shared URLs) keep working
+		in_c "$c" "rm -f sites/assets/curtain_roll && ln -sfn '$PUBLIC' sites/assets/curtain_roll"
+	fi
+done
 in_c "$BACKEND" "bench --site '$SITE' migrate"
 in_c "$BACKEND" "bench --site '$SITE' clear-cache && bench --site '$SITE' clear-website-cache"
 for c in "${CODE_CONTAINERS[@]}"; do docker restart "$c" >/dev/null && echo "restarted $c"; done
