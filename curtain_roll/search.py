@@ -198,10 +198,13 @@ def _build():
 	menu = {n.get("route"): n.get("label") for n in settings.get("nav_items") or []}
 	swatches = _swatches()
 
+	withdrawn = set(settings.get("withdrawn") or ())
 	entries = []
 	for page in get_products():
 		key = page.get("key")
 		route = "/" + (page.get("route") or key).lstrip("/")
+		if route in withdrawn:
+			continue
 		card = cards.get(route) or {}
 
 		# the menu label is the client's own wording and the tidiest of the

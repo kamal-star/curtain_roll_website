@@ -284,7 +284,10 @@
             var name = document.createElement("span");
             name.textContent = (arabic && r.label_ar) || r.label;
             item.appendChild(name);
-            if (r.price_text) {
+            // colours are shown by name only, as the main materials are (the
+            // extra is still charged and shows in the total); other choices,
+            // like a motor, keep their price
+            if (r.price_text && !swatches) {
               var cost = document.createElement("small");
               cost.textContent = r.price_text;
               item.appendChild(cost);
@@ -1104,6 +1107,25 @@
     catch (e) { if (window.console) console.error("curtain_options: " + name, e); }
   }
 
+  /* A colour renamed in the desk keeps its old name on the page otherwise:
+     the swatch text is part of the captured page. Swap in the new name
+     where it differs from the one the page was captured with. */
+  function colourNames(spec) {
+    var gid = spec.color_group, colours = spec.colors || {};
+    if (!gid) return;
+    Object.keys(colours).forEach(function (value) {
+      var c = colours[value];
+      if (!c || c.custom || !c.label || !c.page_label || c.label === c.page_label) return;
+      var input = document.querySelector('input[name="option[' + gid + ']"][value="' + value + '"]');
+      var card = input && (input.closest(".swatch-card") || input.parentNode);
+      if (!card) return;
+      var span = card.querySelector(".option-value");
+      if (span) span.textContent = c.label;
+      var img = card.querySelector("img");
+      if (img) img.alt = c.label;
+    });
+  }
+
   function apply(spec) {
     if (!spec) return;
     step("limits", function () {
@@ -1114,6 +1136,7 @@
     step("material", function () {
       if (spec.show_material === false && spec.material_group) hideGroup(spec.material_group);
     });
+    step("colour names", function () { colourNames(spec); });
     step("sub options", function () { subOptions(spec); });
     step("print upload", function () { printUpload(spec); });
     step("install city", function () { installCity(spec); });

@@ -174,6 +174,12 @@ class CurtainProduct(Document):
 
 		clear_cache(self.product_key)
 		clear_room(self.product_key)
+		from curtain_roll.page_text import clear as clear_text
+		clear_text(self.product_key)
+		# switching a product off withdraws its page; the list sits with the
+		# storefront settings
+		from curtain_roll.storefront import CACHE_KEY as STOREFRONT_KEY
+		frappe.cache().delete_value(STOREFRONT_KEY)
 		# the Arabic typed on the Manual / Motorized choices is part of the
 		# phrase dictionary, so a correction there must show without a restart
 		clear_phrase_cache()

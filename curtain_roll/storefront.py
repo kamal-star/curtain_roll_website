@@ -280,6 +280,54 @@ def _rows(doc, field, keys):
 	return out
 
 
+def _route(value):
+	return "/" + (value or "").strip().strip("/")
+
+
+def _withdrawn(doc):
+	"""Pages the team has switched off - not to be served even by their link.
+
+	A page is withdrawn when its menu item is switched off (and no other menu
+	item still points at it), or when its product's Enabled tick is off. The
+	home page never is: switching off the Home button only hides the button.
+	"""
+	on, off = set(), set()
+	for row in doc.get("nav_items") or []:
+		(on if row.get("enabled") else off).add(_route(row.get("route")))
+	out = off - on
+	try:
+		out |= {_route(k) for k in frappe.get_all("Curtain Product", filters={"enabled": 0},
+		                                          pluck="product_key")}
+	except Exception:
+		pass
+	out.discard("/")
+	return sorted(out)
+
+
+# Paths that are never a storefront page, so are never checked.
+NOT_PAGES = ("/api/", "/assets/", "/files/", "/private/", "/app", "/desk", "/maps/",
+             "/three/", "/login", "/logout", "/socket.io")
+
+
+def block_withdrawn():
+	"""before_request: a switched-off page sends the shopper to the home page.
+
+	Hiding a page from the menu left it one typed address away. Raising "not
+	found" here gives Frappe's bare error screen, with a Show Error button -
+	nothing a shopper should land on - so an old link or a typed address goes
+	to the home page instead. Search no longer offers the page either.
+	"""
+	try:
+		path = (frappe.request.path or "/").rstrip("/") or "/"
+	except Exception:
+		return
+	if path == "/" or path.startswith(NOT_PAGES):
+		return
+	if path in (storefront_settings().get("withdrawn") or ()):
+		frappe.local.flags.redirect_location = "/"
+		raise frappe.Redirect(302)   # temporary: switched back on, it works again
+
+
 def storefront_settings():
 	"""Everything the home page needs, cached, defaults underneath.
 
@@ -329,6 +377,7 @@ def storefront_settings():
 	nav = _rows(doc, "nav_items", ("label", "route", "icon"))
 	if nav:
 		data["nav_items"] = nav
+	data["withdrawn"] = _withdrawn(doc)
 	slides = _rows(doc, "slides", ("image", "alt_text", "link"))
 	if slides:
 		data["slides"] = slides

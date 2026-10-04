@@ -547,6 +547,20 @@ def _wishlist_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
 
 
+def _product_text(html, path):
+	"""The heading and description the team wrote in Curtain Product -> Page
+	Text. Put in before translation, so words left as they were still get the
+	dictionary's Arabic and words the team changed show as they wrote them."""
+	key = (path or "").strip("/").split("/")[0]
+	if not key or 'class="product-title"' not in html:
+		return html
+	try:
+		from curtain_roll.page_text import apply
+		return apply(html, key, current() == "ar")
+	except Exception:
+		return html
+
+
 BUNDLE_MARK = '<script src="/assets/curtain_roll/configurator/'
 
 
@@ -740,6 +754,7 @@ def finish_page(response=None, request=None):
 	if not html:
 		return
 
+	html = _product_text(html, path)
 	out = _add_chrome(translate_html(html) if current() == "ar" else html)
 	out = _add_room(out, path)
 	if out != html:

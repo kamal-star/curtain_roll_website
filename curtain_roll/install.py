@@ -498,6 +498,16 @@ def after_migrate():
 	_seed_translations()
 	_seed_storefront()
 	_rebrand()
+	_seed_page_text()
+
+
+def _seed_page_text():
+	"""Copy each product page's heading and description into its record, once."""
+	try:
+		from curtain_roll import page_text
+		page_text.seed()
+	except Exception:
+		frappe.log_error(title="curtain_roll: page text", message=frappe.get_traceback())
 
 
 def _rebrand():

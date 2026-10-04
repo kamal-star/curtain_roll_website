@@ -17,6 +17,12 @@
   "show_motor",
   "allow_upload",
   "item_code",
+  "section_page_text",
+  "page_heading",
+  "page_description",
+  "column_break_page_text",
+  "page_heading_ar",
+  "page_description_ar",
   "section_base",
   "pricing_mode",
   "rate_basis",
@@ -88,6 +94,37 @@
    "fieldtype": "Link",
    "label": "Item",
    "options": "Item"
+  },
+  {
+   "fieldname": "section_page_text",
+   "fieldtype": "Section Break",
+   "label": "Page Text",
+   "collapsible": 1,
+   "description": "The heading and description at the top of this product's page. Leave a field empty to keep the page's own words."
+  },
+  {
+   "fieldname": "page_heading",
+   "fieldtype": "Data",
+   "label": "Heading"
+  },
+  {
+   "fieldname": "page_description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_page_text",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "page_heading_ar",
+   "fieldtype": "Data",
+   "label": "Heading (Arabic)"
+  },
+  {
+   "fieldname": "page_description_ar",
+   "fieldtype": "Small Text",
+   "label": "Description (Arabic)"
   },
   {
    "fieldname": "section_base",
@@ -331,7 +368,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-04 15:00:00.000000",
+ "modified": "2026-10-05 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Curtain Roll",
  "name": "Curtain Product",

@@ -1956,7 +1956,7 @@
 
     var img = wrap.querySelector("img");
     if (img && entry.label) {
-      img.setAttribute("title", entry.label + (text ? "  " + text : " "));
+      img.setAttribute("title", entry.label);   // name only - no price on a swatch
     }
   }
 
@@ -2382,7 +2382,7 @@
     // the theme also bakes the surcharge into the tooltip
     var img = wrap.querySelector("img");
     if (img && entry.label) {
-      img.setAttribute("title", entry.label + (text ? "  " + text : " "));
+      img.setAttribute("title", entry.label);   // name only - no price on a swatch
     }
   }
 

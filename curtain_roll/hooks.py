@@ -48,6 +48,8 @@ before_request = [
 	# the storefront's language comes from the visitor's own choice, not
 	# from a cached User record - see language.apply_language
 	"curtain_roll.language.apply_language",
+	# a page the team switched off is not served by its link either
+	"curtain_roll.storefront.block_withdrawn",
 ]
 
 # The ported pages keep their English inside {% raw %}, so Jinja - and with it

@@ -433,6 +433,9 @@ def _color_entry(row, flat=False):
 		"charge_type": row.charge_type,
 		"rate": flt(row.rate),
 		"custom": cint(row.get("is_custom")),
+		# the name the captured page prints on this swatch; the page swaps in
+		# "label" when the team has renamed the colour in the desk
+		"page_label": row.texture_code or "",
 	}
 	if entry["custom"]:
 		# This colour has no swatch in the captured HTML, so the page has to
