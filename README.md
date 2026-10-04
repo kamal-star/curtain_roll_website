@@ -589,6 +589,11 @@ has `curtain_roll` installed is moved across once, in this order - the old app
 must still be in the bench for step 3, because until the database is updated
 Frappe still loads `curtain_roll`'s hooks:
 
+**Docker (the live server):** run `bash scripts/docker_rename.sh` on the host.
+It defaults to container `dwherp-erpnext_backend-1` and site `frontend`, covers
+every container of the stack that has the app (workers run our hooks too), and
+does all of the steps below. Plain bench:
+
 ```bash
 cd ~/frappe-bench
 bench --site <site> backup --with-files
