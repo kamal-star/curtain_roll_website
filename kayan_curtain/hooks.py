@@ -77,7 +77,7 @@ on_session_creation = ["kayan_curtain.cart.claim_guest_cart"]
 # data about visitors for no purpose at all.
 scheduler_events = {
 	"daily": [
-		"kayan_curtain.curtain_roll.doctype.curtain_guest_cart.curtain_guest_cart.clear_stale",
+		"kayan_curtain.kayan_curtain.doctype.curtain_guest_cart.curtain_guest_cart.clear_stale",
 	],
 }
 

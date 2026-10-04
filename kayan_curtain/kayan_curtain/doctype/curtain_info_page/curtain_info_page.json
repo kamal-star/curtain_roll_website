@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:page",
+ "creation": "2026-10-01 00:00:00.000000",
+ "description": "The words on About Us, Terms, Privacy, Delivery & Installation and Contact Us.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "page",
+  "view_page",
+  "section_hero",
+  "hero_eyebrow",
+  "hero_title",
+  "hero_subtitle",
+  "section_body",
+  "body",
+  "section_ar",
+  "hero_eyebrow_ar",
+  "hero_title_ar",
+  "hero_subtitle_ar",
+  "body_ar"
+ ],
+ "fields": [
+  {
+   "fieldname": "page",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Page",
+   "options": "about-us\nterms-and-conditions\nprivacy-policy\ndelivery-and-installation\ncontact-us",
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "view_page",
+   "fieldtype": "HTML",
+   "label": "View Page",
+   "options": "<p style=\"margin:4px 0 0\">Changes show on the website as soon as you save.</p>"
+  },
+  {
+   "fieldname": "section_hero",
+   "fieldtype": "Section Break",
+   "label": "Top of the Page"
+  },
+  {
+   "fieldname": "hero_eyebrow",
+   "fieldtype": "Data",
+   "label": "Small Heading",
+   "description": "The short line above the title."
+  },
+  {
+   "fieldname": "hero_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "hero_subtitle",
+   "fieldtype": "Small Text",
+   "label": "Text Under the Title"
+  },
+  {
+   "fieldname": "section_body",
+   "fieldtype": "Section Break",
+   "label": "Page Content"
+  },
+  {
+   "fieldname": "body",
+   "fieldtype": "Text Editor",
+   "label": "Page Content",
+   "description": "Leave empty to keep the page's designed layout. Once filled in, this text (with any pictures added through the toolbar) replaces everything under the title. On Contact Us it appears above the contact form, which always stays."
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_ar",
+   "fieldtype": "Section Break",
+   "label": "Arabic",
+   "description": "Shown when the site is in Arabic. An empty field shows the English."
+  },
+  {
+   "fieldname": "hero_eyebrow_ar",
+   "fieldtype": "Data",
+   "label": "Small Heading (Arabic)"
+  },
+  {
+   "fieldname": "hero_title_ar",
+   "fieldtype": "Data",
+   "label": "Title (Arabic)"
+  },
+  {
+   "fieldname": "hero_subtitle_ar",
+   "fieldtype": "Small Text",
+   "label": "Text Under the Title (Arabic)"
+  },
+  {
+   "fieldname": "body_ar",
+   "fieldtype": "Text Editor",
+   "label": "Page Content (Arabic)"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Kayan Curtain",
+ "name": "Curtain Info Page",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Website Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "hero_title",
+ "track_changes": 1
+}

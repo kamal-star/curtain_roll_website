@@ -15,7 +15,7 @@ pictures from live. The paths here are relative; the files are in the app.
 """
 import frappe
 
-from kayan_curtain.curtain_roll.doctype.curtain_storefront_settings.curtain_storefront_settings 	import CACHE_KEY
+from kayan_curtain.kayan_curtain.doctype.curtain_storefront_settings.curtain_storefront_settings 	import CACHE_KEY
 
 DOCTYPE = "Curtain Storefront Settings"
 

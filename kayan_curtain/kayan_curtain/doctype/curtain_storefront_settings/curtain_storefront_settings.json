@@ -1,0 +1,465 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-26 00:00:00.000000",
+ "description": "Everything on the home page that the team can change without a developer: the logo, the category bar, the slider, the collection cards and the footer links.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "issingle": 1,
+ "field_order": [
+  "sb_brand",
+  "logo",
+  "logo_alt",
+  "logo_light",
+  "cb_brand",
+  "favicon",
+  "brand_title",
+  "sb_nav",
+  "nav_items",
+  "sb_slider",
+  "slides",
+  "sb_features",
+  "hide_features",
+  "features",
+  "sb_collections",
+  "collections_eyebrow",
+  "collections_heading",
+  "cb_coll",
+  "collections_description",
+  "categories",
+  "sb_social",
+  "footer_about",
+  "footer_about_ar",
+  "copyright_text",
+  "cb_footer_contact",
+  "contact_phone",
+  "contact_whatsapp",
+  "contact_email",
+  "contact_address",
+  "contact_address_ar",
+  "maroof_url",
+  "sb_footer_links",
+  "footer_links",
+  "social_links",
+  "sb_tax",
+  "vat_rate",
+  "cb_tax",
+  "prices_include_vat",
+  "sb_pay",
+  "card_enabled",
+  "bank_transfer_enabled",
+  "cb_pay",
+  "bank_name",
+  "bank_account_name",
+  "bank_account_number",
+  "bank_iban",
+  "bank_instructions",
+  "sb_aramex",
+  "aramex_enabled",
+  "aramex_origin_city",
+  "aramex_product_type",
+  "cb_aramex",
+  "aramex_weight_per_sqm",
+  "aramex_min_weight",
+  "sb_notify",
+  "alert_role",
+  "alert_emails",
+  "no_customer_emails",
+  "sb_checkout",
+  "guest_checkout",
+  "cb_checkout",
+  "require_national_address"
+ ],
+ "fields": [
+  {
+   "fieldname": "sb_brand",
+   "fieldtype": "Section Break",
+   "label": "Branding"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo",
+   "description": "Shown in the header. About 220x90. Leave empty for the built-in logo."
+  },
+  {
+   "fieldname": "logo_alt",
+   "fieldtype": "Data",
+   "label": "Logo Description",
+   "description": "Read aloud by screen readers and used by search engines."
+  },
+  {
+   "fieldname": "logo_light",
+   "fieldtype": "Attach Image",
+   "label": "Logo for Dark Backgrounds",
+   "description": "The white version, used in the footer. Leave empty to show the site name as text instead."
+  },
+  {
+   "fieldname": "cb_brand",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "favicon",
+   "fieldtype": "Attach Image",
+   "label": "Favicon",
+   "description": "The small icon in the browser tab. A square PNG, 32x32 or 64x64."
+  },
+  {
+   "fieldname": "brand_title",
+   "fieldtype": "Data",
+   "label": "Site Name",
+   "description": "Used in the tab title and link hints."
+  },
+  {
+   "fieldname": "sb_nav",
+   "fieldtype": "Section Break",
+   "label": "Category Bar"
+  },
+  {
+   "fieldname": "nav_items",
+   "fieldtype": "Table",
+   "label": "Links",
+   "options": "Curtain Nav Item",
+   "description": "The bar across the top of every page. Drag rows to reorder; untick Show to hide one without deleting it."
+  },
+  {
+   "fieldname": "sb_slider",
+   "fieldtype": "Section Break",
+   "label": "Home Page Slider"
+  },
+  {
+   "fieldname": "slides",
+   "fieldtype": "Table",
+   "label": "Slides",
+   "options": "Curtain Hero Slide",
+   "description": "Drag rows to reorder."
+  },
+  {
+   "fieldname": "sb_collections",
+   "fieldtype": "Section Break",
+   "label": "Collections Section"
+  },
+  {
+   "fieldname": "collections_eyebrow",
+   "fieldtype": "Data",
+   "label": "Small Heading"
+  },
+  {
+   "fieldname": "collections_heading",
+   "fieldtype": "Data",
+   "label": "Heading"
+  },
+  {
+   "fieldname": "cb_coll",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "collections_description",
+   "fieldtype": "Small Text",
+   "label": "Intro Text"
+  },
+  {
+   "fieldname": "categories",
+   "fieldtype": "Table",
+   "label": "Cards",
+   "options": "Curtain Category Card"
+  },
+  {
+   "fieldname": "sb_social",
+   "fieldtype": "Section Break",
+   "label": "Footer"
+  },
+  {
+   "fieldname": "footer_about",
+   "fieldtype": "Small Text",
+   "label": "Footer Text",
+   "description": "The short line under the logo in the footer."
+  },
+  {
+   "fieldname": "footer_about_ar",
+   "fieldtype": "Small Text",
+   "label": "Footer Text (Arabic)"
+  },
+  {
+   "fieldname": "copyright_text",
+   "fieldtype": "Data",
+   "label": "Copyright Line",
+   "description": "{year} is replaced by the current year."
+  },
+  {
+   "fieldname": "cb_footer_contact",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "description": "Shown in the footer and the header. Leave empty to hide it in the footer."
+  },
+  {
+   "fieldname": "contact_whatsapp",
+   "fieldtype": "Data",
+   "label": "WhatsApp Number",
+   "description": "International format, digits only, e.g. 966555465718. Used by every WhatsApp button."
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "contact_address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "contact_address_ar",
+   "fieldtype": "Small Text",
+   "label": "Address (Arabic)"
+  },
+  {
+   "fieldname": "maroof_url",
+   "fieldtype": "Data",
+   "label": "Maroof Link",
+   "description": "Your Maroof page, e.g. https://maroof.sa/12345. Empty hides the Maroof badge."
+  },
+  {
+   "fieldname": "sb_footer_links",
+   "fieldtype": "Section Break",
+   "label": "Footer Links"
+  },
+  {
+   "fieldname": "footer_links",
+   "fieldtype": "Table",
+   "label": "Footer Links",
+   "options": "Curtain Footer Link"
+  },
+  {
+   "fieldname": "social_links",
+   "fieldtype": "Table",
+   "label": "Social Media",
+   "options": "Curtain Social Link"
+  },
+  {
+   "fieldname": "sb_tax",
+   "fieldtype": "Section Break",
+   "label": "Tax"
+  },
+  {
+   "fieldname": "vat_rate",
+   "fieldtype": "Percent",
+   "label": "VAT Rate",
+   "default": "15",
+   "description": "Set to 0 to show no tax line at all."
+  },
+  {
+   "fieldname": "cb_tax",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "prices_include_vat",
+   "fieldtype": "Check",
+   "label": "Prices Already Include VAT",
+   "default": "1",
+   "description": "Ticked (the Saudi retail norm): the price on the product page is what the customer pays, and the VAT line shows how much of it is tax. Unticked: VAT is added on top, and every total goes up."
+  },
+  {
+   "fieldname": "sb_pay",
+   "fieldtype": "Section Break",
+   "label": "Payment Methods"
+  },
+  {
+   "fieldname": "card_enabled",
+   "fieldtype": "Check",
+   "label": "Pay by Card",
+   "default": "1",
+   "description": "Needs the ClickPay keys in site config. Hidden automatically when they are missing."
+  },
+  {
+   "fieldname": "bank_transfer_enabled",
+   "fieldtype": "Check",
+   "label": "Bank Transfer",
+   "default": "0",
+   "description": "The order is placed and an unpaid invoice is raised; your team confirms it once the money arrives."
+  },
+  {
+   "fieldname": "cb_pay",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name"
+  },
+  {
+   "fieldname": "bank_account_name",
+   "fieldtype": "Data",
+   "label": "Account Name"
+  },
+  {
+   "fieldname": "bank_account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "bank_iban",
+   "fieldtype": "Data",
+   "label": "IBAN"
+  },
+  {
+   "fieldname": "bank_instructions",
+   "fieldtype": "Small Text",
+   "label": "Transfer Instructions",
+   "description": "Shown on the order confirmation, under the bank details."
+  },
+  {
+   "fieldname": "sb_aramex",
+   "fieldtype": "Section Break",
+   "label": "Aramex Delivery (Without Installation)",
+   "description": "When ticked, a customer who picks Without installation chooses their city from Aramex's list, and Aramex's delivery price is added to each curtain. The Aramex account itself is set on the server (site_config.json), not here."
+  },
+  {
+   "fieldname": "aramex_enabled",
+   "fieldtype": "Check",
+   "label": "Offer Aramex Delivery",
+   "default": "0"
+  },
+  {
+   "fieldname": "aramex_origin_city",
+   "fieldtype": "Data",
+   "label": "Ship From City",
+   "default": "Riyadh",
+   "description": "As Aramex spells it."
+  },
+  {
+   "fieldname": "aramex_product_type",
+   "fieldtype": "Data",
+   "label": "Aramex Product Type",
+   "default": "ONP",
+   "description": "The domestic service on Kayan's Aramex account. ONP is the one in Aramex's own samples; ask Aramex if unsure."
+  },
+  {
+   "fieldname": "cb_aramex",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "aramex_weight_per_sqm",
+   "fieldtype": "Float",
+   "label": "Parcel Weight per m² (kg)",
+   "default": "1.5",
+   "description": "A curtain's parcel weight is its area times this, packaging included."
+  },
+  {
+   "fieldname": "aramex_min_weight",
+   "fieldtype": "Float",
+   "label": "Minimum Parcel Weight (kg)",
+   "default": "1"
+  },
+  {
+   "fieldname": "sb_notify",
+   "fieldtype": "Section Break",
+   "label": "Order Notifications",
+   "description": "Who hears about a website order the moment it is placed or paid. Later status emails (order confirmed, invoice, delivery) are ERPNext Notifications named \"Kayan: ...\", and the customer emails' wording is in the Email Templates named \"Kayan: ...\"."
+  },
+  {
+   "fieldname": "alert_role",
+   "fieldtype": "Link",
+   "options": "Role",
+   "label": "Alert Staff With Role",
+   "default": "Sales Manager",
+   "description": "Everyone with this role gets a bell notification in ERPNext for each new website order and payment."
+  },
+  {
+   "fieldname": "alert_emails",
+   "fieldtype": "Small Text",
+   "label": "Also Email These Addresses",
+   "description": "Optional. One or more email addresses, separated by commas."
+  },
+  {
+   "fieldname": "no_customer_emails",
+   "fieldtype": "Check",
+   "label": "Do Not Email Customers",
+   "default": "0",
+   "description": "Tick to stop the order-received and payment-received emails to customers."
+  },
+  {
+   "fieldname": "sb_checkout",
+   "fieldtype": "Section Break",
+   "label": "Checkout"
+  },
+  {
+   "fieldname": "guest_checkout",
+   "fieldtype": "Check",
+   "label": "Allow Checkout Without an Account",
+   "default": "1",
+   "description": "Unticked, a customer must sign in before they can order. Their cart is kept either way."
+  },
+  {
+   "fieldname": "cb_checkout",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "require_national_address",
+   "fieldtype": "Check",
+   "label": "National Address Is Required",
+   "default": "0",
+   "description": "The Saudi short address, e.g. RRRD2929. Businesses need it on an invoice; most private customers do not have it to hand."
+  },
+  {
+   "fieldname": "sb_features",
+   "fieldtype": "Section Break",
+   "label": "Highlights Under the Slider"
+  },
+  {
+   "fieldname": "hide_features",
+   "fieldtype": "Check",
+   "label": "Hide This Section",
+   "description": "Removes the whole row of highlight boxes from the home page."
+  },
+  {
+   "fieldname": "features",
+   "fieldtype": "Table",
+   "label": "Highlight Boxes",
+   "options": "Curtain Feature Box"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-05 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Kayan Curtain",
+ "name": "Curtain Storefront Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

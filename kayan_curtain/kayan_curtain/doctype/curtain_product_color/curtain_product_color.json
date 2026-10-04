@@ -1,0 +1,109 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-09-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "color_name",
+  "fabric_image",
+  "charge_type",
+  "rate",
+  "column_break_ident",
+  "is_custom",
+  "option_value",
+  "texture_code",
+  "image"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Show on site",
+   "columns": 1
+  },
+  {
+   "fieldname": "color_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Colour / Material",
+   "reqd": 1,
+   "columns": 3
+  },
+  {
+   "description": "Upload the fabric photo for a colour you are adding here. The same photo is used for the swatch button and for the 3D preview, so use a clear, square, reasonably large image. Leave empty for the colours that came with the page.",
+   "fieldname": "fabric_image",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Fabric Photo",
+   "columns": 2
+  },
+  {
+   "default": "Fixed Amount",
+   "fieldname": "charge_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Charge Type",
+   "options": "Fixed Amount\nPer Square Meter\nPercent of Base\nOverride Base Rate",
+   "columns": 2
+  },
+  {
+   "default": "0",
+   "description": "Extra charge for this colour. Leave 0 if it costs the same as the base.",
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate",
+   "columns": 2
+  },
+  {
+   "fieldname": "column_break_ident",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Set automatically for colours added here rather than captured from the page. These are never removed by Reload options from page.",
+   "fieldname": "is_custom",
+   "fieldtype": "Check",
+   "label": "Added in the desk",
+   "read_only": 1
+  },
+  {
+   "description": "Matches the swatch on the storefront. Filled in automatically for a colour you add here.",
+   "fieldname": "option_value",
+   "fieldtype": "Data",
+   "label": "Storefront Value ID",
+   "read_only": 1,
+   "reqd": 0
+  },
+  {
+   "description": "What the 3D preview calls this fabric. Filled in from the name when you add a colour.",
+   "fieldname": "texture_code",
+   "fieldtype": "Data",
+   "label": "Texture Code",
+   "read_only": 0
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Data",
+   "label": "Swatch Image",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-09-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Kayan Curtain",
+ "name": "Curtain Product Color",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

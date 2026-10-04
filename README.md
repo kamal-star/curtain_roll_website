@@ -569,7 +569,7 @@ kayan_curtain/
 │   ├── configurator/       the 9 bundles (~176 MB)
 │   ├── three/              three.js, OrbitControls, OBJLoader, dat.gui
 │   └── image/              product and swatch images
-├── curtain_roll/doctype/   Curtain Product (+ colour / option / slab rows)
+├── kayan_curtain/doctype/  Curtain Product (+ colour / option / slab rows)
 ├── pricing.py              rates, the live total, and what the cart is charged
 ├── cart.py                 cart -> draft Quotation
 ├── renderers.py            the OpenCart endpoints the theme still calls
@@ -618,10 +618,10 @@ bench --site <site> clear-website-cache
 bench restart                                      # or: sudo supervisorctl restart all
 ```
 
-The desk module stays **Curtain Roll** (folder `kayan_curtain/curtain_roll/`), so
-no DocType moves and nothing the team entered is touched. The `curtain_roll_*`
-"already seeded" flags also keep their names on purpose - renaming them would
-make the next migrate re-seed over the team's edits.
+The desk module is renamed too, from **Curtain Roll** to **Kayan Curtain**
+(folder `kayan_curtain/kayan_curtain/`). The patch
+`patches/rename_module_to_kayan_curtain.py` moves the database across during
+`migrate`, before the DocTypes are synced, so no DocType or record is lost.
 
 Old links (Google Images, shared URLs) to `/assets/curtain_roll/...` stop working.
 To keep them alive, point the old path at the new folder:

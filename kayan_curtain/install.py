@@ -640,7 +640,7 @@ def _seed_translations():
 	import json
 	import os
 
-	from kayan_curtain.curtain_roll.doctype.curtain_translation.curtain_translation 		import fingerprint, clear_phrase_cache
+	from kayan_curtain.kayan_curtain.doctype.curtain_translation.curtain_translation 		import fingerprint, clear_phrase_cache
 
 	path = os.path.join(frappe.get_app_path("kayan_curtain"),
 	                    "translations", "strings.json")
