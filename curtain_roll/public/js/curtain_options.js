@@ -403,11 +403,20 @@
     if (!parts.length) return;
 
     if (/side|position/.test(g) && /left|right/.test(v)) {
-      var box = window.scene.getObjectByName("Box");
+      // Mirror across the middle of the roller's end caps (Core_Closer): the
+      // mechanism is built flush against the right cap, so mirrored about the
+      // caps' middle it lands flush against the left one. The head box was
+      // the reference before, and Printed has none - it mirrored about 0
+      // instead and the mechanism stood 26 units off the end of the roller.
+      var ref = null;
+      ["Core_Closer", "Box", "Valance_core", "Valance_Front"].some(function (name) {
+        ref = window.scene.getObjectByName(name);
+        return ref && ref.geometry;
+      });
       var middle = 0;
-      if (box && box.geometry) {
-        if (!box.geometry.boundingBox) box.geometry.computeBoundingBox();
-        middle = (box.geometry.boundingBox.min.x + box.geometry.boundingBox.max.x) / 2;
+      if (ref && ref.geometry) {
+        if (!ref.geometry.boundingBox) ref.geometry.computeBoundingBox();
+        middle = (ref.geometry.boundingBox.min.x + ref.geometry.boundingBox.max.x) / 2;
       }
       var left = /left/.test(v);
       parts.forEach(function (o) {
