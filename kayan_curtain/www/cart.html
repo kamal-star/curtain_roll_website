@@ -1,0 +1,229 @@
+{% extends "kayan_curtain/templates/curtain_shell.html" %}
+
+{% block title %}{{ title or _("Your Cart") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "kayan_curtain/templates/includes/account_style.html" %}
+{% include "kayan_curtain/templates/includes/checkout_style.html" %}
+<div class="cr-acc cr-cart-page">
+	<ul class="cr-crumbs">
+		<li><a href="/">{{ _("Home") }}</a></li>
+		<li>{{ _("Your Cart") }}</li>
+	</ul>
+
+	<h1 class="cr-acc-title">{{ _("Your Cart") }}</h1>
+
+	<div id="cr-cart-empty" style="{% if items %}display:none;{% endif %}">
+		<div class="cr-panel cr-empty">
+			<i class="fa-solid fa-bag-shopping"></i>
+			<p>{{ _("Your cart is empty.") }}</p>
+			<p style="margin-top:16px;">
+				<a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+		</div>
+	</div>
+
+	<div id="cr-cart-body" style="{% if not items %}display:none;{% endif %}">
+		<div style="overflow-x:auto;">
+		<table class="cr-table">
+			<thead>
+				<tr>
+					<th>{{ _("Product") }}</th>
+					<th style="width:150px;">{{ _("Qty") }}</th>
+					<th style="text-align:right;">{{ _("Rate") }}</th>
+					<th style="text-align:right;">{{ _("Amount") }}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in items %}
+				<tr data-item="{{ i.item_code }}" data-row="{{ i.row }}">
+					<td>
+						<div style="font-weight:600;">{{ i.name or i.item_code }}</div>
+						{% if i.spec %}
+						<div style="font-size:12px;color:var(--text-muted,#54667a);margin-top:4px;white-space:pre-line;">{{ i.spec }}</div>
+						{% endif %}
+					</td>
+					<td>
+						<input type="number" min="1" step="1" value="{{ i.qty | int }}"
+							class="cr-qty-input"
+							style="width:80px;padding:7px 9px;border:1px solid #e6e8eb;border-radius:7px;">
+					</td>
+					<td style="text-align:right;">{{ "%.2f"|format(i.rate) }}</td>
+					<td style="padding:12px 8px;text-align:right;" class="cr-amount">{{ "%.2f"|format(i.amount) }}</td>
+					<td style="text-align:right;">
+						<button type="button" class="cr-remove"
+							style="background:none;border:0;color:#c0392b;cursor:pointer;">{{ _("Remove") }}</button>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</div>
+
+		<div class="cr-cart-foot">
+			{#- The coupon box lives here rather than on the checkout, because
+			    this is where people look for it, and a discount they cannot
+			    see until the last screen is a discount they assume failed. -#}
+			<form class="cr-panel cr-coupon" id="cr-coupon-form">
+				<label for="cr-coupon">{{ _("Coupon code") }}</label>
+				<div class="cr-coupon-row">
+					<input type="text" id="cr-coupon" name="coupon"
+						   value="{{ coupon }}" autocomplete="off"
+						   placeholder="{{ _('Enter a code') }}">
+					<button type="submit" class="cr-btn cr-btn-light"
+							id="cr-coupon-go">{{ _("Apply") }}</button>
+				</div>
+				<p class="cr-coupon-note" id="cr-coupon-msg" role="status"></p>
+			</form>
+
+			{% include "kayan_curtain/templates/includes/totals.html" %}
+		</div>
+
+		{% if quotation %}
+		<p style="font-size:13px;color:#6d767d;">
+			{{ _("Saved as draft quotation") }} <b>{{ quotation }}</b>.
+		</p>
+		{% endif %}
+
+		<div style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+			<a href="/checkout" class="cr-btn" id="cr-checkout">
+				{{ _("Checkout") }}</a>
+			<a href="/">{{ _("Continue shopping") }}</a>
+		</div>
+		<div id="cr-cart-msg" role="status" style="margin-top:14px;font-size:14px;"></div>
+	</div>
+</div>
+
+<script>
+(function () {
+	var msg = document.getElementById("cr-cart-msg");
+	function say(text, ok) {
+		if (!msg) return;
+		msg.textContent = text;
+		msg.style.color = ok ? "#0a8a3c" : "#c0392b";
+	}
+
+	// The token baked into this page belongs to the session that rendered it.
+	// Sign in, sign out, or leave a tab open until the session expires and it
+	// is stale - Frappe then answers 400 before any of our code runs, so the
+	// button looks broken and nothing is logged. Fetch a fresh one and try
+	// once more instead. That endpoint is a GET, so it needs no token itself.
+	function post(method, body, retried) {
+		return fetch("/api/method/" + method, {
+			method: "POST",
+			credentials: "same-origin",
+			headers: {
+				"Content-Type": "application/json",
+				"X-Frappe-CSRF-Token": (window.frappe && window.frappe.csrf_token) || ""
+			},
+			body: JSON.stringify(body || {})
+		}).then(function (r) {
+			if (r.status === 400 && !retried) {
+				return fetch("/api/method/kayan_curtain.api.csrf_token",
+				             { credentials: "same-origin" })
+					.then(function (t) { return t.json(); })
+					.then(function (t) {
+						window.frappe = window.frappe || {};
+						window.frappe.csrf_token = ((t && t.message) || {}).token || "";
+						return post(method, body, true);
+					});
+			}
+			return r.json();
+		});
+	}
+	window.crCartPost = post;
+
+	/* Redraw the money without reloading: the totals move on every quantity
+	   change and on every coupon, and a subtotal that lags behind the lines
+	   above it is the one thing on this page nobody would forgive. */
+	function paint(shown) {
+		if (!shown) return;
+		Object.keys(shown).forEach(function (key) {
+			document.querySelectorAll("[data-total=" + key + "]")
+				.forEach(function (node) { node.textContent = shown[key]; });
+		});
+		var discount = document.getElementById("cr-discount-row");
+		if (discount) {
+			var value = (shown.discount || "").replace(/[^\d.]/g, "");
+			discount.style.display = parseFloat(value) > 0 ? "" : "none";
+		}
+	}
+	window.crPaintTotals = paint;
+
+	function setQty(row, qty) {
+		// the LINE, not the item: one blind configured two ways is two lines
+		// sharing an item code, and keying on the code moved both
+		var payload = { qty: qty, row: row.getAttribute("data-row"),
+		                item_code: row.getAttribute("data-item") };
+		post("kayan_curtain.api.cart_set_qty", payload)
+			.then(function (j) {
+				var m = (j && j.message) || {};
+				if (!m.ok) { say("Could not update the cart.", false); return; }
+				if (qty <= 0) row.remove();
+				var total = document.getElementById("cr-cart-total");
+				if (total && m.total) total.textContent = m.total;
+				if (m.shown) paint(m.shown);
+				if (m.empty || !document.querySelector("tr[data-item]")) {
+					document.getElementById("cr-cart-body").style.display = "none";
+					document.getElementById("cr-cart-empty").style.display = "";
+				}
+				say("Cart updated.", true);
+			})
+			.catch(function () { say("Network error.", false); });
+	}
+
+	document.querySelectorAll("tr[data-item]").forEach(function (row) {
+		var input = row.querySelector(".cr-qty-input");
+		if (input) {
+			input.addEventListener("change", function () {
+				setQty(row, Math.max(1, parseInt(input.value || "1", 10)));
+			});
+		}
+		var rm = row.querySelector(".cr-remove");
+		if (rm) rm.addEventListener("click", function () { setQty(row, 0); });
+	});
+
+	var form = document.getElementById("cr-coupon-form");
+	if (form) {
+		form.addEventListener("submit", function (e) {
+			e.preventDefault();
+			var box = document.getElementById("cr-coupon");
+			var note = document.getElementById("cr-coupon-msg");
+			var go = document.getElementById("cr-coupon-go");
+			go.disabled = true;
+			post("kayan_curtain.checkout.apply_coupon", { code: box.value })
+				.then(function (j) {
+					go.disabled = false;
+					var m = (j && j.message) || {};
+					if (m.ok) {
+						note.textContent = m.message;
+						note.className = "cr-coupon-note cr-ok";
+						paint(m.shown);
+						/* the header counter shows the payable total, and the
+						   theme only refreshes it on load */
+						var badge = document.getElementById("cart-total");
+						if (badge && m.total_text) badge.textContent = m.total_text;
+						return;
+					}
+					/* Frappe answers a throw with _server_messages: a JSON
+					   string holding a list of JSON objects. Reading it is the
+					   difference between telling someone their coupon expired
+					   and telling them something went wrong. */
+					var why = "";
+					try {
+						why = JSON.parse(JSON.parse(j._server_messages)[0]).message;
+					} catch (err) { why = ""; }
+					note.textContent = why || "That coupon could not be applied.";
+					note.className = "cr-coupon-note cr-bad";
+				})
+				.catch(function () {
+					go.disabled = false;
+					note.textContent = "Network error.";
+					note.className = "cr-coupon-note cr-bad";
+				});
+		});
+	}
+})();
+</script>
+{% endblock %}

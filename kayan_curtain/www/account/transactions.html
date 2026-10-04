@@ -1,0 +1,75 @@
+{% extends "kayan_curtain/templates/curtain_shell.html" %}
+
+{% block title %}{{ _("Your Transactions") }}{% endblock %}
+{% block body_class %}cr-page cr-account{% endblock %}
+
+{% block content %}
+{% include "kayan_curtain/templates/includes/account_style.html" %}
+
+<div class="cr-acc">
+  <ul class="cr-crumbs">
+    <li><a href="/">{{ _("Home") }}</a></li>
+    <li><a href="/account">{{ _("My Account") }}</a></li>
+    <li>{{ _("Your Transactions") }}</li>
+  </ul>
+
+  <h1 class="cr-acc-title">{{ _("Your Transactions") }}</h1>
+
+  {% if payments %}
+  <div class="cr-panel" style="padding:8px 18px 18px;">
+    <table class="cr-table">
+      <thead>
+        <tr>
+          <th>{{ _("Date") }}</th>
+          <th>{{ _("Method") }}</th>
+          <th>{{ _("Reference") }}</th>
+          <th>{{ _("For") }}</th>
+          <th style="text-align:right;">{{ _("Amount") }}</th>
+          <th style="text-align:right;">{{ _("Receipt") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in payments %}
+        <tr>
+          <td>{{ frappe.format(p.date, {"fieldtype": "Date"}) if p.date else "" }}</td>
+          <td>{{ p.method }}</td>
+          <td style="font-family:monospace;font-size:13px;">{{ p.reference }}</td>
+          <td>{{ p.against }}</td>
+          <td style="text-align:right;"><b>
+            {{ frappe.utils.fmt_money(p.amount, currency=p.currency) }}</b></td>
+          <td style="text-align:right;white-space:nowrap;">
+            <a class="cr-doc-link"
+               href="/account/print?doctype=Payment Entry&name={{ p.name | urlencode }}"
+               target="_blank" rel="noopener">
+              <i class="fa-solid fa-print"></i> {{ _("Print") }}</a>
+            <a class="cr-doc-link"
+               href="/api/method/kayan_curtain.account.document_pdf?doctype=Payment Entry&name={{ p.name | urlencode }}">
+              <i class="fa-solid fa-file-pdf"></i> {{ _("PDF") }}</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:#6d767d;margin-top:14px;">
+    {{ _("The reference is the payment provider's own number for the transaction. Quote it if you ever need to ask us or your bank about a charge.") }}
+  </p>
+  {% else %}
+  <div class="cr-panel cr-empty">
+    <i class="fa-solid fa-right-left"></i>
+    <p>{{ _("You have not made a payment yet.") }}</p>
+    <p style="margin-top:16px;"><a class="cr-btn" href="/">{{ _("Browse curtains") }}</a></p>
+  </div>
+  {% endif %}
+
+  <a class="cr-back" href="/account">&larr; {{ _("Back to My Account") }}</a>
+</div>
+
+<style>
+  .cr-doc-link { display:inline-flex; align-items:center; gap:5px; font-size:13px;
+    font-weight:600; text-decoration:none; color:var(--brand,#09446c);
+    padding:5px 10px; border:1px solid rgba(9,68,108,.2); border-radius:999px;
+    margin-inline-start:6px; white-space:nowrap; }
+  .cr-doc-link:hover { background:rgba(9,68,108,.07); }
+</style>
+{% endblock %}

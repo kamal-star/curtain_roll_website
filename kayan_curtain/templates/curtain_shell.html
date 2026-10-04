@@ -1,0 +1,1611 @@
+{#- cr is the editable storefront content; cr_active marks which category link is the current page. -#}
+{% set cr = storefront_settings() %}
+{% set cr_active = "" %}
+{% raw %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="desktop win chrome webkit oc30 route-common-home store-0">
+<head typeof="og:website">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- Primary SEO Meta Tags -->
+  {% endraw %}<title>{% block title %}{{ title or "Kayan Curtain" }}{% endblock %}</title>{% raw %}
+  <base href="/" />
+  <meta name="description" content="Kayan Andalus (More Than Curtain) — Saudi Arabia's premier atelier for custom blackout, sunscreen, zebra, wooden, and automated architectural ripple-fold curtains." />
+  <meta name="keywords" content="kayan andalus, more than curtain, curtains saudi arabia, custom blinds riyadh, blackout curtains, sunscreen shades, zebra blinds, wavy drapes, wooden blinds, smart motorized blinds" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://kayancurtain.com/" />
+  
+  <!-- Open Graph / Social SEO -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Kayan Andalus Curtains" />
+  <meta property="og:title" content="Kayan Andalus | More Than Curtain — Custom Architectural Blinds" />
+  <meta property="og:description" content="Precision-crafted blackout, sunscreen, zebra, and ripple-fold motorized curtains delivered throughout Saudi Arabia." />
+  <meta property="og:url" content="https://kayancurtain.com/" />
+  <meta property="og:image" content="/assets/kayan_curtain/image/cache/catalog/original-600x315h.png" />
+  <meta property="og:image:width" content="600" />
+  <meta property="og:image:height" content="315" />
+
+  <!-- Twitter Card SEO -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Curtain_roll" />
+  <meta name="twitter:title" content="Kayan Andalus | More Than Curtain" />
+  <meta name="twitter:description" content="Custom luxury curtains and automated blinds engineered for residences and commercial projects in Saudi Arabia." />
+  <meta name="twitter:image" content="/assets/kayan_curtain/image/cache/catalog/original-600x315h.png" />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#09446c" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="icon" href="/assets/kayan_curtain/image/catalog/cart.png" />
+
+  <!-- Google Structured Data (Schema.org / JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "HomeAndConstructionBusiness",
+        "@id": "https://kayancurtain.com/#organization",
+        "name": "Kayan Andalus - More Than Curtain",
+        "url": "https://kayancurtain.com/",
+        {% endraw %}"logo": "{{ frappe.utils.get_url() }}{{ cr.logo }}",{% raw %}
+        "description": "Leading digital manufacturing platform for custom architectural roller blinds, shades, and automated drapery in Saudi Arabia.",
+        "telephone": "+966555465718",
+        "priceRange": "SAR",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "SA"
+        },
+        "sameAs": [
+          "https://maroof.sa/40866"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://kayancurtain.com/#website",
+        "url": "https://kayancurtain.com/",
+        "name": "Kayan Andalus Curtains",
+        "publisher": { "@id": "https://kayancurtain.com/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://kayancurtain.com/index.php?route=product/search&search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Backend Required Scripts -->
+  <script src="/assets/kayan_curtain/catalog/view/theme/journal3/lib/jquery/jquery-2.1.1.min__v_3.0.46.js"></script>
+  <script src="/assets/kayan_curtain/catalog/view/javascript/bootstrap/js/bootstrap.min__v_3.0.46.js"></script>
+
+  <style>
+    :root {
+      --brand: #09446c;
+      --brand-hover: #073554;
+      --brand-dark: #05263d;
+      --brand-light: #eaf3f8;
+      --brand-soft: rgba(9, 68, 108, 0.08);
+      --brand-glow: rgba(9, 68, 108, 0.22);
+      
+      --bg: #f8fbfd;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #54667a;
+      --border: #e1ebf2;
+      --border-subtle: #edf4f8;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-pill: 9999px;
+
+      --shadow-sm: 0 2px 4px rgba(9, 68, 108, 0.04);
+      --shadow-md: 0 10px 25px -4px rgba(9, 68, 108, 0.07);
+      --shadow-hover: 0 20px 40px -8px rgba(9, 68, 108, 0.14);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Top Strip (Desktop Only) --- */
+    .top-strip {
+      background: var(--brand-dark);
+      color: #b3cddf;
+      font-size: 13px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .top-strip-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .top-links a:hover {
+      color: #ffffff;
+    }
+
+    .trust-chip {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 3px 12px;
+      border-radius: var(--radius-pill);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    /* ==========================================================================
+       Header & Brand Navigation
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+      gap: 24px;
+    }
+
+    .nav-left-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--brand);
+      font-size: 18px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .mobile-menu-btn:active {
+      background: var(--brand-light);
+      transform: scale(0.95);
+    }
+
+    .brand-identity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .search-pill-wrapper {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .search-field {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px 10px 42px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      outline: none;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .search-field:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px var(--brand-soft);
+    }
+
+    .search-field-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--brand);
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-auth {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--brand);
+    }
+
+    .btn-auth:hover {
+      background: var(--brand-light);
+      border-color: var(--brand);
+    }
+
+    .btn-cart-main {
+      background: var(--brand);
+      color: #ffffff;
+      border: 1.5px solid var(--brand);
+      box-shadow: 0 4px 14px rgba(9, 68, 108, 0.25);
+    }
+
+    .btn-cart-main:hover {
+      background: var(--brand-hover);
+      transform: translateY(-1px);
+    }
+
+    .cart-chip-counter {
+      background: #ffffff;
+      color: var(--brand);
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .mobile-search-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--brand);
+      font-size: 15px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .mobile-search-expand {
+      display: none;
+      padding: 0 20px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-search-expand.active {
+      display: block;
+    }
+
+    .mobile-search-expand .search-field {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px 10px 42px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+    }
+
+    #cart-content {
+      display: none;
+    }
+
+    /* Sub-Navigation Categories */
+    .catalog-nav-strip {
+      border-top: 1px solid var(--border-subtle);
+      background: #ffffff;
+    }
+
+    .catalog-nav-list {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      list-style: none;
+      overflow-x: auto;
+      padding: 10px 0;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .catalog-nav-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .catalog-nav-link {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .catalog-nav-link:hover, .catalog-nav-link.active {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+    }
+
+    .catalog-nav-link.active i {
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       App-Style Mobile Drawer
+       ========================================================================== */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 38, 61, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 99998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      left: -320px !important;
+      width: 300px !important;
+      max-width: 85vw !important;
+      height: 100% !important;
+      height: 100dvh !important;
+      background: #ffffff !important;
+      z-index: 99999 !important;
+      box-shadow: 12px 0 35px rgba(9, 68, 108, 0.18) !important;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .mobile-drawer.open {
+      transform: translateX(320px) !important;
+    }
+
+    .drawer-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 16px 20px !important;
+      border-bottom: 1px solid var(--border) !important;
+      background: #ffffff !important;
+    }
+
+    .drawer-close-btn {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: var(--brand-light) !important;
+      border: 1px solid var(--border) !important;
+      font-size: 15px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: var(--brand) !important;
+      transition: var(--transition) !important;
+    }
+
+    .drawer-content {
+      padding: 20px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 22px !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    .drawer-section-label {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 1.2px !important;
+      text-transform: uppercase !important;
+      color: var(--brand) !important;
+      margin-bottom: 10px !important;
+      display: block !important;
+    }
+
+    .drawer-links-box {
+      list-style: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .drawer-nav-item {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 12px 14px !important;
+      border-radius: var(--radius-sm) !important;
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      color: var(--text) !important;
+      background: #ffffff !important;
+      border: 1px solid var(--border) !important;
+      transition: var(--transition) !important;
+    }
+
+    .drawer-nav-item span {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+
+    .drawer-nav-item i.nav-icon {
+      width: 20px !important;
+      color: var(--brand) !important;
+      font-size: 15px !important;
+      text-align: center !important;
+    }
+
+    .drawer-nav-item i.chevron {
+      font-size: 11px !important;
+      color: #94a3b8 !important;
+    }
+
+    .drawer-nav-item:hover, .drawer-nav-item.active {
+      background: var(--brand) !important;
+      color: #ffffff !important;
+      border-color: var(--brand) !important;
+    }
+
+    .drawer-nav-item:hover i.nav-icon, .drawer-nav-item:hover i.chevron,
+    .drawer-nav-item.active i.nav-icon, .drawer-nav-item.active i.chevron {
+      color: #ffffff !important;
+    }
+
+    .drawer-footer {
+      padding: 16px 20px !important;
+      border-top: 1px solid var(--border) !important;
+      background: #ffffff !important;
+    }
+
+    .drawer-cta-btn {
+      width: 100% !important;
+      background: #25d366 !important;
+      color: #ffffff !important;
+      padding: 13px 18px !important;
+      border-radius: var(--radius-pill) !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3) !important;
+    }
+
+    /* ==========================================================================
+       Pure Image Slider
+       ========================================================================== */
+    .hero-gallery-wrap {
+      padding: 16px 0 24px;
+    }
+
+    .clean-image-slider {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #e2e8f0;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    .slider-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slider-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+    }
+
+    .slider-slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 1;
+    }
+
+    .slider-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .slider-arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid var(--border);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 14px rgba(9, 68, 108, 0.15);
+      transition: var(--transition);
+    }
+
+    .slider-arrow-btn:hover {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .slider-prev { left: 24px; }
+    .slider-next { right: 24px; }
+
+    .slider-dots-nav {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      background: rgba(9, 68, 108, 0.35);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      backdrop-filter: blur(8px);
+    }
+
+    .slider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.55);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .slider-dot.active {
+      width: 24px;
+      background: #ffffff;
+    }
+
+    /* --- Value Proposition Grid --- */
+    .features-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin: 24px 0 60px;
+    }
+
+    .feature-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .feature-box:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--brand);
+    }
+
+    .feature-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--brand-light);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .feature-info h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 2px;
+    }
+
+    .feature-info p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* --- Product Collections Showcase --- */
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--brand);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .section-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .section-description {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 600px;
+      margin: 6px auto 0;
+    }
+
+    .category-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+      margin-bottom: 72px;
+    }
+
+    .category-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .category-card.span-2 {
+      grid-column: span 2;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--brand);
+    }
+
+    .card-photo-wrap {
+      height: 230px;
+      background: #f1f5f9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card.span-2 .card-photo-wrap {
+      height: 270px;
+    }
+
+    .card-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .category-card:hover .card-photo-wrap img {
+      transform: scale(1.06);
+    }
+
+    .floating-pill-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(9, 68, 108, 0.9);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .card-content-area {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .card-title-row h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-description {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
+
+    .card-action-link {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--brand);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .card-action-link i {
+      color: var(--brand);
+      transition: transform 0.2s ease;
+    }
+
+    .category-card:hover .card-action-link i {
+      transform: translateX(4px);
+    }
+
+    /* --- B2B Strip --- */
+    .b2b-contract-banner {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%);
+      border-radius: var(--radius-lg);
+      padding: 44px 48px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 72px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .b2b-contract-banner::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--brand-light);
+    }
+
+    .banner-text-block h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .banner-text-block p {
+      color: #d1e4f0;
+      font-size: 14.5px;
+      max-width: 620px;
+      line-height: 1.6;
+    }
+
+    .btn-sand-action {
+      background: #ffffff;
+      color: var(--brand);
+      font-size: 14.5px;
+      font-weight: 700;
+      padding: 13px 30px;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      transition: var(--transition);
+    }
+
+    .btn-sand-action:hover {
+      background: var(--brand-light);
+      transform: translateY(-2px);
+    }
+
+    /* Floating WhatsApp */
+    .floating-whatsapp {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 54px;
+      height: 54px;
+      background: #25d366;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+      z-index: 998;
+      transition: var(--transition);
+    }
+
+    .floating-whatsapp:hover {
+      transform: scale(1.08);
+    }
+
+    /* --- Footer --- */
+    .site-footer {
+      background: var(--brand-dark);
+      color: #b3cddf;
+      padding: 60px 0 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand-summary h4 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand-summary p {
+      font-size: 13.5px;
+      line-height: 1.7;
+      max-width: 320px;
+      margin-bottom: 18px;
+    }
+
+    .maroof-trust-badge img {
+      max-width: 120px;
+      height: auto;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      padding: 4px;
+    }
+
+    .footer-col-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13.5px;
+    }
+
+    .footer-links-list a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom-strip {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .payment-gateways-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .payment-chip {
+      height: 26px;
+      background: #ffffff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .payment-chip img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* ==========================================================================
+       Responsive & Mobile Breakpoints
+       ========================================================================== */
+    @media (max-width: 1100px) {
+      .category-grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .category-card.span-2 {
+        grid-column: span 1;
+      }
+      .features-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-strip { display: none; }
+      .search-pill-wrapper { display: none; }
+      .btn-auth { display: none; }
+      #cart-total { display: none; }
+      .mobile-menu-btn { display: flex; }
+      .mobile-search-toggle { display: flex; }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .header-main {
+        height: 62px;
+      }
+
+      .brand-logo-img {
+        height: 34px;
+      }
+
+      .btn-cart-main {
+        padding: 8px 14px;
+      }
+
+      /* Horizontal Category Pills */
+      .catalog-nav-list {
+        padding: 8px 0;
+        gap: 6px;
+      }
+
+      .catalog-nav-link {
+        font-size: 12px;
+        padding: 6px 14px;
+      }
+
+      /* Mobile Aspect Ratio Slider */
+      .hero-gallery-wrap {
+        padding: 10px 0 16px;
+      }
+
+      .clean-image-slider {
+        height: 240px;
+        border-radius: var(--radius-md);
+      }
+
+      .slider-arrow-btn {
+        display: none;
+      }
+
+      .slider-dots-nav {
+        bottom: 10px;
+        padding: 4px 8px;
+      }
+
+      .features-strip {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin: 16px 0 44px;
+      }
+
+      .category-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 56px;
+      }
+
+      .category-card.span-2 .card-photo-wrap,
+      .card-photo-wrap {
+        height: 190px;
+      }
+
+      .b2b-contract-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 20px;
+        margin-bottom: 56px;
+      }
+
+      .floating-whatsapp {
+        bottom: 20px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+      }
+
+      .footer-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .footer-bottom-strip {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Utilities Strip (Desktop) -->
+  <aside class="top-strip">
+    <div class="container top-strip-inner">
+      <ul class="top-links">
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
+        <li>
+          <a href="https://maroof.sa/40866" target="_blank" rel="noopener" class="trust-chip">
+            <i class="fa-solid fa-certificate"></i> Maroof Verified 🏅
+          </a>
+        </li>
+      </ul>
+      <div>Customer Service: +966 55 546 5718</div>
+    </div>
+  </aside>
+
+  <!-- Modern Sticky Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-main">
+        <div class="nav-left-group">
+          <!-- Mobile Menu Drawer Toggle -->
+          <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Navigation Drawer">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+
+          <!-- Brand Identity using official logo -->
+          <a href="/" class="brand-identity" title="Kayan Andalus Curtains">
+            {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" class="brand-logo-img" />{% raw %}
+          </a>
+        </div>
+
+        <!-- Desktop Search Bar -->
+        <div class="search-pill-wrapper">
+          <input type="search" class="search-field" placeholder="Search fabrics, blackout, zebra..." aria-label="Search products" />
+          <i class="fa-solid fa-magnifying-glass search-field-icon"></i>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <!-- Mobile Search Trigger Button -->
+          <button class="mobile-search-toggle" id="mobile-search-toggle" aria-label="Toggle Search Field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+
+          <!-- Desktop Login -->
+          {% endraw %}
+{%- if frappe.session.user and frappe.session.user != "Guest" %}
+          <a href="/account" class="btn-header-pill btn-auth">
+            <i class="fa-regular fa-user"></i>
+            <span class="links-text">{{ _("My Account") }}</span>
+          </a>
+          <a href="/logout" class="btn-header-pill btn-auth">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span class="links-text">{{ _("Logout") }}</span>
+          </a>
+        {%- else %}
+          <a href="/login" class="btn-header-pill btn-auth">
+            <i class="fa-regular fa-user"></i>
+            <span class="links-text">{{ _("Login") }}</span>
+          </a>
+        {%- endif %}
+{% raw %}
+
+          <!-- Cart Badge Hub -->
+          <a href="/cart" id="cart" class="btn-header-pill btn-cart-main">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cart-total">0 item(s) - SR 0.00</span>
+            <span class="cart-chip-counter" id="cart-items">0</span>
+          </a>
+          <div id="cart-content"></div>
+        </div>
+      </div>
+
+      <!-- Expandable Mobile Search Field -->
+      <div class="mobile-search-expand" id="mobile-search-expand">
+        <div style="position: relative;">
+          <input type="search" class="search-field" placeholder="Search curtains, fabrics..." aria-label="Search mobile" />
+          <i class="fa-solid fa-magnifying-glass search-field-icon"></i>
+        </div>
+      </div>
+
+      <!-- Horizontal Categories Snap-Scroll Bar -->
+      <nav class="catalog-nav-strip" aria-label="Categories">
+        {% endraw %}<ul class="catalog-nav-list">
+          {%- for item in cr.nav_items %}
+          <li><a href="{{ item.route }}" class="catalog-nav-link{% if item.route == cr_active %} active{% endif %}">
+            {%- if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ _(item.label) }}</a></li>
+          {%- endfor %}
+        </ul>{% raw %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Slide-Out Drawer Menu (Styled with #09446c Brand Palette) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation Drawer">
+    <div class="drawer-header">
+      <a href="/" class="brand-identity">
+        {% endraw %}<img src="{{ cr.logo }}" alt="{{ cr.logo_alt }}" style="height: 36px; width: auto;" />{% raw %}
+      </a>
+      <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Drawer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="drawer-content">
+      <div>
+        <span class="drawer-section-label">Collections</span>
+        {% endraw %}{% include "kayan_curtain/templates/includes/drawer_collections.html" %}{% raw %}
+      </div>
+
+      <div>
+        <span class="drawer-section-label">Account & Help</span>
+        <ul class="drawer-links-box">
+          {% endraw %}
+{%- if frappe.session.user and frappe.session.user != "Guest" %}
+          <li>
+            <a href="/account" class="drawer-nav-item">
+              <span><i class="fa-regular fa-user nav-icon"></i> {{ _("My Account") }}</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/logout" class="drawer-nav-item">
+              <span><i class="fa-solid fa-arrow-right-from-bracket nav-icon"></i> {{ _("Logout") }}</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
+        {%- else %}
+          <li>
+            <a href="/login" class="drawer-nav-item">
+              <span><i class="fa-regular fa-user nav-icon"></i> {{ _("Account / Login") }}</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
+        {%- endif %}
+{% raw %}
+          <li>
+            <a href="/about-us" class="drawer-nav-item">
+              <span><i class="fa-solid fa-circle-info nav-icon"></i> About Us</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/contact-us" class="drawer-nav-item">
+              <span><i class="fa-solid fa-phone-volume nav-icon"></i> Contact Us</span>
+              <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <a href="https://wa.me/966555465718" target="_blank" rel="noopener" class="drawer-cta-btn">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Consult on WhatsApp</span>
+      </a>
+    </div>
+  </aside>{% endraw %}
+
+{% block content %}{% endblock %}
+
+{% raw %}{% endraw %}{% include "templates/includes/site_footer.html" %}{% raw %}
+
+  <!-- Fast Native Slider Engine & Mobile Navigation Control -->
+  <script>
+    // Native Carousel Logic
+    (function initPureImageSlider() {
+      const slides = document.querySelectorAll('.slider-slide');
+      const prevBtn = document.getElementById('slider-prev-btn');
+      const nextBtn = document.getElementById('slider-next-btn');
+      const dotsNav = document.getElementById('slider-dots-nav');
+      let currentIdx = 0;
+      let timer = null;
+
+      if (!slides.length) return;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('aria-label', `Navigate to slide ${i + 1}`);
+        dot.addEventListener('click', () => {
+          setSlide(i);
+          restartTimer();
+        });
+        dotsNav.appendChild(dot);
+      });
+
+      const dots = dotsNav.querySelectorAll('.slider-dot');
+
+      function setSlide(i) {
+        currentIdx = (i + slides.length) % slides.length;
+        slides.forEach((s, idx) => s.classList.toggle('active', idx === currentIdx));
+        dots.forEach((d, idx) => d.classList.toggle('active', idx === currentIdx));
+      }
+
+      function next() { setSlide(currentIdx + 1); }
+      function prev() { setSlide(currentIdx - 1); }
+
+      nextBtn.addEventListener('click', () => { next(); restartTimer(); });
+      prevBtn.addEventListener('click', () => { prev(); restartTimer(); });
+
+      function startTimer() { timer = setInterval(next, 5000); }
+      function restartTimer() { clearInterval(timer); startTimer(); }
+
+      startTimer();
+    })();
+
+    // Robust Mobile Drawer & Search Tray Controller
+    (function initMobileNav() {
+      const toggleBtn = document.getElementById('mobile-menu-toggle');
+      const closeBtn = document.getElementById('drawer-close-btn');
+      const drawer = document.getElementById('mobile-drawer');
+      const overlay = document.getElementById('drawer-overlay');
+      const searchToggle = document.getElementById('mobile-search-toggle');
+      const mobileSearchExpand = document.getElementById('mobile-search-expand');
+
+      function openDrawer() {
+        if (!drawer || !overlay) return;
+        drawer.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        if (!drawer || !overlay) return;
+        drawer.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (overlay) overlay.addEventListener('click', closeDrawer);
+
+      if (searchToggle && mobileSearchExpand) {
+        searchToggle.addEventListener('click', function () {
+          mobileSearchExpand.classList.toggle('active');
+          const input = mobileSearchExpand.querySelector('input');
+          if (mobileSearchExpand.classList.contains('active') && input) {
+            input.focus();
+          }
+        });
+      }
+    })();
+  </script>
+
+
+<!-- ==========================================================================
+     ORIGINAL SERVER BACKEND INTEGRATION SCRIPT (UNTOUCHED LOGIC)
+     ========================================================================== -->
+<script>
+/* The ported pages are raw theme HTML with no Frappe boot script, so the
+   theme's jQuery AJAX sends no CSRF token and Frappe rejects every POST with
+   CSRFTokenError before our code runs.
+
+   The token is FETCHED, not baked in: Frappe caches website pages, so a
+   template-rendered token comes back stale or blank for other sessions. */
+(function () {
+  function armJQuery(token) {
+    if (!window.jQuery) return false;
+    jQuery.ajaxSetup({ headers: { "X-Frappe-CSRF-Token": token } });
+    // belt and braces: some theme calls build their own payloads
+    jQuery(document).ajaxSend(function (e, xhr) {
+      try { xhr.setRequestHeader("X-Frappe-CSRF-Token", token); } catch (err) {}
+    });
+    return true;
+  }
+
+  /* --- header: the snapshot always renders the logged-out state --------- */
+  function applySession(s) {
+    var login = null, register = null;
+    var links = document.querySelectorAll('a[href="/login"], a[href="/login#signup"]');
+    Array.prototype.forEach.call(links, function (a) {
+      var href = a.getAttribute("href");
+      if (href === "/login") login = login || a;
+      else register = register || a;
+    });
+
+    if (s.logged_in) {
+      Array.prototype.forEach.call(links, function (a) {
+        var span = a.querySelector(".links-text") || a;
+        var href = a.getAttribute("href");
+        if (href === "/login") { span.textContent = s.full_name || "My Account"; a.setAttribute("href", "/account"); }
+        else { span.textContent = "Logout"; a.setAttribute("href", "/logout"); }
+      });
+    }
+
+    // header cart counter (the snapshot is baked at 0)
+    if (s.cart_text) {
+      var el = document.getElementById("cart-total");
+      if (el) el.textContent = s.cart_text;
+    }
+    renderDropdown(s.cart_items || [], s.cart_text, s.cart_count || 0);
+  }
+
+  /* The hover dropdown is baked as "Your shopping cart is empty!" in the
+     snapshot, so it must be rebuilt from live data. */
+  function renderDropdown(items, totalText, count) {
+    var badge = document.getElementById("cart-items");
+    if (badge) {
+      badge.textContent = count;
+      badge.classList.toggle("count-zero", count === 0);
+    }
+
+    var box = document.getElementById("cart-content");
+    if (!box) return;
+    if (!items.length) return;   // leave the theme's empty message alone
+
+    function esc(v) {
+      return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    var rows = items.map(function (i) {
+      return '<li style="padding:8px 12px;display:flex;justify-content:space-between;gap:12px;">' +
+        '<span>' + esc(i.name) + ' &times; ' + esc(parseInt(i.qty, 10)) + '</span>' +
+        '<span style="white-space:nowrap;">' + esc(Number(i.amount).toFixed(2)) + '</span>' +
+        '</li>';
+    }).join("");
+
+    box.innerHTML =
+      '<ul style="margin:0;padding:6px 0;list-style:none;">' + rows +
+      '<li style="padding:10px 12px;border-top:1px solid #e6e8eb;font-weight:700;">' +
+      esc(totalText || "") + '</li>' +
+      '<li style="padding:10px 12px;">' +
+      '<a href="/cart" style="display:block;text-align:center;background:#09446c;color:#ffffff;' +
+      'font-weight:700;padding:9px 14px;border-radius:7px;text-decoration:none;">View Cart</a>' +
+      '</li></ul>';
+  }
+
+  /* --- "added to cart" popup with a View Cart button -------------------- */
+  function toast(message) {
+    var old = document.getElementById("cr-toast");
+    if (old) old.remove();
+    var box = document.createElement("div");
+    box.id = "cr-toast";
+    box.setAttribute("role", "status");
+    box.style.cssText = [
+      "position:fixed", "top:20px", "right:20px", "z-index:99999",
+      "background:#fff", "border:1px solid #e1ebf2", "border-radius:10px",
+      "box-shadow:0 10px 30px rgba(9,68,108,.12)", "padding:16px 18px",
+      "max-width:330px", "font:14px/1.5 inherit", "color:#09446c"
+    ].join(";");
+    box.innerHTML =
+      '<div style="font-weight:700;margin-bottom:8px;color:#09446c;">' + message + '</div>' +
+      '<div style="display:flex;gap:10px;align-items:center;">' +
+      '<a href="/cart" style="background:#09446c;color:#fff;font-weight:700;' +
+      'padding:8px 14px;border-radius:7px;text-decoration:none;">View Cart</a>' +
+      '<button type="button" style="background:none;border:0;cursor:pointer;color:#54667a;">Continue</button>' +
+      '</div>';
+    box.querySelector("button").onclick = function () { box.remove(); };
+    document.body.appendChild(box);
+    setTimeout(function () { if (box.parentNode) box.remove(); }, 8000);
+  }
+
+  /* --- make the configurator render actually reach the cart -------------
+     The theme's inline handler POSTs the canvas to script.php, then writes the
+     returned filename into #input-option356 / 357 / 426 - ids hardcoded for a
+     few products. On every other page (blackout is #input-option378) those
+     elements do not exist, so the value lands nowhere and an EMPTY capture
+     field is submitted. Wrapping $.ajax lets us register a .done() BEFORE the
+     theme's, so the real field is filled before the cart request is built. */
+  function armCapture() {
+    if (!window.jQuery || jQuery.__crCaptureWrapped) return false;
+    var orig = jQuery.ajax;
+    jQuery.ajax = function (opts) {
+      var jqxhr = orig.apply(this, arguments);
+      var url = (opts && opts.url) || (typeof opts === "string" ? opts : "");
+      if (String(url).indexOf("script.php") !== -1 && jqxhr && jqxhr.done) {
+        jqxhr.done(function (resp) {
+          var value = String(resp || "").trim();
+          if (!value) return;
+          document.querySelectorAll('input[placeholder="Captured image"]')
+            .forEach(function (el) { el.value = value; });
+        });
+      }
+      return jqxhr;
+    };
+    jQuery.__crCaptureWrapped = true;
+    return true;
+  }
+
+  function watchCart() {
+    if (!window.jQuery) return false;
+    jQuery(document).ajaxComplete(function (e, xhr, settings) {
+      var url = String(settings.url || "");
+      if (url.indexOf("checkout/cart/add") === -1) return;
+      var json = {};
+      try { json = JSON.parse(xhr.responseText || "{}"); } catch (err) { return; }
+      if (json.redirect) { window.location = json.redirect; return; }
+      if (json.success) {
+        toast("Added to your cart");
+        if (json.total) {
+          var el = document.getElementById("cart-total");
+          if (el) el.textContent = json.total;
+        }
+        // rebuild the hover dropdown from live data
+        fetch("/api/method/kayan_curtain.api.session_info", { credentials: "same-origin" })
+          .then(function (r) { return r.json(); })
+          .then(function (jj) { applySession((jj && jj.message) || {}); })
+          .catch(function () {});
+      }
+    });
+    return true;
+  }
+
+  // arm the capture wrapper straight away - it must be in place before the
+  // visitor can click Add to cart, not after an async round trip
+  if (!armCapture()) {
+    var a = setInterval(function () { if (armCapture()) clearInterval(a); }, 80);
+    setTimeout(function () { clearInterval(a); }, 15000);
+  }
+
+  fetch("/api/method/kayan_curtain.api.session_info", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      var s = (j && j.message) || {};
+      var token = s.csrf_token || "";
+      window.csrf_token = token;
+      if (token && !armJQuery(token)) {
+        var t = setInterval(function () { if (armJQuery(token)) clearInterval(t); }, 100);
+        setTimeout(function () { clearInterval(t); }, 15000);
+      }
+      applySession(s);
+      if (!armCapture()) {
+        var c = setInterval(function () { if (armCapture()) clearInterval(c); }, 120);
+        setTimeout(function () { clearInterval(c); }, 15000);
+      }
+      if (!watchCart()) {
+        var w = setInterval(function () { if (watchCart()) clearInterval(w); }, 150);
+        setTimeout(function () { clearInterval(w); }, 15000);
+      }
+    })
+    .catch(function () {});
+})();
+</script>
+
+
+<script>
+/* Reveal the signed-in account links.
+
+   Hidden in the markup, shown only after the server answers, so a signed-out
+   visitor never sees a flash of "Logout". The existing session script already
+   turns the Login links into My Account; this only uncovers what it cannot -
+   there is one Login link in this header where the captured theme had two, so
+   nothing was left over to become Logout. */
+(function () {
+  fetch("/api/method/kayan_curtain.api.session_info", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!((j && j.message) || {}).logged_in) { return; }
+      var els = document.querySelectorAll(".cr-signed-in");
+      Array.prototype.forEach.call(els, function (e) { e.style.display = ""; });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
+{% endraw %}

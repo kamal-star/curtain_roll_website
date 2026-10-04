@@ -1,6 +1,6 @@
 # Which pages are generated, and which are not
 
-Most pages under `curtain_roll/www/` are **generated**. They are not the
+Most pages under `kayan_curtain/www/` are **generated**. They are not the
 source. A build script reads the captured Journal3 site, rewrites it and
 overwrites them, so an edit made here is lost the next time anyone builds.
 

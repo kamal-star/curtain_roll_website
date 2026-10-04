@@ -1,0 +1,823 @@
+"""English and Arabic for the storefront.
+
+The site is two different things wearing one skin:
+
+  * the pages I wrote - cart, the account area, checkout - are ordinary Jinja
+    and use `_()`, so Frappe translates them from a normal translation file
+    once `frappe.local.lang` is "ar". Nothing in those pages changes.
+  * the ported Journal3 pages keep their English inside `{% raw %}`, which is
+    what stops Jinja - and therefore `_()` - from ever seeing it. Their text
+    has to be swapped in the rendered HTML instead.
+
+So the Arabic for those pages lives in `translations/strings.json`, one flat
+map of English to Arabic that the client can read and correct without touching
+markup, and `translate_html` applies it to the finished page.
+
+Same URLs in both languages, chosen by a cookie, which is how the original
+curtain-roll.com behaved.
+"""
+import io
+import json
+import os
+import re
+from html import unescape
+from html.parser import HTMLParser
+
+import frappe
+
+COOKIE = "preferred_language"
+PHRASE_CACHE_KEY = "curtain_roll_phrases"
+SUPPORTED = ("en", "ar")
+RTL = ("ar",)
+
+# script and style hold code, not prose; textarea holds the visitor's own text
+OPAQUE = {"script", "style", "noscript", "textarea"}
+SHOWN_ATTRS = ("alt", "title", "placeholder", "value")
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+        "meta", "param", "source", "track", "wbr"}
+
+
+# "SR 380.00" is built by the money formatter, not written anywhere, so it
+# cannot be in the dictionary. In Arabic the amount leads and the currency
+# follows it.
+MONEY = re.compile(r"^SR\s*([\d,]+(?:\.\d+)?)$")
+RIYAL = "ر.س"
+PARENTHESISED = re.compile(r"^(.+?)\s*\((.+)\)$")
+
+
+# --------------------------------------------------------------- the language
+def current():
+	"""Which language this request is in - always one of SUPPORTED."""
+	lang = (getattr(frappe.local, "lang", None) or "en").lower()
+	lang = lang.split("-")[0]
+	return lang if lang in SUPPORTED else "en"
+
+
+def is_rtl():
+	return current() in RTL
+
+
+def direction():
+	return "rtl" if is_rtl() else "ltr"
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+def set_language(lang=None):
+	"""Remember the visitor's choice, for a year.
+
+	Frappe reads this cookie itself (`frappe.translate.get_preferred_language_cookie`)
+	and only honours a language that is actually installed, so an unknown value
+	here is ignored rather than breaking the site.
+	"""
+	lang = (lang or "").lower()
+	if lang not in SUPPORTED:
+		frappe.throw(frappe._("Unknown language"))
+
+	frappe.local.cookie_manager.set_cookie(
+		COOKIE, lang, max_age=365 * 24 * 60 * 60, samesite="Lax")
+
+	# The cookie alone is not enough for someone signed in. Frappe's
+	# get_language() returns early for a logged-in user and reads their User
+	# record instead, so without this the switch appears to do nothing for
+	# exactly the people most likely to use it - customers with an account.
+	# It also means their choice follows them to another browser.
+	user = frappe.session.user
+	if user and user != "Guest":
+		frappe.db.set_value("User", user, "language", lang,
+		                    update_modified=False)
+		frappe.db.commit()
+
+	frappe.local.lang = lang
+	return {"ok": 1, "lang": lang}
+
+
+def apply_language():
+	"""before_request hook: let the cookie decide, whoever is asking.
+
+	Frappe resolves language differently for a guest and for someone signed
+	in - a guest gets the cookie, while a signed-in user gets their User
+	record, read through a cache. So the switch worked for browsers and not
+	for customers, and a stale cache could put it back to English on its own.
+
+	A shop should not behave that way: the visitor's last click wins, right
+	away. set_language still writes the User record so the desk and their
+	emails agree, but nothing here depends on that having worked.
+
+	This runs after the session is set up (Frappe calls before_request hooks
+	at the end of process_request), so it has the last word on the language.
+	"""
+	request = getattr(frappe.local, "request", None)
+	if request is None:
+		return
+
+	path = getattr(request, "path", "") or ""
+	if path.startswith("/app") or path.startswith("/assets"):
+		return
+
+	try:
+		chosen = (request.cookies.get(COOKIE) or "").lower().split("-")[0]
+	except Exception:
+		return
+	if chosen in SUPPORTED:
+		frappe.local.lang = chosen
+
+
+# ------------------------------------------------------------- the dictionary
+def _from_file():
+	"""The shipped Arabic. Seed for a new site, and a floor under the table.
+
+	Keeping this as the base means a phrase added by a deploy works straight
+	away, before anyone has opened the Curtain Translation list.
+	"""
+	path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+	                    "translations", "strings.json")
+	table = {}
+	try:
+		data = json.load(io.open(path, encoding="utf-8"))
+		for english, arabic in (data.get("strings") or {}).items():
+			arabic = (arabic or "").strip()
+			if arabic:
+				table[" ".join(english.split())] = arabic
+	except Exception:
+		# a broken or missing file must not take the storefront down; English
+		# is a perfectly good fallback and the error is worth seeing
+		frappe.log_error(title="kayan_curtain: could not read strings.json",
+		                 message=frappe.get_traceback())
+	return table
+
+
+def _from_table(base):
+	"""What the client has actually decided, laid over the shipped Arabic.
+
+	An empty Arabic on a row is a decision too - it means show the English -
+	so it removes the shipped value rather than being ignored. Otherwise a
+	deliberate "leave this in English" would silently come back after a deploy.
+	"""
+	try:
+		rows = frappe.get_all("Curtain Translation",
+		                      fields=["source_text", "arabic"],
+		                      limit_page_length=0)
+	except Exception:
+		# before the first migrate the table does not exist yet
+		return base
+
+	for row in rows:
+		key = " ".join((row.get("source_text") or "").split())
+		if not key:
+			continue
+		arabic = (row.get("arabic") or "").strip()
+		if arabic:
+			base[key] = arabic
+		else:
+			base.pop(key, None)
+	return base
+
+
+def _with_sub_options(table):
+	"""Add the Arabic typed on each Manual / Motorized choice to the dictionary.
+
+	The configurator shows those rows' Arabic directly, but the cart line is
+	stored in English - "Handle Type: Metal" - and translated here, line by line,
+	on an Arabic page. Without this the choices the customer picked in Arabic
+	would come back to them in English in their own cart.
+
+	Only fills gaps: a word the client has set in Curtain Translation is theirs,
+	and wins.
+	"""
+	try:
+		rows = frappe.get_all(
+			"Curtain Sub Option",
+			fields=["group_label", "group_label_ar", "option_label", "option_label_ar"],
+			parent_doctype="Curtain Product")
+	except Exception:
+		return table
+	for row in rows:
+		for en, ar in ((row.group_label, row.group_label_ar),
+		               (row.option_label, row.option_label_ar)):
+			en = " ".join((en or "").split())
+			ar = (ar or "").strip()
+			if en and ar and en not in table:
+				table[en] = ar
+	return table
+
+
+def phrases():
+	"""English -> Arabic. The client's edits win over the shipped file.
+
+	Cached in Redis and again on the request, because this is read on every
+	page and the table is small enough to hold whole.
+	"""
+	if getattr(frappe.local, "_curtain_phrases", None) is not None:
+		return frappe.local._curtain_phrases
+
+	table = frappe.cache().get_value(PHRASE_CACHE_KEY)
+	if table is None:
+		table = _with_sub_options(_from_table(_from_file()))
+		frappe.cache().set_value(PHRASE_CACHE_KEY, table)
+
+	frappe.local._curtain_phrases = table
+	return table
+
+
+def say(text, table=None):
+	"""Translate one visible string, keeping the whitespace around it.
+
+	Falls back twice when the whole string is not in the dictionary, because
+	a lot of what a customer reads is assembled rather than written:
+
+	  * a cart line's description is several "Label: value" lines in one text
+	    node, built when the item was added and stored on the Quotation. It
+	    will never match as a whole, but every part of it is in the file.
+	  * so each line, and then each side of the colon, is looked up on its own.
+
+	Only exact matches are ever replaced, so this can add Arabic but cannot
+	invent it.
+	"""
+	table = phrases() if table is None else table
+	if not text or not text.strip():
+		return text
+
+	lead = text[:len(text) - len(text.lstrip())]
+	tail = text[len(text.rstrip()):]
+	body = " ".join(text.split())
+
+	found = table.get(body)
+	if found:
+		return lead + found + tail
+
+	if "\n" in text.strip():
+		lines = [say(line, table) for line in text.split("\n")]
+		return "\n".join(lines)
+
+	money = MONEY.match(body)
+	if money:
+		return "%s%s %s%s" % (lead, money.group(1), RIYAL, tail)
+
+	if ":" in body:
+		label, _, value = body.partition(":")
+		label, value = label.strip(), value.strip()
+		new_label = _label(label, table)
+		new_value = say(value, table) if value else ""
+		if new_label or (value and new_value != value):
+			shown = "%s:" % (new_label or label)
+			if value:
+				shown = "%s %s" % (shown, new_value)
+			return lead + shown + tail
+	return text
+
+
+def text(english):
+	"""One string in the visitor's language, from the storefront's dictionary.
+
+	For text that never passes through the page-wide Arabic swap. A message
+	thrown back to a fetch() call arrives as JSON, and finish_page only rewrites
+	HTML - so a validation message would be the one English sentence on an
+	otherwise Arabic checkout, at the exact moment the customer needs to
+	understand it.
+
+	Frappe's own _() cannot do this either: these phrases are not in its
+	catalogue, they are in the file the client edits. Keeping them in the one
+	dictionary is the point - the client corrects a word once and it changes
+	everywhere, whether it reached the page as markup or as an error.
+	"""
+	if current() != "ar":
+		return english
+	return phrases().get(" ".join((english or "").split()), english)
+
+
+def storefront_translate(msg, lang=None, context=None):
+	"""`_()` for the storefront's own templates: the client's dictionary first.
+
+	The templates translate with `{{ _("...") }}`, and Frappe's `_()` looks in
+	the app catalogues - ERPNext's Arabic among them - before anything of ours
+	is consulted. Where ERPNext has a word, it wins, and ERPNext's words are
+	chosen for accounting screens: "Total" there is the pre-tax total, so it
+	comes out as "الاجمالي غير شامل الضريبة" - "total excluding tax" - printed
+	above a total that includes it. "Checkout" became "payment" and the coupon's
+	"Apply" became "submit". Worse, a correction the client typed into Curtain
+	Translation lost to ERPNext every time, for exactly those words.
+
+	So on the storefront their dictionary decides, and Frappe's catalogue is
+	only the fallback for words they have never had to think about.
+	"""
+	if current() == "ar":
+		found = phrases().get(" ".join(str(msg or "").split()))
+		if found:
+			return found
+	return frappe._(msg, lang=lang, context=context)
+
+
+def website_context(context):
+	"""update_website_context hook: give the storefront templates that `_`.
+
+	A name in the render context outranks the Jinja global of the same name,
+	and reaches included and extended templates too - so every `_()` on every
+	storefront page is covered without editing any of them, including the
+	product pages the generator rewrites.
+
+	ERPNext's print formats are not reached: they render in a context of their
+	own, which is right, because on an invoice "Total" really is the pre-tax
+	line and ERPNext's wording for it is the correct one.
+	"""
+	return {"_": storefront_translate}
+
+
+def _label(label, table):
+	"""Translate a label, including the "Option (Group)" form.
+
+	The price breakdown builds its lines as "<option> (<group>)", so the whole
+	label is never in the dictionary even though both halves always are.
+	"""
+	found = table.get(label)
+	if found:
+		return found
+
+	parts = PARENTHESISED.match(label)
+	if parts:
+		outer = table.get(parts.group(1).strip())
+		inner = table.get(parts.group(2).strip())
+		if outer or inner:
+			return "%s (%s)" % (outer or parts.group(1).strip(),
+			                    inner or parts.group(2).strip())
+	return None
+
+
+# ----------------------------------------------------------- rendered pages
+class _Translator(HTMLParser):
+	"""Rewrite a finished page's visible text, leaving everything else alone.
+
+	Rebuilds the document as it goes. Tags are re-emitted from their original
+	source text whenever nothing in them changed, so attribute quoting,
+	spacing and odd hand-written markup survive untouched - important here,
+	because this HTML was captured from someone else's site and is not ours
+	to tidy.
+	"""
+
+	def __init__(self, table):
+		super().__init__(convert_charrefs=False)
+		self.table = table
+		self.out = []
+		self.depth = []
+		# Text arrives in pieces: an entity reference splits a run of prose
+		# into three callbacks, so "Help &amp; Orders" would be looked up as
+		# "Help", "&", "Orders" and never match. Collect the pieces and
+		# translate the whole run when it ends.
+		self.buffer = []
+
+	def flush(self):
+		if not self.buffer:
+			return
+		raw = "".join(self.buffer)
+		self.buffer = []
+		if any(t in OPAQUE for t in self.depth):
+			self.out.append(raw)
+			return
+		plain = unescape(raw)
+		spoken = say(plain, self.table)
+		# only re-escape when we actually replaced something, so untouched
+		# markup keeps its original entities exactly as captured
+		self.out.append(
+			spoken.replace("&", "&amp;").replace("<", "&lt;")
+			if spoken != plain else raw)
+
+	# -- things we pass straight through
+	def handle_comment(self, data):
+		self.flush()
+		self.out.append("<!--%s-->" % data)
+
+	def handle_decl(self, decl):
+		self.flush()
+		self.out.append("<!%s>" % decl)
+
+	def handle_pi(self, data):
+		self.flush()
+		self.out.append("<?%s>" % data)
+
+	def unknown_decl(self, data):
+		self.flush()
+		self.out.append("<![%s]>" % data)
+
+	def handle_entityref(self, name):
+		self.buffer.append("&%s;" % name)
+
+	def handle_charref(self, name):
+		self.buffer.append("&#%s;" % name)
+
+	# -- tags
+	def _tag(self, tag, attrs, closing):
+		self.flush()
+		source = self.get_starttag_text() or ""
+		changed = {}
+		for key, value in attrs:
+			if key.lower() in SHOWN_ATTRS and value:
+				new = say(value, self.table)
+				if new != value:
+					changed[key] = new
+		if tag == "html":
+			changed["dir"] = direction()
+			changed["lang"] = current()
+
+		if not changed:
+			self.out.append(source)
+			return
+
+		parts = []
+		for key, value in attrs:
+			value = changed.pop(key, value)
+			parts.append(key if value is None
+			             else '%s="%s"' % (key, _quote(value)))
+		for key, value in changed.items():
+			parts.append('%s="%s"' % (key, _quote(value)))
+		self.out.append("<%s%s%s>" % (tag, (" " + " ".join(parts)) if parts else "",
+		                              " /" if closing else ""))
+
+	def handle_starttag(self, tag, attrs):
+		self._tag(tag, attrs, closing=False)
+		if tag not in VOID:
+			self.depth.append(tag)
+
+	def handle_startendtag(self, tag, attrs):
+		self._tag(tag, attrs, closing=True)
+
+	def handle_endtag(self, tag):
+		self.flush()
+		if tag in self.depth:
+			while self.depth and self.depth.pop() != tag:
+				pass
+		self.out.append("</%s>" % tag)
+
+	# -- the text itself
+	def handle_data(self, data):
+		self.buffer.append(data)
+
+	def result(self):
+		self.flush()
+		return "".join(self.out)
+
+
+def _quote(value):
+	return (value.replace("&", "&amp;").replace('"', "&quot;")
+	             .replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def translate_html(html):
+	"""Swap the visible English on a rendered page for Arabic.
+
+	Returns the page unchanged when there is nothing to swap, so a site with an
+	empty dictionary costs nothing and behaves exactly as before.
+	"""
+	table = phrases()
+	if not table or not html:
+		return html
+	try:
+		parser = _Translator(table)
+		parser.feed(html)
+		parser.close()
+		out = parser.result()
+	except Exception:
+		frappe.log_error(title="kayan_curtain: could not translate a page",
+		                 message=frappe.get_traceback())
+		return html
+
+	# a mangled rebuild is worse than English - sanity check the size
+	if not out or not (0.5 < len(out) / float(len(html)) < 2.5):
+		frappe.log_error(
+			title="kayan_curtain: translated page looks wrong, kept English",
+			message="in %d bytes, out %d bytes" % (len(html), len(out) if out else 0))
+		return html
+	return out
+
+
+# Frappe's desk, the API and static files are not the storefront and must not
+# be rewritten - the desk in particular is a JavaScript app whose HTML shell
+# carries no prose worth touching.
+NOT_OURS = ("/app", "/api/", "/assets/", "/files/", "/private/", "/socket.io")
+# the 3D bundles' textures and font, served from www/ (see finish_page)
+STATIC_3D = ("/maps/", "/three/")
+
+
+def _asset(relative):
+	"""A versioned URL for one of our own files under public/.
+
+	/assets is served with a long cache lifetime, so without a version in the
+	URL a returning visitor keeps running the copy they downloaded weeks ago -
+	a deployed fix silently does not reach the people who use the site most.
+	The file's own timestamp is version enough: it changes exactly when the
+	file does, and never otherwise.
+	"""
+	here = os.path.dirname(os.path.abspath(__file__))
+	try:
+		stamp = int(os.path.getmtime(os.path.join(here, "public", relative)))
+	except OSError:
+		stamp = 0
+	return "/assets/kayan_curtain/%s?v=%d" % (relative, stamp)
+
+
+def _switcher_tag():
+	return '<script src="%s" defer></script>' % _asset("js/curtain_lang.js")
+
+
+def _search_tag():
+	"""The search box's script, carried on the same ride as the switcher.
+
+	It belongs here for exactly the reason the switcher does: every header on
+	the site is a frozen copy inside a captured page, so the only place to reach
+	all of them at once is the finished HTML.
+	"""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_search.js")
+
+
+def _riyal_tag():
+	"""The Riyal sign, drawn over every price the page shows.
+
+	No `defer`, unlike the others: it goes in at the end of the body, where the
+	page above is already parsed, and running it straight away means the old
+	"SR" is replaced before the page is first painted rather than after.
+	"""
+	return '<script src="%s"></script>' % _asset("js/curtain_riyal.js")
+
+
+def _auth_tag():
+	"""Login links that bring the customer back to the page they were on."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_auth.js")
+
+
+def _wishlist_tag():
+	"""The header heart and the product page's Add to Wishlist heart."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
+
+
+# What the pages were written with. The headers, floating WhatsApp buttons and
+# info pages carry these in their own HTML; when the team sets other details
+# in Curtain Storefront Settings -> Footer, they are swapped in here.
+PAGE_WHATSAPP = "966555465718"
+PAGE_PHONE = "+966 55 546 5718"
+PAGE_MAROOF = "https://maroof.sa/40866"
+
+
+def _contact_details(html):
+	try:
+		from kayan_curtain.storefront import storefront_settings
+		cfg = storefront_settings()
+	except Exception:
+		return html
+	wa = cfg.get("contact_whatsapp") or ""
+	phone = (cfg.get("contact_phone") or "").strip()
+	maroof = cfg.get("maroof_url")
+	if wa and wa != PAGE_WHATSAPP and PAGE_WHATSAPP in html:
+		html = html.replace("wa.me/" + PAGE_WHATSAPP, "wa.me/" + wa)
+	if phone and phone != PAGE_PHONE:
+		compact = "".join(c for c in phone if c.isdigit() or c == "+")
+		html = (html.replace("tel:+" + PAGE_WHATSAPP, "tel:" + compact)
+		            .replace("+" + PAGE_WHATSAPP, compact)
+		            .replace(PAGE_PHONE, phone))
+	if maroof is not None and maroof != PAGE_MAROOF and PAGE_MAROOF in html:
+		if maroof:
+			html = html.replace(PAGE_MAROOF, maroof)
+		else:
+			# no Maroof page: the badge and the header chip go
+			html = re.sub(r'<li>\s*<a href="%s"[^>]*>.*?</a>\s*</li>' % re.escape(PAGE_MAROOF), "", html, flags=re.S)
+			html = re.sub(r'<a href="%s"[^>]*>.*?</a>' % re.escape(PAGE_MAROOF), "", html, flags=re.S)
+			# and out of the search engines' data ("sameAs": [...])
+			html = re.sub(r',?\s*"%s"' % re.escape(PAGE_MAROOF), "", html)
+	return html
+
+
+_PRESELECTED = re.compile(r'<input\b[^>]*\bname="option\[[^"]*\]"[^>]*>')
+
+
+def _no_preselected_options(html):
+	"""Nothing chosen for the customer on a product page.
+
+	The captured pages arrive with some choices already ticked - Manual,
+	Outside, With Installation - and the installation's price already in the
+	total. The client wants every choice left to the customer: they pick, and
+	the price follows. Only the product options are touched (name="option[..]");
+	the price check still asks for every required choice before the order.
+	"""
+	if 'name="option[' not in html or "checked" not in html:
+		return html
+
+	def untick(m):
+		tag = m.group(0)
+		if "checked" not in tag:
+			return tag
+		return re.sub(r'\s+checked(?:="[^"]*")?', "", tag)
+
+	return _PRESELECTED.sub(untick, html)
+
+
+def _product_text(html, path):
+	"""The heading and description the team wrote in Curtain Product -> Page
+	Text. Put in before translation, so words left as they were still get the
+	dictionary's Arabic and words the team changed show as they wrote them."""
+	key = (path or "").strip("/").split("/")[0]
+	if not key or 'class="product-title"' not in html:
+		return html
+	try:
+		from kayan_curtain.page_text import apply
+		return apply(html, key, current() == "ar")
+	except Exception:
+		return html
+
+
+BUNDLE_MARK = '<script src="/assets/kayan_curtain/configurator/'
+
+
+def _add_room(html, path):
+	"""The team's room picture for this product, ahead of its 3D bundle.
+
+	Only when one is set in Curtain Product -> 3D Room. It has to come before
+	the bundle: the bundle asks for its room as it starts, and the request is
+	redirected only if the redirect is already in place.
+	"""
+	key = (path or "").strip("/").split("/")[0]
+	if not key or BUNDLE_MARK not in html or "window.CR_ROOM = " in html:
+		return html
+	try:
+		from kayan_curtain.room import room_config
+		cfg = room_config(key)
+	except Exception:
+		return html
+	if not cfg:
+		return html
+	import json
+	tag = ('<script>window.CR_ROOM = %s;</script>'
+	       '<script src="%s"></script>' % (json.dumps(cfg), _asset("js/curtain_room.js")))
+	at = html.find(BUNDLE_MARK)
+	return html[:at] + tag + html[at:]
+
+
+def _nav_tag():
+	"""Arrows and wheel scrolling for the category bar once it overflows."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_nav.js")
+
+
+def _options_tag():
+	"""The product page's size limits and section switches, same ride again."""
+	return '<script src="%s" defer></script>' % _asset("js/curtain_options.js")
+
+
+def _rtl_sheet_tag():
+	return '<link rel="stylesheet" href="%s">' % _asset("css/curtain_rtl.css")
+
+
+# The header and the cart line are rewritten by the page's own script after
+# it loads - applySession swaps in the account links, and the cart total is
+# redrawn on every change. None of that exists yet when the server sees the
+# HTML, so these few strings have to reach the browser.
+RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
+                   "Wishlist", "Your cart is empty.", "Continue shopping",
+                   "Remove", "Your shopping cart is empty!",
+                   # the search suggestions are drawn in the browser; the names
+                   # inside them come back from the server already translated,
+                   # but the words around them are the script's own
+                   "See all results", "Closest matches", "Nothing matched.",
+                   # the size limits are written under the width and height
+                   # boxes by a script, with the numbers dropped in afterwards
+                   "Width must be between {0} and {1} cm.",
+                   "Height must be between {0} and {1} cm.",
+                   "Width must be at least {0} cm.",
+                   "Height must be at least {0} cm.",
+                   "Width can be at most {0} cm.",
+                   "Height can be at most {0} cm.",
+                   # the choices under Manual / Motorized, when no motor fits
+                   "No {0} is available for this size. Please contact us.",
+                   # the Printed blind's upload step, drawn by the script
+                   "Your Picture", "Upload a picture", "Choose another",
+                   "JPG, PNG or PDF, up to 20 MB. It is printed across the whole blind.",
+                   "Please upload a JPG, PNG or PDF file.",
+                   "That file is too large. The limit is 20 MB.",
+                   "Preparing the preview…", "Uploaded",
+                   "The picture could not be uploaded. Please try again.",
+                   # the hearts drawn by curtain_wishlist.js
+                   "Add to Wishlist", "Saved to your wishlist.",
+                   "Removed from your wishlist.", "View Wishlist",
+                   # the product page's price label, switched by curtain_options.js
+                   "Starts from:", "Total:",
+                   # the installation city select
+                   "Your city", "Choose your city", "Search your city",
+                   "No city found. Please contact us.",
+                   "Delivery city (Aramex)", "Type to see more cities")
+
+
+def _runtime_phrases():
+	"""Hand the browser only the strings its own script will write.
+
+	A short allow-list rather than the whole dictionary: the page does not
+	need 600 strings to redraw a header, and the file stays the single place
+	the Arabic lives.
+	"""
+	table = phrases()
+	wanted = {k: table[k] for k in RUNTIME_STRINGS if k in table}
+	if not wanted:
+		return ""
+	return "<script>window.__crPhrases=%s;</script>" % json.dumps(
+		wanted, ensure_ascii=False)
+
+
+_ICON_LINK = re.compile(
+	r'<link\b[^>]*\brel=["\'](?:shortcut icon|icon|apple-touch-icon(?:-precomposed)?)["\'][^>]*>',
+	re.I)
+
+
+def _set_favicon(html):
+	"""The favicon from Curtain Storefront Settings, on every page.
+
+	The pages were written at different times: the home page reads the setting,
+	the captured product pages still carry the old site's cart icon, and the
+	cart, checkout and account pages carry none - so the tab icon changed as
+	the customer clicked about. Whatever a page has is replaced here.
+	"""
+	try:
+		from kayan_curtain.storefront import storefront_settings
+
+		icon = (storefront_settings().get("favicon") or "").strip()
+	except Exception:
+		icon = ""
+	if not icon:
+		return html
+	html = _ICON_LINK.sub("", html)
+	href = frappe.utils.escape_html(icon)
+	# the phone home-screen icon too: Wavy still carried nine of the old site's
+	link = '<link rel="icon" href="%s"><link rel="apple-touch-icon" href="%s">' % (href, href)
+	head = html.find("</head>")
+	if head == -1:
+		return html
+	return html[:head] + link + html[head:]
+
+
+def _add_chrome(html):
+	"""Put the language switch, the search box's script, and Arabic layout on.
+
+	The 18 ported pages are standalone documents - they do not extend Frappe's
+	base template, so web_include_js never reaches them, and each carries its
+	own frozen copy of the header. Adding the script tags here covers all of
+	them and every page written since, and survives the next regeneration of
+	the captures.
+	"""
+	if "curtain_lang.js" in html:
+		return html
+
+	html = _set_favicon(html)
+	tag = (_switcher_tag() + _search_tag() + _options_tag() + _auth_tag()
+	       + _wishlist_tag() + _riyal_tag() + _nav_tag())
+	if is_rtl():
+		tag = _rtl_sheet_tag() + _runtime_phrases() + tag
+	end = html.rfind("</body>")
+	if end == -1:
+		return html + tag
+	return html[:end] + tag + html[end:]
+
+
+def finish_page(response=None, request=None):
+	"""after_request hook: give the storefront its language switch, and Arabic.
+
+	Two jobs in one pass because both need the finished HTML. The switch goes
+	on every page - a visitor reading English still has to be able to reach
+	Arabic - while the translation only runs when Arabic is the current
+	language.
+	"""
+	if response is None or getattr(response, "status_code", 0) != 200:
+		return
+
+	path = (getattr(request, "path", "") or "")
+	if path.startswith(STATIC_3D):
+		# The 3D scenes' textures and font are files in www/, and Frappe serves
+		# those "no-store" like a page - so every visit downloaded the whole
+		# room and fabric again (several MB a page). They are plain files that
+		# change only with a deploy, so let the browser keep them.
+		#
+		# A versioned address (?v=<hash of the file>, as the fitted rooms
+		# use) never changes content, so it is kept for a year. Anything
+		# else is kept a day, not a week: the bundles load their textures by
+		# fixed paths, and a week meant a replaced room - sharper, or a new
+		# one - went on showing the old picture for days after the deploy.
+		if (getattr(request, "args", None) or {}).get("v"):
+			response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+		else:
+			response.headers["Cache-Control"] = "public, max-age=86400"
+		response.headers.pop("Pragma", None)
+		response.headers.pop("Expires", None)
+		return
+	if any(path.startswith(p) for p in NOT_OURS):
+		return
+	if "text/html" not in (response.headers.get("Content-Type") or ""):
+		return
+	if getattr(response, "is_streamed", False):
+		return
+
+	try:
+		html = response.get_data(as_text=True)
+	except Exception:
+		return
+	if not html:
+		return
+
+	html = _product_text(html, path)
+	html = _no_preselected_options(html)
+	html = _contact_details(html)
+	out = _add_chrome(translate_html(html) if current() == "ar" else html)
+	out = _add_room(out, path)
+	if out != html:
+		response.set_data(out)

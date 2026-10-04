@@ -1,12 +1,12 @@
-# Kayan Andalus storefront (app: curtain_roll)
+# Kayan Andalus storefront (app: kayan_curtain)
 
 The Kayan Andalus storefront as an installable Frappe/ERPNext app: a home page,
 9 curtain product pages, and the 3D curtain configurator.
 
 ```bash
-bench get-app /path/to/curtain_roll
-bench --site <site> install-app curtain_roll
-bench build --app curtain_roll
+bench get-app /path/to/kayan_curtain
+bench --site <site> install-app kayan_curtain
+bench build --app kayan_curtain
 ```
 
 Installing points the site's home page at the storefront and creates an Item
@@ -37,7 +37,7 @@ reproduces the exact contract they expect rather than adapting them:
 
 Frappe's static page renderer lists `js` in `UNSUPPORTED_STATIC_PAGE_TYPES`, so
 `.js` **cannot** be served from `www/`. The bundles therefore sit in `public/`
-and are referenced as `/assets/curtain_roll/…`, which we control.
+and are referenced as `/assets/kayan_curtain/…`, which we control.
 
 The texture paths are the opposite case: they are hardcoded *inside* the
 obfuscated bundles as site-root paths, so they must answer at `/maps/preload/…`.
@@ -56,7 +56,7 @@ the price breakdown, and the 3D render as an attachment. `/cart` lists the
 lines with qty / remove / Place Order, which submits the Quotation.
 
 Each page also carries a **Request a quote** form posting to
-`curtain_roll.api.submit_quote`, which creates a **Lead** instead - for
+`kayan_curtain.api.submit_quote`, which creates a **Lead** instead - for
 visitors who want a call back rather than a cart.
 
 ## Pricing from the desk
@@ -219,7 +219,7 @@ A **variant** is a product that is physically the same blind as a captured one
 bracket textures - but is sold under its own name, at its own prices, and is
 previewed in its own room. `/wooden-premium` is one, built from `/wooden`.
 
-Define it in `curtain_roll/data/variants.json`:
+Define it in `kayan_curtain/data/variants.json`:
 
 ```json
 {
@@ -561,7 +561,7 @@ reachable only by typing its URL.
 ## Layout
 
 ```
-curtain_roll/
+kayan_curtain/
 ├── data/products.json      extracted from the live site
 ├── www/                    10 pages (+ maps/ textures)
 ├── templates/includes/     shared product markup + script order
@@ -581,6 +581,49 @@ curtain_roll/
 Regenerate `products.json` and the pages from a fresh capture with
 `extract_products.py` and `build_app.py` in the parent directory.
 
+## Renaming from curtain_roll
+
+The app used to be called `curtain_roll`, which put that name in every asset
+link (`/assets/curtain_roll/...`). It is now `kayan_curtain`. A site that already
+has `curtain_roll` installed is moved across once, in this order - the old app
+must still be in the bench for step 3, because until the database is updated
+Frappe still loads `curtain_roll`'s hooks:
+
+```bash
+cd ~/frappe-bench
+bench --site <site> backup --with-files
+
+# 1. bring the renamed app in NEXT TO the old one (do not git pull over apps/curtain_roll)
+bench get-app <repo-url> --branch <branch>        # lands in apps/kayan_curtain
+
+# 2. point the database at the new name: installed apps, Module Def,
+#    scheduled jobs, and every stored /assets/curtain_roll/... link
+bench --site <site> execute kayan_curtain.rename_app.run
+
+# 3. drop the old app from the bench
+bench remove-app curtain_roll
+
+# 4. the usual
+bench --site <site> migrate
+bench build --app kayan_curtain
+bench --site <site> clear-cache
+bench --site <site> clear-website-cache
+bench restart                                      # or: sudo supervisorctl restart all
+```
+
+The desk module stays **Curtain Roll** (folder `kayan_curtain/curtain_roll/`), so
+no DocType moves and nothing the team entered is touched. The `curtain_roll_*`
+"already seeded" flags also keep their names on purpose - renaming them would
+make the next migrate re-seed over the team's edits.
+
+Old links (Google Images, shared URLs) to `/assets/curtain_roll/...` stop working.
+To keep them alive, point the old path at the new folder:
+
+```bash
+ln -sfn ~/frappe-bench/apps/kayan_curtain/kayan_curtain/public \
+        ~/frappe-bench/sites/assets/curtain_roll
+```
+
 ## Moving to another ERPNext instance
 
 The app is ~670 MB, almost all media (`public/configurator` 168 MB,
@@ -598,9 +641,9 @@ skips itself if a newer Frappe already ships the field.
 
 ```bash
 cd ~/frappe-bench/apps
-tar czf /tmp/curtain_roll.tar.gz curtain_roll
+tar czf /tmp/kayan_curtain.tar.gz kayan_curtain
 # copy across, then on the target:
-cd ~/frappe-bench/apps && tar xzf /tmp/curtain_roll.tar.gz
+cd ~/frappe-bench/apps && tar xzf /tmp/kayan_curtain.tar.gz
 ```
 
 **Option B — GitHub + `bench get-app` (recommended).** Measured against GitHub's
@@ -610,12 +653,12 @@ limits: no file exceeds 100 MB (hard reject) and none even exceeds the 50 MB war
 
 ```bash
 # once, from the app directory
-git remote add origin git@github.com:<org>/curtain_roll.git
+git remote add origin git@github.com:<org>/kayan_curtain.git
 git push -u origin main
 
 # on any target bench — this clones, pip installs AND adds to apps.txt for you
-bench get-app https://github.com/<org>/curtain_roll --branch main
-bench --site <site> install-app curtain_roll
+bench get-app https://github.com/<org>/kayan_curtain --branch main
+bench --site <site> install-app kayan_curtain
 bench --site <site> clear-cache
 ```
 
@@ -629,11 +672,11 @@ are third-party assets, and a public repo republishes them.
 
 ```bash
 cd ~/frappe-bench
-./env/bin/pip install -e apps/curtain_roll     # bench install-app alone will NOT do this
-printf 'curtain_roll\n' >> sites/apps.txt      # NB: file has no trailing newline
-bench --site <site> install-app curtain_roll
-ln -sfn ~/frappe-bench/apps/curtain_roll/curtain_roll/public \
-        ~/frappe-bench/sites/assets/curtain_roll
+./env/bin/pip install -e apps/kayan_curtain     # bench install-app alone will NOT do this
+printf 'kayan_curtain\n' >> sites/apps.txt      # NB: file has no trailing newline
+bench --site <site> install-app kayan_curtain
+ln -sfn ~/frappe-bench/apps/kayan_curtain/kayan_curtain/public \
+        ~/frappe-bench/sites/assets/kayan_curtain
 bench --site <site> clear-cache
 ```
 
@@ -659,15 +702,15 @@ Windows cannot hold both, so round-tripping through a Windows filesystem loses i
 the Zebra configurator 404s. Recreate with:
 
 ```bash
-mkdir -p curtain_roll/www/maps/preload/Zebra
-cp curtain_roll/www/maps/preload/zebra/scenebk.jpg \
-   curtain_roll/www/maps/preload/Zebra/scenebk.jpg
+mkdir -p kayan_curtain/www/maps/preload/Zebra
+cp kayan_curtain/www/maps/preload/zebra/scenebk.jpg \
+   kayan_curtain/www/maps/preload/Zebra/scenebk.jpg
 ```
 
 ### 6. Verify after install
 
 - `/` and `/blackout` render with the theme
-- a colour click fetches `/assets/curtain_roll/image/catalog/<product>-materials/<code>.jpg`
+- a colour click fetches `/assets/kayan_curtain/image/catalog/<product>-materials/<code>.jpg`
 - textures resolve at `/maps/preload/…` (site root, **not** under `/assets`)
 - currency: the storefront prints the **company default currency**, so set a SAR
   company or every price on the site reads in the wrong currency
