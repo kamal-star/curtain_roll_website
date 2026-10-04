@@ -181,3 +181,9 @@
 .cr-card-title { font-weight: 700; font-size: 17px; color: var(--cr-ink); }
 .cr-card-tag { font-size: 13px; color: var(--cr-muted); line-height: 1.5; flex: 1; }
 .cr-card-price { font-size: 13px; color: var(--cr-ok); font-weight: 700; margin-top: 6px; }
+
+/* The thin About Us / Contact Us / Customer Service bar above the header was
+   taken off at the client's request. The markup is gone from the pages too;
+   this keeps it off if a generated page is rebuilt with it, or a page stored
+   in the desk still carries it. */
+.top-strip { display: none !important; }
