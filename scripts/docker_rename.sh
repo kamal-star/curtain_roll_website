@@ -59,11 +59,12 @@ for c in "${CODE_CONTAINERS[@]}"; do
 		in_c "$c" "cd apps/kayan_curtain && git fetch -q origin '$BRANCH' && git checkout -q -B '$BRANCH' FETCH_HEAD"
 	elif docker exec "$c" test -d "$BENCH/apps/curtain_roll/.git"; then
 		# a local clone shares the old checkout's objects, so only the new
-		# commits come over the network
+		# commits come over the network. bench get-app names the remote
+		# `upstream`, not `origin` - take whichever the old checkout has.
 		in_c "$c" "cd apps \
 			&& git clone -q --no-checkout curtain_roll kayan_curtain \
 			&& cd kayan_curtain \
-			&& git remote set-url origin \"\$(git -C ../curtain_roll remote get-url origin)\" \
+			&& git remote set-url origin \"\$(git -C ../curtain_roll remote get-url \$(git -C ../curtain_roll remote | head -n1))\" \
 			&& git fetch -q origin '$BRANCH' \
 			&& git checkout -q -B '$BRANCH' FETCH_HEAD"
 	else
