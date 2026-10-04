@@ -29,6 +29,18 @@
   "collections_description",
   "categories",
   "sb_social",
+  "footer_about",
+  "footer_about_ar",
+  "copyright_text",
+  "cb_footer_contact",
+  "contact_phone",
+  "contact_whatsapp",
+  "contact_email",
+  "contact_address",
+  "contact_address_ar",
+  "maroof_url",
+  "sb_footer_links",
+  "footer_links",
   "social_links",
   "sb_tax",
   "vat_rate",
@@ -159,6 +171,72 @@
    "fieldname": "sb_social",
    "fieldtype": "Section Break",
    "label": "Footer"
+  },
+  {
+   "fieldname": "footer_about",
+   "fieldtype": "Small Text",
+   "label": "Footer Text",
+   "description": "The short line under the logo in the footer."
+  },
+  {
+   "fieldname": "footer_about_ar",
+   "fieldtype": "Small Text",
+   "label": "Footer Text (Arabic)"
+  },
+  {
+   "fieldname": "copyright_text",
+   "fieldtype": "Data",
+   "label": "Copyright Line",
+   "description": "{year} is replaced by the current year."
+  },
+  {
+   "fieldname": "cb_footer_contact",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "description": "Shown in the footer and the header. Leave empty to hide it in the footer."
+  },
+  {
+   "fieldname": "contact_whatsapp",
+   "fieldtype": "Data",
+   "label": "WhatsApp Number",
+   "description": "International format, digits only, e.g. 966555465718. Used by every WhatsApp button."
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "contact_address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "contact_address_ar",
+   "fieldtype": "Small Text",
+   "label": "Address (Arabic)"
+  },
+  {
+   "fieldname": "maroof_url",
+   "fieldtype": "Data",
+   "label": "Maroof Link",
+   "description": "Your Maroof page, e.g. https://maroof.sa/12345. Empty hides the Maroof badge."
+  },
+  {
+   "fieldname": "sb_footer_links",
+   "fieldtype": "Section Break",
+   "label": "Footer Links"
+  },
+  {
+   "fieldname": "footer_links",
+   "fieldtype": "Table",
+   "label": "Footer Links",
+   "options": "Curtain Footer Link"
   },
   {
    "fieldname": "social_links",
@@ -351,7 +429,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-02 10:00:00.000000",
+ "modified": "2026-10-05 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Curtain Roll",
  "name": "Curtain Storefront Settings",

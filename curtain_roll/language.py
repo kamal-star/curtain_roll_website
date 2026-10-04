@@ -547,6 +547,42 @@ def _wishlist_tag():
 	return '<script src="%s" defer></script>' % _asset("js/curtain_wishlist.js")
 
 
+# What the pages were written with. The headers, floating WhatsApp buttons and
+# info pages carry these in their own HTML; when the team sets other details
+# in Curtain Storefront Settings -> Footer, they are swapped in here.
+PAGE_WHATSAPP = "966555465718"
+PAGE_PHONE = "+966 55 546 5718"
+PAGE_MAROOF = "https://maroof.sa/40866"
+
+
+def _contact_details(html):
+	try:
+		from curtain_roll.storefront import storefront_settings
+		cfg = storefront_settings()
+	except Exception:
+		return html
+	wa = cfg.get("contact_whatsapp") or ""
+	phone = (cfg.get("contact_phone") or "").strip()
+	maroof = cfg.get("maroof_url")
+	if wa and wa != PAGE_WHATSAPP and PAGE_WHATSAPP in html:
+		html = html.replace("wa.me/" + PAGE_WHATSAPP, "wa.me/" + wa)
+	if phone and phone != PAGE_PHONE:
+		compact = "".join(c for c in phone if c.isdigit() or c == "+")
+		html = (html.replace("tel:+" + PAGE_WHATSAPP, "tel:" + compact)
+		            .replace("+" + PAGE_WHATSAPP, compact)
+		            .replace(PAGE_PHONE, phone))
+	if maroof is not None and maroof != PAGE_MAROOF and PAGE_MAROOF in html:
+		if maroof:
+			html = html.replace(PAGE_MAROOF, maroof)
+		else:
+			# no Maroof page: the badge and the header chip go
+			html = re.sub(r'<li>\s*<a href="%s"[^>]*>.*?</a>\s*</li>' % re.escape(PAGE_MAROOF), "", html, flags=re.S)
+			html = re.sub(r'<a href="%s"[^>]*>.*?</a>' % re.escape(PAGE_MAROOF), "", html, flags=re.S)
+			# and out of the search engines' data ("sameAs": [...])
+			html = re.sub(r',?\s*"%s"' % re.escape(PAGE_MAROOF), "", html)
+	return html
+
+
 def _product_text(html, path):
 	"""The heading and description the team wrote in Curtain Product -> Page
 	Text. Put in before translation, so words left as they were still get the
@@ -755,6 +791,7 @@ def finish_page(response=None, request=None):
 		return
 
 	html = _product_text(html, path)
+	html = _contact_details(html)
 	out = _add_chrome(translate_html(html) if current() == "ar" else html)
 	out = _add_room(out, path)
 	if out != html:

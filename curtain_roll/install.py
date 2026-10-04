@@ -573,7 +573,9 @@ def _seed_storefront():
 	          ("categories", "Curtain Category Card",
 	           ("title", "route", "image", "badge", "description", "wide")),
 	          ("social_links", "Curtain Social Link",
-	           ("platform", "icon", "url")))
+	           ("platform", "icon", "url")),
+	          ("footer_links", "Curtain Footer Link",
+	           ("column", "label", "label_ar", "link")))
 
 	for field, child, keys in tables:
 		if doc.get(field):
@@ -607,6 +609,18 @@ def _seed_storefront():
 				r.idx = i
 			filled.append("menu: %s" % label)
 		frappe.db.set_default(flag, "1")
+
+	# The footer, once: its text, contact details and Maroof link as the pages
+	# showed them, so the team edits today's footer rather than a blank one.
+	from curtain_roll.storefront import FOOTER_SEEDED
+	if not frappe.db.get_default(FOOTER_SEEDED):
+		for plain in ("footer_about", "footer_about_ar", "copyright_text", "contact_phone",
+		              "contact_whatsapp", "contact_email", "contact_address",
+		              "contact_address_ar", "maroof_url"):
+			if not (doc.get(plain) or "").strip():
+				doc.set(plain, DEFAULTS.get(plain) or "")
+		frappe.db.set_default(FOOTER_SEEDED, "1")
+		filled.append("footer")
 
 	doc.flags.ignore_permissions = True
 	doc.save(ignore_permissions=True)

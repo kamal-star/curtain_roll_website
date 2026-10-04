@@ -50,6 +50,29 @@ DEFAULTS = {
  "alert_emails": "",
  "no_customer_emails": 0,
  "require_national_address": 0,
+ # footer & contact - what the footer said before it was editable
+ "footer_about": "The leading digital platform for bespoke architectural curtains and automated shading systems across the Kingdom of Saudi Arabia.",
+ "footer_about_ar": "",
+ "copyright_text": "Copyright © {year} Kayan Andalus Curtain. All Rights Reserved.",
+ "contact_phone": "+966 55 546 5718",
+ "contact_whatsapp": "966555465718",
+ "contact_email": "",
+ "contact_address": "",
+ "contact_address_ar": "",
+ "maroof_url": "https://maroof.sa/40866",
+ "footer_links": [
+  {"column": "Categories", "label": "Blackout Blinds", "label_ar": "", "link": "/blackout-kayan"},
+  {"column": "Categories", "label": "Sunscreen Blinds", "label_ar": "", "link": "/sunscreen-kayan"},
+  {"column": "Categories", "label": "Zebra Blinds", "label_ar": "", "link": "/zebra-kayan"},
+  {"column": "Categories", "label": "Wooden Blinds", "label_ar": "", "link": "/wooden-premium"},
+  {"column": "Categories", "label": "Roman Blinds", "label_ar": "", "link": "/roman-kayan"},
+  {"column": "Customer Service", "label": "About Factory", "label_ar": "", "link": "/about-us"},
+  {"column": "Customer Service", "label": "Shipping & Delivery", "label_ar": "", "link": "/delivery-and-installation"},
+  {"column": "Customer Service", "label": "Terms & Return Policy", "label_ar": "", "link": "/terms-and-conditions"},
+  {"column": "Customer Service", "label": "Privacy Policy", "label_ar": "", "link": "/privacy-policy"},
+  {"column": "Contact", "label": "Support Tickets", "label_ar": "", "link": "/contact-us"},
+  {"column": "Contact", "label": "Order Tracking", "label_ar": "", "link": "/me"}
+ ],
  "nav_items": [
   {
    "label": "Home",
@@ -280,6 +303,11 @@ def _rows(doc, field, keys):
 	return out
 
 
+# set once the footer fields have been filled from today's footer; until then
+# an empty Maroof link means "never set", not "hide the badge"
+FOOTER_SEEDED = "curtain_roll_footer_seeded"
+
+
 def _route(value):
 	return "/" + (value or "").strip().strip("/")
 
@@ -356,7 +384,10 @@ def storefront_settings():
 	              "bank_name", "bank_account_name", "bank_account_number",
 	              "bank_iban",
 	              "bank_instructions", "alert_role", "alert_emails",
-	              "aramex_origin_city", "aramex_product_type"):
+	              "aramex_origin_city", "aramex_product_type",
+	              "footer_about", "footer_about_ar", "copyright_text", "contact_phone",
+	              "contact_whatsapp", "contact_email", "contact_address",
+	              "contact_address_ar"):
 		value = (doc.get(plain) or "").strip()
 		if value:
 			data[plain] = value
@@ -392,6 +423,12 @@ def storefront_settings():
 	social = _rows(doc, "social_links", ("platform", "icon", "url"))
 	if social:
 		data["social_links"] = social
+	links = _rows(doc, "footer_links", ("column", "label", "label_ar", "link"))
+	if links or doc.get("footer_links"):
+		data["footer_links"] = links
+	if doc.get("maroof_url") is not None and frappe.db.get_default(FOOTER_SEEDED):
+		data["maroof_url"] = (doc.get("maroof_url") or "").strip()
+	data["contact_whatsapp"] = "".join(c for c in str(data.get("contact_whatsapp") or "") if c.isdigit())
 
 	frappe.cache().set_value(CACHE_KEY, data)
 	return data

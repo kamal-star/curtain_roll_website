@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-05 12:00:00.000000",
+ "description": "One link in a footer column.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": [
+  "column",
+  "label",
+  "label_ar",
+  "link",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "column",
+   "fieldtype": "Select",
+   "label": "Column",
+   "reqd": 1,
+   "in_list_view": 1,
+   "options": "Categories\nCustomer Service\nContact",
+   "default": "Categories"
+  },
+  {
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "label": "Label",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "label_ar",
+   "fieldtype": "Data",
+   "label": "Label (Arabic)",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "link",
+   "fieldtype": "Data",
+   "label": "Link",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "A page of this site (/contact-us) or a full address (https://...)"
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Show",
+   "default": "1",
+   "in_list_view": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-05 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Curtain Roll",
+ "name": "Curtain Footer Link",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "idx",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 0
+}
