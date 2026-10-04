@@ -251,6 +251,9 @@ def get_spec(product_key):
 		"show_motor": show_motor,
 		"allow_upload": bool(cint(doc.get("allow_upload"))),
 		"min_billable_sqm": flt(doc.min_billable_sqm) or 0.0,
+		# a blind smaller than these is charged as this size (cm); 0 = off
+		"min_billed_width": flt(doc.get("min_billed_width")) or 0.0,
+		"min_billed_height": flt(doc.get("min_billed_height")) or 0.0,
 		"rounding": cint(doc.rounding) or 2,
 		"pricing_mode": doc.pricing_mode or "Base Rate",
 		"minimum_price": flt(doc.minimum_price),
@@ -641,6 +644,7 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 	area = 1.0
 	partial = False
 	width = height = None
+	billed_w = billed_h = None
 	if spec["size_group"]:
 		gid = spec["size_group"]
 		raw_w = submitted("option[%s][width]" % gid)
@@ -660,7 +664,12 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 				errors[gid] = outside
 				width = height = None
 			else:
-				area = (width * height) / 10000.0
+				# Charged by the billed size: a blind smaller than the minimum
+				# billed width / height is priced as that size. The size the
+				# customer entered is what the quotation and invoice show.
+				billed_w = max(width, spec.get("min_billed_width") or 0)
+				billed_h = max(height, spec.get("min_billed_height") or 0)
+				area = (billed_w * billed_h) / 10000.0
 
 	per_sqm = spec["rate_basis"] == "Per Square Meter"
 	if per_sqm and spec["min_billable_sqm"]:
@@ -668,8 +677,8 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 
 	dims = {
 		"area": area,
-		"width_m": (width or 0) / 100.0,
-		"height_m": (height or 0) / 100.0,
+		"width_m": (billed_w or 0) / 100.0,
+		"height_m": (billed_h or 0) / 100.0,
 	}
 
 	# ---- the fabric: either the chosen material's own m2 rate, or the base
@@ -824,6 +833,8 @@ def calculate(product_key, form, qty=1, strict=True, order_qty=None):
 		"area": flt(area, 4),
 		"width": width,
 		"height": height,
+		"billed_width": billed_w,
+		"billed_height": billed_h,
 		"qty": qty,
 		"order_qty": order_qty,
 		"unit_rate": unit,
@@ -857,6 +868,9 @@ def breakdown_lines(result):
 	"""Human-readable price rows for the quotation line description."""
 	sym = result.get("currency") or currency_symbol()
 	out = []
+	bw, bh = result.get("billed_width"), result.get("billed_height")
+	if bw and bh and (bw != result.get("width") or bh != result.get("height")):
+		out.append("%s: %g x %g cm" % (_("Billed size"), bw, bh))
 	if result.get("area"):
 		out.append("%s: %.2f m2" % (_("Billed area"), result["area"]))
 	for label, amount in result.get("lines") or []:

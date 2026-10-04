@@ -23,6 +23,8 @@
   "base_rate",
   "column_break_base",
   "min_billable_sqm",
+  "min_billed_width",
+  "min_billed_height",
   "minimum_price",
   "rounding",
   "display_from_price",
@@ -129,6 +131,18 @@
    "fieldname": "min_billable_sqm",
    "fieldtype": "Float",
    "label": "Minimum Billable Area (m2)"
+  },
+  {
+   "fieldname": "min_billed_width",
+   "fieldtype": "Float",
+   "label": "Minimum Billed Width (cm)",
+   "description": "A blind narrower than this is charged as this wide (e.g. 150). The quotation and invoice still show the width the customer entered. 0 = off."
+  },
+  {
+   "fieldname": "min_billed_height",
+   "fieldtype": "Float",
+   "label": "Minimum Billed Height (cm)",
+   "description": "A blind shorter than this is charged as this tall (e.g. 150). The quotation and invoice still show the height the customer entered. 0 = off."
   },
   {
    "fieldname": "minimum_price",
@@ -317,7 +331,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-04 12:00:00.000000",
+ "modified": "2026-10-04 15:00:00.000000",
  "modified_by": "Administrator",
  "module": "Curtain Roll",
  "name": "Curtain Product",
