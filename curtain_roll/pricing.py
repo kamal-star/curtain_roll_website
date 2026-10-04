@@ -291,6 +291,16 @@ def get_spec(product_key):
 			"tiered": cint(o.get("tiered")),
 		}
 
+	# Nothing is chosen for the customer on the page any more (see
+	# language._no_preselected_options), so every choice they can make has to
+	# be made: a group with at least one choice on offer is required, whatever
+	# the captured page marked. Installation service, for one, was not marked -
+	# it arrived pre-ticked instead. A group with nothing on offer stays
+	# optional, or no order could ever be placed.
+	for gid, choices in spec["options"].items():
+		if gid not in spec["required"] and any(c["enabled"] for c in choices.values()):
+			spec["required"][gid] = (next(iter(choices.values()))["group_label"] or gid)
+
 	# The control-type group - the one holding Manual and Motorized - is found
 	# by its choices rather than by an id, because every product numbers its
 	# groups differently.

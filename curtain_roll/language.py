@@ -583,6 +583,30 @@ def _contact_details(html):
 	return html
 
 
+_PRESELECTED = re.compile(r'<input\b[^>]*\bname="option\[[^"]*\]"[^>]*>')
+
+
+def _no_preselected_options(html):
+	"""Nothing chosen for the customer on a product page.
+
+	The captured pages arrive with some choices already ticked - Manual,
+	Outside, With Installation - and the installation's price already in the
+	total. The client wants every choice left to the customer: they pick, and
+	the price follows. Only the product options are touched (name="option[..]");
+	the price check still asks for every required choice before the order.
+	"""
+	if 'name="option[' not in html or "checked" not in html:
+		return html
+
+	def untick(m):
+		tag = m.group(0)
+		if "checked" not in tag:
+			return tag
+		return re.sub(r'\s+checked(?:="[^"]*")?', "", tag)
+
+	return _PRESELECTED.sub(untick, html)
+
+
 def _product_text(html, path):
 	"""The heading and description the team wrote in Curtain Product -> Page
 	Text. Put in before translation, so words left as they were still get the
@@ -791,6 +815,7 @@ def finish_page(response=None, request=None):
 		return
 
 	html = _product_text(html, path)
+	html = _no_preselected_options(html)
 	html = _contact_details(html)
 	out = _add_chrome(translate_html(html) if current() == "ar" else html)
 	out = _add_room(out, path)
