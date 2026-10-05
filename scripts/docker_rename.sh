@@ -19,7 +19,7 @@ set -euo pipefail
 
 BACKEND="${BACKEND:-dwherp-erpnext_backend-1}"
 SITE="${SITE:-frontend}"
-BRANCH="${BRANCH:-claude/great-davinci-qyhovm}"
+BRANCH="${BRANCH:-main}"
 BENCH="${BENCH:-/home/frappe/frappe-bench}"
 # Name prefix of this stack's containers; workers and the scheduler run our
 # hooks too, and the frontend serves our assets, so each one that has
