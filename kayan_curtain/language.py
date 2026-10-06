@@ -648,6 +648,16 @@ def _add_room(html, path):
 	return html[:at] + tag + html[at:]
 
 
+_OWN_SCRIPT = re.compile(r'src="/assets/kayan_curtain/(js/curtain_[a-z_]+\.js)"')
+
+
+def _version_scripts(html):
+	"""Our scripts a page names by a plain path (the Sheer Curtain's drape)
+	get the same file-stamp version as the ones added here, so a deploy
+	reaches visitors who already have the old copy."""
+	return _OWN_SCRIPT.sub(lambda m: 'src="%s"' % _asset(m.group(1)), html)
+
+
 def _nav_tag():
 	"""Arrows and wheel scrolling for the category bar once it overflows."""
 	return '<script src="%s" defer></script>' % _asset("js/curtain_nav.js")
@@ -683,6 +693,8 @@ RUNTIME_STRINGS = ("My Account", "Logout", "Login", "View Cart", "Checkout",
                    "Height can be at most {0} cm.",
                    # the choices under Manual / Motorized, when no motor fits
                    "No {0} is available for this size. Please contact us.",
+                   # the Smart Film's switch on the 3D view
+                   "Frosted (OFF)", "Clear (ON)",
                    # the Printed blind's upload step, drawn by the script
                    "Your Picture", "Upload a picture", "Choose another",
                    "JPG, PNG or PDF, up to 20 MB. It is printed across the whole blind.",
@@ -819,5 +831,6 @@ def finish_page(response=None, request=None):
 	html = _contact_details(html)
 	out = _add_chrome(translate_html(html) if current() == "ar" else html)
 	out = _add_room(out, path)
+	out = _version_scripts(out)
 	if out != html:
 		response.set_data(out)

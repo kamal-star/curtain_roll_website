@@ -404,6 +404,13 @@ def _fits(entry, width, height):
 	return True
 
 
+# "Shown Under: Always" - a group of its own, offered whatever else is picked
+# (the Sheer Curtain's blackout colours). It has no parent choice, so it is
+# filed under this made-up group, which every request counts as chosen.
+ALWAYS = ("always", "دائما", "دائماً")
+ALWAYS_GID = "always"
+
+
 def _parent_of(parent, choices, spec):
 	"""(group id, value) of the choice a dependent row sits under, or None.
 
@@ -411,6 +418,8 @@ def _parent_of(parent, choices, spec):
 	spelled differently - Motorised, Motor - because that is how most rows are
 	typed and a product's own label is whatever the old site called it.
 	"""
+	if parent.lower() in ALWAYS:
+		return ALWAYS_GID, "1"
 	found = choices.get(parent.lower())
 	if found:
 		return found
@@ -431,7 +440,7 @@ def active_sub_groups(spec, submitted):
 	"""
 	groups = {}
 	for row in spec.get("sub_options") or []:
-		if str(submitted("option[%s]" % row["parent_gid"]) or "") == row["parent_value"]:
+		if row["parent_gid"] == ALWAYS_GID or 				str(submitted("option[%s]" % row["parent_gid"]) or "") == row["parent_value"]:
 			groups.setdefault(row["key"], []).append(row)
 	return groups
 

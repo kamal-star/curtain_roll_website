@@ -5386,6 +5386,664 @@
   ]
  },
  {
+  "key": "sheer-curtain",
+  "route": "sheer-curtain",
+  "bundle": "Vertical.js",
+  "title": "Sheer and blackout curtains, made to measure",
+  "meta_description": "A sheer curtain in the middle with blackout curtains either side, hung wall to wall. Choose both colours and your size and see them in the room.",
+  "meta_keywords": "",
+  "heading": "SHEER CURTAIN",
+  "price": 150.0,
+  "price_text": "SR 150.00",
+  "description": "A complete curtain set: a soft sheer in the middle lets daylight in while keeping your privacy, and blackout curtains on both sides close over it for full darkness. Both hang in even wave folds from ceiling to floor, and each colour is chosen separately to suit your room.",
+  "capture_option_id": "383",
+  "option_groups": [
+   {
+    "id": "283",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "279",
+    "label": "Sheer Colour",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "13",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "9101",
+      "id": "279",
+      "mp_optionvalue": "9101",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/snow-white.jpg",
+      "code": "Snow White"
+     },
+     {
+      "value": "9102",
+      "id": "279",
+      "mp_optionvalue": "9102",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/ivory.jpg",
+      "code": "Ivory"
+     },
+     {
+      "value": "9103",
+      "id": "279",
+      "mp_optionvalue": "9103",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/cream.jpg",
+      "code": "Cream"
+     },
+     {
+      "value": "9104",
+      "id": "279",
+      "mp_optionvalue": "9104",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/champagne.jpg",
+      "code": "Champagne"
+     },
+     {
+      "value": "9105",
+      "id": "279",
+      "mp_optionvalue": "9105",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/linen.jpg",
+      "code": "Linen"
+     },
+     {
+      "value": "9106",
+      "id": "279",
+      "mp_optionvalue": "9106",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/sand.jpg",
+      "code": "Sand"
+     },
+     {
+      "value": "9107",
+      "id": "279",
+      "mp_optionvalue": "9107",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/silver-grey.jpg",
+      "code": "Silver Grey"
+     },
+     {
+      "value": "9108",
+      "id": "279",
+      "mp_optionvalue": "9108",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Sheer Colour",
+      "image": "image/catalog/sheer-materials/mocha.jpg",
+      "code": "Mocha"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "390",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "773",
+      "id": "390",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "774",
+      "id": "390",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "383",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/vertical-g-200x200.png",
+   "image/cache/catalog/curtains/vertical-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+   "image/cache/catalog/vertical-materials/1003-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": null,
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/vertical-premium.jpg",
+  "blind_scale": [
+   1.0425,
+   0.8885
+  ],
+  "window_angles": [
+   23.3789,
+   -1.1426
+  ],
+  "drape": true
+ },
+ {
+  "key": "accordion-door",
+  "route": "accordion-door",
+  "bundle": "Vertical.js",
+  "title": "Accordion folding doors, made to measure",
+  "meta_description": "Accordion doors in plastic or leather that fold away to the side, made to measure for any opening. Choose the type and colour and see yours in the room.",
+  "meta_keywords": "",
+  "heading": "ACCORDION DOOR",
+  "price": 180.0,
+  "price_text": "SR 180.00",
+  "description": "Accordion doors fold neatly to the side on a ceiling track, closing off a room, a store or a wide opening without the swing space a hinged door needs. Choose easy-to-clean plastic in plain colours and wood finishes, or the warm, soft look of leather, opening from the left, the right or the centre.",
+  "capture_option_id": "383",
+  "option_groups": [
+   {
+    "id": "283",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "279",
+    "label": "Door Type",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "9621",
+      "id": "279",
+      "mp_optionvalue": "9621",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Door Type",
+      "image": "image/catalog/accordion-icons/plastic.png",
+      "code": "Plastic"
+     },
+     {
+      "value": "9622",
+      "id": "279",
+      "mp_optionvalue": "9622",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Door Type",
+      "image": "image/catalog/accordion-icons/leather.png",
+      "code": "Leather"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "285",
+    "label": "Opening From",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "9631",
+      "id": "285",
+      "mp_optionvalue": "9631",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Opening From",
+      "image": "image/catalog/accordion-icons/left.png",
+      "code": "Left"
+     },
+     {
+      "value": "9632",
+      "id": "285",
+      "mp_optionvalue": "9632",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Opening From",
+      "image": "image/catalog/accordion-icons/right.png",
+      "code": "Right"
+     },
+     {
+      "value": "9633",
+      "id": "285",
+      "mp_optionvalue": "9633",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Opening From",
+      "image": "image/catalog/accordion-icons/centre.png",
+      "code": "Centre"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "390",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "773",
+      "id": "390",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "774",
+      "id": "390",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "383",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/vertical-g-200x200.png",
+   "image/cache/catalog/curtains/vertical-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+   "image/cache/catalog/vertical-materials/1003-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": null,
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/accordion-door.jpg",
+  "blind_scale": [
+   1.0425,
+   0.8885
+  ],
+  "window_angles": [
+   23.3789,
+   -1.1426
+  ],
+  "drape": true
+ },
+ {
+  "key": "smart-film",
+  "route": "smart-film",
+  "bundle": "Vertical.js",
+  "title": "Smart film - switchable privacy glass film",
+  "meta_description": "Smart film turns a clear window frosted at the touch of a remote or a switch. Choose the transparency, see it on and off in the room, and order to size.",
+  "meta_keywords": "",
+  "heading": "SMART FILM",
+  "price": 500.0,
+  "price_text": "SR 500.00",
+  "description": "Smart film is applied to your existing glass and switches it from clear to frosted in an instant. Switched on, the window is transparent and full of light; switched off, it turns milky white for complete privacy while still letting daylight through. Operate it with a remote or a wall switch.",
+  "capture_option_id": "383",
+  "option_groups": [
+   {
+    "id": "285",
+    "label": "Transparency",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "9641",
+      "id": "285",
+      "mp_optionvalue": "9641",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Transparency",
+      "image": "image/catalog/smart-film-icons/t89.png",
+      "code": "89%"
+     },
+     {
+      "value": "9642",
+      "id": "285",
+      "mp_optionvalue": "9642",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Transparency",
+      "image": "image/catalog/smart-film-icons/t92.png",
+      "code": "92%"
+     },
+     {
+      "value": "9643",
+      "id": "285",
+      "mp_optionvalue": "9643",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Transparency",
+      "image": "image/catalog/smart-film-icons/t93.png",
+      "code": "93%"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "283",
+    "label": "Curtain size",
+    "kind": "size",
+    "wrap": {},
+    "options": [],
+    "choices": [],
+    "fields": [
+     {
+      "field": "width",
+      "placeholder": "width"
+     },
+     {
+      "field": "height",
+      "placeholder": "height"
+     }
+    ]
+   },
+   {
+    "id": "279",
+    "label": "Control",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "14",
+     "mp_parentoption": "0",
+     "class": "form-group required  mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "9651",
+      "id": "279",
+      "mp_optionvalue": "9651",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control",
+      "image": "image/catalog/smart-film-icons/remote.png",
+      "code": "Remote"
+     },
+     {
+      "value": "9652",
+      "id": "279",
+      "mp_optionvalue": "9652",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Control",
+      "image": "image/catalog/smart-film-icons/switch.png",
+      "code": "Switch"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "390",
+    "label": "Installation service",
+    "kind": "swatch",
+    "wrap": {
+     "mp_option": "47",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-radio push-option"
+    },
+    "options": [
+     {
+      "value": "773",
+      "id": "390",
+      "mp_optionvalue": "557",
+      "mp_parentoption_value": "0",
+      "price": "SR 80.00",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/with-installation-150x150.png",
+      "code": "With Installation"
+     },
+     {
+      "value": "774",
+      "id": "390",
+      "mp_optionvalue": "558",
+      "mp_parentoption_value": "0",
+      "price": "",
+      "group": "Installation service",
+      "image": "image/cache/catalog/icons/without-installation-150x150h.png",
+      "code": "Without installation"
+     }
+    ],
+    "choices": [],
+    "fields": []
+   },
+   {
+    "id": "383",
+    "label": "Captured image",
+    "kind": "capture",
+    "wrap": {
+     "mp_option": "45",
+     "mp_parentoption": "0",
+     "class": "form-group mpoption product-option-text"
+    },
+    "options": [],
+    "choices": [],
+    "fields": []
+   }
+  ],
+  "images": [
+   "image/cache/catalog/MAROOF7-200x99.png",
+   "image/cache/catalog/applepay-300x186.png",
+   "image/cache/catalog/curtain-icon-114x114.png",
+   "image/cache/catalog/curtain-icon-120x120.png",
+   "image/cache/catalog/curtain-icon-128x128.png",
+   "image/cache/catalog/curtain-icon-144x144.png",
+   "image/cache/catalog/curtain-icon-150x150.png",
+   "image/cache/catalog/curtain-icon-152x152.png",
+   "image/cache/catalog/curtain-icon-167x167.png",
+   "image/cache/catalog/curtain-icon-180x180.png",
+   "image/cache/catalog/curtain-icon-192x192.png",
+   "image/cache/catalog/curtain-icon-310x310.png",
+   "image/cache/catalog/curtain-icon-57x57.png",
+   "image/cache/catalog/curtain-icon-70x70.png",
+   "image/cache/catalog/curtain-icon-76x76.png",
+   "image/cache/catalog/curtain-icons/vertical/from-left-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/from-right-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/inside-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/normal1-150x150.png",
+   "image/cache/catalog/curtain-icons/vertical/outside-150x150.png",
+   "image/cache/catalog/curtains/blackout-g-120x120.png",
+   "image/cache/catalog/curtains/blackout-g-60x60.png",
+   "image/cache/catalog/curtains/metal-g-120x120.png",
+   "image/cache/catalog/curtains/metal-g-60x60.png",
+   "image/cache/catalog/curtains/printed-g-120x120.png",
+   "image/cache/catalog/curtains/printed-g-60x60.png",
+   "image/cache/catalog/curtains/roman-g-120x120.png",
+   "image/cache/catalog/curtains/roman-g-60x60.png",
+   "image/cache/catalog/curtains/vertical-g-200x200.png",
+   "image/cache/catalog/curtains/vertical-g-600x315w.png",
+   "image/cache/catalog/icons/with-installation-150x150.png",
+   "image/cache/catalog/icons/without-installation-150x150h.png",
+   "image/cache/catalog/mada-300x186.png",
+   "image/cache/catalog/master-300x186.png",
+   "image/cache/catalog/original-220x90.png",
+   "image/cache/catalog/tabby-300x186.png",
+   "image/cache/catalog/tamara-300x186.png",
+   "image/cache/catalog/vertical-materials/1001-150x150w.jpg",
+   "image/cache/catalog/vertical-materials/1003-150x150w.jpg"
+  ],
+  "main_image": "image/cache/catalog/MAROOF7-200x99.png",
+  "variant_of": null,
+  "flat": false,
+  "room": null,
+  "scene": "/maps/scenes/smart-film.jpg",
+  "blind_scale": [
+   1.0425,
+   0.8885
+  ],
+  "window_angles": [
+   23.3789,
+   -1.1426
+  ],
+  "drape": true
+ },
+ {
   "key": "shutters",
   "route": "shutters",
   "bundle": "blackout.js",

@@ -177,9 +177,41 @@
     var arabic = document.documentElement.getAttribute("dir") === "rtl";
     var chosen = {};              // group key -> row id, kept across redraws
 
-    // one host per parent group, inside that group's card
+    // one host per parent group, inside that group's card. A group shown
+    // "Always" has no parent: each such group gets a card of its own.
+    function gidOf(r) {
+      return r.parent_gid === "always" ? "always:" + r.key : String(r.parent_gid);
+    }
     var parents = {};
-    rows.forEach(function (r) { parents[r.parent_gid] = true; });
+    rows.forEach(function (r) { parents[gidOf(r)] = true; });
+
+    /* A card like the page's own, after the colour card (or the last one
+       before the installation choice), for a group shown on its own. */
+    function ownCard(key) {
+      var row = rows.filter(function (r) { return gidOf(r) === key; })[0];
+      var cards = document.querySelectorAll("#product .option-card");
+      if (!row || !cards.length) return null;
+      var after = null;
+      var colour = document.querySelector('input[name="option[' + spec.material_group + ']"]');
+      if (colour) after = cardOf(colour);
+      if (!after) after = cards[cards.length - 1];
+      var card = document.createElement("div");
+      card.className = "option-card cr-own-card";
+      var header = document.createElement("div");
+      header.className = "option-header";
+      var h4 = document.createElement("h4");
+      var n = document.createElement("span");
+      n.className = "option-step-number";
+      h4.appendChild(n);
+      h4.appendChild(document.createTextNode(" " + ((arabic && row.group_ar) || row.group)));
+      header.appendChild(h4);
+      card.appendChild(header);
+      // the same marker the page's own groups carry, so a missing choice is
+      // outlined like theirs
+      card.setAttribute("data-cr-always", row.key);
+      after.parentNode.insertBefore(card, after.nextSibling);
+      return card;
+    }
 
     function size() {
       var w = document.querySelector('input[name^="option["][name$="[width]"]');
@@ -201,27 +233,29 @@
     }
 
     Object.keys(parents).forEach(function (gid) {
-      var first = document.querySelector('input[name="option[' + gid + ']"]');
-      var card = cardOf(first);
+      var always = gid.indexOf("always:") === 0;
+      var first = always ? null : document.querySelector('input[name="option[' + gid + ']"]');
+      var card = always ? ownCard(gid) : cardOf(first);
       if (!card) return;
 
       var host = document.createElement("div");
-      host.className = "cr-sub";
-      var tray = first.closest(".segmented-grid, .swatches-scroll-tray");
+      host.className = "cr-sub" + (always ? " cr-sub-always" : "");
+      var tray = first && first.closest(".segmented-grid, .swatches-scroll-tray");
       if (tray && tray.parentNode) tray.parentNode.insertBefore(host, tray.nextSibling);
       else card.appendChild(host);
 
       var colours = String(gid) === String(spec.material_group);
 
       function build() {
-        var picked = document.querySelector('input[name="option[' + gid + ']"]:checked');
-        var value = picked ? picked.value : null;
+        var picked = always ? null
+          : document.querySelector('input[name="option[' + gid + ']"]:checked');
+        var value = always ? "1" : picked ? picked.value : null;
         host.textContent = "";
         if (!value) return;
 
         var groups = {}, order = [];
         rows.forEach(function (r) {
-          if (String(r.parent_gid) !== String(gid) || String(r.parent_value) !== String(value)) return;
+          if (gidOf(r) !== gid || String(r.parent_value) !== String(value)) return;
           if (!groups[r.key]) { groups[r.key] = []; order.push(r.key); }
           groups[r.key].push(r);
         });
@@ -250,11 +284,14 @@
             return;
           }
 
+          // Colours, and a group of its own, are the customer's to pick, as
+          // the page's own groups are (nothing is chosen for them). Other
+          // choices under a choice - a handle, a side - open on their first.
+          var swatches = offered.some(function (r) { return r.image; });
           var keep = offered.some(function (r) { return r.id === chosen[key]; })
-            ? chosen[key] : offered[0].id;
+            ? chosen[key] : (always || swatches) ? null : offered[0].id;
           chosen[key] = keep;
 
-          var swatches = offered.some(function (r) { return r.image; });
           var tray = document.createElement("div");
           tray.className = swatches ? "cr-sub-swatches" : "cr-sub-chips";
 
@@ -304,9 +341,11 @@
         });
       }
 
-      document.querySelectorAll('input[name="option[' + gid + ']"]').forEach(function (r) {
-        r.addEventListener("change", function () { build(); refresh(); });
-      });
+      if (!always) {
+        document.querySelectorAll('input[name="option[' + gid + ']"]').forEach(function (r) {
+          r.addEventListener("change", function () { build(); refresh(); });
+        });
+      }
       var timer = null;
       document.querySelectorAll('input[name^="option["][name$="[width]"], ' +
                                 'input[name^="option["][name$="[height]"]')
@@ -1068,6 +1107,10 @@
       ".cr-sub{margin-top:14px;display:flex;flex-direction:column;gap:12px}" +
       ".cr-sub:empty{display:none}" +
       ".cr-sub-group{border-top:1px dashed var(--border,#e1ebf2);padding-top:12px}" +
+      // a group in a card of its own: the card's header already names it
+      ".cr-sub-always{margin-top:0}" +
+      ".cr-sub-always .cr-sub-group{border-top:0;padding-top:0}" +
+      ".cr-sub-always .cr-sub-title{display:none}" +
       ".cr-sub-title{font-size:12.5px;font-weight:700;margin-bottom:8px;" +
       "color:var(--text,#0f172a)}" +
       ".cr-sub-chips{display:flex;flex-wrap:wrap;gap:8px}" +

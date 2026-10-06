@@ -34,7 +34,7 @@
    "reqd": 1,
    "in_list_view": 1,
    "columns": 2,
-   "description": "The choice this appears under: Manual, Motorized, or any other choice on this product - e.g. 5 cm for the colours of the 5 cm slat."
+   "description": "The choice this appears under: Manual, Motorized, or any other choice on this product - e.g. 5 cm for the colours of the 5 cm slat. Always: shown on its own, under no choice."
   },
   {
    "fieldname": "group_label",

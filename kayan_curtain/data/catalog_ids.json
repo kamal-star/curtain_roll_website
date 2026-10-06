@@ -100,5 +100,23 @@
   "name": "SUNSCREEN KAYAN",
   "price": 150.0,
   "variant_of": "sunscreen"
+ },
+ "951": {
+  "key": "accordion-door",
+  "name": "Accordion Door",
+  "price": 180.0,
+  "route": "accordion-door"
+ },
+ "950": {
+  "key": "sheer-curtain",
+  "name": "Sheer Curtain",
+  "price": 150.0,
+  "route": "sheer-curtain"
+ },
+ "952": {
+  "key": "smart-film",
+  "name": "Smart Film",
+  "price": 500.0,
+  "route": "smart-film"
  }
 }

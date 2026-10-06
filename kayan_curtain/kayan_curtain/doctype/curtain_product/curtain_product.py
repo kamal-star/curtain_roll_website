@@ -84,6 +84,9 @@ class CurtainProduct(Document):
 		          for c in self.get("colors") or []}
 		# Manual / Motorized also match a control spelled differently
 		names |= {"manual", "motorized", "motorised"}
+		# a group shown on its own, under no choice
+		from kayan_curtain.pricing import ALWAYS
+		names |= set(ALWAYS)
 		names.discard("")
 		for row in self.get("sub_options") or []:
 			parent = (row.parent_choice or "").strip()
@@ -93,7 +96,7 @@ class CurtainProduct(Document):
 				known = sorted({(o.option_label or "").strip() for o in self.get("options") or []}
 				               | {(c.color_name or "").strip() for c in self.get("colors") or []})
 				frappe.throw(_("Row {0} of Choices: {1} is not a choice on this product. "
-				               "Use one of: {2}").format(
+				               "Use one of: {2}, or Always").format(
 					row.idx, frappe.bold(parent), ", ".join(k for k in known if k)))
 
 	def _check_material_switch(self):

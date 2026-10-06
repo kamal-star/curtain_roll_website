@@ -315,7 +315,7 @@
   {
    "fieldname": "sub_options_help",
    "fieldtype": "HTML",
-   "options": "<p class=\"text-muted small\">Each row appears once the customer picks the choice named in <b>Shown Under</b> - handle type and operating side under Manual; motor and motor position under Motorized; a slat width's own colours under that width (e.g. 5 cm). A group appears only when it has a choice on, and the customer must pick one. Give colours a Swatch Photo: they show as swatches and colour the blind in the 3D view. For motors, set the sizes each is rated for; only motors that fit the size typed are offered.</p>"
+   "options": "<p class=\"text-muted small\">Each row appears once the customer picks the choice named in <b>Shown Under</b> - handle type and operating side under Manual; motor and motor position under Motorized; a slat width's own colours under that width (e.g. 5 cm). Type <b>Always</b> in Shown Under for a group that is offered on its own, under no other choice (the Sheer Curtain's blackout colours). A group appears only when it has a choice on, and the customer must pick one. Give colours a Swatch Photo: they show as swatches and colour the blind in the 3D view. For motors, set the sizes each is rated for; only motors that fit the size typed are offered.</p>"
   },
   {
    "fieldname": "sub_options",

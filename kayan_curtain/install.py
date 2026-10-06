@@ -14,6 +14,9 @@ NEW_NAV_ITEMS = (
 	("Roman Kayan", "/roman-kayan", "/roman"),
 	("Metal Kayan", "/metal-kayan", "/metal"),
 	("Sunscreen Kayan", "/sunscreen-kayan", "/sunscreen"),
+	("Sheer Curtain", "/sheer-curtain", "/vertical-premium"),
+	("Accordion Door", "/accordion-door", "/sheer-curtain"),
+	("Smart Film", "/smart-film", "/accordion-door"),
 )
 
 
@@ -394,6 +397,126 @@ def _seed_sub_option_rows(keys):
 		print("  choices under Manual / Motorized seeded on %s" % key)
 
 
+SHEER_FLAG = "kayan_curtain_sheer_blackout_seeded"
+
+# The Sheer Curtain's blackout colours: Choices shown "Always", in a step of
+# their own. Starter swatches (make_sheer_swatches.py) the team replaces with
+# photos of the real fabrics, and renames, prices or adds to, in the desk.
+SHEER_BLACKOUT = (
+	("ivory", "Ivory", "عاجي"),
+	("beige", "Beige", "بيج"),
+	("taupe", "Taupe", "رمادي بني"),
+	("latte", "Latte", "لاتيه"),
+	("light-grey", "Light Grey", "رمادي فاتح"),
+	("charcoal", "Charcoal", "فحمي"),
+	("navy", "Navy", "كحلي"),
+	("olive", "Olive", "زيتي"),
+	("chocolate", "Chocolate", "شوكولاتة"),
+)
+
+
+def _seed_sheer_curtain():
+	"""Put the blackout colours on the Sheer Curtain, once."""
+	if frappe.db.get_default(SHEER_FLAG) or not frappe.db.exists("Curtain Product", "sheer-curtain"):
+		return
+	doc = frappe.get_doc("Curtain Product", "sheer-curtain")
+	if not any((r.group_label or "").strip().lower() == "blackout colour"
+	           for r in doc.get("sub_options") or []):
+		for name, label, label_ar in SHEER_BLACKOUT:
+			doc.append("sub_options", {
+				"parent_choice": "Always", "group_label": "Blackout Colour",
+				"group_label_ar": "لون البلاك آوت", "option_label": label,
+				"option_label_ar": label_ar, "charge_type": "Fixed Amount",
+				"rate": 0, "enabled": 1,
+				"image": "/assets/kayan_curtain/image/catalog/blackout-materials/%s.jpg" % name,
+			})
+	# priced by the square metre, like the other made-to-measure curtains
+	if not doc.get("rate_basis") or doc.rate_basis == "Per Piece":
+		doc.rate_basis = "Per Square Meter"
+	doc.flags.ignore_permissions = True
+	try:
+		doc.save(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="kayan_curtain: sheer curtain blackout colours")
+		return
+	frappe.db.set_default(SHEER_FLAG, "1")
+	print("  blackout colours seeded on sheer-curtain")
+
+
+# Products added by hand (not captured) whose price is by area. The catalogue
+# seed makes every new product Per Piece; these are switched once, on the day
+# they arrive, and are the team's to change after that.
+PER_SQM_PRODUCTS = ("accordion-door", "smart-film")
+
+
+def _seed_per_square_metre():
+	for key in PER_SQM_PRODUCTS:
+		flag = "kayan_curtain_per_sqm_seeded:%s" % key
+		if frappe.db.get_default(flag) or not frappe.db.exists("Curtain Product", key):
+			continue
+		frappe.db.set_value("Curtain Product", key, "rate_basis", "Per Square Meter")
+		frappe.db.set_default(flag, "1")
+		print("  %s priced per square metre" % key)
+
+
+ACCORDION_FLAG = "kayan_curtain_accordion_colours_seeded"
+
+
+def _seed_accordion_door():
+	"""Each door type's colours, as Choices shown under Plastic or Leather. Once.
+
+	The list and the starter swatches are in make_accordion_swatches.py (repo
+	root); the team replaces the swatches with photos of the real finishes.
+	"""
+	if frappe.db.get_default(ACCORDION_FLAG) or not frappe.db.exists("Curtain Product", "accordion-door"):
+		return
+	doc = frappe.get_doc("Curtain Product", "accordion-door")
+	types = {(o.option_label or "").strip() for o in doc.get("options") or []}
+	if not {"Plastic", "Leather"} <= types:
+		return              # the page's Door Type step has not been synced yet
+	if not any((r.parent_choice or "").strip() in ("Plastic", "Leather") for r in doc.get("sub_options") or []):
+		for parent, rows in (("Plastic", ACCORDION_PLASTIC), ("Leather", ACCORDION_LEATHER)):
+			for name, label, label_ar in rows:
+				doc.append("sub_options", {
+					"parent_choice": parent, "group_label": "Door Colour",
+					"group_label_ar": "لون الباب", "option_label": label,
+					"option_label_ar": label_ar, "charge_type": "Fixed Amount",
+					"rate": 0, "enabled": 1,
+					"image": "/assets/kayan_curtain/image/catalog/accordion-materials/%s.jpg" % name,
+				})
+	doc.flags.ignore_permissions = True
+	try:
+		doc.save(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(title="kayan_curtain: accordion door colours")
+		return
+	frappe.db.set_default(ACCORDION_FLAG, "1")
+	print("  plastic and leather colours seeded on accordion-door")
+
+
+ACCORDION_PLASTIC = (
+	("plastic-white", "White", "أبيض"),
+	("plastic-off-white", "Off White", "أوف وايت"),
+	("plastic-ivory", "Ivory", "عاجي"),
+	("plastic-beige", "Beige", "بيج"),
+	("plastic-light-grey", "Light Grey", "رمادي فاتح"),
+	("plastic-grey", "Grey", "رمادي"),
+	("plastic-oak", "Oak", "بلوط"),
+	("plastic-walnut", "Walnut", "جوزي"),
+	("plastic-dark-brown", "Dark Brown", "بني غامق"),
+)
+ACCORDION_LEATHER = (
+	("leather-cream", "Cream", "كريمي"),
+	("leather-beige", "Beige", "بيج"),
+	("leather-caramel", "Caramel", "كراميل"),
+	("leather-brown", "Brown", "بني"),
+	("leather-dark-brown", "Dark Brown", "بني غامق"),
+	("leather-grey", "Grey", "رمادي"),
+	("leather-black", "Black", "أسود"),
+	("leather-burgundy", "Burgundy", "عنابي"),
+)
+
+
 PRINT_UPLOAD_FLAG = "curtain_roll_print_upload_seeded"
 
 
@@ -494,6 +617,9 @@ def after_migrate():
 	_ensure_items()
 	_seed_pricing()
 	_seed_sub_options()
+	_seed_sheer_curtain()
+	_seed_per_square_metre()
+	_seed_accordion_door()
 	_seed_print_upload()
 	_seed_translations()
 	_seed_storefront()
